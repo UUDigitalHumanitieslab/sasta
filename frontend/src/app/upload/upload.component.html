@@ -1,0 +1,35 @@
+<h1 class="title">Upload</h1>
+<form>
+    <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+            <input class="input" type="text">
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">File</label>
+        <div class="control">
+            <div class="file" [ngClass]="{'has-name': fileName}">
+                <label class="file-label">
+                    <input #file class="file-input" type="file" name="transcript" (change)="fileChange(file)">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <fa-icon [icon]="faUpload"></fa-icon>
+                        </span>
+                        <span class="file-label">
+                            Choose a file…
+                        </span>
+                    </span>
+                    <span class="file-name" *ngIf="fileName">
+                        {{fileName}}
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-primary">Process</button>
+        </div>
+    </div>
+</form>
