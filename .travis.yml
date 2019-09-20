@@ -1,0 +1,29 @@
+language: python
+python:
+  - 3.4
+  - 3.5
+  - 3.6
+services:
+  - postgresql
+env:
+  - MOZ_HEADLESS=1
+addons:
+  chrome: stable
+  firefox: latest
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/.yarn-cache
+    - frontend/node_modules
+before_install:
+  - nvm install 10
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+install:
+  - yarn global add chromedriver geckodriver webdriver
+script:
+  - yarn
+  - yarn django migrate
+  - yarn static-p
+  - find static
+  - yarn start-back-p &
+  - yarn test
