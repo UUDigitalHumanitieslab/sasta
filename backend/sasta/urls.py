@@ -23,6 +23,8 @@ from rest_framework import routers
 from .index import index
 from .proxy_frontend import proxy_frontend
 
+from backend.analysis import urls as analysis_urls
+
 api_router = routers.DefaultRouter()  # register viewsets with this router
 
 if settings.PROXY_FRONTEND:
@@ -36,6 +38,7 @@ urlpatterns = [
     url(r'^api-auth$', RedirectView.as_view(url='/api-auth/', permanent=True)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(api_router.urls)),
+    url(r'^analysis/', include(analysis_urls)),
     url(r'^api-auth/', include(
         'rest_framework.urls',
         namespace='rest_framework',
