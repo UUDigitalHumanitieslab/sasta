@@ -9,6 +9,7 @@ def index(request):
     filepath = request.path[1:] or "index.html"
     static_path = finders.find(filepath)
     if not static_path:
-        raise Http404('Static file not found at: ' + filepath + '. Has the frontend been compiled?')
+        # a path which should be handled by the SPA
+        static_path = finders.find("index.html")
     with open(static_path, 'rb') as file:
         return HttpResponse(file, content_type=mimetypes.guess_type(filepath)[0])

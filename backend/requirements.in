@@ -1,7 +1,7 @@
-django>=1.11,<2
+django>=3.0a1,<4
 djangorestframework
 django-livereload-server
-django-revproxy
+django-revproxy>=0.9.16
 psycopg2 --no-binary psycopg2
 pytest
 pytest-django

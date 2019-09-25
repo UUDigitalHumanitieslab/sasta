@@ -1,7 +1,7 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 
 from . import views
 
 urlpatterns = [
-    url(r'^upload', views.upload),
+    path('upload', views.upload),
 ]

@@ -16,7 +16,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         '--base-address',
-        default='http://localhost:8000/',
+        default='http://localhost:5000/',
         help='specifies the base address where the application is running',
         dest=BASE_ADDRESS_OPTION_NAME,
     )

@@ -31,4 +31,5 @@ script:
   - yarn static-p
   - find static
   - yarn start-back-p &
+  - chromedriver --version
   - yarn test
