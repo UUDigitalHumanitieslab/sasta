@@ -1,9 +1,9 @@
 <h1 class="title">Upload</h1>
-<form>
+<form (submit)="upload()">
     <div class="field">
         <label class="label">Name</label>
         <div class="control">
-            <input class="input" type="text">
+            <input class="input" type="text" name="name" [(ngModel)]="name" />
         </div>
     </div>
     <div class="field">
@@ -11,7 +11,8 @@
         <div class="control">
             <div class="file" [ngClass]="{'has-name': fileName}">
                 <label class="file-label">
-                    <input #file class="file-input" type="file" name="transcript" (change)="fileChange(file)">
+                    <input #file class="file-input" type="file" name="transcript" (change)="fileChange(file)"
+                        accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip">
                     <span class="file-cta">
                         <span class="file-icon">
                             <fa-icon [icon]="faUpload"></fa-icon>
@@ -29,7 +30,8 @@
     </div>
     <div class="field is-grouped">
         <div class="control">
-            <button class="button is-primary">Process</button>
+            <button class="button is-primary" [disabled]="!content"
+                [ngClass]="{'is-loading': uploading}">Process</button>
         </div>
     </div>
 </form>

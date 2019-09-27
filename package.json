@@ -22,8 +22,8 @@
         "test-func": "yarn func pytest",
         "test": "yarn test-back && yarn test-front && yarn test-func",
         "start-front": "yarn front yarn serve",
-        "start-back": "cd backend && python manage.py runserver --settings settings --pythonpath ..",
-        "livereload-back": "cd backend && python manage.py  livereload --settings settings --pythonpath ..",
+        "start-back": "cd backend && python manage.py runserver --settings glue --pythonpath ..",
+        "livereload-back": "cd backend && python manage.py  livereload --settings glue --pythonpath ..",
         "watch-test-front": "yarn front yarn test",
         "watch-test-back": "yarn test-back --looponfail",
         "watch-back": "yarn livereload-back & yarn watch-test-back",
@@ -34,7 +34,7 @@
         "clean-static": "rm -rf static || rd /S /Q static",
         "static-p": "yarn build-p && yarn clean-static && yarn collectstatic-p",
         "watch-front-p": "yarn front yarn watch",
-        "start-back-p": "cd backend && python manage.py runserver --settings production --pythonpath ..",
+        "start-back-p": "cd backend && python manage.py runserver --settings production --insecure --pythonpath ..",
         "start-p": "yarn static-p && yarn watch-front-p & yarn start-back-p"
     }
 }

@@ -19,6 +19,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+files/
 
 # pyenv
 .python-version

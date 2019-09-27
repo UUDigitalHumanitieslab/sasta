@@ -8,13 +8,15 @@ import os.path as op
 
 here = op.dirname(op.abspath(__file__))
 
-from settings import *
+from glue import *
 
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost']
 
-STATICFILES_DIRS.pop()  # node_modules not needed in production mode
+STATICFILES_DIRS += [
+    op.join(here, 'frontend', 'dist')
+]
 
 STATIC_ROOT = op.join(here, 'static')
 

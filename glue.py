@@ -34,11 +34,10 @@ from settings import *
 
 # Next, augment the settings to make the backend aware of the frontend.
 
+# Expose assets from static, other than that it should be proxied to
+# the Angular frontend server
 STATICFILES_DIRS += [
-    op.join(here, 'frontend', 'dist'),
-    op.join(here, 'frontend', 'node_modules'),
+    op.join(here, 'frontend', 'src')
 ]
 
-
 PROXY_FRONTEND = "http://localhost:4200"
-
