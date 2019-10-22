@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/sasta.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/sasta)
 
+> SASTA: **S**emi-automatische **A**nalyse van **S**pontane **Ta**al
+ 
 Annotate and analyze transcripts
 
 
