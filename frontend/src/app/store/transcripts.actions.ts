@@ -8,3 +8,11 @@ export const upload = createAction(
 export const uploadSucceeded = createAction(
     '[Transcripts] Upload success',
     props<{ name: string }>());
+
+export const refreshList = createAction(
+    '[Transcripts] List',
+    props<{}>());
+
+export const listRetrieved = createAction(
+    '[Transcripts] List retrieved',
+    props<{ transcripts: Transcript[] }>());

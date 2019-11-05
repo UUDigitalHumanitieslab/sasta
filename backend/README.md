@@ -37,7 +37,6 @@ As in any Django application, you may add an arbitrary number of "application" (
 
 Unittest modules live directly next to the module they belong to. Each directory may contain a `conftest.py` with test fixtures available to all tests in the directory.
 
-
 ## Development
 
 ### Quickstart
@@ -77,6 +76,14 @@ Starting development server at http://127.0.0.1:5000/
 
 you can visit http://localhost:5000/admin/ and http://localhost:5000/api/ in your browser of choice. If you attached an external frontend application, its main page will be at http://localhost:5000/.
 
+### Cron (scheduled tasks)
+
+For scheduling recurring tasks [https://github.com/Tivix/django-cron](django-cron) is used. Perform these tasks manually using:
+
+```
+cd backend
+python manage.py runcrons --force
+```
 
 ### Enabling livereload
 
@@ -146,3 +153,7 @@ How to configure your webserver is completely beyond the scope of this README. H
 
  - Django will not serve static files in production mode. You need to configure the webserver to directly serve files from the `STATIC_ROOT` in your settings at the `STATIC_URL` in your settings.
  - Your webserver configuration should set environment variables or pass arguments to the WSGI application so it will use the settings overrides rather than the defaults from `sasta/settings.py`.
+
+### Cron
+
+Add a CRON-job (or similar scheduling) to execute the recurring tasks: https://django-cron.readthedocs.io/en/latest/installation.html

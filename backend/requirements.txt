@@ -11,8 +11,10 @@ asgiref==3.2.2            # via django
 atomicwrites==1.3.0       # via pytest
 attrs==19.1.0             # via pytest
 beautifulsoup4==4.8.0     # via django-livereload-server
+django-common-helpers==0.9.2  # via django-cron
+django-cron==0.5.1
 django-livereload-server==0.3.2
-git+git://github.com/oktaal/django-revproxy@master#egg=django-revproxy
+git+git://github.com/TracyWebTech/django-revproxy@master#egg=django-revproxy
 django==3.0a1
 djangorestframework==3.10.3
 execnet==1.7.1            # via pytest-xdist
@@ -32,6 +34,6 @@ six==1.12.0               # via django-livereload-server, packaging, pytest-xdis
 soupsieve==1.9.3          # via beautifulsoup4
 sqlparse==0.3.0           # via django
 tornado==6.0.3            # via django-livereload-server
-urllib3==1.25.6           # via django-revproxy
+urllib3==1.25.6
 wcwidth==0.1.7            # via pytest
 zipp==0.6.0               # via importlib-metadata
