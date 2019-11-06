@@ -14,6 +14,15 @@ export class TranscriptsEffects {
                 return TranscriptsActions.uploadSucceeded({ name: response.name });
             })));
 
+    listTranscripts$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(TranscriptsActions.refreshList),
+            mergeMap(async () => {
+                const transcripts = await this.transcriptsService.list();
+                return TranscriptsActions.listRetrieved({ transcripts });
+            })
+        ));
+
     constructor(
         private actions$: Actions,
         private transcriptsService: TranscriptsService

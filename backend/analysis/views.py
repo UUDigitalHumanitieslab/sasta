@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from os import path
 from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse
 
@@ -18,4 +19,14 @@ def upload(request: HttpRequest):
 
     return JsonResponse({
         'name': file.name
+    })
+
+def list(request: HttpRequest):
+    files = [{
+        'name': file.name,
+        'file_name': path.basename(file.content.name),
+        'status': file.status
+    } for file in File.objects.all()]
+    return JsonResponse({
+        'files': files
     })

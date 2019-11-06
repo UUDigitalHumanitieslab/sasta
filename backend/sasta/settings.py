@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'livereload',
     'django.contrib.staticfiles',
+    'django_cron',
     'rest_framework',
     'revproxy',
     'analysis'
@@ -50,6 +51,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+]
+
+# export from ../analysis/cron/__init__.py
+CRON_CLASSES = [
+    'analysis.cron.ExtractJob',
+    'analysis.cron.ParseJob'
 ]
 
 ROOT_URLCONF = 'sasta.urls'

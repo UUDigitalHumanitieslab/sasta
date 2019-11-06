@@ -1,1 +1,16 @@
-<p>transcripts works!</p>
+<table class="table is-fullwidth">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Filename</th>
+            <th class="has-text-right">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let transcript of transcripts">
+            <td>{{transcript.name}}</td>
+            <td>{{transcript.content.name}}</td>
+            <td class="has-text-right">{{transcript.status}}</td>
+        </tr>
+    </tbody>
+</table>
