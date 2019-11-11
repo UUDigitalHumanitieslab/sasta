@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from os import path
-from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse
+from django.shortcuts import render
 
+from .convert.CHAT_converter import CHATConverter
 from .models import File
+
+
+from os import path
 
 
 def upload(request: HttpRequest):
@@ -21,6 +24,7 @@ def upload(request: HttpRequest):
         'name': file.name
     })
 
+
 def list(request: HttpRequest):
     files = [{
         'name': file.name,
@@ -29,4 +33,17 @@ def list(request: HttpRequest):
     } for file in File.objects.all()]
     return JsonResponse({
         'files': files
+    })
+
+
+def convert(request: HttpRequest):
+    file = File.objects.filter(name=request.POST['name']).first()
+    input_path = file.content.name
+    output_path = input_path.replace(
+        '/uploads/', '/converted/').replace('.txt', '.cha')
+    convert = CHATConverter(input_path, output_path)
+    convert.read()
+
+    return JsonResponse({
+        'msg': 'joe'
     })

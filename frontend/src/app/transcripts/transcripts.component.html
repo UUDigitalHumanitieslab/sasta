@@ -4,6 +4,7 @@
             <th>Name</th>
             <th>Filename</th>
             <th class="has-text-right">Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -11,6 +12,7 @@
             <td>{{transcript.name}}</td>
             <td>{{transcript.content.name}}</td>
             <td class="has-text-right">{{transcript.status}}</td>
+            <td><button (click)="convertTranscript(transcript)">convert</button></td>
         </tr>
     </tbody>
 </table>
