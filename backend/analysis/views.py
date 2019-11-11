@@ -21,6 +21,7 @@ def upload(request: HttpRequest):
         'name': file.name
     })
 
+
 def list(request: HttpRequest):
     files = [{
         'name': file.name,

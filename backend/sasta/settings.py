@@ -25,6 +25,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Application config
+DEFAULT_SPEAKER_CODE = 'SPK'
 
 # Application definition
 
@@ -56,7 +58,8 @@ MIDDLEWARE = [
 # export from ../analysis/cron/__init__.py
 CRON_CLASSES = [
     'analysis.cron.ExtractJob',
-    'analysis.cron.ParseJob'
+    'analysis.cron.ParseJob',
+    'analysis.cron.ConvertJob',
 ]
 
 ROOT_URLCONF = 'sasta.urls'
