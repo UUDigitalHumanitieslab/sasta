@@ -1,6 +1,7 @@
 from django_cron import CronJobBase, Schedule
 from ..models import File
 import sasta.settings
+import re
 
 
 class ConvertJob(CronJobBase):
@@ -8,6 +9,8 @@ class ConvertJob(CronJobBase):
 
     schedule = Schedule(run_every_mins=1)
     code = 'sasta.convert_job'  # a unique code
+
+    utterance_pattern = re.compile(r'^(.*?|)?\s*\*?([A-Z*]{3}):(.*)$')
 
     def do(self):
         print('convert_job exists!')
