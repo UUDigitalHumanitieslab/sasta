@@ -41,11 +41,16 @@ export class TranscriptsService {
     }
 
     async convert(transcript: Transcript) {
-        console.log(transcript)
         const formData: FormData = new FormData();
-        // formData.append('content', transcript.content as File, transcript.content.name);
         formData.append('filename', transcript.content.name);
         formData.append('name', transcript.name);
         return await this.httpClient.post<ConvertResponse>('api/analysis/convert', formData).toPromise();
+    }
+
+    async delete(transcript: Transcript) {
+        const formData: FormData = new FormData();
+        formData.append('filename', transcript.content.name);
+        formData.append('name', transcript.name);
+        return await this.httpClient.post<ConvertResponse>('api/analysis/delete', formData).toPromise();
     }
 }

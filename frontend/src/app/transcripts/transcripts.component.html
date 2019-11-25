@@ -12,7 +12,10 @@
             <td>{{transcript.name}}</td>
             <td>{{transcript.content.name}}</td>
             <td class="has-text-right">{{transcript.status}}</td>
-            <td><button (click)="convertTranscript(transcript)">convert</button></td>
+            <td>
+                <button (click)="convertTranscript(transcript)">convert</button>
+                <button (click)="deleteTranscript(transcript)">delete</button>
+            </td>
         </tr>
     </tbody>
 </table>

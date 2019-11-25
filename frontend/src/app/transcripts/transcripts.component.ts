@@ -37,4 +37,7 @@ export class TranscriptsComponent implements OnInit {
         this.transcriptsService.convert(transcript);
     }
 
+    deleteTranscript(transcript: Transcript) {
+        this.transcriptsService.delete(transcript);
+    }
 }

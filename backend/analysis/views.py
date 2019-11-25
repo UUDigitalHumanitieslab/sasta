@@ -45,5 +45,14 @@ def convert(request: HttpRequest):
     convert.read()
 
     return JsonResponse({
-        'msg': 'joe'
+        'msg': 'converted'
+    })
+
+
+def delete(request: HttpRequest):
+    file = File.objects.filter(name=request.POST['name']).first()
+    File.objects.filter(name=request.POST['name']).first().delete()
+
+    return JsonResponse({
+        'msg': 'deleted'
     })
