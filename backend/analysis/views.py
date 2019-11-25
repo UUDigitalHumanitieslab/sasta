@@ -38,14 +38,12 @@ def list(request: HttpRequest):
 
 def convert(request: HttpRequest):
     file = File.objects.filter(name=request.POST['name']).first()
-    convert = CHATConverter(file)
+    input_path = file.content.name
+    output_path = input_path.replace(
+        '/uploads/', '/converted/').replace('.txt', '.cha')
+    convert = CHATConverter(input_path, output_path)
     convert.read()
 
-    # with open(file_path, 'r') as f_in:
-    # with open('out.cha', 'w') as f_out:
-    # f_out.write('@UTF-8\r@Begin\r@Languages: nld\r@End')
-    # pass
-    # print(request.POST['filename'])
     return JsonResponse({
         'msg': 'joe'
     })

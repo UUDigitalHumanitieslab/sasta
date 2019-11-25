@@ -10,12 +10,9 @@ FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
 
 class CHATConverter:
-    def __init__(self, file):
-        self.input_path = file.content.name
-        self.dir_path = os.path.dirname(file.content.name)
-        self.out_path = re.sub('\/uploads\/', '/converted/', self.dir_path)
-        self.out_filename = os.path.join(
-            self.out_path, os.path.basename(self.input_path)).replace('.txt', '.cha')
+    def __init__(self, file, outfile):
+        self.input_path = file
+        self.output_path = outfile
 
         self.transcript_header = '@UTF-8\n@Begin\n@Languages nld\n'
         self.transcript_content = ''
@@ -24,6 +21,8 @@ class CHATConverter:
         self.metadata_coms = '\n'
         self.participants = []
         self.ids = ''
+
+        # TODO multiple target speakers
         self.target_speaker = {'code': None, 'age': '',
                                'sex': '', 'role': None}
 
@@ -61,24 +60,28 @@ class CHATConverter:
                     pass
 
         self.parse()
+        self.write()
 
     def parse(self):
-        self.parse_metadata()
+        meta = self.parse_metadata()
         self.make_participant_ids(self.target_speaker, self.participants)
-        self.transcript_header += ''.join(self.metadata_coms)
+        if meta:
+            self.transcript_header += f'\n{"".join(meta)}\n'
 
         print(self.transcript_header)
+        print(self.transcript_content)
 
     def write(self):
+        output_dir = os.path.dirname(self.output_path)
         try:
-            os.makedirs(self.out_path)
-        except OSError as exc:  # Python >2.5
-            if exc.errno == errno.EEXIST and os.path.isdir(self.out_path):
+            os.makedirs(output_dir)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(output_dir):
                 pass
             else:
                 raise
 
-        with open(self.out_filename, 'w') as f:
+        with open(self.output_path, 'w') as f:
             f.write(self.transcript_header)
             f.write(self.transcript_content)
             f.write(self.transcript_footer)
@@ -102,6 +105,7 @@ class CHATConverter:
     def parse_metadata(self):
         # groups:   1) years    2) months   3) days
         age_pattern = re.compile(r'(\d+);(\d{2})?(?:(?:\.)(\d{2}))?')
+        metadata_coms = []
         for m in self.metadata:
             t, f, v = m['dtype'], m['field'], m['value']
 
@@ -119,24 +123,9 @@ class CHATConverter:
                     self.target_speaker['sex'] = 'unknown'
 
             else:
-                self.metadata_coms += f'%com ##META {t} {f} = {v}'
+                metadata_coms += f'@Comment ##META {t} {f} = {v}'
 
-    def target_speaker_id(self, code, age, sex, role):
-        # @ID: language|corpus|code|age|sex|group|SES|role|education|custom|
-        info = {
-            'language': 'nld',
-            'corpus': '',
-            'code': code,
-            'age': age,
-            'sex': sex,
-            'group': '',
-            'SES': '',
-            'role': role,
-            'education': '',
-            'custom': ''
-        }
-
-        self.ids += f'@ID {"|".join(info.values())}|\n'
+        return metadata_coms
 
     def make_participant_ids(self, tar_speaker, other_speakers):
         # TODO implement name/role translations for commonly used speaker codes (e.g. Mother Mother for code MOT)
