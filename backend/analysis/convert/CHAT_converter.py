@@ -14,7 +14,7 @@ class CHATConverter:
         self.input_path = file
         self.output_path = outfile
 
-        self.transcript_header = '@UTF-8\n@Begin\n@Languages nld\n'
+        self.transcript_header = '@UTF-8\n@Begin\n@Languages:\tnld\n'
         self.transcript_content = ''
         self.transcript_footer = '@End'
         self.metadata = []
@@ -24,7 +24,7 @@ class CHATConverter:
 
         # TODO multiple target speakers
         self.target_speaker = {'code': None, 'age': '',
-                               'sex': '', 'role': None}
+                               'sex': '', 'role': 'Target_Adult'}
 
     @property
     def patterns(self):
@@ -60,7 +60,7 @@ class CHATConverter:
                     pass
 
         self.parse()
-        self.write()
+        # self.write()
 
     def parse(self):
         meta = self.parse_metadata()
@@ -134,10 +134,10 @@ class CHATConverter:
         for code in [spk for spk in other_speakers if spk != tar_speaker['code']]:
             speakers.append(f'{code} {code.lower()} Other')
 
-        participants_header = f'@Participants {", ".join(speakers)}\n'
+        participants_header = f'@Participants:\t{", ".join(speakers)}\n'
 
-        target_speaker_id = f'@ID: nld||{tar_speaker["code"]}|{self.target_speaker["age"]}|{tar_speaker["sex"]}|||{tar_speaker["role"]}|||\n'
-        participant_ids = [f'@ID: nld||{code}|||||Other|||\n' for code in [
+        target_speaker_id = f'@ID:\tnld||{tar_speaker["code"]}|{self.target_speaker["age"]}|{tar_speaker["sex"]}|||{tar_speaker["role"]}|||\n'
+        participant_ids = [f'@ID:\tnld||{code}|||||Other|||\n' for code in [
             p for p in other_speakers if p != tar_speaker['code']]]
 
         self.transcript_header += participants_header

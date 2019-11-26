@@ -13,7 +13,6 @@ class ConvertJob(CronJobBase):
     utterance_pattern = re.compile(r'^(.*?|)?\s*\*?([A-Z*]{3}):(.*)$')
 
     def do(self):
-        print('convert_job exists!')
         pass
 
     def to_paqu(self, file, speaker_code=sasta.settings.DEFAULT_SPEAKER_CODE):
