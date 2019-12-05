@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from os import path, remove
+
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import render
 
 from .convert.CHAT_converter import CHATConverter
 from .models import File
-
-
-from os import path
 
 
 def upload(request: HttpRequest):
@@ -51,8 +49,8 @@ def convert(request: HttpRequest):
 
 def delete(request: HttpRequest):
     file = File.objects.filter(name=request.POST['name']).first()
-    File.objects.filter(name=request.POST['name']).first().delete()
-
+    remove(file.content.name)
+    file.delete()
     return JsonResponse({
         'msg': 'deleted'
     })

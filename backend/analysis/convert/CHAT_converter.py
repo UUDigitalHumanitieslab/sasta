@@ -1,6 +1,5 @@
-from ..models import File
-import os
 import errno
+import os
 import re
 
 AGE_FIELD_NAMES = ['age', 'leeftijd']
@@ -39,13 +38,16 @@ class CHATConverter:
         # no groups
         target_uttids_pattern = r'^##TARGET\sUTTIDS$'
 
-        return [re.compile(p) for p in [meta_pattern, utterance_pattern, tier_pattern, single_speaker_pattern, target_uttids_pattern]]
+        return [re.compile(p) for p in [
+            meta_pattern, utterance_pattern,
+            tier_pattern, single_speaker_pattern,
+            target_uttids_pattern]]
 
     def read(self):
-        with open(self.input_path, 'r') as f:
-            for line in f.readlines():
-                [meta, utt, tier, single_spk, tar_uttids] = [self.match_pattern(
-                    p, line) for p in self.patterns]
+        with open(self.input_path, 'r') as file:
+            for line in file.readlines():
+                [meta, utt, tier, single_spk, _tar_uttids] = [self.match_pattern(
+                    pattern, line) for pattern in self.patterns]
                 if meta:
                     dtype, field, value = meta
                     self.metadata.append({'dtype': dtype,
@@ -60,7 +62,7 @@ class CHATConverter:
                     pass
 
         self.parse()
-        # self.write()
+        self.write()
 
     def parse(self):
         meta = self.parse_metadata()
@@ -70,6 +72,7 @@ class CHATConverter:
 
         print(self.transcript_header)
         print(self.transcript_content)
+        print(self.transcript_footer)
 
     def write(self):
         output_dir = os.path.dirname(self.output_path)
@@ -81,17 +84,17 @@ class CHATConverter:
             else:
                 raise
 
-        with open(self.output_path, 'w') as f:
-            f.write(self.transcript_header)
-            f.write(self.transcript_content)
-            f.write(self.transcript_footer)
+        with open(self.output_path, 'w', encoding='utf-8') as file:
+            file.write(self.transcript_header)
+            file.write(self.transcript_content)
+            file.write(self.transcript_footer)
 
     def match_pattern(self, pattern, line):
-        m = re.match(pattern, line)
-        if not m:
+        match = re.match(pattern, line)
+        if not match:
             return None
         else:
-            return m.groups()
+            return match.groups()
 
     def parse_utt(self, utterance):
         u_id, spk, utt = utterance
@@ -106,29 +109,29 @@ class CHATConverter:
         # groups:   1) years    2) months   3) days
         age_pattern = re.compile(r'(\d+);(\d{2})?(?:(?:\.)(\d{2}))?')
         metadata_coms = []
-        for m in self.metadata:
-            t, f, v = m['dtype'], m['field'], m['value']
+        for meta in self.metadata:
+            field_type, field, value = meta['dtype'], meta['field'], meta['value']
 
-            if f.lower() in AGE_FIELD_NAMES:
-                self.target_speaker['age'] = v
-                years = int(age_pattern.match(v).group(1))
+            if field.lower() in AGE_FIELD_NAMES:
+                self.target_speaker['age'] = value
+                years = int(age_pattern.match(value).group(1))
                 self.target_speaker['role'] = 'Target_Child' if years < 18 else 'Target_Adult'
 
-            elif f.lower() in SEX_FIELD_NAMES:
-                if v.lower() in MALE_CODES:
+            elif field.lower() in SEX_FIELD_NAMES:
+                if value.lower() in MALE_CODES:
                     self.target_speaker['sex'] = 'male'
-                elif v.lower() in FEMALE_CODES:
+                elif value.lower() in FEMALE_CODES:
                     self.target_speaker['sex'] = 'female'
                 else:
                     self.target_speaker['sex'] = 'unknown'
 
             else:
-                metadata_coms += f'@Comment ##META {t} {f} = {v}'
+                metadata_coms += f'@Comment ##META {field_type} {field} = {value}'
 
         return metadata_coms
 
     def make_participant_ids(self, tar_speaker, other_speakers):
-        # TODO implement name/role translations for commonly used speaker codes (e.g. Mother Mother for code MOT)
+        # TODO implement name/role translations for commonly used speaker codes
         speakers = [
             f'{tar_speaker["code"]} {tar_speaker["code"].lower()} {tar_speaker["role"]}']
         for code in [spk for spk in other_speakers if spk != tar_speaker['code']]:
