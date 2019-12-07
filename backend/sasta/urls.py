@@ -24,8 +24,10 @@ from .index import index
 from .proxy_frontend import proxy_frontend
 
 from analysis import urls as analysis_urls
+from analysis import views as analysis_views
 
 api_router = routers.DefaultRouter()  # register viewsets with this router
+api_router.register(r'upload-files', analysis_views.UploadFileViewSet)
 
 if settings.PROXY_FRONTEND:
     spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)

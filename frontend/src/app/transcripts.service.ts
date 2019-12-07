@@ -6,13 +6,6 @@ import { Transcript } from './models/transcript';
 interface UploadResponse {
     name: string;
 }
-interface ListResponse {
-    files: {
-        name: string,
-        file_name: string,
-        status: string
-    }[];
-}
 
 @Injectable({
     providedIn: 'root'
@@ -29,11 +22,6 @@ export class TranscriptsService {
     }
 
     async list(): Promise<Transcript[]> {
-        const response = await this.httpClient.get<ListResponse>('/api/analysis/list').toPromise();
-        return response.files.map(file => ({
-            name: file.name,
-            content: { name: file.file_name },
-            status: file.status as Transcript['status']
-        }));
+        return await this.httpClient.get<Transcript[]>('api/upload-files/').toPromise();
     }
 }

@@ -4,10 +4,12 @@ import uuid
 from django.contrib.auth.models import User
 from django.db import models
 
-def get_file_path(instance, filename):
+
+def get_file_path(_instance, filename):
     return os.path.join('files', 'uploads', f'{uuid.uuid4()}', filename)
 
-class File(models.Model):
+
+class UploadFile(models.Model):
     # TODO: users
     #user = models.ForeignKey(User, related_name='files', on_delete=models.PROTECT)
     # name of the uploaded file

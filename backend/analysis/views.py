@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from os import path
-from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse
+from rest_framework import viewsets
 
-from .models import File
+from .models import UploadFile
+from .serializers import UploadFileSerializer
+
+
+class UploadFileViewSet(viewsets.ModelViewSet):
+    queryset = UploadFile.objects.all()
+    serializer_class = UploadFileSerializer
 
 
 def upload(request: HttpRequest):
-    file = File()
+    file = UploadFile()
     # file.user = TODO
     file.content = request.FILES['content']
     file.name = request.POST['name']
@@ -19,14 +24,4 @@ def upload(request: HttpRequest):
 
     return JsonResponse({
         'name': file.name
-    })
-
-def list(request: HttpRequest):
-    files = [{
-        'name': file.name,
-        'file_name': path.basename(file.content.name),
-        'status': file.status
-    } for file in File.objects.all()]
-    return JsonResponse({
-        'files': files
     })
