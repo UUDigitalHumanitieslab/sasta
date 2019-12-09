@@ -27,7 +27,9 @@ from analysis import urls as analysis_urls
 from analysis import views as analysis_views
 
 api_router = routers.DefaultRouter()  # register viewsets with this router
-api_router.register(r'upload-files', analysis_views.UploadFileViewSet)
+api_router.register(r'upload_files', analysis_views.UploadFileViewSet)
+api_router.register(r'transcripts', analysis_views.TranscriptViewSet)
+api_router.register(r'corpora', analysis_views.CorpusViewSet)
 
 if settings.PROXY_FRONTEND:
     spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)
