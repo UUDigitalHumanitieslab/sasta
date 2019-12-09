@@ -3,19 +3,17 @@ from rest_framework import serializers
 from .models import Corpus, Transcript, UploadFile
 
 
-class CorpusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Corpus
-        fields = '__all__'
-
-
 class UploadFileSerializer(serializers.ModelSerializer):
     corpus = serializers.CharField(source='corpus.name', required=False)
 
     class Meta:
         model = UploadFile
-        corpus = CorpusSerializer
+        corpus = serializers.SerializerMethodField()
         fields = ['name', 'content', 'status', 'corpus']
+
+    # work around circular dependency
+    def get_corpus(self, obj):
+        return CorpusSerializer(obj.corpus).data
 
     def create(self, validated_data):
         if 'corpus' in validated_data:
@@ -31,3 +29,12 @@ class TranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcript
         fields = '__all__'
+
+
+class CorpusSerializer(serializers.ModelSerializer):
+    files = UploadFileSerializer(read_only=True, many=True)
+    transcripts = TranscriptSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Corpus
+        fields = ('name', 'status', 'files', 'transcripts')
