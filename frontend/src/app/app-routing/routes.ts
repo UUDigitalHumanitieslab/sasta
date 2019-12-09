@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
 import { UploadComponent } from '../upload/upload.component';
 import { TranscriptsComponent } from '../transcripts/transcripts.component';
+import { ListCorpusComponent } from '../corpus/list-corpus.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
         path: 'transcripts',
         component: TranscriptsComponent,
+    },
+    {
+        path: 'corpora',
+        component: ListCorpusComponent,
     },
     {
         path: '',

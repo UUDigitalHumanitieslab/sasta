@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Transcript } from './models/transcript';
+import { Transcript } from '../models/transcript';
 
 interface UploadResponse {
     name: string;

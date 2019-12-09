@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap } from 'rxjs/operators';
 import * as TranscriptsActions from './transcripts.actions';
-import { TranscriptsService } from '../transcripts.service';
+import { TranscriptsService } from '../services/transcripts.service';
 
 @Injectable()
 export class TranscriptsEffects {

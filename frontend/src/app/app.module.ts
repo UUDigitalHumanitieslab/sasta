@@ -19,6 +19,7 @@ import { UploadComponent } from './upload/upload.component';
 
 import { reducers, effects } from './store';
 import { TranscriptsComponent } from './transcripts/transcripts.component';
+import { ListCorpusComponent } from './corpus/list-corpus.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { TranscriptsComponent } from './transcripts/transcripts.component';
         MenuComponent,
         HomeComponent,
         UploadComponent,
-        TranscriptsComponent
+        TranscriptsComponent,
+        ListCorpusComponent
     ],
     imports: [
         AppRoutingModule,
