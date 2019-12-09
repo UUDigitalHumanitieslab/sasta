@@ -21,6 +21,8 @@ import { reducers, effects } from './store';
 import { TranscriptsComponent } from './transcripts/transcripts.component';
 import { ListCorpusComponent } from './corpus/list-corpus.component';
 
+import { DropdownModule } from 'primeng/dropdown';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -35,6 +37,7 @@ import { ListCorpusComponent } from './corpus/list-corpus.component';
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
+        DropdownModule,
         FontAwesomeModule,
         FormsModule,
         HttpClientModule,

@@ -1,9 +1,13 @@
+
+{{selectedCorpus}}
 <h1 class="title">Upload</h1>
 <form (submit)="upload()">
     <div class="field">
-        <label class="label">Name</label>
+        <label class="label">To corpus</label>
+        <p-dropdown [options]="corpora" optionLabel="name" name="corpus-dropdown" [(ngModel)]="selectedCorpus"></p-dropdown>
+        <label class="label">New corpus</label>
         <div class="control">
-            <input class="input" type="text" name="name" [(ngModel)]="name" />
+            <input class="input" type="text" name="name" [(ngModel)]="name" [disabled]="selectedCorpus" />
         </div>
     </div>
     <div class="field">

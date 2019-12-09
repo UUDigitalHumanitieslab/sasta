@@ -7,7 +7,9 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { storeStructure } from '../store';
 import { upload } from '../store/transcripts.actions';
 import { Transcript } from '../models/transcript';
+import { Corpus } from '../models/corpus'
 import { Subscription } from 'rxjs';
+import { CorpusService } from '../services/corpus.service';
 
 @Component({
     selector: 'sas-upload',
@@ -24,7 +26,10 @@ export class UploadComponent implements OnDestroy {
     uploading: boolean;
     subscriptions: Subscription[];
 
-    constructor(private store: Store<storeStructure>, router: Router) {
+    corpora: Corpus[];
+    selectedCorpus: Corpus;
+
+    constructor(private store: Store<storeStructure>, router: Router, private corpusService: CorpusService) {
         this.subscriptions = [
             this.store.pipe(select('transcripts')).subscribe((transcripts: Transcript[]) => {
                 // information about the transcript is available
@@ -36,6 +41,11 @@ export class UploadComponent implements OnDestroy {
                 }
             })
         ];
+    }
+
+    ngOnInit() {
+        this.corpusService.list()
+            .then(response => { this.corpora = response; })
     }
 
     ngOnDestroy() {
