@@ -20,7 +20,7 @@ export class ListCorpusComponent implements OnInit {
 
   constructor(private store: Store<storeStructure>) {
     this.subscriptions = [
-      this.store.pipe(select('corpus')).subscribe((corpora: Corpus[]) => {
+      this.store.pipe(select('corpora')).subscribe((corpora: Corpus[]) => {
         this.corpora = corpora;
       }),
       interval(UPDATE_INTERVAL).pipe(startWith(0)).subscribe(() => {

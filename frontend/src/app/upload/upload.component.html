@@ -1,22 +1,30 @@
-
-{{selectedCorpus}}
 <h1 class="title">Upload</h1>
 <form (submit)="upload()">
+
     <div class="field">
         <label class="label">To corpus</label>
-        <p-dropdown [options]="corpora" optionLabel="name" name="corpus-dropdown" [(ngModel)]="selectedCorpus"></p-dropdown>
-        <label class="label">New corpus</label>
         <div class="control">
-            <input class="input" type="text" name="name" [(ngModel)]="name" [disabled]="selectedCorpus" />
+            <p-dropdown [options]="corpora" optionLabel="name" name="corpus-dropdown" placeholder="select corpus"
+                [(ngModel)]="selectedCorpus" showClear="true">
+            </p-dropdown>
+
         </div>
     </div>
+
+    <div class="field">
+        <label class="label">New corpus</label>
+        <div class="control">
+            <input class="input" type="text" name="name" [(ngModel)]="newCorpusName" [disabled]="selectedCorpus" />
+        </div>
+    </div>
+
     <div class="field">
         <label class="label">File</label>
         <div class="control">
             <div class="file" [ngClass]="{'has-name': fileName}">
                 <label class="file-label">
                     <input #file class="file-input" type="file" name="transcript" (change)="fileChange(file)"
-                        accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip">
+                        accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip">
                     <span class="file-cta">
                         <span class="file-icon">
                             <fa-icon [icon]="faUpload"></fa-icon>

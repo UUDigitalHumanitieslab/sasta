@@ -2,12 +2,14 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th># of uploads</th>
             <th class="has-text-right">Status</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let corpus of corpora">
             <td>{{corpus.name}}</td>
+            <td>{{corpus?.files.length || '0'}}</td>
             <td class="has-text-right">{{corpus.status}}</td>
         </tr>
     </tbody>

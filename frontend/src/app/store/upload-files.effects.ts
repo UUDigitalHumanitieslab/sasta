@@ -11,7 +11,7 @@ export class UploadFilesEffects {
             ofType(UploadFilesActions.upload),
             mergeMap(async (props) => {
                 const response = await this.UploadFilesService.upload(props);
-                return UploadFilesActions.uploadSucceeded({ name: response.content.name });
+                return UploadFilesActions.uploadSucceeded({ name: response.name });
             })));
 
 
