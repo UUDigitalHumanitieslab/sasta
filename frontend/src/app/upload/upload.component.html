@@ -5,7 +5,7 @@
         <label class="label">To corpus</label>
         <div class="control">
             <p-dropdown [options]="corpora" optionLabel="name" name="corpus-dropdown" placeholder="select corpus"
-                [(ngModel)]="selectedCorpus" showClear="true">
+                [(ngModel)]="selectedCorpus" showClear="true" [disabled]="!corpora?.length > 0">
             </p-dropdown>
 
         </div>
@@ -23,7 +23,7 @@
         <div class="control">
             <div class="file" [ngClass]="{'has-name': fileName}">
                 <label class="file-label">
-                    <input #file class="file-input" type="file" name="transcript" (change)="fileChange(file)"
+                    <input #file class="file-input" type="file" name="file" (change)="fileChange(file)"
                         accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip">
                     <span class="file-cta">
                         <span class="file-icon">
