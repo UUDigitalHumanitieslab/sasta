@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store, select, State } from '@ngrx/store';
 import { Subscription, interval } from 'rxjs';
 import { storeStructure } from '../store';
 import { Corpus } from '../models/corpus';
@@ -28,6 +28,7 @@ export class ListCorpusComponent implements OnInit {
       })
     ];
   }
+
 
 
   ngOnInit() {

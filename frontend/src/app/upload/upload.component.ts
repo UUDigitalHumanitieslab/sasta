@@ -6,6 +6,7 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 import { storeStructure } from '../store';
 import { upload } from '../store/upload-files.actions';
+import { create } from '../store/corpus.actions';
 import { Corpus } from '../models/corpus'
 import { Subscription } from 'rxjs';
 import { CorpusService } from '../services/corpus.service';
@@ -44,6 +45,7 @@ export class UploadComponent implements OnDestroy {
     }
 
     ngOnInit() {
+        console.log(this.store.source)
         this.corpusService.list()
             .then(response => { this.corpora = response; })
     }
@@ -63,7 +65,12 @@ export class UploadComponent implements OnDestroy {
             name: this.fileName,
             content: this.content,
             status: 'uploading',
-            corpus: this.selectedCorpus || { name: this.newCorpusName, status: 'pending' }
+            corpus: this.selectedCorpus || { name: this.newCorpusName, status: 'created' }
         }));
+        if (!this.selectedCorpus) {
+            this.store.dispatch(create({ name: this.newCorpusName, status: 'created' }))
+        }
+
+
     }
 }
