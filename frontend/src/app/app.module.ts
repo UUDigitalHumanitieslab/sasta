@@ -18,7 +18,6 @@ import { HomeComponent } from './home/home.component';
 import { UploadComponent } from './upload/upload.component';
 
 import { reducers, effects } from './store';
-import { TranscriptsComponent } from './transcripts/transcripts.component';
 import { ListCorpusComponent } from './corpus/list-corpus.component';
 
 import { DropdownModule } from 'primeng/dropdown';
@@ -30,7 +29,6 @@ import { DropdownModule } from 'primeng/dropdown';
         MenuComponent,
         HomeComponent,
         UploadComponent,
-        TranscriptsComponent,
         ListCorpusComponent
     ],
     imports: [

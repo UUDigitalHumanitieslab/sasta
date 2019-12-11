@@ -19,7 +19,7 @@ class UploadFileSerializer(serializers.ModelSerializer):
         corpus_data = validated_data.pop('corpus')
         corpus_instance, _created = Corpus.objects.get_or_create(
             name=corpus_data['name'],
-            defaults={'status': 'pending'})
+            defaults={'status': 'created'})
         return UploadFile.objects.create(**validated_data, corpus=corpus_instance)
 
 
