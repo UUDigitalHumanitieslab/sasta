@@ -204,11 +204,3 @@ class SifReader:
                 elif single_spk:
                     self.participants.append(Participant(
                         *single_spk, target_speaker=True))
-
-
-def test():
-    sf = SifReader('ASTA_01.txt')
-    sf.document.write_chat('/Users/3248526/Documents/ASTA_01.cha')
-
-
-test()
