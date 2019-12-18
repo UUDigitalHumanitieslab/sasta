@@ -5,7 +5,7 @@ from os import path, remove
 
 from django.http import HttpRequest, JsonResponse
 
-from .convert.CHAT_converter import CHATConverter
+from .convert.chat_converter import SifReader
 from .models import File
 
 
@@ -39,8 +39,10 @@ def convert(request: HttpRequest):
     input_path = file.content.name
     output_path = input_path.replace(
         '/uploads/', '/converted/').replace('.txt', '.cha')
-    convert = CHATConverter(input_path, output_path)
-    convert.read()
+    print(input_path, output_path)
+
+    reader = SifReader(input_path)
+    reader.document.write_chat(output_path)
 
     return JsonResponse({
         'msg': 'converted'

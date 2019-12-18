@@ -25,9 +25,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application config
-DEFAULT_SPEAKER_CODE = 'SPK'
-
 # Application definition
 
 INSTALLED_APPS = [
