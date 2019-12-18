@@ -22,17 +22,3 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 class CorpusViewSet(viewsets.ModelViewSet):
     queryset = Corpus.objects.all()
     serializer_class = CorpusSerializer
-
-
-def upload(request: HttpRequest):
-    file = UploadFile()
-    # file.user = TODO
-    file.content = request.FILES['content']
-    file.name = request.POST['name']
-    file.filename = request.POST['filename']
-    file.status = 'pending'
-    file.save()
-
-    return JsonResponse({
-        'name': file.name
-    })
