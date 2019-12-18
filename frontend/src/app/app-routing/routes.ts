@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
 import { UploadComponent } from '../upload/upload.component';
 import { ListCorpusComponent } from '../corpus/list-corpus.component';
+import { CorpusComponent } from '../corpus/corpus.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
         path: 'corpora',
         component: ListCorpusComponent,
+    },
+    {
+        path: 'corpus/:id',
+        component: CorpusComponent
     },
     {
         path: '',

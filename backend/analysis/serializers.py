@@ -30,9 +30,10 @@ class TranscriptSerializer(serializers.ModelSerializer):
 
 
 class CorpusSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
     files = UploadFileSerializer(read_only=True, many=True)
     transcripts = TranscriptSerializer(read_only=True, many=True)
 
     class Meta:
         model = Corpus
-        fields = ('name', 'status', 'files', 'transcripts')
+        fields = ('id', 'name', 'status', 'files', 'transcripts')

@@ -21,6 +21,8 @@ import { reducers, effects } from './store';
 import { ListCorpusComponent } from './corpus/list-corpus.component';
 
 import { DropdownModule } from 'primeng/dropdown';
+import { TooltipModule } from 'primeng/tooltip';
+import { CorpusComponent } from './corpus/corpus.component';
 
 @NgModule({
     declarations: [
@@ -29,13 +31,15 @@ import { DropdownModule } from 'primeng/dropdown';
         MenuComponent,
         HomeComponent,
         UploadComponent,
-        ListCorpusComponent
+        ListCorpusComponent,
+        CorpusComponent
     ],
     imports: [
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
         DropdownModule,
+        TooltipModule,
         FontAwesomeModule,
         FormsModule,
         HttpClientModule,

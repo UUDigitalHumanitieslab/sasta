@@ -1,0 +1,41 @@
+<ng-container *ngIf="corpus">
+    <h1 class="title">{{corpus.name}}</h1>
+    <table class="table is-fullwidth is-hoverable">
+    <thead>
+        <tr>
+            <th>Transcript</th>
+            <th class="has-text-right">Actions</th> 
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let transcript of corpus.transcripts">
+            <td>{{transcript.name}}</td>
+            <td class="has-text-right">
+                <div class="buttons is-right">
+                    <button class="button is-primary" pTooltip="convert to CHAT" [disabled]="!(transcript.status=='extracted' || transcript.status=='uploaded')">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faFileExport"></fa-icon>
+                        </span>
+                    </button>
+                    <button class="button is-primary" pTooltip="parse with alpino" [disabled]="!(transcript.status=='converted')">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faCogs"></fa-icon>
+                        </span>
+                    </button>
+                    <button class="button is-primary" pTooltip="view alpino parse" [disabled]="!(transcript.status=='parsed')">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faFileCode"></fa-icon>
+                        </span>
+                    </button>
+                    <button class="button is-primary" pTooltip="score transcript" [disabled]="!(transcript.status=='parsed')">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faCalculator"></fa-icon>
+                        </span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</ng-container>
+

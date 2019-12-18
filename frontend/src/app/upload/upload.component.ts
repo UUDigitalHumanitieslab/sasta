@@ -45,7 +45,6 @@ export class UploadComponent implements OnDestroy {
     }
 
     ngOnInit() {
-        console.log(this.store.source)
         this.corpusService.list()
             .then(response => { this.corpora = response; })
     }
