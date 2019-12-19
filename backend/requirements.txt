@@ -19,6 +19,7 @@ django==3.0a1
 djangorestframework==3.10.3
 execnet==1.7.1            # via pytest-xdist
 importlib-metadata==0.23  # via pluggy, pytest
+lxml==4.4.2               # via python-docx
 more-itertools==7.2.0     # via pytest, zipp
 packaging==19.2           # via pytest
 pluggy==0.13.0            # via pytest
@@ -29,6 +30,7 @@ pytest-django==3.5.1
 pytest-forked==1.0.2      # via pytest-xdist
 pytest-xdist==1.29.0
 pytest==5.1.3
+python-docx==0.8.10
 pytz==2019.2              # via django
 six==1.12.0               # via django-livereload-server, packaging, pytest-xdist
 soupsieve==1.9.3          # via beautifulsoup4

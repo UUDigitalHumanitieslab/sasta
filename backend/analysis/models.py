@@ -2,7 +2,9 @@ import os
 import uuid
 
 from django.contrib.auth.models import User
+from django.core.files.base import File
 from django.db import models
+from docx import Document
 
 
 class Corpus(models.Model):
@@ -20,13 +22,30 @@ class Corpus(models.Model):
 
 
 class Transcript(models.Model):
+    def upload_path(self, filename):
+        return os.path.join('files', f'{self.corpus.uuid}', 'transcripts', filename)
+
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.PROTECT)
+    content = models.FileField(upload_to=upload_path, blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def docx_to_txt(self):
+        '''Convert .docx file to .txt'''
+        document = Document(self.content.name)
+        docx_path = self.content.name
+        txt_path = docx_path.replace('.docx', '.txt')
+        with open(txt_path, 'w', encoding='utf-8') as txt_file:
+            for para in document.paragraphs:
+                print(para.text, file=txt_file)
+        self.content.save(os.path.basename(txt_path),
+                          File(open(txt_path, 'wb+')),
+                          save=True)
+        # os.remove(docx_path)
 
 
 class UploadFile(models.Model):
