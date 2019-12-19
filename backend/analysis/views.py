@@ -39,7 +39,6 @@ def convert(request: HttpRequest):
     input_path = file.content.name
     output_path = input_path.replace(
         '/uploads/', '/converted/').replace('.txt', '.cha')
-    print(input_path, output_path)
 
     reader = SifReader(input_path)
     reader.document.write_chat(output_path)

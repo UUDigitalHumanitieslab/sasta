@@ -3,9 +3,10 @@ import os
 import re
 from typing import List, Optional, Union, Pattern
 
+# TODO handle corpus name/transcript title
+# TODO move to config
 AGE_FIELD_NAMES = ['age', 'leeftijd']
 SEX_FIELD_NAMES = ['sex', 'gender', 'geslacht']
-# TODO handle corpus name/transcript title
 TITLE_FIELD_NAMES = ['samplename', 'title', 'titel']
 MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
@@ -29,6 +30,7 @@ class Participant:
         self.target_speaker = target_speaker
 
     def role_from_age(self) -> str:
+        '''returns a role based on age (if present)'''
         age_pattern = re.compile(r'(\d+);(\d{2})?(?:(?:\.)(\d{2}))?')
 
         if self.age:
@@ -37,19 +39,15 @@ class Participant:
                 years = int(match.group(1))
                 return 'Target_Child' if years < 18 else 'Target_Adult'
         return 'Other'
-        # try:
-        #     match = age_pattern.match(self.age)
-        #     years = int(match.group(1))
-        #     return 'Target_Child' if years < 18 else 'Target_Adult'
-        # except:
-        #     return 'Other'
 
     @property
     def id_header(self) -> str:
+        '''CHAT @ID header'''
         return f'@ID:\tnld||{self.code}|{self.age or ""}|{self.sex or ""}|||{self.role or self.role_from_age()}|||'
 
     @property
     def participant_header(self) -> str:
+        '''part of CHAT @Participants header'''
         return f'{self.code} {self.code.lower()} {self.role or self.role_from_age()}'
 
 
@@ -82,9 +80,7 @@ class MetaValue:
 
 
 class MetaComment(MetaValue):
-    #  Metadata that is copied as a comment to the CHAT format
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
+    '''Metadata that is copied as a comment to the CHAT format'''
 
     def __str__(self):
         return f'@Comment ##META {self.field_type} {self.key} = {self.value}'
