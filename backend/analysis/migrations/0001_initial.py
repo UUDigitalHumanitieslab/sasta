@@ -17,7 +17,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Corpus',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('status', models.CharField(max_length=50)),
                 ('uuid', models.UUIDField(default=uuid.uuid4)),
@@ -29,20 +30,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UploadFile',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('content', models.FileField(upload_to=analysis.models.UploadFile.upload_path)),
+                ('content', models.FileField(
+                    upload_to=analysis.models.UploadFile.upload_path)),
                 ('status', models.CharField(max_length=50)),
-                ('corpus', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='files', to='analysis.Corpus')),
+                ('corpus', models.ForeignKey(blank=True, null=True,
+                                             on_delete=django.db.models.deletion.PROTECT, related_name='files', to='analysis.Corpus')),
             ],
         ),
         migrations.CreateModel(
             name='Transcript',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('status', models.CharField(max_length=50)),
-                ('corpus', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transcripts', to='analysis.Corpus')),
+                ('corpus', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                                             related_name='transcripts', to='analysis.Corpus')),
             ],
         ),
     ]

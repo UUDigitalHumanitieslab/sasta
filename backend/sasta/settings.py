@@ -25,7 +25,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,7 +55,8 @@ MIDDLEWARE = [
 # export from ../analysis/cron/__init__.py
 CRON_CLASSES = [
     'analysis.cron.ExtractJob',
-    'analysis.cron.ParseJob'
+    'analysis.cron.ParseJob',
+    'analysis.cron.ConvertJob',
 ]
 
 ROOT_URLCONF = 'sasta.urls'

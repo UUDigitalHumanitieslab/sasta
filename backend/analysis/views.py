@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.http import HttpRequest, JsonResponse
 from rest_framework import viewsets
 
 from .models import Corpus, Transcript, UploadFile
