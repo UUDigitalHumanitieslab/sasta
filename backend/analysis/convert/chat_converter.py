@@ -58,9 +58,7 @@ class Utterance:
         self.text = text
 
     def __str__(self):
-        if self.utt_id:
-            return f'*{self.speaker_code}:\t{self.text}\n%xsid:\t{self.utt_id}'
-        return f'*{self.speaker_code}:\t{self.text}'
+        return f'*{self.speaker_code}:\t{self.text}' + ('\n'+str(Tier('xsid', self.utt_id)) if self.utt_id else '')
 
 
 class Tier:
@@ -69,7 +67,7 @@ class Tier:
         self.value = value
 
     def __str__(self):
-        return f'{self.code}\t{self.value}'
+        return f'%{self.code}:\t{self.value}'
 
 
 class MetaValue:
