@@ -17,12 +17,12 @@ class ExtractJob(CronJobBase):
     code = 'sasta.extract_job'  # a unique code
 
     def do(self):
-        # for file in UploadFile.objects.filter(status="pending"):
-        for file in UploadFile.objects.all():
+        for file in UploadFile.objects.filter(status="pending"):
             try:
                 self.extract(file)
             except Exception as error:
                 print(error)
+        pass
 
     def extract(self, file):
         file.status = 'extracting'

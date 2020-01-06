@@ -36,20 +36,6 @@ class Transcript(models.Model):
     def __str__(self):
         return self.name
 
-    # def docx_to_txt(self):
-    #     '''Convert .docx file to .txt'''
-    #     document = Document(self.content.name)
-    #     docx_path = self.content.name
-    #     tmp_txt_path = docx_path.replace('.docx', '_temp.txt')
-    #     with open(tmp_txt_path, 'w', encoding='utf-8') as txt_file:
-    #         for para in document.paragraphs:
-    #             print(para.text, file=txt_file)
-    #     self.content.save(os.path.basename(tmp_txt_path.replace('_temp', '')),
-    #                       File(open(tmp_txt_path, 'rb')),
-    #                       save=True)
-    #     os.remove(tmp_txt_path)
-    #     os.remove(docx_path)
-
 
 class UploadFile(models.Model):
     # base upload location on corpus uuid

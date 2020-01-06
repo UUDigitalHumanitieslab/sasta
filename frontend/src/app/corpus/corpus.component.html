@@ -4,17 +4,19 @@
     <thead>
         <tr>
             <th>Transcript</th>
+            <th>Status</th>
             <th class="has-text-right">Actions</th> 
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let transcript of corpus.transcripts">
             <td>{{transcript.name}}</td>
+            <td>{{transcript.status}}</td>
             <td class="has-text-right">
                 <div class="buttons is-right">
-                    <button class="button is-primary" pTooltip="convert to CHAT" [disabled]="!(transcript.status=='extracted' || transcript.status=='uploaded')">
+                    <button class="button is-primary" pTooltip="view CHAT" [disabled]="!transcript.status=='converted'">
                         <span class="icon is-small">
-                            <fa-icon [icon]="faFileExport"></fa-icon>
+                            <fa-icon [icon]="faFile"></fa-icon>
                         </span>
                     </button>
                     <button class="button is-primary" pTooltip="parse with alpino" [disabled]="!(transcript.status=='converted')">

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
 import { ActivatedRoute } from '@angular/router';
-import { faFileCode, faFileExport, faCogs, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faFileCode, faFileExport, faCogs, faCalculator } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'sas-corpus',
@@ -12,6 +12,7 @@ import { faFileCode, faFileExport, faCogs, faCalculator } from '@fortawesome/fre
 export class CorpusComponent implements OnInit {
   id: number;
   corpus: Corpus;
+  faFile = faFile;
   faFileCode = faFileCode;
   faFileExport = faFileExport;
   faCogs = faCogs;
