@@ -1,9 +1,13 @@
-import os
 import errno
+import os
 from shutil import copyfile
-from django_cron import CronJobBase, Schedule
 from zipfile import ZipFile
-from ..models import UploadFile
+
+from django.core.files import File
+from django_cron import CronJobBase, Schedule
+
+from ..models import Transcript, UploadFile
+from ..utils import docx_to_txt
 
 
 class ExtractJob(CronJobBase):
@@ -13,7 +17,8 @@ class ExtractJob(CronJobBase):
     code = 'sasta.extract_job'  # a unique code
 
     def do(self):
-        for file in UploadFile.objects.filter(status="pending"):
+        # for file in UploadFile.objects.filter(status="pending"):
+        for file in UploadFile.objects.all():
             try:
                 self.extract(file)
             except Exception as error:
@@ -30,6 +35,7 @@ class ExtractJob(CronJobBase):
             if filename.lower().endswith(".zip"):
                 with ZipFile(file.content) as zipfile:
                     zipfile.extractall(target_dir)
+
             # copy all others
             else:
                 try:
@@ -39,6 +45,23 @@ class ExtractJob(CronJobBase):
                         raise
                 copyfile(file.content.name, os.path.join(target_dir, filename))
                 print(os.path.join(target_dir, filename))
+
+            # docx to txt
+            for extracted_file in [f for f in os.listdir(target_dir) if f.endswith('.docx')]:
+                docx_to_txt(os.path.join(target_dir, extracted_file))
+
+            # create Transcript objects
+            for extracted_file in os.listdir(target_dir):
+                name, extension = os.path.splitext(extracted_file)
+                with open(os.path.join(target_dir, extracted_file), 'rb') as content:
+                    transcript = Transcript(
+                        name=name,
+                        status='created',
+                        corpus=file.corpus,
+                        content=File(content)
+                    )
+                    transcript.save()
+
             file.status = 'extracted'
             file.save()
 
