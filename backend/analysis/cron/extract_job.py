@@ -22,7 +22,6 @@ class ExtractJob(CronJobBase):
                 self.extract(file)
             except Exception as error:
                 print(error)
-        pass
 
     def extract(self, file):
         file.status = 'extracting'

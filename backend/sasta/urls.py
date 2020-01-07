@@ -33,9 +33,9 @@ api_router.register(r'transcripts', analysis_views.TranscriptViewSet)
 api_router.register(r'corpora', analysis_views.CorpusViewSet)
 
 if settings.PROXY_FRONTEND:
-    spa_url = [re_path(r'^(?P<path>.*)$', proxy_frontend)]
+    spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)
 else:
-    spa_url = [re_path(r'', index)]
+    spa_url = re_path(r'', index)
 
 urlpatterns = [
     path('admin', RedirectView.as_view(url='/admin/', permanent=True)),
@@ -47,4 +47,7 @@ urlpatterns = [
     path('api-auth/', include(
         'rest_framework.urls',
         namespace='rest_framework',
-    ))] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + spa_url  # catch-all; unknown paths to be handled by a SPA
+    ))]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns.append(spa_url)  # catch-all; unknown paths to be handled by a SPA

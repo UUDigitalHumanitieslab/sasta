@@ -1,10 +1,7 @@
 import os
 import uuid
 
-from django.contrib.auth.models import User
-from django.core.files.base import File
 from django.db import models
-from docx import Document
 
 
 class Corpus(models.Model):
