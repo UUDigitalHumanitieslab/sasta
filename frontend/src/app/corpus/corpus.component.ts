@@ -3,6 +3,7 @@ import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
 import { ActivatedRoute } from '@angular/router';
 import { faFile, faFileCode, faFileExport, faCogs, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { Transcript } from '../models/transcript';
 
 @Component({
   selector: 'sas-corpus',
@@ -26,6 +27,10 @@ export class CorpusComponent implements OnInit {
     this.corpusService
       .get_by_id(this.id)
       .subscribe(res => this.corpus = res);
+  }
+
+  showChat(transcript: Transcript) {
+    window.open(transcript.content, '_blank');
   }
 
 }

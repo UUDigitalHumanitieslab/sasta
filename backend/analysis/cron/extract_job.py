@@ -43,7 +43,7 @@ class ExtractJob(CronJobBase):
                 except OSError as e:
                     if e.errno != errno.EEXIST:
                         raise
-                copyfile(file.content.name, os.path.join(target_dir, filename))
+                copyfile(file.content.path, os.path.join(target_dir, filename))
                 print(os.path.join(target_dir, filename))
 
             # docx to txt
