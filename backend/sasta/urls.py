@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path(r'^blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, re_path, include
 from django.contrib import admin
 from django.views.generic import RedirectView
@@ -32,9 +33,9 @@ api_router.register(r'transcripts', analysis_views.TranscriptViewSet)
 api_router.register(r'corpora', analysis_views.CorpusViewSet)
 
 if settings.PROXY_FRONTEND:
-    spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)
+    spa_url = [re_path(r'^(?P<path>.*)$', proxy_frontend)]
 else:
-    spa_url = re_path(r'', index)
+    spa_url = [re_path(r'', index)]
 
 urlpatterns = [
     path('admin', RedirectView.as_view(url='/admin/', permanent=True)),
@@ -46,6 +47,4 @@ urlpatterns = [
     path('api-auth/', include(
         'rest_framework.urls',
         namespace='rest_framework',
-    )),
-    spa_url,  # catch-all; unknown paths to be handled by a SPA
-]
+    ))] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + spa_url  # catch-all; unknown paths to be handled by a SPA

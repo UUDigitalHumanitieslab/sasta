@@ -29,7 +29,7 @@ class ExtractJob(CronJobBase):
         file.save()
 
         try:
-            (origin_dir, filename) = os.path.split(file.content.name)
+            (origin_dir, filename) = os.path.split(file.content.path)
             target_dir = origin_dir.replace('uploads', 'extracted')
             # extract zipped files
             if filename.lower().endswith(".zip"):
@@ -53,14 +53,14 @@ class ExtractJob(CronJobBase):
             # create Transcript objects
             for extracted_file in os.listdir(target_dir):
                 name, extension = os.path.splitext(extracted_file)
-                with open(os.path.join(target_dir, extracted_file), 'rb') as content:
+                with open(os.path.join(target_dir, extracted_file), 'rb') as file_content:
                     transcript = Transcript(
                         name=name,
                         status='created',
-                        corpus=file.corpus,
-                        content=File(content)
+                        corpus=file.corpus
                     )
                     transcript.save()
+                    transcript.content.save(extracted_file, File(file_content))
 
             file.status = 'extracted'
             file.save()

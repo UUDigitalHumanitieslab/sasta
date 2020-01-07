@@ -23,8 +23,6 @@ class Corpus(models.Model):
 
 class Transcript(models.Model):
     def upload_path(self, filename):
-        if str(self.corpus.uuid) in filename:
-            return filename.replace('extracted', 'transcripts')
         return os.path.join('files', f'{self.corpus.uuid}', 'transcripts', filename)
 
     name = models.CharField(max_length=255)
@@ -38,7 +36,6 @@ class Transcript(models.Model):
 
 
 class UploadFile(models.Model):
-    # base upload location on corpus uuid
     def upload_path(self, filename):
         return os.path.join('files', f'{self.corpus.uuid}', 'uploads', filename)
 
