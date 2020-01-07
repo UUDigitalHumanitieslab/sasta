@@ -23,8 +23,8 @@ djangorestframework==3.10.3
 execnet==1.7.1            # via pytest-xdist
 httplib2==0.14.0          # via pynlpl
 importlib-metadata==0.23  # via pluggy, pytest
-lxml==4.4.2               # via python-docx
 isodate==0.6.0            # via rdflib
+lxml==4.4.2               # via pynlpl, python-docx, tei-reader
 more-itertools==7.2.0     # via pytest, zipp
 packaging==19.2           # via pytest
 pluggy==0.13.0            # via pytest
