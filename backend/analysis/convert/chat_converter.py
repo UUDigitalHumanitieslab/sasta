@@ -81,7 +81,7 @@ class MetaComment(MetaValue):
     '''Metadata that is copied as a comment to the CHAT format'''
 
     def __str__(self):
-        return f'@Comment ##META {self.field_type} {self.key} = {self.value}'
+        return f'@Comment:\t##META {self.field_type} {self.key} = {self.value}'
 
 
 class SifDocument:

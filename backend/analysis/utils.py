@@ -11,5 +11,6 @@ def docx_to_txt(filepath):
             for para in document.paragraphs:
                 print(para.text, file=txt_file)
         os.remove(filepath)
+        return txt_path
     except Exception as error:
         print(error)

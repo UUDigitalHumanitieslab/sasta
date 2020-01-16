@@ -3,7 +3,7 @@ import { Transcript } from './transcript'
 export interface Corpus {
     id?: number;
     name: string;
-    status: 'pending' | 'created';
+    status: 'created';
     files?: File | { name: string }[];
     transcripts?: Transcript[];
 }

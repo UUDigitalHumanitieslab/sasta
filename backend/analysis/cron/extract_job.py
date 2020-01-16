@@ -33,8 +33,10 @@ class ExtractJob(CronJobBase):
             # extract zipped files
             if filename.lower().endswith(".zip"):
                 with ZipFile(file.content) as zipfile:
-                    zipfile.extractall(target_dir)
-
+                    for zip_name in zipfile.namelist():
+                        zipfile.extract(zip_name, path=target_dir)
+                        extracted_path = os.path.join(target_dir, zip_name)
+                        self.create_transcript(file, extracted_path)
             # copy all others
             else:
                 try:
@@ -42,24 +44,9 @@ class ExtractJob(CronJobBase):
                 except OSError as e:
                     if e.errno != errno.EEXIST:
                         raise
+                new_path = os.path.join(target_dir, filename)
                 copyfile(file.content.path, os.path.join(target_dir, filename))
-                print(os.path.join(target_dir, filename))
-
-            # docx to txt
-            for extracted_file in [f for f in os.listdir(target_dir) if f.endswith('.docx')]:
-                docx_to_txt(os.path.join(target_dir, extracted_file))
-
-            # create Transcript objects
-            for extracted_file in os.listdir(target_dir):
-                name, extension = os.path.splitext(extracted_file)
-                with open(os.path.join(target_dir, extracted_file), 'rb') as file_content:
-                    transcript = Transcript(
-                        name=name,
-                        status='created',
-                        corpus=file.corpus
-                    )
-                    transcript.save()
-                    transcript.content.save(extracted_file, File(file_content))
+                self.create_transcript(file, new_path)
 
             file.status = 'extracted'
             file.save()
@@ -68,3 +55,19 @@ class ExtractJob(CronJobBase):
             file.status = 'extraction-failed'
             file.save()
             raise
+
+    def create_transcript(self, file, content_path):
+        if content_path.endswith('.docx'):
+            docx_to_txt(content_path)
+            content_path = content_path.replace('.docx', '.txt')
+
+        _dir, filename = os.path.split(content_path)
+
+        with open(content_path, 'rb') as file_content:
+            transcript = Transcript(
+                name=filename.strip('.txt'),
+                status='created',
+                corpus=file.corpus
+            )
+            transcript.save()
+            transcript.content.save(filename, File(file_content))
