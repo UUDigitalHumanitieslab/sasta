@@ -18,7 +18,11 @@ import { HomeComponent } from './home/home.component';
 import { UploadComponent } from './upload/upload.component';
 
 import { reducers, effects } from './store';
-import { TranscriptsComponent } from './transcripts/transcripts.component';
+import { ListCorpusComponent } from './corpus/list-corpus.component';
+
+import { DropdownModule } from 'primeng/dropdown';
+import { TooltipModule } from 'primeng/tooltip';
+import { CorpusComponent } from './corpus/corpus.component';
 
 @NgModule({
     declarations: [
@@ -27,12 +31,15 @@ import { TranscriptsComponent } from './transcripts/transcripts.component';
         MenuComponent,
         HomeComponent,
         UploadComponent,
-        TranscriptsComponent
+        ListCorpusComponent,
+        CorpusComponent
     ],
     imports: [
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
+        DropdownModule,
+        TooltipModule,
         FontAwesomeModule,
         FormsModule,
         HttpClientModule,

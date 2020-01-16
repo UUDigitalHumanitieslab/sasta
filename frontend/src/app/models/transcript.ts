@@ -1,5 +1,8 @@
+import { Corpus } from './corpus';
+
 export interface Transcript {
     name: string;
-    content: File | { name: string };
-    status: 'uploading' | 'uploaded' | 'extracting' | 'extracted' | 'extraction-failed';
+    content: string;
+    status: 'created' | 'converting' | 'converted' | 'conversion-failed';
+    corpus: Corpus;
 }
