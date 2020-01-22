@@ -1,4 +1,5 @@
-corpus2alpino
+corpus2alpino>=0.3.0
+chamd
 django>=3.0a1,<4
 django_cron
 djangorestframework

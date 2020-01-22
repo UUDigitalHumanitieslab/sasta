@@ -1,4 +1,10 @@
+from ..models import Transcript
 from django_cron import CronJobBase, Schedule
+from corpus2alpino.converter import Converter
+from corpus2alpino.annotators.alpino import AlpinoAnnotator
+from corpus2alpino.collectors.filesystem import FilesystemCollector
+from corpus2alpino.targets.memory import MemoryTarget
+from corpus2alpino.writers.lassy import LassyWriter
 
 
 class ParseJob(CronJobBase):
@@ -8,4 +14,16 @@ class ParseJob(CronJobBase):
     code = 'sasta.parse_job'  # a unique code
 
     def do(self):
-        pass
+        print('Running ParseJob')
+        for transcript in Transcript.objects.all():
+            print(transcript.content.path)
+            alpino = AlpinoAnnotator("localhost", 7001)
+            converter = Converter(
+                collector=FilesystemCollector([transcript.content.path]),
+                annotators=[alpino],
+                target=MemoryTarget(),
+                writer=LassyWriter(True)
+            )
+            parses = converter.convert()
+            print(''.join(parses))
+            break
