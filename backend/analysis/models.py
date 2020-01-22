@@ -32,6 +32,20 @@ class Transcript(models.Model):
         return self.name
 
 
+class Utterance(models.Model):
+    def upload_path(self, filename):
+        transcript_dir, _ = os.path.splitext(self.transcript.content.name)
+        return os.path.join(transcript_dir, filename)
+
+    text = models.CharField(max_length=50)
+    transcript = models.ForeignKey(
+        Transcript, related_name='utterances', on_delete=models.CASCADE)
+    content = models.FileField(upload_to=upload_path)
+
+    def __str__(self):
+        return self.text
+
+
 class UploadFile(models.Model):
     def upload_path(self, filename):
         return os.path.join('files', f'{self.corpus.uuid}', 'uploads', filename)
