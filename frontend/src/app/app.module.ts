@@ -23,6 +23,7 @@ import { ListCorpusComponent } from './corpus/list-corpus.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { CorpusComponent } from './corpus/corpus.component';
+import { ListMethodComponent } from './method/list-method.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { CorpusComponent } from './corpus/corpus.component';
         HomeComponent,
         UploadComponent,
         ListCorpusComponent,
-        CorpusComponent
+        CorpusComponent,
+        ListMethodComponent
     ],
     imports: [
         AppRoutingModule,

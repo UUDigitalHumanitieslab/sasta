@@ -6,21 +6,24 @@
             </strong>
 
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-                data-target="navbarBasicExample" (click)="toggleBurger()"
-                [ngClass]="{'is-active': burgerActive}">
+                data-target="navbarBasicExample" (click)="toggleBurger()" [ngClass]="{'is-active': burgerActive}">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': burgerActive}" [@slideInOut]="burgerShow">
+        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': burgerActive}"
+            [@slideInOut]="burgerShow">
             <div class="navbar-start">
                 <a [routerLink]="['/home']" routerLinkActive="is-active" class="navbar-item">
                     Home
                 </a>
                 <a [routerLink]="['/corpora']" routerLinkActive="is-active" class="navbar-item">
                     Corpora
+                </a>
+                <a [routerLink]="['/methods']" routerLinkActive="is-active" class="navbar-item">
+                    Methods
                 </a>
                 <a [routerLink]="['/upload']" routerLinkActive="is-active" class="navbar-item">
                     Upload
