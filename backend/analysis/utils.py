@@ -9,7 +9,7 @@ import sys
 import django
 # django.setup()
 
-from models import AssessmentMethod, AssessmentQuery
+
 import pandas as pd
 import numpy as np
 from docx import Document
@@ -29,11 +29,8 @@ def docx_to_txt(filepath):
         print(error)
 
 
-def read_TAM(filepath: str) -> None:
-    AssessmentMethod.objects.all().delete()
-    AssessmentQuery.objects.all().delete()
-
-    name, _ = os.path.splitext(os.path.basename(filepath))
+def read_TAM(method) -> None:
+    filepath = method.content.path
     dataframe = pd.read_excel(filepath,
                               true_values=['yes'], false_values=['no'])
     column_names = [c.lower() for c in dataframe.columns]
@@ -42,22 +39,23 @@ def read_TAM(filepath: str) -> None:
     dataframe.rename(columns={'fase': 'phase'}, inplace=True)
     dataframe = dataframe.where(dataframe.notnull(), None)
 
-    tam, _created = AssessmentMethod.objects.get_or_create(name=name)
     for i, series in dataframe.iterrows():
-        create_query_from_series(series, tam)
+        # workaround for getting value to None instead of NaN
+        try:
+            series.phase = int(series.phase)
+        except:
+            series.phase = None
+        create_query_from_series(series, method)
 
 
-def create_query_from_series(series: pd.Series, method: AssessmentMethod) -> None:
-    # workaround for getting value to None instead of NaN
-    try:
-        series.phase = int(series.phase)
-    except:
-        series.phase = None
+def create_query_from_series(series: pd.Series, method) -> None:
+    from .models import AssessmentMethod, AssessmentQuery
+
     instance = AssessmentQuery(method=method, **series)
-    
     try:
         instance.save()
     except django.db.utils.IntegrityError as e:
         #TODO: log
-        print(e)
+        # print(e)
+        pass
     pass

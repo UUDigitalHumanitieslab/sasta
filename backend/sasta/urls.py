@@ -31,6 +31,8 @@ api_router = routers.DefaultRouter()  # register viewsets with this router
 api_router.register(r'upload_files', analysis_views.UploadFileViewSet)
 api_router.register(r'transcripts', analysis_views.TranscriptViewSet)
 api_router.register(r'corpora', analysis_views.CorpusViewSet)
+api_router.register(r'assessment_methods',
+                    analysis_views.AssessmentMethodViewSet)
 
 if settings.PROXY_FRONTEND:
     spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)

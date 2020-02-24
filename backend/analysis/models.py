@@ -1,8 +1,11 @@
-from enum import unique
 import os
 import uuid
 
 from django.db import models
+from .utils import read_TAM
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Corpus(models.Model):
@@ -48,10 +51,27 @@ class UploadFile(models.Model):
 
 
 class AssessmentMethod(models.Model):
+    def upload_path(self, filename):
+        return os.path.join('files', 'TAMs', filename)
+
     name = models.CharField(max_length=50, unique=True)
+    content = models.FileField(upload_to=upload_path, blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_save, sender=AssessmentMethod)
+def read_tam_file(sender, instance, created, **kwargs):
+    if not created:
+        # on update: delete all queries related to this method
+        AssessmentQuery.objects.filter(method=instance).delete()
+
+    try:
+        read_TAM(instance)
+    except Exception as e:
+        #TODO: log
+        print(e)
 
 
 class AssessmentQuery(models.Model):
