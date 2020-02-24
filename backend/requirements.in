@@ -1,12 +1,14 @@
-corpus2alpino
+corpus2alpino>=0.3.0
 django>=3.0a1,<4
 django_cron
 djangorestframework
 django-livereload-server
 #django-revproxy>=0.9.16 not yet on PyPi. Get from git directly:
 git+git://github.com/TracyWebTech/django-revproxy@master#egg=django-revproxy
+pandas
 psycopg2 --no-binary psycopg2
 pytest
 pytest-django
 pytest-xdist
 python-docx
+xlrd

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from .models import Corpus, Transcript, UploadFile
+from .models import AssessmentMethod, AssessmentQuery, Corpus, Transcript, UploadFile
 
 
 @admin.register(Corpus)
@@ -19,3 +19,13 @@ class TranscriptAdmin(admin.ModelAdmin):
 @admin.register(UploadFile)
 class UploadFileAdmin(admin.ModelAdmin):
     model = UploadFile
+
+
+@admin.register(AssessmentMethod)
+class AssessmentMethodAdmin(admin.ModelAdmin):
+    model = AssessmentMethod
+
+
+@admin.register(AssessmentQuery)
+class AssessmentQueryAdmin(admin.ModelAdmin):
+    model = AssessmentQuery
