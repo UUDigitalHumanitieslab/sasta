@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import AssessmentMethod, AssessmentQuery, Corpus, Transcript, UploadFile
-from .utils import read_TAM
+from .models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
+                     UploadFile)
 
 
 class UploadFileSerializer(serializers.ModelSerializer):

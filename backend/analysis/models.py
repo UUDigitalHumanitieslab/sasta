@@ -1,11 +1,11 @@
 import os
-import uuid
+from uuid import uuid4
 
 from django.db import models
-from .utils import read_TAM
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from .utils import read_TAM
 
 
 class Corpus(models.Model):
@@ -13,7 +13,7 @@ class Corpus(models.Model):
     # user = models.ForeignKey(User, related_name='corpora', on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
-    uuid = models.UUIDField(default=uuid.uuid4)
+    uuid = models.UUIDField(default=uuid4)
 
     def __str__(self):
         return self.name
@@ -69,9 +69,9 @@ def read_tam_file(sender, instance, created, **kwargs):
 
     try:
         read_TAM(instance)
-    except Exception as e:
+    except Exception as error:
         #TODO: log
-        print(e)
+        print(error)
 
 
 class AssessmentQuery(models.Model):
