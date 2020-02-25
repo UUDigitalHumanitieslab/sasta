@@ -31,4 +31,16 @@
             </tr>
         </tbody>
     </table>
+
+    <p-dialog header="{{selectedQuery?.query_id}}" [(visible)]="showDialog">
+        <p-accordion [multiple]="true">
+            <ng-container *ngFor="let key of _.keys(selectedQuery)">
+                <div *ngIf="(key !== 'id' && key !== 'query_id' && key !== 'method')">
+                    <p-accordionTab header=" {{key}}" [disabled]="!selectedQuery[key]">
+                        {{selectedQuery[key]}}
+                    </p-accordionTab>
+                </div>
+            </ng-container>
+        </p-accordion>
+    </p-dialog>
 </ng-container>

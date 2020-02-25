@@ -20,6 +20,8 @@ import { UploadComponent } from './upload/upload.component';
 import { reducers, effects } from './store';
 import { ListCorpusComponent } from './corpus/list-corpus.component';
 
+import { AccordionModule } from 'primeng/accordion';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { CorpusComponent } from './corpus/corpus.component';
@@ -42,6 +44,8 @@ import { MethodComponent } from './method/method.component';
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
+        AccordionModule,
+        DialogModule,
         DropdownModule,
         TooltipModule,
         FontAwesomeModule,

@@ -3,6 +3,9 @@ import { MethodService } from '../services/method.service';
 import { ActivatedRoute } from '@angular/router';
 import { Method } from '../models/method';
 import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Query } from '@angular/compiler/src/core';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sas-method',
@@ -12,6 +15,10 @@ import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
 export class MethodComponent implements OnInit {
   id: number;
   method: Method;
+  selectedQuery: Query;
+  showDialog: boolean = false;
+  _: any = _; //Lodash
+
   faCheck = faCheck;
   faSearch = faSearch;
   constructor(private methodService: MethodService, private route: ActivatedRoute) {
@@ -21,11 +28,12 @@ export class MethodComponent implements OnInit {
   ngOnInit() {
     this.methodService
       .get_by_id(this.id)
-      .subscribe(res => {
-        this.method = res
-        console.log(res);
-      }
-      );
+      .subscribe(res => this.method = res);
+  }
+
+  showQuery(query: Query) {
+    this.selectedQuery = query;
+    this.showDialog = true;
   }
 
 }
