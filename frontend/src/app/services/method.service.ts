@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Method } from '../models/method';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,12 @@ export class MethodService {
 
   constructor(private httpClient: HttpClient) { }
 
-  async list(): Promise<Method[]> {
-    return await this.httpClient.get<Method[]>('api/assessment_methods/').toPromise();
+  list(): Observable<Method[]> {
+    return this.httpClient.get<Method[]>('api/assessment_methods/');
+  }
+
+  get_by_id(id): Observable<Method> {
+    return this.httpClient.get<Method>(`api/assessment_methods/${id}/`);
   }
 
   async upload(method: Method) {

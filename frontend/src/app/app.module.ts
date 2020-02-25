@@ -24,6 +24,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { CorpusComponent } from './corpus/corpus.component';
 import { ListMethodComponent } from './method/list-method.component';
+import { MethodComponent } from './method/method.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { ListMethodComponent } from './method/list-method.component';
         UploadComponent,
         ListCorpusComponent,
         CorpusComponent,
-        ListMethodComponent
+        ListMethodComponent,
+        MethodComponent
     ],
     imports: [
         AppRoutingModule,

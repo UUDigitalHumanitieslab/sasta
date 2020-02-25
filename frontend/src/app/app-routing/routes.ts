@@ -5,6 +5,7 @@ import { UploadComponent } from '../upload/upload.component';
 import { ListCorpusComponent } from '../corpus/list-corpus.component';
 import { CorpusComponent } from '../corpus/corpus.component';
 import { ListMethodComponent } from '../method/list-method.component';
+import { MethodComponent } from '../method/method.component';
 
 const routes: Routes = [
     {
@@ -20,12 +21,16 @@ const routes: Routes = [
         component: ListCorpusComponent,
     },
     {
+        path: 'corpora/:id',
+        component: CorpusComponent
+    },
+    {
         path: 'methods',
         component: ListMethodComponent,
     },
     {
-        path: 'corpus/:id',
-        component: CorpusComponent
+        path: 'methods/:id',
+        component: MethodComponent
     },
     {
         path: '',

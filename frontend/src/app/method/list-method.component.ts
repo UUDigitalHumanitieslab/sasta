@@ -14,11 +14,9 @@ export class ListMethodComponent implements OnInit {
   constructor(private methodService: MethodService) { }
 
   ngOnInit() {
-    this.methodService.list().then(
-      res => {
-        this.methods = res;
-      }
-    );
+    this.methodService
+      .list()
+      .subscribe(res => this.methods = res);
   }
 
 }

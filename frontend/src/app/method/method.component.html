@@ -1,0 +1,34 @@
+<ng-container *ngIf="method">
+    <h1 class="title">{{method.name}}</h1>
+    <h2 class="subtitle">{{method.queries?.length}} queries</h2>
+
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>Query</th>
+                <th>XPath</th>
+                <th class="has-text-right">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let query of method.queries">
+                <td>{{query.query_id}}</td>
+                <td>
+                    <span *ngIf="query.query" class="icon is-small">
+                        <fa-icon [icon]="faCheck"></fa-icon>
+                    </span>
+                </td>
+                <td class="has-text-right">
+                    <div class="buttons is-right">
+                        <button class="button is-primary" pTooltip="view query details" (click)="showQuery(query)">
+                            <span class="icon is-small">
+                                <fa-icon [icon]="faSearch"></fa-icon>
+                            </span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>

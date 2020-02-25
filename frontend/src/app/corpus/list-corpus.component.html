@@ -8,7 +8,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let corpus of corpora" [routerLink]="['/corpus/', corpus.id]">
+        <tr *ngFor="let corpus of corpora" [routerLink]="['/corpora/', corpus.id]">
             <td>{{corpus.name}}</td>
             <td>{{corpus?.files?.length || '0'}}</td>
             <td>{{corpus?.transcripts?.length || '0'}}</td>
