@@ -32,3 +32,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Application
+logs/
