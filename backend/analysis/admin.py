@@ -12,14 +12,21 @@ class CorpusAdmin(admin.ModelAdmin):
     model = Corpus
 
 
-@admin.register(Transcript)
-class TranscriptAdmin(admin.ModelAdmin):
-    model = Transcript
-
-
 @admin.register(Utterance)
 class UtteranceAdmin(admin.ModelAdmin):
+    list_display = ('transcript', '__str__')
     model = Utterance
+
+
+class UtteranceInline(admin.TabularInline):
+    model = Utterance
+
+
+@admin.register(Transcript)
+class TranscriptAdmin(admin.ModelAdmin):
+    inlines = (UtteranceInline, )
+    list_display = ('__str__', 'status')
+    model = Transcript
 
 
 @admin.register(UploadFile)

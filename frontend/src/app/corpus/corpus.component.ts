@@ -33,4 +33,8 @@ export class CorpusComponent implements OnInit {
     window.open(transcript.content, '_blank');
   }
 
+  showLassy(transcript: Transcript) {
+    window.open(transcript.parsed_content, '_blank');
+  }
+
 }

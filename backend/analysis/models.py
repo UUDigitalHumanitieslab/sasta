@@ -26,30 +26,34 @@ class Transcript(models.Model):
     def upload_path(self, filename):
         return os.path.join('files', f'{self.corpus.uuid}', 'transcripts', filename)
 
+    def upload_path_parsed(self, filename):
+        return os.path.join('files', f'{self.corpus.uuid}', 'parsed', filename)
+
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.PROTECT)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
+    parsed_content = models.FileField(
+        upload_to=upload_path_parsed, blank=True, null=True)
 
     def __str__(self):
         return self.name
 
 
 class Utterance(models.Model):
-    def upload_path(self, filename):
-        transcript_dir, _ = os.path.splitext(self.transcript.content.name)
-        return os.path.join(transcript_dir, filename)
+    # def upload_path(self, filename):
+    #     transcript_dir, _ = os.path.splitext(self.transcript.content.name)
+    #     return os.path.join(transcript_dir, filename)
 
-    text = models.CharField(max_length=50)
+    text = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
     utt_id = models.IntegerField(blank=True, null=True)
     transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
-    content = models.FileField(upload_to=upload_path)
 
     def __str__(self):
-        return self.text
+        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.text}'
 
 
 class UploadFile(models.Model):
@@ -82,7 +86,6 @@ def read_tam_file(sender, instance, created, **kwargs):
     if not created:
         # on update: delete all queries related to this method
         AssessmentQuery.objects.filter(method=instance).delete()
-
     try:
         read_TAM(instance)
     except Exception as error:
