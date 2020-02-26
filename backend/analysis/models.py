@@ -38,6 +38,8 @@ class Utterance(models.Model):
         return os.path.join(transcript_dir, filename)
 
     text = models.CharField(max_length=50)
+    speaker = models.CharField(max_length=50)
+    utt_id = models.IntegerField(blank=True, null=True)
     transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
     content = models.FileField(upload_to=upload_path)
