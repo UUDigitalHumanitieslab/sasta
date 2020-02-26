@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 from rest_framework import viewsets
 
-from .models import Corpus, Transcript, UploadFile
-from .serializers import (CorpusSerializer, TranscriptSerializer,
+from .models import AssessmentMethod, Corpus, Transcript, UploadFile
+from .serializers import (AssessmentMethodSerializer, CorpusSerializer, TranscriptSerializer,
                           UploadFileSerializer)
 
 
@@ -20,3 +20,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 class CorpusViewSet(viewsets.ModelViewSet):
     queryset = Corpus.objects.all()
     serializer_class = CorpusSerializer
+
+
+class AssessmentMethodViewSet(viewsets.ModelViewSet):
+    queryset = AssessmentMethod.objects.all()
+    serializer_class = AssessmentMethodSerializer

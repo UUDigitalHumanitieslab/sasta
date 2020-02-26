@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import Corpus, Transcript, UploadFile
+from .models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
+                     UploadFile)
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
@@ -37,3 +38,18 @@ class CorpusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Corpus
         fields = ('id', 'name', 'status', 'files', 'transcripts')
+
+
+class AssessmentQuerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssessmentQuery
+        fields = '__all__'
+
+
+class AssessmentMethodSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    queries = AssessmentQuerySerializer(read_only=True, many=True)
+
+    class Meta:
+        model = AssessmentMethod
+        fields = ('id', 'name', 'content', 'queries')

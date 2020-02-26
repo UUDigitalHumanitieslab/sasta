@@ -27,7 +27,9 @@ importlib-metadata==0.23  # via pluggy, pytest
 isodate==0.6.0            # via rdflib
 lxml==4.4.2               # via pynlpl, python-docx, tei-reader
 more-itertools==7.2.0     # via pytest, zipp
+numpy==1.18.1             # via pandas
 packaging==19.2           # via pytest
+pandas==0.25.3
 pluggy==0.13.0            # via pytest
 psycopg2==2.8.3
 py==1.8.0                 # via pytest
@@ -37,11 +39,12 @@ pytest-django==3.5.1
 pytest-forked==1.0.2      # via pytest-xdist
 pytest-xdist==1.29.0
 pytest==5.1.3
+python-dateutil==2.8.1    # via pandas
 python-docx==0.8.10
 python-ucto==0.5.1        # via corpus2alpino
-pytz==2019.2              # via django
+pytz==2019.2              # via django, pandas
 rdflib==4.2.2             # via pynlpl
-six==1.12.0               # via django-livereload-server, isodate, packaging, pytest-xdist
+six==1.12.0               # via django-livereload-server, isodate, packaging, pytest-xdist, python-dateutil
 soupsieve==1.9.3          # via beautifulsoup4
 sqlparse==0.3.0           # via django
 tei-reader==0.0.17        # via corpus2alpino
@@ -49,4 +52,5 @@ tornado==6.0.3            # via django-livereload-server
 tqdm==4.40.0              # via corpus2alpino
 urllib3==1.25.6
 wcwidth==0.1.7            # via pytest
+xlrd==1.2.0
 zipp==0.6.0               # via importlib-metadata
