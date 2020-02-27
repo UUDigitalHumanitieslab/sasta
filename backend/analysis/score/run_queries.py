@@ -1,36 +1,36 @@
-from typing import List
-from pprint import pprint
+from typing import Union
 
 from lxml import etree as ET
 
-from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
+from ..models import AssessmentMethod, AssessmentQuery, Transcript
+
+
+def compile_xpath(query: str) -> Union[ET.XPath, None]:
+    try:
+        return ET.XPath('.'+query)
+    except ET.XPathEvalError:
+        return None
+    except ET.XPathSyntaxError as e:
+        print(e, query)
+        return None
 
 
 def query_transcript(transcript: Transcript, method: AssessmentMethod):
     queries = AssessmentQuery.objects.filter(method=method)
-    xpath_queries = queries.filter(query__isnull=False)
+    nonempty_queries = queries.filter(query__isnull=False)
 
-    results = []
+    query_funcs = [{'query_id': q.query_id, 'func': compile_xpath(q.query)}
+                   for q in nonempty_queries if compile_xpath(q.query)]
 
     with open(transcript.parsed_content.path, 'rb') as f:
-        content = f.read()
-        for q in xpath_queries:
-            matches = single_query(q, ET.fromstring(content))
-            if matches:
-                print(q.query_id)
-                print(q.query)
-                for m in matches:
-                    print(m.text)
-                    print(m.tag)
-                    print(m)
-                    print('--')
-                print('========')
-    #             results.append({'query_id': q.query_id, 'matches': [
-    #                            (m.text, m) for m in matches]})
-    # with open('/Users/3248526/Documents/sasta_test_log.txt', 'w') as f_out:
-    #     pprint(results, f_out)
+        with open('/Users/3248526/Documents/sasta_test_log.txt', 'w') as f_out:
+            doc = ET.fromstring(f.read())
+            utt_trees = doc.xpath('.//alpino_ds')
 
-
-def single_query(query_object: AssessmentQuery, doc):
-    matches = doc.xpath(query_object.query)
-    return matches
+            for utt_tree in utt_trees:
+                print(utt_tree.xpath('sentence')[
+                      0].text.replace('\n', ''), file=f_out)
+                for q_func in query_funcs:
+                    res = q_func['func'](utt_tree)
+                    if res:
+                        print(q_func['query_id'], len(res), file=f_out)
