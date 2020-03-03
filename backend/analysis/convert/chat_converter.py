@@ -90,10 +90,12 @@ class SifDocument:
     def __init__(self,
                  participants: List[Participant],
                  content: List[Union[Utterance, Tier]],
-                 meta_comments: List[MetaComment]):
+                 meta_comments: List[MetaComment],
+                 title: Union[str, None]):
         self.participants = participants
         self.content = content
         self.meta_comments = meta_comments
+        self.title = title
 
     def write_chat(self, out_file_path: str):
         output_dir = os.path.dirname(out_file_path)
@@ -130,13 +132,14 @@ class SifReader:
         self.content: List[Union[Utterance, Tier]] = []
         self.metadata: List[MetaValue] = []
         self.meta_comments: List[MetaComment] = []
+        self.title: Union[str, None] = None
 
         self.read()
         self.parse_metadata()
 
     @property
     def document(self):
-        return SifDocument(self.participants, self.content, self.meta_comments)
+        return SifDocument(self.participants, self.content, self.meta_comments, self.title)
 
     @property
     def patterns(self):
@@ -144,8 +147,6 @@ class SifReader:
         meta_pattern = r'^##META\s+(\w+)\s+(\w+)\s=\s(.*)$'
         # groups:   1) optional utterance_id    2) speaker code     3) utterance
         utterance_pattern = r'^(?:(\S+)\s*\|.*?)?\*?([A-Z*]{3}):(?:\s*)(.*)$'
-        # groups:   1) utterance_id     2) speaker code     3) utterance
-        utterance_with_id_pattern = r'^(?:(\S+)\s*\|.*?)\*?([A-Z*]{3}):(?:\s*)(.*)$'
         # groups:   1) tier code    2) value
         tier_pattern = r'^(%\w{3,4}):\s*(.*)$'
         # groups:   1) speaker code
@@ -156,7 +157,7 @@ class SifReader:
         return [re.compile(p) for p in [
             meta_pattern, utterance_pattern,
             tier_pattern, single_speaker_pattern,
-            target_uttids_pattern, utterance_with_id_pattern]]
+            target_uttids_pattern]]
 
     def parse_utterance(self, utterance):
         utt_id, code, text = utterance
@@ -187,12 +188,16 @@ class SifReader:
         with open(self.file_path, 'r') as file:
             file_lines = file.readlines()
             for line in list(file_lines):
-                [meta, utt, tier, single_spk, tar_uttids, _utt_w_id] = [match_pattern(
+                [meta, utt, tier, single_spk, tar_uttids] = [match_pattern(
                     pattern, line) for pattern in self.patterns]
                 if meta:
                     if meta[1] in AGE_FIELD_NAMES or meta[1] in SEX_FIELD_NAMES:
                         self.metadata.append(
                             MetaValue(*meta))
+                    elif meta[1] in TITLE_FIELD_NAMES:
+                        self.title = meta[2]
+                        # TODO: does CHAT have a place for title??
+                        self.meta_comments.append(MetaComment(*meta))
                     else:
                         self.meta_comments.append(MetaComment(*meta))
                 elif utt:
