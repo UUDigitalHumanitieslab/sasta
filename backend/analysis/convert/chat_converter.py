@@ -16,7 +16,9 @@ def match_pattern(pattern: Pattern, line: str):
     match = re.match(pattern, line)
     if not match:
         return None
-    return match.groups()
+    if match and match.groups():
+        return match.groups()
+    return match
 
 
 class Participant:
@@ -142,6 +144,8 @@ class SifReader:
         meta_pattern = r'^##META\s+(\w+)\s+(\w+)\s=\s(.*)$'
         # groups:   1) optional utterance_id    2) speaker code     3) utterance
         utterance_pattern = r'^(?:(\S+)\s*\|.*?)?\*?([A-Z*]{3}):(?:\s*)(.*)$'
+        # groups:   1) utterance_id     2) speaker code     3) utterance
+        utterance_with_id_pattern = r'^(?:(\S+)\s*\|.*?)\*?([A-Z*]{3}):(?:\s*)(.*)$'
         # groups:   1) tier code    2) value
         tier_pattern = r'^(%\w{3,4}):\s*(.*)$'
         # groups:   1) speaker code
@@ -152,7 +156,7 @@ class SifReader:
         return [re.compile(p) for p in [
             meta_pattern, utterance_pattern,
             tier_pattern, single_speaker_pattern,
-            target_uttids_pattern]]
+            target_uttids_pattern, utterance_with_id_pattern]]
 
     def parse_utterance(self, utterance):
         utt_id, code, text = utterance
@@ -181,10 +185,10 @@ class SifReader:
 
     def read(self):
         with open(self.file_path, 'r') as file:
-            for line in file.readlines():
-                [meta, utt, tier, single_spk, _tar_uttids] = [match_pattern(
+            file_lines = file.readlines()
+            for line in list(file_lines):
+                [meta, utt, tier, single_spk, tar_uttids, _utt_w_id] = [match_pattern(
                     pattern, line) for pattern in self.patterns]
-
                 if meta:
                     if meta[1] in AGE_FIELD_NAMES or meta[1] in SEX_FIELD_NAMES:
                         self.metadata.append(
@@ -198,3 +202,11 @@ class SifReader:
                 elif single_spk:
                     self.participants.append(Participant(
                         *single_spk, target_speaker=True))
+                elif tar_uttids:
+                    for line in list(file_lines):
+                        find_utt = re.match(
+                            r'^\S+\s*\|.*?\*?([A-Z*]{3}):\s*.*$', line)
+                        if find_utt:
+                            self.participants.append(Participant(
+                                *find_utt.groups(), target_speaker=True))
+                            break
