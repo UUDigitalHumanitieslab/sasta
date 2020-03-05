@@ -7,10 +7,15 @@ from django.dispatch import receiver
 
 from .utils import read_TAM
 
+from .permissions import IsOwner, IsOwnerOrAdmin
+
+from django.contrib.auth.models import User
+
 
 class Corpus(models.Model):
     # TODO: users
-    # user = models.ForeignKey(User, related_name='corpora', on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User, related_name='corpora', on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
     uuid = models.UUIDField(default=uuid4)
