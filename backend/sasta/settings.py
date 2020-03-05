@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cron',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'revproxy',
     'analysis'
 ]

@@ -49,7 +49,8 @@ urlpatterns = [
     path('api-auth/', include(
         'rest_framework.urls',
         namespace='rest_framework',
-    ))]
+    )),
+    path('rest-auth/', include('rest_auth.urls'))]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns.append(spa_url)  # catch-all; unknown paths to be handled by a SPA
