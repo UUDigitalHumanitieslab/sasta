@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
 
   processing: boolean = false;
 
+  messages: { severity: string, summary: string, detail: string }[] = [];
+
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
@@ -30,10 +32,12 @@ export class LoginComponent implements OnInit {
       .login(this.username, this.password)
       .subscribe(
         res => {
+          this.messages = [];
           this.authService.isAuthenticated$.next(true);
           this.router.navigate(['/corpora']);
         },
         err => {
+          this.messages.push({ severity: 'error', summary: 'Login failed.', detail: err.error.non_field_errors })
           console.log('Http Error', err);
           this.authService.isAuthenticated$.next(false);
           this.processing = false;
