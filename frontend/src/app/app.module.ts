@@ -27,6 +27,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CorpusComponent } from './corpus/corpus.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
+import { LoginComponent } from './auth/login.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { MethodComponent } from './method/method.component';
         ListCorpusComponent,
         CorpusComponent,
         ListMethodComponent,
-        MethodComponent
+        MethodComponent,
+        LoginComponent
     ],
     imports: [
         AppRoutingModule,

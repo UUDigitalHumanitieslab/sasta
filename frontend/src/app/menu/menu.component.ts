@@ -1,5 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { animations, showState } from '../animations';
+import { AuthService } from '../services/auth.service';
+import { User } from '../models/user';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
     animations,
@@ -10,10 +14,36 @@ import { animations, showState } from '../animations';
 export class MenuComponent implements OnInit {
     burgerShow: showState;
     burgerActive = false;
+    public activeUser: User;
+    public isAuthenticated$ = this.authService.isAuthenticated$;
 
-    constructor(private ngZone: NgZone) { }
+    faUser = faUser;
+
+    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) { }
 
     ngOnInit() {
+        this.isAuthenticated$.subscribe(authenticated => {
+            if (authenticated) {
+                this.authService
+                    .getUser()
+                    .subscribe(
+                        res => this.activeUser = res,
+                        err => console.log('Http Error', err));
+            } else {
+                this.activeUser = null;
+            }
+        });
+    }
+
+    logout() {
+        this.authService
+            .logout()
+            .subscribe(
+                res => {
+                    this.router.navigate(['/login']);
+                    this.authService.isAuthenticated$.next(false);
+                },
+                err => console.log('Http Error', err));
     }
 
     toggleBurger() {

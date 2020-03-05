@@ -35,14 +35,18 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'livereload',
     'django.contrib.staticfiles',
     'django_cron',
     'rest_framework',
     'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
     'rest_auth',
+    'rest_auth.registration',
     'revproxy',
-    'analysis'
+    'analysis',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +142,8 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = []
 PROXY_FRONTEND = None
+
+
+# Auth
+SITE_ID = 1
+ACCOUNT_EMAIL_VERIFICATION = "none"

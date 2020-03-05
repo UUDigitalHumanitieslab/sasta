@@ -4,7 +4,7 @@ django>=3.0a1,<4
 django_cron
 djangorestframework
 django-livereload-server
-django-rest-auth
+django-rest-auth[with_social]
 #django-revproxy>=0.9.16 not yet on PyPi. Get from git directly:
 git+git://github.com/TracyWebTech/django-revproxy@master#egg=django-revproxy
 pandas
