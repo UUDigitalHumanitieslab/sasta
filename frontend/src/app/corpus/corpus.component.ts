@@ -6,6 +6,8 @@ import { faFile, faFileCode, faFileExport, faCogs, faCalculator } from '@fortawe
 import { Transcript } from '../models/transcript';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Dialog } from 'primeng/dialog';
+import { MethodService } from '../services/method.service';
+import { Method } from '../models/method';
 
 
 
@@ -19,6 +21,8 @@ export class CorpusComponent implements OnInit {
 
   id: number;
   corpus: Corpus;
+  tams: Method[];
+  currentTam: Method;
   faFile = faFile;
   faFileCode = faFileCode;
   faFileExport = faFileExport;
@@ -31,7 +35,7 @@ export class CorpusComponent implements OnInit {
   downloadJsonHref: any;
   messages: { severity: string, summary: string, detail: string }[] = [];
 
-  constructor(private corpusService: CorpusService, private route: ActivatedRoute, private sanitizer: DomSanitizer) {
+  constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute, private sanitizer: DomSanitizer) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
   }
 
@@ -39,6 +43,10 @@ export class CorpusComponent implements OnInit {
     this.corpusService
       .get_by_id(this.id)
       .subscribe(res => this.corpus = res);
+
+    this.methodService
+      .list()
+      .subscribe(res => this.tams = res);
   }
 
   showChat(transcript: Transcript) {
@@ -61,11 +69,11 @@ export class CorpusComponent implements OnInit {
   }
 
   scoreTranscript(transcript: Transcript) {
+    this.messages = [];
     this.corpusService
       .score_transcript(transcript.id, null, null, 'queries')
       .subscribe(
         res => {
-          this.messages = [];
           this.queryResults = JSON.stringify(res, null, 2);
           window.setTimeout(() => {
             //TODO: remove this ugly construct

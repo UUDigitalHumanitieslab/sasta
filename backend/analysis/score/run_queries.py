@@ -31,7 +31,7 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod, phase=Non
     queries_with_funcs = compile_queries(queries)
 
     by_utterance_results = query_single_transcript(
-        transcript, queries_with_funcs)
+        transcript, method, queries_with_funcs)
     by_query_results = results_by_query(by_utterance_results)
 
     return by_utterance_results, by_query_results
@@ -73,7 +73,7 @@ def run_single_query(query_func, utterance_tree):
         return None
 
 
-def query_single_transcript(transcript: Transcript, queries_with_funcs):
+def query_single_transcript(transcript: Transcript, method, queries_with_funcs):
     # TODO: replace OrderedDict with proper classes
     # TODO: log
     # try:
@@ -82,7 +82,8 @@ def query_single_transcript(transcript: Transcript, queries_with_funcs):
         utterances = doc.xpath('.//alpino_ds')
         # aggregation of results for entire transcript, grouped on utterance
         transcript_results = OrderedDict({
-            'name': transcript.name,
+            'transcript': transcript.name,
+            'method': method.name,
             'utterances': []
         })
 
@@ -92,12 +93,13 @@ def query_single_transcript(transcript: Transcript, queries_with_funcs):
                 0].text.replace('\n', '')
             xsid = copied_utt.xpath(
                 '//meta[@name="xsid"]')
+            utt_id = '-'
             if xsid:
                 utt_id = xsid[0].attrib['value']
 
             # results for a single utterance
             utterance_result = OrderedDict({
-                'utt_id': utt_id or '-',
+                'utt_id': utt_id,
                 'sentence': sent,
                 'hits': []
             })

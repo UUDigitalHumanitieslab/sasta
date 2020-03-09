@@ -44,20 +44,32 @@
     </table>
 </ng-container>
 
-<p-dialog header="Score transcript {{currentTranscript?.name}}" [(visible)]="displayScore" (onHide)="closeDialog()"
-    *ngIf="displayScore" [dismissableMask]="true" [modal]="true">
+<p-dialog header="{{currentTranscript?.name}}" [(visible)]="displayScore" (onHide)="closeDialog()"
+    [dismissableMask]="true" [modal]="true">
     <ng-container *ngIf="currentTranscript">
-        <div class="buttons">
-            <button class="button is-primary" (click)="scoreTranscript(currentTranscript)">Score</button>
-            <a disabled="!downloadJsonHref" title="Download JSON" [href]="downloadJsonHref"
-                download="download.json"><button class="button is-primary"
-                    [disabled]="!downloadJsonHref">Download</button></a>
-        </div>
+        <form (submit)="scoreTranscript(currentTranscript)">
+            <div class="field is-grouped">
+                <div class="control">
+                    <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown"
+                        placeholder="select Assessment Method" [(ngModel)]="currentTam" showClear="true"
+                        [disabled]="!tams?.length > 0" appendTo="body">
+                    </p-dropdown>
+                </div>
+                <div class="control">
+                    <button class="button is-primary" [disabled]="!currentTam">Score</button>
+                </div>
+
+            </div>
+        </form>
         <p-messages [(value)]="messages" [closable]="false"></p-messages>
         <div *ngIf="queryResults">
+            <div class="buttons">
+                <a title="Download JSON" [href]="downloadJsonHref" download="download.json"><button
+                        class="button is-primary">Download</button></a>
+            </div>
             <pre>
                 {{queryResults}}
-                </pre>
+            </pre>
         </div>
     </ng-container>
 </p-dialog>
