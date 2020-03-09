@@ -29,7 +29,8 @@ class UploadFileSerializer(serializers.ModelSerializer):
 class TranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcript
-        fields = '__all__'
+        fields = ('id', 'name', 'content',
+                  'parsed_content', 'status', 'corpus')
 
 
 class CorpusSerializer(serializers.ModelSerializer):
