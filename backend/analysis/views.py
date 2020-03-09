@@ -18,8 +18,15 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
 
 class CorpusViewSet(viewsets.ModelViewSet):
-    queryset = Corpus.objects.all()
     serializer_class = CorpusSerializer
+    queryset = Corpus.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        user_queryset = self.queryset.filter(user=self.request.user)
+        return user_queryset
 
 
 class AssessmentMethodViewSet(viewsets.ModelViewSet):

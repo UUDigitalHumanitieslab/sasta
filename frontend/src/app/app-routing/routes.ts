@@ -6,6 +6,7 @@ import { ListCorpusComponent } from '../corpus/list-corpus.component';
 import { CorpusComponent } from '../corpus/corpus.component';
 import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
+import { LoginComponent } from '../auth/login.component';
 
 const routes: Routes = [
     {
@@ -31,6 +32,10 @@ const routes: Routes = [
     {
         path: 'methods/:id',
         component: MethodComponent
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     },
     {
         path: '',

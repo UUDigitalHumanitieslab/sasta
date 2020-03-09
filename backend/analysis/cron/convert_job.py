@@ -2,6 +2,7 @@ import os
 from django_cron import CronJobBase, Schedule
 from ..convert.chat_converter import SifReader
 from ..models import Transcript
+from django.db.models import Q
 
 
 class ConvertJob(CronJobBase):
@@ -11,7 +12,7 @@ class ConvertJob(CronJobBase):
     code = 'sasta.convert_job'
 
     def do(self):
-        for transcript in Transcript.objects.filter(status='created'):
+        for transcript in Transcript.objects.filter(Q(status='created') | Q(status='conversion-failed')):
             try:
                 self.convert(transcript)
             except Exception as error:
@@ -22,9 +23,18 @@ class ConvertJob(CronJobBase):
         transcript.save()
 
         try:
+
+            reader = SifReader(transcript.content.path)
             cha_name = transcript.content.name.replace('.txt', '.cha')
             cha_path = transcript.content.path.replace('.txt', '.cha')
-            reader = SifReader(transcript.content.path)
+
+            # use title from metadata, if present
+            title = reader.document.title
+            if title:
+                cha_name = cha_name.replace(transcript.name, title)
+                cha_path = cha_path.replace(transcript.name, title)
+                transcript.name = title
+
             reader.document.write_chat(cha_path)
 
             # remove the old .txt transcript file

@@ -11,12 +11,41 @@ TITLE_FIELD_NAMES = ['samplename', 'title', 'titel']
 MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
+COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
+COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter']
+
 
 def match_pattern(pattern: Pattern, line: str):
     match = re.match(pattern, line)
     if not match:
         return None
-    return match.groups()
+    if match and match.groups():
+        return match.groups()
+    return match
+
+
+def fill_places_persons(string):
+    try:
+        place_pattern = re.compile(r'PLAATSNAAM(\d)?')
+        person_pattern = re.compile(r'NAAM(\d)?')
+
+        def replace_place(match):
+            index = int(match.group(1) or 0)
+            return COMMON_PLACE_NAMES[index]
+
+        def replace_person(match):
+            index = int(match.group(1) or 0)
+            return COMMON_PERSON_NAMES[index]
+
+        subbed_place_string = re.sub(place_pattern, replace_place, string)
+        subbed_pers_string = re.sub(
+            person_pattern, replace_person, subbed_place_string)
+        return subbed_pers_string
+
+    except Exception as e:
+        # todo log
+        print('error in fill_places_persons:\t', e)
+        return string
 
 
 class Participant:
@@ -88,10 +117,12 @@ class SifDocument:
     def __init__(self,
                  participants: List[Participant],
                  content: List[Union[Utterance, Tier]],
-                 meta_comments: List[MetaComment]):
+                 meta_comments: List[MetaComment],
+                 title: Union[str, None]):
         self.participants = participants
         self.content = content
         self.meta_comments = meta_comments
+        self.title = title
 
     def write_chat(self, out_file_path: str):
         output_dir = os.path.dirname(out_file_path)
@@ -128,13 +159,14 @@ class SifReader:
         self.content: List[Union[Utterance, Tier]] = []
         self.metadata: List[MetaValue] = []
         self.meta_comments: List[MetaComment] = []
+        self.title: Union[str, None] = None
 
         self.read()
         self.parse_metadata()
 
     @property
     def document(self):
-        return SifDocument(self.participants, self.content, self.meta_comments)
+        return SifDocument(self.participants, self.content, self.meta_comments, self.title)
 
     @property
     def patterns(self):
@@ -181,14 +213,19 @@ class SifReader:
 
     def read(self):
         with open(self.file_path, 'r') as file:
-            for line in file.readlines():
-                [meta, utt, tier, single_spk, _tar_uttids] = [match_pattern(
+            file_lines = file.readlines()
+            for line in list(file_lines):
+                line = fill_places_persons(line)
+                [meta, utt, tier, single_spk, tar_uttids] = [match_pattern(
                     pattern, line) for pattern in self.patterns]
-
                 if meta:
                     if meta[1] in AGE_FIELD_NAMES or meta[1] in SEX_FIELD_NAMES:
                         self.metadata.append(
                             MetaValue(*meta))
+                    elif meta[1] in TITLE_FIELD_NAMES:
+                        self.title = meta[2]
+                        # TODO: does CHAT have a place for title??
+                        self.meta_comments.append(MetaComment(*meta))
                     else:
                         self.meta_comments.append(MetaComment(*meta))
                 elif utt:
@@ -198,3 +235,11 @@ class SifReader:
                 elif single_spk:
                     self.participants.append(Participant(
                         *single_spk, target_speaker=True))
+                elif tar_uttids:
+                    for line in list(file_lines):
+                        find_utt = re.match(
+                            r'^\S+\s*\|.*?\*?([A-Z*]{3}):\s*.*$', line)
+                        if find_utt:
+                            self.participants.append(Participant(
+                                *find_utt.groups(), target_speaker=True))
+                            break
