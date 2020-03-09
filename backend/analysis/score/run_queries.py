@@ -10,6 +10,11 @@ from copy import deepcopy
 
 import subprocess
 
+from pprint import pprint
+
+from collections import OrderedDict
+import json
+
 
 def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
     try:
@@ -24,9 +29,9 @@ def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
 def query_transcript(transcript: Transcript, method: AssessmentMethod, phase=2, phase_exact=True):
     queries = filter_queries(method, phase, phase_exact=False)
     queries_with_funcs = compile_queries(queries)
-    query_single_transcript(transcript, queries_with_funcs)
 
-    pass
+    transcript_results = query_single_transcript(
+        transcript, queries_with_funcs)
 
 
 def filter_queries(method: AssessmentMethod, phase: int = None, phase_exact: bool = True):
@@ -37,9 +42,13 @@ def filter_queries(method: AssessmentMethod, phase: int = None, phase_exact: boo
     try:
         all_queries = AssessmentQuery.objects.filter(
             Q(method=method) & Q(query__isnull=False))
-        phase_filter = Q(phase=phase) if phase_exact else Q(phase__gte=phase)
-        queries = all_queries.filter(phase_filter)
-        return queries
+        if phase:
+            phase_filter = Q(phase=phase) if phase_exact else Q(
+                phase__gte=phase)
+            phase_queries = all_queries.filter(phase_filter)
+            return phase_queries
+        return all_queries
+
     except Exception as e:
         # TODO: log
         print(e)
@@ -62,16 +71,44 @@ def run_single_query(query_func, utterance_tree):
 
 
 def query_single_transcript(transcript: Transcript, queries_with_funcs):
-    with open(transcript.parsed_content.path, 'rb') as f_in:
-        doc = ET.fromstring(f_in.read())
-        utterances = doc.xpath('.//alpino_ds')
-        with open('logs/score.log', 'w') as f_out:
-            for utt in utterances:
-                copied_utt = deepcopy(utt)
-                sent = copied_utt.xpath('sentence')[0].text.replace('\n', '')
-                xsid = copied_utt.xpath('//meta[@name="xsid"]')
-                print(sent, file=f_out)
-                for query in queries_with_funcs:
-                    q_res = run_single_query(query['q_func'], copied_utt)
-                    if q_res:
-                        print(query['q_id'], '\t', len(q_res), file=f_out)
+    # TODO: replace OrderedDict with proper classes
+    # TODO: log
+    try:
+        with open(transcript.parsed_content.path, 'rb') as f_in:
+            doc = ET.fromstring(f_in.read())
+            utterances = doc.xpath('.//alpino_ds')
+            # aggregation of results for entire transcript
+            transcript_results = OrderedDict({
+                'name': transcript.name,
+                'utterances': []
+            })
+
+            with open('logs/score.log', 'w') as f_out:
+                for utt in utterances:
+                    copied_utt = deepcopy(utt)
+                    sent = copied_utt.xpath('sentence')[
+                        0].text.replace('\n', '')
+                    xsid = copied_utt.xpath(
+                        '//meta[@name="xsid"]')[0].attrib['value']
+
+                    # results for a single utterance
+                    utterance_result = OrderedDict({
+                        'utt_id': xsid,
+                        'sentence': sent,
+                        'hits': []
+                    })
+
+                    for query in queries_with_funcs:
+                        query_results = run_single_query(
+                            query['q_func'], copied_utt)
+                        if query_results:
+                            utterance_result['hits'].append((
+                                query['q_id'], len(query_results)))
+                    if utterance_result['hits']:
+                        transcript_results['utterances'].append(
+                            utterance_result)
+
+            return transcript_results
+    except Exception as e:
+        print(f'error querying:\t{e}')
+        return None
