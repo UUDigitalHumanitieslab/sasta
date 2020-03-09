@@ -25,7 +25,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        user_queryset = self.queryset.filter(owner=self.request.user)
+        user_queryset = self.queryset.filter(user=self.request.user)
         return user_queryset
 
 

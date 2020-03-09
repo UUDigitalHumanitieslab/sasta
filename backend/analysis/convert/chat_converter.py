@@ -11,6 +11,9 @@ TITLE_FIELD_NAMES = ['samplename', 'title', 'titel']
 MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
+COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
+COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter']
+
 
 def match_pattern(pattern: Pattern, line: str):
     match = re.match(pattern, line)
@@ -19,6 +22,30 @@ def match_pattern(pattern: Pattern, line: str):
     if match and match.groups():
         return match.groups()
     return match
+
+
+def fill_places_persons(string):
+    try:
+        place_pattern = re.compile(r'PLAATSNAAM(\d)?')
+        person_pattern = re.compile(r'NAAM(\d)?')
+
+        def replace_place(match):
+            index = int(match.group(1) or 0)
+            return COMMON_PLACE_NAMES[index]
+
+        def replace_person(match):
+            index = int(match.group(1) or 0)
+            return COMMON_PERSON_NAMES[index]
+
+        subbed_place_string = re.sub(place_pattern, replace_place, string)
+        subbed_pers_string = re.sub(
+            person_pattern, replace_person, subbed_place_string)
+        return subbed_pers_string
+
+    except Exception as e:
+        # todo log
+        print('error in fill_places_persons:\t', e)
+        return string
 
 
 class Participant:
@@ -188,6 +215,7 @@ class SifReader:
         with open(self.file_path, 'r') as file:
             file_lines = file.readlines()
             for line in list(file_lines):
+                line = fill_places_persons(line)
                 [meta, utt, tier, single_spk, tar_uttids] = [match_pattern(
                     pattern, line) for pattern in self.patterns]
                 if meta:

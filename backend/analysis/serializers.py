@@ -17,9 +17,11 @@ class UploadFileSerializer(serializers.ModelSerializer):
         return CorpusSerializer(obj.corpus).data
 
     def create(self, validated_data):
+        user = self.context['request'].user
         corpus_data = validated_data.pop('corpus')
         corpus_instance, _created = Corpus.objects.get_or_create(
             name=corpus_data['name'],
+            user=user,
             defaults={'status': 'created'})
         return UploadFile.objects.create(**validated_data, corpus=corpus_instance)
 
