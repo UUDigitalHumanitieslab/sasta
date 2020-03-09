@@ -16,6 +16,8 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -63,6 +65,7 @@ import { effects, reducers } from './store';
         }),
         EffectsModule.forRoot(effects),
         StoreModule.forRoot(reducers),
+        NgxJsonViewerModule,
         // PrimeNG
         AccordionModule,
         DialogModule,

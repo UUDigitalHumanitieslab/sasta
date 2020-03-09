@@ -5,6 +5,7 @@ import { storeStructure } from '../store';
 import { Corpus } from '../models/corpus';
 import { refreshList } from '../store/corpus.actions';
 import { startWith } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 // check every 10 seconds
 const UPDATE_INTERVAL = 10000;
@@ -18,7 +19,7 @@ export class ListCorpusComponent implements OnInit {
   subscriptions: Subscription[];
   corpora: Corpus[];
 
-  constructor(private store: Store<storeStructure>) {
+  constructor(private store: Store<storeStructure>, private route: Router) {
     this.subscriptions = [
       this.store.pipe(select('corpora')).subscribe((corpora: Corpus[]) => {
         this.corpora = corpora;

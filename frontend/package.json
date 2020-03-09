@@ -33,6 +33,7 @@
         "@ngrx/effects": "^8.3.0",
         "@ngrx/store": "^8.3.0",
         "bulma": "^0.7.5",
+        "ngx-json-viewer": "^2.4.0",
         "primeicons": "^2.0.0",
         "primeng": "^8.0.3",
         "rxjs": "~6.4.0",

@@ -1,4 +1,4 @@
-<table class="table is-fullwidth is-hoverable">
+<table class="table is-fullwidth is-hoverable" *ngIf="corpora.length > 0">
     <thead>
         <tr>
             <th>Name</th>
@@ -16,3 +16,10 @@
         </tr>
     </tbody>
 </table>
+
+<h1 *ngIf="corpora.length ==0" class="title is-2">
+    No corpora yet!
+    <a [routerLink]="['/upload']" routerLinkActive="is-active">
+        Upload
+    </a>
+</h1>

@@ -74,7 +74,8 @@ export class CorpusComponent implements OnInit {
       .score_transcript(transcript.id, null, null, 'queries')
       .subscribe(
         res => {
-          this.queryResults = JSON.stringify(res, null, 2);
+          // this.queryResults = JSON.stringify(res, null, 2);
+          this.queryResults = res;
           window.setTimeout(() => {
             //TODO: remove this ugly construct
             this.dialog.positionOverlay();

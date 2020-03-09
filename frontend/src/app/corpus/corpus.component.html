@@ -67,9 +67,10 @@
                 <a title="Download JSON" [href]="downloadJsonHref" download="download.json"><button
                         class="button is-primary">Download</button></a>
             </div>
-            <pre>
+            <ngx-json-viewer [json]="queryResults"></ngx-json-viewer>
+            <!-- <pre>
                 {{queryResults}}
-            </pre>
+            </pre> -->
         </div>
     </ng-container>
 </p-dialog>
