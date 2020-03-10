@@ -50,9 +50,16 @@
         <form (submit)="scoreTranscript(currentTranscript)">
             <div class="field is-grouped">
                 <div class="control">
-                    <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown"
-                        placeholder="select Assessment Method" [(ngModel)]="currentTam" showClear="true"
-                        [disabled]="!tams?.length > 0" appendTo="body">
+                    <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown" placeholder="Assessment Method"
+                        [(ngModel)]="currentTam" showClear="true" [disabled]="!tams?.length > 0" appendTo="body">
+                    </p-dropdown>
+                </div>
+                <p-dropdown [options]="phaseOps" optionLabel="name" name="phaseOp-dropdown" placeholder="Operator"
+                    [(ngModel)]="phaseOp" showClear="true" [disabled]="currentPhase?.name=='all'" appendTo="body">
+                </p-dropdown>
+                <div class="control">
+                    <p-dropdown [options]="phases" optionLabel="name" name="phase-dropdown" placeholder="Phase (>=)"
+                        [(ngModel)]="currentPhase" showClear="true" appendTo="body">
                     </p-dropdown>
                 </div>
                 <div class="control">

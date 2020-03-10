@@ -33,9 +33,10 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         by_utt, by_query = query_transcript(
             transcript, method, phase, phase_exact)
 
-        if group_by == 'utterance':
-            return JsonResponse(by_utt)
-        return JsonResponse(by_query)
+        return JsonResponse(by_utt)
+        # if group_by == 'utterance':
+        #     return JsonResponse(by_utt)
+        # return JsonResponse(by_query)
 
 
 class CorpusViewSet(viewsets.ModelViewSet):

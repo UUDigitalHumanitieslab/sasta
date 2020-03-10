@@ -21,13 +21,32 @@ export class CorpusComponent implements OnInit {
 
   id: number;
   corpus: Corpus;
+
   tams: Method[];
   currentTam: Method;
+
+  phases = [
+    { name: 'all', code: null },
+    { name: 1, code: 1 },
+    { name: 2, code: 2 },
+    { name: 3, code: 3 },
+    { name: 4, code: 4 },
+    { name: 5, code: 5 },
+    { name: 6, code: 6 },
+    { name: 7, code: 7 },
+
+  ]
+  currentPhase: { name, code };
+
+  phaseOps = [{ name: 'up to', code: false }, { name: 'equals', code: true }];
+  phaseOp: { name, code };
+
   faFile = faFile;
   faFileCode = faFileCode;
   faFileExport = faFileExport;
   faCogs = faCogs;
   faCalculator = faCalculator;
+
 
   displayScore: boolean = false;
   currentTranscript: Transcript;
@@ -71,10 +90,9 @@ export class CorpusComponent implements OnInit {
   scoreTranscript(transcript: Transcript) {
     this.messages = [];
     this.corpusService
-      .score_transcript(transcript.id, null, null, 'queries')
+      .score_transcript(transcript.id, this.currentPhase.code, this.phaseOp.code, 'queries')
       .subscribe(
         res => {
-          // this.queryResults = JSON.stringify(res, null, 2);
           this.queryResults = res;
           window.setTimeout(() => {
             //TODO: remove this ugly construct
