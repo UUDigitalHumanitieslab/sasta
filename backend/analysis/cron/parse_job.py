@@ -12,6 +12,7 @@ from django.core.files import File
 from django_cron import CronJobBase, Schedule
 
 from ..models import Transcript, Utterance
+from django.db.models import Q
 
 
 class ParseJob(CronJobBase):
@@ -27,7 +28,7 @@ class ParseJob(CronJobBase):
             '', 'parse.log', 'text/plain', ''), [])
         LogSingleton.set(Log(log_target, strict=False))
 
-        for transcript in Transcript.objects.filter(status='converted'):
+        for transcript in Transcript.objects.filter(Q(status='converted') | Q(status='parsing-failed')):
             try:
                 output_path = transcript.content.path.replace(
                     '/transcripts', '/parsed')

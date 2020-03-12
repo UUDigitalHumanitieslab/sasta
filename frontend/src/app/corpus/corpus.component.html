@@ -32,7 +32,7 @@
                             </span>
                         </button>
                         <button class="button is-primary" pTooltip="score transcript"
-                            [disabled]="!(transcript.status=='parsed')">
+                            [disabled]="!(transcript.status=='parsed')" (click)="showDialog(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faCalculator"></fa-icon>
                             </span>
@@ -43,3 +43,41 @@
         </tbody>
     </table>
 </ng-container>
+
+<p-dialog header="{{currentTranscript?.name}}" [(visible)]="displayScore" (onHide)="closeDialog()"
+    [dismissableMask]="true" [modal]="true">
+    <ng-container *ngIf="currentTranscript">
+        <form (submit)="scoreTranscript(currentTranscript)">
+            <div class="field is-grouped">
+                <div class="control">
+                    <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown" placeholder="Assessment Method"
+                        [(ngModel)]="currentTam" showClear="true" [disabled]="!tams?.length > 0" appendTo="body">
+                    </p-dropdown>
+                </div>
+                <p-dropdown [options]="phaseOps" optionLabel="name" name="phaseOp-dropdown" placeholder="Operator"
+                    [(ngModel)]="phaseOp" showClear="true" [disabled]="currentPhase?.name=='all'" appendTo="body">
+                </p-dropdown>
+                <div class="control">
+                    <p-dropdown [options]="phases" optionLabel="name" name="phase-dropdown" placeholder="Phase (>=)"
+                        [(ngModel)]="currentPhase" showClear="true" appendTo="body">
+                    </p-dropdown>
+                </div>
+                <div class="control">
+                    <button class="button is-primary" [disabled]="!currentTam">Score</button>
+                </div>
+
+            </div>
+        </form>
+        <p-messages [(value)]="messages" [closable]="false"></p-messages>
+        <div *ngIf="queryResults">
+            <div class="buttons">
+                <a title="Download JSON" [href]="downloadJsonHref" download="download.json"><button
+                        class="button is-primary">Download</button></a>
+            </div>
+            <ngx-json-viewer [json]="queryResults"></ngx-json-viewer>
+            <!-- <pre>
+                {{queryResults}}
+            </pre> -->
+        </div>
+    </ng-container>
+</p-dialog>

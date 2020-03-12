@@ -6,6 +6,8 @@ from django.contrib import admin
 from .models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
                      UploadFile, Utterance)
 
+from .score.run_queries import query_transcript
+
 
 @admin.register(Corpus)
 class CorpusAdmin(admin.ModelAdmin):
@@ -26,7 +28,12 @@ class UtteranceInline(admin.TabularInline):
 class TranscriptAdmin(admin.ModelAdmin):
     inlines = (UtteranceInline, )
     list_display = ('__str__', 'status')
+    actions = ('run_queries',)
     model = Transcript
+
+    def run_queries(self, request, queryset):
+        random_tam = AssessmentMethod.objects.first()
+        query_transcript(queryset.first(), random_tam)
 
 
 @admin.register(UploadFile)
