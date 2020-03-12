@@ -3,6 +3,7 @@ import os
 import re
 from typing import List, Optional, Union, Pattern
 
+
 # TODO handle corpus name/transcript title
 # TODO move to config
 AGE_FIELD_NAMES = ['age', 'leeftijd']
@@ -191,8 +192,8 @@ class SifReader:
         known_participant_codes = [p.code for p in self.participants]
         if code not in known_participant_codes:
             self.participants.append(Participant(code))
-
-        self.content.append(Utterance(code, text, utt_id))
+        if text != '':
+            self.content.append(Utterance(code, text, utt_id))
 
     def parse_metadata(self):
         ''' Metadata pertaining to target speaker'''
