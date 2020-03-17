@@ -42,6 +42,7 @@ def iter_paragraphs(parent, recursive=True):
 
 
 def docx_to_txt(filepath):
+    logger.info(f'DOC2TXT:\tconverting {os.path.basename(filepath)}')
     try:
         document = Document(filepath)
         txt_path = filepath.replace('.docx', '.txt')
@@ -59,8 +60,10 @@ def docx_to_txt(filepath):
                 else:
                     print(paragraph.text, file=txt_file)
         os.remove(filepath)
+        logger.info(f'DOC2TXT:\tconverting succes')
         return txt_path
     except Exception as error:
+        logger.error(f'DOC2TXT:\tconverting failed')
         logger.error(error)
         print('error in docx_to_txt:\t', error)
 
@@ -81,6 +84,7 @@ def docx_to_txt(filepath):
 
 def read_TAM(method) -> None:
     filepath = method.content.path
+    logger.info(f'TAM-Reader:\treading {os.path.basename(filepath)}')
     dataframe = pd.read_excel(filepath,
                               true_values=['yes'], false_values=['no'])
     column_names = [c.lower() for c in dataframe.columns]
@@ -96,6 +100,7 @@ def read_TAM(method) -> None:
         except:
             series.phase = None
         create_query_from_series(series, method)
+    logger.info(f'TAM-Reader:\treading done')
 
 
 def create_query_from_series(series: pd.Series, method) -> None:
@@ -105,5 +110,6 @@ def create_query_from_series(series: pd.Series, method) -> None:
     try:
         instance.save()
     except IntegrityError as error:
+        logger.error(f'TAM-Reader:\terror in query')
         logger.error(error)
         pass
