@@ -46,7 +46,7 @@ def fill_places_persons(string):
         return subbed_pers_string
 
     except Exception as e:
-        logger.error()
+        logger.error(e)
         print('error in fill_places_persons:\t', e)
         return string
 
@@ -136,7 +136,8 @@ class SifDocument:
                 pass
             else:
                 raise
-
+        logger.info(
+            f'CHAT-Converter:\twriting document {self.title}')
         with open(out_file_path, 'w', encoding='utf-8') as file:
             # File headers
             print('@UTF8', '@Begin', '@Languages:\tnld', sep='\n', file=file)
@@ -199,6 +200,7 @@ class SifReader:
 
     def parse_metadata(self):
         ''' Metadata pertaining to target speaker'''
+        logger.info(f'CHAT-Converter:\tparsing metadata for {self.title}')
         target_speaker = [
             p for p in self.participants if p.target_speaker][0] or None
         for meta in self.metadata:
@@ -215,6 +217,8 @@ class SifReader:
                     target_speaker.sex = 'unknown'
 
     def read(self):
+        logger.info(
+            f'CHAT-Converter:\treading {os.path.basename(self.file_path)}')
         with open(self.file_path, 'r') as file:
             file_lines = file.readlines()
             for line in list(file_lines):
