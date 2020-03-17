@@ -147,3 +147,34 @@ PROXY_FRONTEND = None
 # Auth
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
+# Logs
+# TODO: set log locations on deployment
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'debug_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'sasta_debug.log'),
+        },
+        'info_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'sasta_info.log'),
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'sasta_error.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['debug_file', 'info_file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}
