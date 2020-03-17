@@ -157,22 +157,28 @@ LOGGING = {
         'django_debug_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'sasta_debug.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'debug.log'),
         },
         'django_info_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'sasta_info.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'info.log'),
         },
         'django_error_file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'sasta_error.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'error.log'),
         },
         'sasta_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'sasta.log')
+            'filename': os.path.join(BASE_DIR, 'logs', 'sasta.log'),
+            'formatter': 'standard'
+        }
+    },
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s] %(levelname)s\t%(message)s'
         }
     },
     'loggers': {
