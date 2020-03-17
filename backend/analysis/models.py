@@ -11,9 +11,11 @@ from .permissions import IsOwner, IsOwnerOrAdmin
 
 from django.contrib.auth.models import User
 
+import logging
+logger = logging.getLogger('sasta')
+
 
 class Corpus(models.Model):
-    # TODO: users
     user = models.ForeignKey(
         User, related_name='corpora', on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
@@ -94,8 +96,8 @@ def read_tam_file(sender, instance, created, **kwargs):
     try:
         read_TAM(instance)
     except Exception as error:
-        #TODO: log
-        print(error)
+        logger.error(error)
+        print(f'error in read_tam_file:\t{error}')
 
 
 class AssessmentQuery(models.Model):

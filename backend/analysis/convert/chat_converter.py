@@ -2,6 +2,8 @@ import errno
 import os
 import re
 from typing import List, Optional, Union, Pattern
+import logging
+logger = logging.getLogger('sasta')
 
 
 # TODO handle corpus name/transcript title
@@ -44,7 +46,7 @@ def fill_places_persons(string):
         return subbed_pers_string
 
     except Exception as e:
-        # todo log
+        logger.error()
         print('error in fill_places_persons:\t', e)
         return string
 

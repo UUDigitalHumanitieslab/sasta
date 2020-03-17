@@ -11,6 +11,9 @@ import docx.oxml.text.paragraph
 import docx.table
 import docx.text.paragraph
 
+import logging
+logger = logging.getLogger('sasta')
+
 
 def iter_paragraphs(parent, recursive=True):
     """
@@ -58,7 +61,7 @@ def docx_to_txt(filepath):
         os.remove(filepath)
         return txt_path
     except Exception as error:
-        #TODO: log
+        logger.error(error)
         print('error in docx_to_txt:\t', error)
 
 
@@ -101,7 +104,6 @@ def create_query_from_series(series: pd.Series, method) -> None:
     instance = AssessmentQuery(method=method, **series)
     try:
         instance.save()
-    except IntegrityError:
-        #TODO: log
-        # print(e)
+    except IntegrityError as error:
+        logger.error(error)
         pass
