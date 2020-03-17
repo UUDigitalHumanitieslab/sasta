@@ -154,27 +154,37 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'debug_file': {
+        'django_debug_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'sasta_debug.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'sasta_debug.log'),
         },
-        'info_file': {
+        'django_info_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'sasta_info.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'sasta_info.log'),
         },
-        'error_file': {
+        'django_error_file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'sasta_error.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django', 'sasta_error.log'),
         },
+        'sasta_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'sasta.log')
+        }
     },
     'loggers': {
         'django': {
             'handlers': ['debug_file', 'info_file', 'error_file'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'sasta': {
+            'handlers': ['sasta_file'],
+            'level': 'DEBUG',
+            'propagate': True
         }
     },
 }
