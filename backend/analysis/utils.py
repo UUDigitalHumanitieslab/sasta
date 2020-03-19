@@ -1,17 +1,19 @@
 # from models import AssessmentMethod, AssessmentQuery
+import logging
 import os
-import pandas as pd
-from docx import Document
-from django.db.utils import IntegrityError
-
+from typing import Any, Dict
 
 import docx.document
 import docx.oxml.table
 import docx.oxml.text.paragraph
 import docx.table
 import docx.text.paragraph
+import pandas as pd
+from django.db.utils import IntegrityError
+from docx import Document
+from openpyxl import Workbook
+from openpyxl.styles import Font, Color
 
-import logging
 logger = logging.getLogger('sasta')
 
 
@@ -96,6 +98,30 @@ def create_query_from_series(series: pd.Series, method) -> None:
     try:
         instance.save()
     except IntegrityError as error:
-        logger.error(f'TAM-Reader:\terror in query')
         logger.error(error)
         pass
+
+
+def v1_to_xlsx(data: Dict[str, Any], out_path: str):
+    # writes the v1 results as excel file
+    # rows contain query_id, utt_id, and number of matches
+    # query_id is only written if different from previous row
+    try:
+        wb = Workbook()
+        worksheet = wb.active
+
+        # header
+        worksheet.append(['Query', 'Utterance', 'Matches'])
+        header = worksheet["1:1"]
+        for cell in header:
+            cell.font = Font(bold=True)
+
+        for key in sorted(data['results'].keys()):
+            counter = data['results'][key]
+            for i, ele in enumerate(counter):
+                worksheet.append([key if i == 0 else None, ele, counter[ele]])
+
+        wb.save(out_path)
+        return out_path
+    except Exception as e:
+        logger.exception(e)

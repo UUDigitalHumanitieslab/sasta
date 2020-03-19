@@ -1,4 +1,4 @@
-import json
+from ..utils import v1_to_xlsx
 from collections import Counter
 from typing import Union
 
@@ -49,7 +49,6 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
         query_res = single_query_single_transcript(q, utterances)
         if query_res:
             v1_results['results'][q['q_id']] = query_res
-
     return v1_results
 
 

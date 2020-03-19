@@ -13,4 +13,5 @@ pytest
 pytest-django
 pytest-xdist
 python-docx
+openpyxl
 xlrd
