@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 from copy import deepcopy
 from typing import Union
 
@@ -25,15 +25,45 @@ def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
 
 def query_transcript(transcript: Transcript, method: AssessmentMethod, phase=None, phase_exact=False):
     logger.info(f'Start querying {transcript.name}')
+
     queries = filter_queries(method, phase, phase_exact)
     queries_with_funcs = compile_queries(queries)
 
-    by_utterance_results = query_single_transcript(
-        transcript, method, queries_with_funcs)
-    by_query_results = results_by_query(by_utterance_results)
+    utterances = get_utterances(transcript)
+    transcript_results = {
+        'transcript': transcript.name,
+        'method': method.name,
+        'results': {}
+    }
 
-    logger.info(f'Finished querying {transcript.name}')
-    return by_utterance_results, by_query_results
+    for q in queries_with_funcs:
+        single_query_single_transcript(q, utterances)
+
+
+def get_utterances(transcript: Transcript):
+    # returns list of (utterance_id, sentence, utterance_tree)
+    with open(transcript.parsed_content.path, 'rb') as f_in:
+        doc = ET.fromstring(f_in.read())
+        utterances = [deepcopy(utt) for utt in doc.xpath('.//alpino_ds')]
+        return utterances
+
+
+def single_query_single_transcript(query_with_func, utterances):
+    # run a single query over every utterance
+    # return: counter with utt_ids and counts
+    query_counter = Counter()
+    for utt in utterances:
+        results = single_query_single_utt(query_with_func['q_func'], utt)
+
+
+def single_query_single_utt(query_func, utterance_tree):
+    # run a single query against a single utterance
+    # return integer with number of matchers
+    try:
+        results = query_func(utterance_tree)
+        return len(results)
+    except Exception as e:
+        logger.warning(f'Failed to execute {query_func}')
 
 
 def filter_queries(method: AssessmentMethod, phase: int = None, phase_exact: bool = True):
@@ -130,8 +160,6 @@ def results_by_query(input_results):
         query_results = {}
 
         for item in by_utt_results:
-            # OrderedDict([('utt_id', '2'), ('sentence', 'innu kast'), ('hits', [('T147', 1)])])
-            # query_results.append((item['utt_id']))
             for hit in item['hits']:
                 if not hit[0] in query_results:
                     query_results[hit[0]] = []
