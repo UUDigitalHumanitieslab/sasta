@@ -96,7 +96,8 @@ class ParseJob(CronJobBase):
                             transcript=transcript,
                             utt_id=utt_id,
                             speaker=speaker,
-                            text=sent
+                            sentence=sent,
+                            parse_tree=str(utt)
                         )
                         instance.save()
                         num_created += 1

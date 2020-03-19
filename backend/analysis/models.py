@@ -53,14 +53,15 @@ class Utterance(models.Model):
     #     transcript_dir, _ = os.path.splitext(self.transcript.content.name)
     #     return os.path.join(transcript_dir, filename)
 
-    text = models.CharField(max_length=500)
+    sentence = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
     utt_id = models.IntegerField(blank=True, null=True)
+    parse_tree = models.TextField(blank=True)
     transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.text}'
+        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
 
 
 class UploadFile(models.Model):
