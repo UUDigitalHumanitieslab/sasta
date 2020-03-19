@@ -1,3 +1,4 @@
+import json
 from collections import OrderedDict, Counter
 from copy import deepcopy
 from typing import Union
@@ -5,7 +6,7 @@ from typing import Union
 from django.db.models import Q
 from lxml import etree as ET
 
-from ..models import AssessmentMethod, AssessmentQuery, Transcript
+from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
 
 import logging
 logger = logging.getLogger('sasta')
@@ -29,23 +30,20 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod, phase=Non
     queries = filter_queries(method, phase, phase_exact)
     queries_with_funcs = compile_queries(queries)
 
-    utterances = get_utterances(transcript)
-    transcript_results = {
+    utterances = Utterance.objects.filter(transcript=transcript)
+
+    v1_results = {
         'transcript': transcript.name,
         'method': method.name,
         'results': {}
     }
 
     for q in queries_with_funcs:
-        single_query_single_transcript(q, utterances)
+        query_res = single_query_single_transcript(q, utterances)
+        if query_res:
+            v1_results['results'][q['q_id']] = query_res
 
-
-def get_utterances(transcript: Transcript):
-    # returns list of (utterance_id, sentence, utterance_tree)
-    with open(transcript.parsed_content.path, 'rb') as f_in:
-        doc = ET.fromstring(f_in.read())
-        utterances = [deepcopy(utt) for utt in doc.xpath('.//alpino_ds')]
-        return utterances
+    return v1_results
 
 
 def single_query_single_transcript(query_with_func, utterances):
@@ -54,13 +52,17 @@ def single_query_single_transcript(query_with_func, utterances):
     query_counter = Counter()
     for utt in utterances:
         results = single_query_single_utt(query_with_func['q_func'], utt)
+        if results:
+            query_counter[utt.utt_id] += results
+            # query_counter.update(utt.utt_id)
+    return query_counter or None
 
 
-def single_query_single_utt(query_func, utterance_tree):
+def single_query_single_utt(query_func, utt_obj):
     # run a single query against a single utterance
-    # return integer with number of matchers
+    # return list of matches
     try:
-        results = query_func(utterance_tree)
+        results = query_func(ET.fromstring(utt_obj.parse_tree))
         return len(results)
     except Exception as e:
         logger.warning(f'Failed to execute {query_func}')
