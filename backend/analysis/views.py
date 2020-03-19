@@ -25,18 +25,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Score transcript')
     def score(self, request, *args, **kwargs):
         transcript = self.get_object()
-        phase = request.data.get('phase')
-        phase_exact = request.data.get('phase_exact') or False
         method = AssessmentMethod.objects.first()
-        group_by = request.data.get('group_by') or 'utterance'
 
-        by_utt, by_query = query_transcript(
-            transcript, method, phase, phase_exact)
+        v1res = query_transcript(transcript, method)
 
-        return JsonResponse(by_utt)
-        # if group_by == 'utterance':
-        #     return JsonResponse(by_utt)
-        # return JsonResponse(by_query)
+        return JsonResponse(v1res)
 
 
 class CorpusViewSet(viewsets.ModelViewSet):

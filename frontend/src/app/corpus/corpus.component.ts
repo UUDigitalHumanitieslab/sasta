@@ -25,22 +25,6 @@ export class CorpusComponent implements OnInit {
   tams: Method[];
   currentTam: Method;
 
-  phases = [
-    { name: 'all', code: null },
-    { name: 1, code: 1 },
-    { name: 2, code: 2 },
-    { name: 3, code: 3 },
-    { name: 4, code: 4 },
-    { name: 5, code: 5 },
-    { name: 6, code: 6 },
-    { name: 7, code: 7 },
-
-  ]
-  currentPhase: { name, code };
-
-  phaseOps = [{ name: 'up to', code: false }, { name: 'equals', code: true }];
-  phaseOp: { name, code };
-
   faFile = faFile;
   faFileCode = faFileCode;
   faFileExport = faFileExport;
@@ -90,7 +74,7 @@ export class CorpusComponent implements OnInit {
   scoreTranscript(transcript: Transcript) {
     this.messages = [];
     this.corpusService
-      .score_transcript(transcript.id, this.currentPhase.code, this.phaseOp.code, 'queries')
+      .score_transcript(transcript.id)
       .subscribe(
         res => {
           this.queryResults = res;
@@ -101,6 +85,7 @@ export class CorpusComponent implements OnInit {
           this.downloadJsonHref = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(this.queryResults));
         },
         err => {
+          console.log(err);
           this.messages.push({ severity: 'error', summary: 'Error querying.', detail: err });
         });
   }

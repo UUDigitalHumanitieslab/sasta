@@ -54,14 +54,6 @@
                         [(ngModel)]="currentTam" showClear="true" [disabled]="!tams?.length > 0" appendTo="body">
                     </p-dropdown>
                 </div>
-                <p-dropdown [options]="phaseOps" optionLabel="name" name="phaseOp-dropdown" placeholder="Operator"
-                    [(ngModel)]="phaseOp" showClear="true" [disabled]="currentPhase?.name=='all'" appendTo="body">
-                </p-dropdown>
-                <div class="control">
-                    <p-dropdown [options]="phases" optionLabel="name" name="phase-dropdown" placeholder="Phase (>=)"
-                        [(ngModel)]="currentPhase" showClear="true" appendTo="body">
-                    </p-dropdown>
-                </div>
                 <div class="control">
                     <button class="button is-primary" [disabled]="!currentTam">Score</button>
                 </div>
