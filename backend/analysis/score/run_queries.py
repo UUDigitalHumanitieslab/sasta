@@ -1,14 +1,44 @@
 from ..utils import v1_to_xlsx
 from collections import Counter
-from typing import Union
+from typing import Union, List
+from bs4 import BeautifulSoup as Soup
 
+from operator import attrgetter
 from django.db.models import Q
 from lxml import etree as ET
+import json
 
 from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
 
 import logging
 logger = logging.getLogger('sasta')
+
+
+class UtteranceWord:
+    def __init__(self, word: str, begin: int, end: int, hits: List[str]):
+        self.word = word
+        self.begin = begin
+        self.end = end
+        self.hits = hits
+
+    def __str__(self):
+        return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'
+
+    def __repr__(self):
+        return self.__str__()
+
+
+def utt_from_tree(tree: str):
+    # From a LASSY syntax tree, construct utterance representation
+    # Output: sorted list of UtteranceWord instances
+    soup = Soup(tree, 'lxml')
+    utt = soup.alpino_ds
+
+    words = utt.findAll('node', {'word': True})
+    utt_words = [UtteranceWord(w.get('word'), w.get(
+        'begin'), w.get('end'), []) for w in words]
+
+    return sorted(utt_words, key=attrgetter('begin'))
 
 
 def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
@@ -39,7 +69,18 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
 
     utterances = Utterance.objects.filter(transcript=transcript)
 
-    v1_results = {
+    v1 = v1_results(transcript, method, utterances, queries_with_funcs)
+    # v1_to_xlsx(v1_results, '/Users/3248526/Documents/v1_test.xlsx')
+
+    v2 = v2_results(transcript, method, utterances, queries_with_funcs)
+
+    logger.info(f'Succes querying {transcript.name}')
+    return v1
+
+
+def v1_results(transcript, method, utterances, queries_with_funcs):
+    # simple counts aggregate, grouped by query
+    results = {
         'transcript': transcript.name,
         'method': method.name,
         'results': {}
@@ -48,27 +89,60 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     for q in queries_with_funcs:
         query_res = single_query_single_transcript(q, utterances)
         if query_res:
-            v1_results['results'][q['q_id']] = {
+            results['results'][q['q_id']] = {
                 'id': q['q_id'],
                 'item': q['q_obj'].item,
                 'fase': q['q_obj'].phase or 0,
                 'matches': query_res
             }
-    # v1_to_xlsx(v1_results, '/Users/3248526/Documents/v1_test.xlsx')
-    logger.info(f'Succes querying {transcript.name}')
-    return v1_results
+    return results
+
+
+def v2_results(transcript, method, utterances, queries_with_funcs):
+    # match aggregate, grouped by utterance
+    results = {
+        'transcript': transcript.name,
+        'method': method.name,
+        'results': {}
+    }
+    for utt in utterances:
+        utt_res = []
+        utt_res = utt_from_tree(utt.parse_tree)
+
+        for q in queries_with_funcs:
+            q_res = single_query_single_utt(q['q_func'], utt)
+            for res in q_res:
+                res_begin = int(res.get('begin'))
+                hit = {
+                    'level': q['q_obj'].level,
+                    'item': q['q_obj'].item,
+                    'fase': q['q_obj'].phase
+                }
+                utt_res[res_begin].hits.append(hit)
+        results[utt.utt_id] = utt_res
+    return results
 
 
 def single_query_single_transcript(query_with_func, utterances):
     # run a single query over every utterance
     # return: counter with utt_ids and counts
     query_counter = Counter()
+    query_results = []
+
     for utt in utterances:
-        results = single_query_single_utt(query_with_func['q_func'], utt)
-        if results:
-            query_counter['total'] += results
-            query_counter[utt.utt_id] += results
-    return query_counter or None
+        single_q_res = single_query_single_utt(query_with_func['q_func'], utt)
+        if single_q_res:
+            # count the hits for v1 results
+            query_counter['total'] += len(single_q_res)
+            query_counter[utt.utt_id] += len(single_q_res)
+
+            # record hits (begin position) for v2 results
+            query_results.append({
+                'utt_id': utt.utt_id,
+                'hits': [res.get('begin') for res in single_q_res]
+            })
+
+    return (query_counter, query_results) or None
 
 
 def single_query_single_utt(query_func, utt_obj):
@@ -76,7 +150,7 @@ def single_query_single_utt(query_func, utt_obj):
     # return list of matches
     try:
         results = query_func(ET.fromstring(utt_obj.parse_tree))
-        return len(results)
+        return results
     except Exception as e:
         logger.warning(f'Failed to execute {query_func}')
 
@@ -88,7 +162,7 @@ def filter_queries(method: AssessmentMethod, phase: int = None, phase_exact: boo
                     False returns everything up to that phase (e.g. for 3 -> 1,2,3)
     '''
     try:
-        all_queries = AssessmentQuery.objects.filter(
+        all_queries = AssessmentQuery.objects.all().filter(
             Q(method=method) & Q(query__isnull=False))
         if phase:
             phase_filter = Q(phase=phase) if phase_exact else Q(
