@@ -1,4 +1,5 @@
 # from models import AssessmentMethod, AssessmentQuery
+from operator import itemgetter
 import logging
 import os
 from typing import Any, Dict
@@ -111,15 +112,24 @@ def v1_to_xlsx(data: Dict[str, Any], out_path: str):
         worksheet = wb.active
 
         # header
-        worksheet.append(['Query', 'Utterance', 'Matches'])
+        worksheet.append(['Query', 'Item', 'Fase', 'Utterance', 'Matches'])
         header = worksheet["1:1"]
         for cell in header:
             cell.font = Font(bold=True)
+        items = data['results'].items()
+        print(sorted(items, key=lambda x: x[1]['fase']))
 
-        for key in sorted(data['results'].keys()):
-            counter = data['results'][key]
+        for key, entry in sorted(data['results'].items(), key=lambda x: x[1]['fase']):
+            entry = data['results'][key]
+            counter = entry['matches']
             for i, ele in enumerate(counter):
-                worksheet.append([key if i == 0 else None, ele, counter[ele]])
+                row = [key,
+                       entry['item'],
+                       entry['fase'] if entry['fase'] != 0 else 'nvt'
+                       ] if i == 0 else [None, None, None]
+                row += [ele, counter[ele]]
+
+                worksheet.append(row)
 
         wb.save(out_path)
         return out_path

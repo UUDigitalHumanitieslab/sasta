@@ -48,7 +48,14 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     for q in queries_with_funcs:
         query_res = single_query_single_transcript(q, utterances)
         if query_res:
-            v1_results['results'][q['q_id']] = query_res
+            v1_results['results'][q['q_id']] = {
+                'id': q['q_id'],
+                'item': q['q_obj'].item,
+                'fase': q['q_obj'].phase or 0,
+                'matches': query_res
+            }
+    # v1_to_xlsx(v1_results, '/Users/3248526/Documents/v1_test.xlsx')
+    logger.info(f'Succes querying {transcript.name}')
     return v1_results
 
 
@@ -59,8 +66,8 @@ def single_query_single_transcript(query_with_func, utterances):
     for utt in utterances:
         results = single_query_single_utt(query_with_func['q_func'], utt)
         if results:
+            query_counter['total'] += results
             query_counter[utt.utt_id] += results
-            # query_counter.update(utt.utt_id)
     return query_counter or None
 
 
