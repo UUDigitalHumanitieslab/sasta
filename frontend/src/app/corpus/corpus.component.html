@@ -55,7 +55,8 @@
                     </p-dropdown>
                 </div>
                 <div class="control">
-                    <button class="button is-primary" [disabled]="!currentTam">Score</button>
+                    <button class="button is-primary" [disabled]="!currentTam"
+                        [ngClass]="{'is-loading': querying}">Score</button>
                 </div>
 
             </div>

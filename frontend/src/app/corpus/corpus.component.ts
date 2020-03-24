@@ -35,6 +35,7 @@ export class CorpusComponent implements OnInit {
   displayScore: boolean = false;
   currentTranscript: Transcript;
   queryResults: any;
+  querying: boolean = false;
   downloadJsonHref: any;
   messages: { severity: string, summary: string, detail: string }[] = [];
 
@@ -73,10 +74,12 @@ export class CorpusComponent implements OnInit {
 
   scoreTranscript(transcript: Transcript) {
     this.messages = [];
+    this.querying = true;
     this.corpusService
       .score_transcript(transcript.id)
       .subscribe(
         res => {
+          this.querying = false;
           this.queryResults = res;
           window.setTimeout(() => {
             //TODO: remove this ugly construct
@@ -87,6 +90,8 @@ export class CorpusComponent implements OnInit {
         err => {
           console.log(err);
           this.messages.push({ severity: 'error', summary: 'Error querying.', detail: err });
+          this.querying = false;
         });
+
   }
 }
