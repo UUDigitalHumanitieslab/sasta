@@ -14,6 +14,11 @@ export class CorpusService {
     return await this.httpClient.get<Corpus[]>('api/corpora/').toPromise();
   }
 
+  list_obs(): Observable<Corpus[]> {
+    return this.httpClient.get<Corpus[]>('api/corpora/')
+  }
+
+
   get_by_id(id): Observable<Corpus> {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/`);
   }

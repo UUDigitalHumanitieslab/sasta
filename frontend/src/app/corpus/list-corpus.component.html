@@ -1,25 +1,27 @@
-<table class="table is-fullwidth is-hoverable" *ngIf="corpora.length > 0">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>uploads (#)</th>
-            <th>transcripts (#)</th>
-            <th class="has-text-right">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let corpus of corpora" [routerLink]="['/corpora/', corpus.id]">
-            <td>{{corpus.name}}</td>
-            <td>{{corpus?.files?.length || '0'}}</td>
-            <td>{{corpus?.transcripts?.length || '0'}}</td>
-            <td class="has-text-right">{{corpus.status}}</td>
-        </tr>
-    </tbody>
-</table>
+<ng-container *ngIf="corpora">
+    <table class="table is-fullwidth is-hoverable" *ngIf="corpora.length > 0">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>uploads (#)</th>
+                <th>transcripts (#)</th>
+                <th class="has-text-right">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let corpus of corpora" [routerLink]="['/corpora/', corpus.id]">
+                <td>{{corpus.name}}</td>
+                <td>{{corpus?.files?.length || '0'}}</td>
+                <td>{{corpus?.transcripts?.length || '0'}}</td>
+                <td class="has-text-right">{{corpus.status}}</td>
+            </tr>
+        </tbody>
+    </table>
 
-<h1 *ngIf="corpora.length ==0" class="title is-2">
-    No corpora yet!
-    <a [routerLink]="['/upload']" routerLinkActive="is-active">
-        Upload
-    </a>
-</h1>
+    <h1 *ngIf="corpora.length ==0" class="title is-2">
+        No corpora yet!
+        <a [routerLink]="['/upload']" routerLinkActive="is-active">
+            Upload
+        </a>
+    </h1>
+</ng-container>
