@@ -1,4 +1,4 @@
-from ..utils import v1_to_xlsx
+from ..utils import v1_to_xlsx, v2_to_xlsx
 from collections import Counter
 from typing import Union, List
 from bs4 import BeautifulSoup as Soup
@@ -73,6 +73,7 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     # v1_to_xlsx(v1_results, '/Users/3248526/Documents/v1_test.xlsx')
 
     v2 = v2_results(transcript, method, utterances, queries_with_funcs)
+    # v2_to_xlsx(v2, '/Users/3248526/Documents/v2_test.xlsx')
 
     logger.info(f'Succes querying {transcript.name}')
     return v1
@@ -103,6 +104,7 @@ def v2_results(transcript, method, utterances, queries_with_funcs):
     results = {
         'transcript': transcript.name,
         'method': method.name,
+        'levels': set([]),
         'results': {}
     }
     for utt in utterances:
@@ -118,8 +120,9 @@ def v2_results(transcript, method, utterances, queries_with_funcs):
                     'item': q['q_obj'].item,
                     'fase': q['q_obj'].phase
                 }
+                results['levels'].add(q['q_obj'].level)
                 utt_res[res_begin].hits.append(hit)
-        results[utt.utt_id] = utt_res
+        results['results'][utt.utt_id] = utt_res
     return results
 
 

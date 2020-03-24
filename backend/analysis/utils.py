@@ -17,6 +17,9 @@ from openpyxl.styles import Font, Color
 
 logger = logging.getLogger('sasta')
 
+ROMAN_NUMS = [None, 'I', 'II', 'III',
+              'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
+
 
 def iter_paragraphs(parent, recursive=True):
     """
@@ -135,3 +138,50 @@ def v1_to_xlsx(data: Dict[str, Any], out_path: str):
         return out_path
     except Exception as e:
         logger.exception(e)
+
+
+def v2_to_xlsx(data: Dict[str, Any], out_path: str):
+    wb = Workbook()
+    worksheet = wb.active
+
+    items = sorted(data['results'].items())
+    max_words = max([len(words) for (_, words) in items])
+    word_headers = [f'Word{i}' for i in range(1, max_words+1)]
+    headers = ['ID', 'Level'] + word_headers + ['Dummy', 'Fases', 'Parafrase']
+    worksheet.append(headers)
+    levels = sorted(list(data['levels']))
+
+    for utt_id, words in items:
+        # Utt row, containing the word tokens
+        words_row = [utt_id, 'Utt'] + [w.word for w in words]
+
+        # trailing empty cells, necesarry?
+        words_row += [None]*(len(headers) - len(words_row))
+
+        # a cell for each word, and one to record phases
+        level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [set([])]
+                      for level in levels]
+
+        # iterate over hits
+        # fill in items on their respective level
+        # leaving cells without hits as None
+        for i_word, word in enumerate(words):
+            for hit in word.hits:
+                i_level = levels.index(hit['level'])
+                level_rows[i_level][i_word+2].add(hit['item'])
+                try:
+                    level_rows[i_level][-1].add(ROMAN_NUMS[int(hit['fase'])])
+                except:
+                    pass
+
+        worksheet.append(words_row)
+        # condense cells and append to xlsx
+        for row in level_rows:
+
+            row = [','.join(sorted(cell)) or None
+                   if isinstance(cell, set)
+                   else cell
+                   for cell in row]
+            worksheet.append(row)
+
+    wb.save(out_path)
