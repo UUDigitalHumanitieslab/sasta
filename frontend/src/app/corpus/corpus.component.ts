@@ -72,6 +72,31 @@ export class CorpusComponent implements OnInit {
     this.downloadJsonHref = null;
   }
 
+  downloadFile(data: any) {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    const url = window.URL.createObjectURL(blob);
+    this.sanitizer.bypassSecurityTrustUrl(url);
+    window.open(url);
+  }
+
+  annotateTranscript(transcript: Transcript, method: Method) {
+    this.messages = [];
+    this.querying = true;
+    this.corpusService
+      .annotate_transcript(transcript.id, method.name)
+      .subscribe(
+        response => {
+          this.downloadFile(response.body);
+          this.querying = false;
+        },
+        err => {
+          console.log(err);
+          this.messages.push({ severity: 'error', summary: 'Error querying.', detail: err });
+          this.querying = false;
+        }
+      );
+  }
+
   scoreTranscript(transcript: Transcript) {
     this.messages = [];
     this.querying = true;

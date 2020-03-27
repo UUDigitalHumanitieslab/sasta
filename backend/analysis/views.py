@@ -10,7 +10,7 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer, Transcri
 
 from django.http import HttpRequest, JsonResponse, HttpResponse
 
-from .score.run_queries import query_transcript
+from .score.run_queries import query_transcript, v1_to_xlsx, v2_to_xlsx, annotate_transcript
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
@@ -30,6 +30,22 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         v1res = query_transcript(transcript, method)
 
         return JsonResponse(v1res)
+
+    @action(detail=True, methods=['POST'], name='Annotate')
+    def annotate(self, request, *args, **kwargs):
+        transcript = self.get_object()
+        method = AssessmentMethod.objects.first()
+
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+        v2res = annotate_transcript(transcript, method)
+        spreadsheet = v2_to_xlsx(v2res, response)
+        print(response)
+        spreadsheet.save(response)
+
+        return response
 
 
 class CorpusViewSet(viewsets.ModelViewSet):

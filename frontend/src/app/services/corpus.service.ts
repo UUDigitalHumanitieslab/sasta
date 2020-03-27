@@ -30,5 +30,12 @@ export class CorpusService {
     return this.httpClient.post<any>(`api/transcripts/${id}/score/`, formData)
   }
 
+  annotate_transcript(id, method): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('method', method);
+
+    return this.httpClient.post(`api/transcripts/${id}/annotate/`, formData, { observe: 'response', responseType: 'blob' });
+  }
+
 }
 

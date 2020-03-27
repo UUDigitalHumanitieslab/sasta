@@ -61,6 +61,19 @@ def compile_queries(queries):
     return query_funcs
 
 
+def annotate_transcript(transcript: Transcript, method: AssessmentMethod):
+    logger.info(f'Annotating {transcript.name}')
+    queries = filter_queries(method)
+    queries_with_funcs = compile_queries(queries)
+    utterances = Utterance.objects.filter(transcript=transcript)
+
+    results = v2_results(transcript, method, utterances, queries_with_funcs)
+    # spreadsheet = v2_to_xlsx(v2)
+
+    logger.info(f'Succes, annotated {transcript.name}')
+    return results
+
+
 def query_transcript(transcript: Transcript, method: AssessmentMethod):
     logger.info(f'Start querying {transcript.name}')
 

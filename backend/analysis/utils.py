@@ -106,7 +106,7 @@ def create_query_from_series(series: pd.Series, method) -> None:
         pass
 
 
-def v1_to_xlsx(data: Dict[str, Any], out_path: str):
+def v1_to_xlsx(data: Dict[str, Any], dest):
     # writes the v1 results as excel file
     # rows contain query_id, utt_id, and number of matches
     # query_id is only written if different from previous row
@@ -120,68 +120,76 @@ def v1_to_xlsx(data: Dict[str, Any], out_path: str):
         for cell in header:
             cell.font = Font(bold=True)
         items = data['results'].items()
-        print(sorted(items, key=lambda x: x[1]['fase']))
+        # print(sorted(items, key=lambda x: x[1]['fase']))
 
         for key, entry in sorted(data['results'].items(), key=lambda x: x[1]['fase']):
             entry = data['results'][key]
+            print(entry)
             counter = entry['matches']
             for i, ele in enumerate(counter):
                 row = [key,
                        entry['item'],
                        entry['fase'] if entry['fase'] != 0 else 'nvt'
                        ] if i == 0 else [None, None, None]
+                print(counter, ele)
                 row += [ele, counter[ele]]
 
                 worksheet.append(row)
-
-        wb.save(out_path)
-        return out_path
+        print(wb)
+        return wb
     except Exception as e:
         logger.exception(e)
 
 
 def v2_to_xlsx(data: Dict[str, Any], out_path: str):
-    wb = Workbook()
-    worksheet = wb.active
+    try:
+        wb = Workbook()
+        worksheet = wb.active
 
-    items = sorted(data['results'].items())
-    max_words = max([len(words) for (_, words) in items])
-    word_headers = [f'Word{i}' for i in range(1, max_words+1)]
-    headers = ['ID', 'Level'] + word_headers + ['Dummy', 'Fases', 'Parafrase']
-    worksheet.append(headers)
-    levels = sorted(list(data['levels']))
+        items = sorted(data['results'].items())
+        max_words = max([len(words) for (_, words) in items])
+        word_headers = [f'Word{i}' for i in range(1, max_words+1)]
+        headers = ['ID', 'Level'] + word_headers + \
+            ['Dummy', 'Fases', 'Parafrase']
+        worksheet.append(headers)
+        levels = sorted(list(data['levels']))
 
-    for utt_id, words in items:
-        # Utt row, containing the word tokens
-        words_row = [utt_id, 'Utt'] + [w.word for w in words]
+        for utt_id, words in items:
+            # Utt row, containing the word tokens
+            words_row = [utt_id, 'Utt'] + [w.word for w in words]
 
-        # trailing empty cells, necesarry?
-        words_row += [None]*(len(headers) - len(words_row))
+            # trailing empty cells, necesarry?
+            words_row += [None]*(len(headers) - len(words_row))
 
-        # a cell for each word, and one to record phases
-        level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [set([])]
-                      for level in levels]
+            # a cell for each word, and one to record phases
+            level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [set([])]
+                          for level in levels]
 
-        # iterate over hits
-        # fill in items on their respective level
-        # leaving cells without hits as None
-        for i_word, word in enumerate(words):
-            for hit in word.hits:
-                i_level = levels.index(hit['level'])
-                level_rows[i_level][i_word+2].add(hit['item'])
-                try:
-                    level_rows[i_level][-1].add(ROMAN_NUMS[int(hit['fase'])])
-                except:
-                    pass
+            # iterate over hits
+            # fill in items on their respective level
+            # leaving cells without hits as None
+            for i_word, word in enumerate(words):
+                for hit in word.hits:
+                    i_level = levels.index(hit['level'])
+                    level_rows[i_level][i_word+2].add(hit['item'])
+                    try:
+                        level_rows[i_level][-1].add(
+                            ROMAN_NUMS[int(hit['fase'])])
+                    except:
+                        pass
 
-        worksheet.append(words_row)
-        # condense cells and append to xlsx
-        for row in level_rows:
+            worksheet.append(words_row)
+            # condense cells and append to xlsx
+            for row in level_rows:
 
-            row = [','.join(sorted(cell)) or None
-                   if isinstance(cell, set)
-                   else cell
-                   for cell in row]
-            worksheet.append(row)
+                row = [','.join(sorted(cell)) or None
+                       if isinstance(cell, set)
+                       else cell
+                       for cell in row]
+                worksheet.append(row)
 
-    wb.save(out_path)
+        # wb.save(out_path)
+        return wb
+    except Exception as e:
+        print(e)
+    # return(out_path)
