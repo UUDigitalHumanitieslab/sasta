@@ -8,6 +8,7 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
 import { Dialog } from 'primeng/dialog';
 import { MethodService } from '../services/method.service';
 import { Method } from '../models/method';
+import { saveAs } from 'file-saver';
 
 
 
@@ -72,11 +73,9 @@ export class CorpusComponent implements OnInit {
     this.downloadJsonHref = null;
   }
 
-  downloadFile(data: any) {
+  downloadFile(data: any, filename: string) {
     const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-    const url = window.URL.createObjectURL(blob);
-    this.sanitizer.bypassSecurityTrustUrl(url);
-    window.open(url);
+    saveAs(blob, filename);
   }
 
   annotateTranscript(transcript: Transcript, method: Method) {
@@ -86,7 +85,7 @@ export class CorpusComponent implements OnInit {
       .annotate_transcript(transcript.id, method.name)
       .subscribe(
         response => {
-          this.downloadFile(response.body);
+          this.downloadFile(response.body, `${transcript.name}_SAF.xlsx`);
           this.querying = false;
         },
         err => {
