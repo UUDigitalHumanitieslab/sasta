@@ -13,7 +13,7 @@ import pandas as pd
 from django.db.utils import IntegrityError
 from docx import Document
 from openpyxl import Workbook
-from openpyxl.styles import Font, Color
+from openpyxl.styles import Font, Color, PatternFill
 
 logger = logging.getLogger('sasta')
 
@@ -187,6 +187,20 @@ def v2_to_xlsx(data: Dict[str, Any], out_path: str):
                        else cell
                        for cell in row]
                 worksheet.append(row)
+
+        # Formatting
+        header = worksheet["1:1"]
+        for cell in header:
+            # bold headers
+            cell.font = Font(bold=True)
+
+        nth_row = len(levels) + 1
+        for i, row in enumerate(worksheet.rows):
+            # yellow background for each utterance row
+            if i % nth_row == 1:
+                for cell in row:
+                    cell.fill = PatternFill(
+                        start_color="ffff00", end_color="ffff00", fill_type="solid")
 
         # wb.save(out_path)
         return wb

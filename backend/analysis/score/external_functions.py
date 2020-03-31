@@ -8,6 +8,6 @@ def getcompounds(syntree):
         w = t.get('word')
         pt = t.get('pt')
         # if pt == 'n' and iscompound(w):
-        if pt == 'n':
-            results.append(t)
+        # if pt == 'n':
+        #     results.append(t)
     return results
