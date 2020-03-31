@@ -1,8 +1,8 @@
 import os
 from uuid import uuid4
-
+import csv
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 from .utils import read_TAM
@@ -13,6 +13,40 @@ from django.contrib.auth.models import User
 
 import logging
 logger = logging.getLogger('sasta')
+
+
+class Compound(models.Model):
+    HeadDiaNew = models.CharField(max_length=100)
+    FlatClass = models.CharField(max_length=100)
+    Class = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.HeadDiaNew
+
+
+class CompoundFile(models.Model):
+    content = models.FileField(
+        upload_to=os.path.join('files', 'compoundfiles'))
+
+    def __str__(self):
+        return os.path.split(self.content.name)[1]
+
+
+@receiver(post_save, sender=CompoundFile)
+def save_compounds(sender, instance, **kwargs):
+    Compound.objects.all().delete()
+    with open(instance.content.path) as f:
+        data = csv.reader(f, delimiter='\\')
+        compounds = []
+        for i, row in enumerate(data):
+            compounds.append(
+                Compound(HeadDiaNew=row[1], FlatClass=row[0], Class=row[2]))
+        Compound.objects.bulk_create(compounds)
+
+
+@receiver(post_delete, sender=CompoundFile)
+def file_delete(sender, instance, **kwargs):
+    instance.content.delete(False)
 
 
 class Corpus(models.Model):
