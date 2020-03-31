@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup as Soup
 from operator import attrgetter
 from django.db.models import Q
 from lxml import etree as ET
-import json
+from . import external_functions
 
 from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
 
@@ -43,11 +43,14 @@ def utt_from_tree(tree: str):
 
 def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
     try:
+        if query in dir(external_functions):
+            return getattr(external_functions, query)
         return ET.XPath(query)
-    except ET.XPathEvalError as error:
-        # TODO: python functions
-        logger.warning(f'cannot compile {query.strip()}:\t{error}')
-        return None
+    # except ET.XPathEvalError as error:
+    #     # TODO: python functions
+    #     # logger.warning(f'cannot compile {query.strip()}:\t{error}')
+    #     external_method = getattr(external_functions, query)
+    #     return external_method
     except Exception as error:
         logger.warning(f'cannot compile {query.strip()}:\t{error}')
         return None

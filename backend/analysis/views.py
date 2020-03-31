@@ -42,7 +42,6 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         v2res = annotate_transcript(transcript, method)
         spreadsheet = v2_to_xlsx(v2res, response)
-        print(response)
         spreadsheet.save(response)
 
         return response
