@@ -1,17 +1,18 @@
-import os
-from uuid import uuid4
 import csv
+import logging
+import os
+import shutil
+from uuid import uuid4
+
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-
-from .utils import read_TAM
+from django.conf import settings
 
 from .permissions import IsOwner, IsOwnerOrAdmin
+from .utils import read_TAM
 
-from django.contrib.auth.models import User
-
-import logging
 logger = logging.getLogger('sasta')
 
 
@@ -44,11 +45,6 @@ def save_compounds(sender, instance, **kwargs):
         Compound.objects.bulk_create(compounds)
 
 
-@receiver(post_delete, sender=CompoundFile)
-def file_delete(sender, instance, **kwargs):
-    instance.content.delete(False)
-
-
 class Corpus(models.Model):
     user = models.ForeignKey(
         User, related_name='corpora', on_delete=models.PROTECT)
@@ -61,6 +57,12 @@ class Corpus(models.Model):
 
     class Meta:
         verbose_name_plural = 'corpora'
+
+
+@receiver(post_delete, sender=Corpus)
+def corpus_delete(sender, instance, **kwargs):
+    corpus_dir = os.path.join(settings.MEDIA_ROOT, 'files', str(instance.uuid))
+    shutil.rmtree(corpus_dir, ignore_errors=True)
 
 
 class Transcript(models.Model):
@@ -80,6 +82,12 @@ class Transcript(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_delete, sender=Transcript)
+def transcript_delete(sender, instance, **kwargs):
+    instance.content.delete(False)
+    instance.parsed_content.delete(False)
 
 
 class Utterance(models.Model):
@@ -158,3 +166,10 @@ class AssessmentQuery(models.Model):
 
     class Meta:
         unique_together = ('method', 'query_id')
+
+
+@receiver(post_delete, sender=UploadFile)
+@receiver(post_delete, sender=AssessmentMethod)
+@receiver(post_delete, sender=CompoundFile)
+def file_delete(sender, instance, **kwargs):
+    instance.content.delete(False)
