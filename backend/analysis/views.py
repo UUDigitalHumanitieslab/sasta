@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
 from .models import AssessmentMethod, Corpus, Transcript, UploadFile
-from .serializers import (AssessmentMethodSerializer, CorpusSerializer, TranscriptSerializer,
-                          UploadFileSerializer)
-
-from django.http import HttpResponse
-
-from .score.run_queries import query_transcript, v1_to_xlsx, v2_to_xlsx, annotate_transcript
+from .score.run_queries import annotate_transcript, query_transcript
+from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
+                          TranscriptSerializer, UploadFileSerializer)
+from .utils import v1_to_xlsx, v2_to_xlsx
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
