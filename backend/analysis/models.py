@@ -155,11 +155,14 @@ class AssessmentQuery(models.Model):
     implies = models.CharField(max_length=50, blank=True, null=True)
     original = models.BooleanField()
     pages = models.CharField(max_length=50, blank=True, null=True)
-    phase = models.IntegerField(blank=True, null=True)
+    fase = models.IntegerField(blank=True, null=True)
+    inform = models.BooleanField()
     query = models.CharField(max_length=500, blank=True, null=True)
     screening = models.BooleanField()
+    process = models.IntegerField()
+    special1 = models.CharField(max_length=50, blank=True, null=True)
+    special2 = models.CharField(max_length=50, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
-    inform = models.BooleanField()
 
     def __str__(self):
         return self.query_id
