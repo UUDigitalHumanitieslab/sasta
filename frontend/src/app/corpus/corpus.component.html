@@ -47,7 +47,7 @@
 <p-dialog header="{{currentTranscript?.name}}" [(visible)]="displayScore" (onHide)="closeDialog()"
     [dismissableMask]="true" [modal]="true">
     <ng-container *ngIf="currentTranscript">
-        <form (submit)="annotateTranscript(currentTranscript, currentTam)">
+        <form (submit)="performQuerying(currentTranscript, currentTam)">
             <div class="field is-grouped">
                 <div class="control">
                     <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown" placeholder="Assessment Method"
@@ -55,10 +55,13 @@
                     </p-dropdown>
                 </div>
                 <div class="control">
-                    <button class="button is-primary" [disabled]="!currentTam"
+                    <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
+                        [ngClass]="{'is-loading': querying}">Query</button>
+                </div>
+                <div class="control">
+                    <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
                         [ngClass]="{'is-loading': querying}">Annotate</button>
                 </div>
-
             </div>
         </form>
         <p-messages [(value)]="messages" [closable]="false"></p-messages>

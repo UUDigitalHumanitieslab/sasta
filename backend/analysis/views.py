@@ -25,20 +25,28 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Score transcript')
     def score(self, request, *args, **kwargs):
         transcript = self.get_object()
-        method = AssessmentMethod.objects.first()
+        method_name = request.data.get('method')
+        method = AssessmentMethod.objects.filter(name=method_name).first()
+
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
         v1res = query_transcript(transcript, method)
+        spreadsheet = v1_to_xlsx(v1res, response)
+        spreadsheet.save(response)
 
-        return JsonResponse(v1res)
+        return response
 
     @action(detail=True, methods=['POST'], name='Annotate')
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
-        method = AssessmentMethod.objects.first()
+        method_name = request.data.get('method')
+        method = AssessmentMethod.objects.filter(name=method_name).first()
 
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = "attachment; filename=test.xlsx"
+        response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
         v2res = annotate_transcript(transcript, method)
         spreadsheet = v2_to_xlsx(v2res, response)

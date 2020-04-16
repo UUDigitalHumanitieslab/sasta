@@ -35,6 +35,7 @@ export class CorpusComponent implements OnInit {
 
   displayScore: boolean = false;
   currentTranscript: Transcript;
+  queryAction: "annotate" | "query";
   queryResults: any;
   querying: boolean = false;
   downloadJsonHref: any;
@@ -78,6 +79,15 @@ export class CorpusComponent implements OnInit {
     saveAs(blob, filename);
   }
 
+  performQuerying(transcript: Transcript, method: Method) {
+    if (this.queryAction == 'annotate') {
+      this.annotateTranscript(transcript, method);
+    }
+    if (this.queryAction == 'query') {
+      this.queryTranscript(transcript, method);
+    }
+  }
+
   annotateTranscript(transcript: Transcript, method: Method) {
     this.messages = [];
     this.querying = true;
@@ -96,20 +106,15 @@ export class CorpusComponent implements OnInit {
       );
   }
 
-  scoreTranscript(transcript: Transcript) {
+  queryTranscript(transcript: Transcript, method: Method) {
     this.messages = [];
     this.querying = true;
     this.corpusService
-      .score_transcript(transcript.id)
+      .score_transcript(transcript.id, method.name)
       .subscribe(
-        res => {
+        response => {
+          this.downloadFile(response.body, `${transcript.name}_matches.xlsx`);
           this.querying = false;
-          this.queryResults = res;
-          window.setTimeout(() => {
-            //TODO: remove this ugly construct
-            this.dialog.positionOverlay();
-          });
-          this.downloadJsonHref = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(this.queryResults));
         },
         err => {
           console.log(err);

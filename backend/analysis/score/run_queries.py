@@ -110,7 +110,7 @@ def v1_results(transcript, method, utterances, queries_with_funcs):
                 'id': q['q_id'],
                 'item': q['q_obj'].item,
                 'fase': q['q_obj'].phase or 0,
-                'matches': query_res
+                'matches': query_res[0]
             }
     return results
 

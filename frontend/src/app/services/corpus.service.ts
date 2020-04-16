@@ -23,17 +23,15 @@ export class CorpusService {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/`);
   }
 
-  score_transcript(id): Observable<any> {
+  score_transcript(id, method): Observable<any> {
     const formData: FormData = new FormData();
-    formData.append('method', 'todo_method')
-
-    return this.httpClient.post<any>(`api/transcripts/${id}/score/`, formData)
+    formData.append('method', method)
+    return this.httpClient.post(`api/transcripts/${id}/score/`, formData, { observe: 'response', responseType: 'blob' })
   }
 
   annotate_transcript(id, method): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('method', method);
-
     return this.httpClient.post(`api/transcripts/${id}/annotate/`, formData, { observe: 'response', responseType: 'blob' });
   }
 

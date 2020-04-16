@@ -119,12 +119,9 @@ def v1_to_xlsx(data: Dict[str, Any], dest):
         header = worksheet["1:1"]
         for cell in header:
             cell.font = Font(bold=True)
-        items = data['results'].items()
-        # print(sorted(items, key=lambda x: x[1]['fase']))
 
         for key, entry in sorted(data['results'].items(), key=lambda x: x[1]['fase']):
             entry = data['results'][key]
-            print(entry)
             counter = entry['matches']
             for i, ele in enumerate(counter):
                 row = [key,
@@ -133,9 +130,7 @@ def v1_to_xlsx(data: Dict[str, Any], dest):
                        ] if i == 0 else [None, None, None]
                 print(counter, ele)
                 row += [ele, counter[ele]]
-
                 worksheet.append(row)
-        print(wb)
         return wb
     except Exception as e:
         logger.exception(e)
