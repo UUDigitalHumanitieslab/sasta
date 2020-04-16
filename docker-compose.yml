@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+    alpino:
+        image: rugcompling/alpino:latest
+        command: Alpino -notk -veryfast user_max=600000 server_kind=parse server_port=7001 assume_input_is_tokenized=on end_hook=xml -init_dict_p batch_command=alpino_server
+        ports:
+            - "7001:7001"
