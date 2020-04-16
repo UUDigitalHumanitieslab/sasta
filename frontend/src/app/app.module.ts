@@ -16,6 +16,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
@@ -33,6 +34,7 @@ import { MethodComponent } from './method/method.component';
 import { UploadComponent } from './upload/upload.component';
 
 import { effects, reducers } from './store';
+
 
 
 
@@ -76,7 +78,7 @@ import { effects, reducers } from './store';
         ToastModule,
         TooltipModule,
     ],
-    providers: [],
+    providers: [MessageService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
