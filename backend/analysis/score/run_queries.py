@@ -1,16 +1,15 @@
-from ..utils import v1_to_xlsx, v2_to_xlsx
+import logging
 from collections import Counter
-from typing import Union, List
-from bs4 import BeautifulSoup as Soup
-
 from operator import attrgetter
+from typing import List, Union
+
+from bs4 import BeautifulSoup as Soup
 from django.db.models import Q
 from lxml import etree as ET
-from . import external_functions
 
 from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
+from . import external_functions
 
-import logging
 logger = logging.getLogger('sasta')
 
 
@@ -46,11 +45,6 @@ def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
         if query in dir(external_functions):
             return getattr(external_functions, query)
         return ET.XPath(query)
-    # except ET.XPathEvalError as error:
-    #     # TODO: python functions
-    #     # logger.warning(f'cannot compile {query.strip()}:\t{error}')
-    #     external_method = getattr(external_functions, query)
-    #     return external_method
     except Exception as error:
         logger.warning(f'cannot compile {query.strip()}:\t{error}')
         return None
@@ -130,14 +124,15 @@ def v2_results(transcript, method, utterances, queries_with_funcs):
         for q in queries_with_funcs:
             q_res = single_query_single_utt(q['q_func'], utt)
             for res in q_res:
-                res_begin = int(res.get('begin'))
-                hit = {
-                    'level': q['q_obj'].level,
-                    'item': q['q_obj'].item,
-                    'fase': q['q_obj'].fase
-                }
-                results['levels'].add(q['q_obj'].level)
-                utt_res[res_begin].hits.append(hit)
+                if q['q_obj'].original and q['q_obj'].inform:
+                    res_begin = int(res.get('begin'))
+                    hit = {
+                        'level': q['q_obj'].level,
+                        'item': q['q_obj'].item,
+                        'fase': q['q_obj'].fase
+                    }
+                    results['levels'].add(q['q_obj'].level)
+                    utt_res[res_begin].hits.append(hit)
         results['results'][utt.utt_id] = utt_res
     return results
 
@@ -170,7 +165,7 @@ def single_query_single_utt(query_func, utt_obj):
     try:
         results = query_func(ET.fromstring(utt_obj.parse_tree))
         return results
-    except Exception as e:
+    except Exception:
         logger.warning(f'Failed to execute {query_func}')
 
 
