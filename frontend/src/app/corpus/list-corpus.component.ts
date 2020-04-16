@@ -20,15 +20,7 @@ export class ListCorpusComponent implements OnInit {
   subscriptions: Subscription[];
   corpora: Corpus[];
 
-  constructor(private store: Store<storeStructure>, private route: Router, private corpusService: CorpusService) {
-    // this.subscriptions = [
-    //   this.store.pipe(select('corpora')).subscribe((corpora: Corpus[]) => {
-    //     this.corpora = corpora;
-    //   }),
-    //   interval(UPDATE_INTERVAL).pipe(startWith(0)).subscribe(() => {
-    //     store.dispatch(refreshList({}));
-    //   })
-    // ];
+  constructor(private corpusService: CorpusService) {
   }
 
 
