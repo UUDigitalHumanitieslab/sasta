@@ -1,5 +1,3 @@
-# from models import AssessmentMethod, AssessmentQuery
-from operator import itemgetter
 import logging
 import os
 from typing import Any, Dict
@@ -13,7 +11,7 @@ import pandas as pd
 from django.db.utils import IntegrityError
 from docx import Document
 from openpyxl import Workbook
-from openpyxl.styles import Font, Color, PatternFill
+from openpyxl.styles import Font, PatternFill
 
 logger = logging.getLogger('sasta')
 
@@ -22,6 +20,8 @@ ROMAN_NUMS = [None, 'I', 'II', 'III',
 
 CORE_PROCESS_STR, POST_PROCESS_STR = 'core', 'post'
 CORE_PROCESS, POST_PROCESS = 0, 1
+
+LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 
 
 def iter_paragraphs(parent, recursive=True):
@@ -100,7 +100,7 @@ def read_TAM(method) -> None:
     for _i, series in dataframe.iterrows():
         # workaround for getting value to None instead of NaN
         try:
-            series.fase = int(series.phase)
+            series.fase = int(series.fase)
         except:
             series.fase = None
         series.process = getprocess(series.process)
@@ -140,7 +140,6 @@ def v1_to_xlsx(data: Dict[str, Any]):
                        entry['item'],
                        entry['fase'] if entry['fase'] != 0 else 'nvt'
                        ] if i == 0 else [None, None, None]
-                print(counter, ele)
                 row += [ele, counter[ele]]
                 worksheet.append(row)
         return wb
@@ -157,9 +156,10 @@ def v2_to_xlsx(data: Dict[str, Any]):
         max_words = max([len(words) for (_, words) in items])
         word_headers = [f'Word{i}' for i in range(1, max_words+1)]
         headers = ['ID', 'Level'] + word_headers + \
-            ['Dummy', 'Fases', 'Parafrase']
+            ['Dummy', 'Unaligned', 'Fases', 'Commentaar']
         worksheet.append(headers)
-        levels = sorted(list(data['levels']))
+        # levels = sorted(list(data['levels']))
+        levels = LEVELS
 
         for utt_id, words in items:
             # Utt row, containing the word tokens
@@ -169,7 +169,7 @@ def v2_to_xlsx(data: Dict[str, Any]):
             words_row += [None]*(len(headers) - len(words_row))
 
             # a cell for each word, and one to record phases
-            level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [set([])]
+            level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [None] + [[]]
                           for level in levels]
 
             # iterate over hits
@@ -180,7 +180,7 @@ def v2_to_xlsx(data: Dict[str, Any]):
                     i_level = levels.index(hit['level'])
                     level_rows[i_level][i_word+2].add(hit['item'])
                     try:
-                        level_rows[i_level][-1].add(
+                        level_rows[i_level][-1].append(
                             ROMAN_NUMS[int(hit['fase'])])
                     except:
                         pass
@@ -188,9 +188,8 @@ def v2_to_xlsx(data: Dict[str, Any]):
             worksheet.append(words_row)
             # condense cells and append to xlsx
             for row in level_rows:
-
                 row = [','.join(sorted(cell)) or None
-                       if isinstance(cell, set)
+                       if (isinstance(cell, set) or isinstance(cell, list))
                        else cell
                        for cell in row]
                 worksheet.append(row)

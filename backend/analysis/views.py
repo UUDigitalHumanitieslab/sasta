@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 
 from .models import AssessmentMethod, Corpus, Transcript, UploadFile
-from .serializers import (AssessmentMethodSerializer, CorpusSerializer, TranscriptSerializer,
-                          UploadFileSerializer)
-
-from django.http import HttpRequest, JsonResponse, HttpResponse
-
-from .score.run_queries import query_transcript, v1_to_xlsx, v2_to_xlsx, annotate_transcript
+from .score.run_queries import annotate_transcript, query_transcript
+from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
+                          TranscriptSerializer, UploadFileSerializer)
+from .utils import v1_to_xlsx, v2_to_xlsx
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
@@ -33,7 +32,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
         v1res = query_transcript(transcript, method)
-        spreadsheet = v1_to_xlsx(v1res, response)
+        spreadsheet = v1_to_xlsx(v1res)
         spreadsheet.save(response)
 
         return response
@@ -43,13 +42,12 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         transcript = self.get_object()
         method_name = request.data.get('method')
         method = AssessmentMethod.objects.filter(name=method_name).first()
-
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
         v2res = annotate_transcript(transcript, method)
-        spreadsheet = v2_to_xlsx(v2res, response)
+        spreadsheet = v2_to_xlsx(v2res)
         spreadsheet.save(response)
 
         return response
