@@ -1,6 +1,9 @@
+import errno
 import logging
 import os
+from shutil import copyfile
 from typing import Any, Dict
+from zipfile import ZipFile
 
 import docx.document
 import docx.oxml.table
@@ -8,6 +11,7 @@ import docx.oxml.text.paragraph
 import docx.table
 import docx.text.paragraph
 import pandas as pd
+from django.core.files import File
 from django.db.utils import IntegrityError
 from docx import Document
 from openpyxl import Workbook
@@ -22,6 +26,58 @@ CORE_PROCESS_STR, POST_PROCESS_STR = 'core', 'post'
 CORE_PROCESS, POST_PROCESS = 0, 1
 
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
+
+
+def extract(file):
+    file.status = 'extracting'
+    file.save()
+
+    try:
+        (origin_dir, filename) = os.path.split(file.content.path)
+        target_dir = origin_dir.replace('uploads', 'extracted')
+        # extract zipped files
+        if filename.lower().endswith(".zip"):
+            with ZipFile(file.content) as zipfile:
+                for zip_name in zipfile.namelist():
+                    zipfile.extract(zip_name, path=target_dir)
+                    extracted_path = os.path.join(target_dir, zip_name)
+                    create_transcript(file, extracted_path)
+        # copy all others
+        else:
+            try:
+                os.makedirs(target_dir)
+            except OSError as e:
+                if e.errno != errno.EEXIST:
+                    raise
+            new_path = os.path.join(target_dir, filename)
+            copyfile(file.content.path, os.path.join(target_dir, filename))
+            create_transcript(file, new_path)
+
+        file.status = 'extracted'
+        file.save()
+
+    except:
+        file.status = 'extraction-failed'
+        file.save()
+        raise
+
+
+def create_transcript(file, content_path):
+    from .models import Transcript  # pylint: disable=import-outside-toplevel
+    if content_path.endswith('.docx'):
+        docx_to_txt(content_path)
+        content_path = content_path.replace('.docx', '.txt')
+
+    _dir, filename = os.path.split(content_path)
+
+    with open(content_path, 'rb') as file_content:
+        transcript = Transcript(
+            name=filename.strip('.txt'),
+            status='created',
+            corpus=file.corpus
+        )
+        transcript.save()
+        transcript.content.save(filename, File(file_content))
 
 
 def iter_paragraphs(parent, recursive=True):
@@ -207,9 +263,6 @@ def v2_to_xlsx(data: Dict[str, Any]):
                 for cell in row:
                     cell.fill = PatternFill(
                         start_color="ffff00", end_color="ffff00", fill_type="solid")
-
-        # wb.save(out_path)
         return wb
     except Exception as e:
         print(e)
-    # return(out_path)
