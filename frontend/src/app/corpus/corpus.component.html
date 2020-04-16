@@ -65,15 +65,5 @@
             </div>
         </form>
         <p-messages [(value)]="messages" [closable]="false"></p-messages>
-        <div *ngIf="queryResults">
-            <div class="buttons">
-                <a title="Download JSON" [href]="downloadJsonHref" download="download.json"><button
-                        class="button is-primary">Download</button></a>
-            </div>
-            <ngx-json-viewer [json]="queryResults"></ngx-json-viewer>
-            <!-- <pre>
-                {{queryResults}}
-            </pre> -->
-        </div>
     </ng-container>
 </p-dialog>

@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
 import { ActivatedRoute } from '@angular/router';
 import { faFile, faFileCode, faFileExport, faCogs, faCalculator } from '@fortawesome/free-solid-svg-icons';
 import { Transcript } from '../models/transcript';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Dialog } from 'primeng/dialog';
 import { MethodService } from '../services/method.service';
 import { Method } from '../models/method';
@@ -36,12 +35,10 @@ export class CorpusComponent implements OnInit {
   displayScore: boolean = false;
   currentTranscript: Transcript;
   queryAction: "annotate" | "query";
-  queryResults: any;
   querying: boolean = false;
-  downloadJsonHref: any;
   messages: { severity: string, summary: string, detail: string }[] = [];
 
-  constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute, private sanitizer: DomSanitizer) {
+  constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
   }
 
@@ -70,8 +67,6 @@ export class CorpusComponent implements OnInit {
 
   closeDialog() {
     this.currentTranscript = null;
-    this.queryResults = null;
-    this.downloadJsonHref = null;
   }
 
   downloadFile(data: any, filename: string) {
