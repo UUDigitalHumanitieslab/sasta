@@ -15,6 +15,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToastModule } from 'primeng/toast';
 
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
@@ -72,6 +73,7 @@ import { effects, reducers } from './store';
         DropdownModule,
         MessageModule,
         MessagesModule,
+        ToastModule,
         TooltipModule,
     ],
     providers: [],

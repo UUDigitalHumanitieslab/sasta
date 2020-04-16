@@ -9,12 +9,15 @@ import { MethodService } from '../services/method.service';
 import { Method } from '../models/method';
 import { saveAs } from 'file-saver';
 
+import { MessageService } from 'primeng/api';
+
 
 
 @Component({
   selector: 'sas-corpus',
   templateUrl: './corpus.component.html',
-  styleUrls: ['./corpus.component.scss']
+  styleUrls: ['./corpus.component.scss'],
+  providers: [MessageService]
 })
 export class CorpusComponent implements OnInit {
   @ViewChild(Dialog, { static: false }) dialog;
@@ -38,7 +41,7 @@ export class CorpusComponent implements OnInit {
   querying: boolean = false;
   messages: { severity: string, summary: string, detail: string }[] = [];
 
-  constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute) {
+  constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute, private messageService: MessageService) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
   }
 
@@ -91,6 +94,7 @@ export class CorpusComponent implements OnInit {
       .subscribe(
         response => {
           this.downloadFile(response.body, `${transcript.name}_SAF.xlsx`);
+          this.messageService.add({ severity: 'succes', summary: 'Succes.', detail: '' })
           this.querying = false;
         },
         err => {
