@@ -109,7 +109,7 @@ def v1_results(transcript, method, utterances, queries_with_funcs):
             results['results'][q['q_id']] = {
                 'id': q['q_id'],
                 'item': q['q_obj'].item,
-                'fase': q['q_obj'].phase or 0,
+                'fase': q['q_obj'].fase or 0,
                 'matches': query_res[0]
             }
     return results
@@ -134,7 +134,7 @@ def v2_results(transcript, method, utterances, queries_with_funcs):
                 hit = {
                     'level': q['q_obj'].level,
                     'item': q['q_obj'].item,
-                    'fase': q['q_obj'].phase
+                    'fase': q['q_obj'].fase
                 }
                 results['levels'].add(q['q_obj'].level)
                 utt_res[res_begin].hits.append(hit)
@@ -184,8 +184,8 @@ def filter_queries(method: AssessmentMethod, phase: int = None, phase_exact: boo
         all_queries = AssessmentQuery.objects.all().filter(
             Q(method=method) & Q(query__isnull=False))
         if phase:
-            phase_filter = Q(phase=phase) if phase_exact else Q(
-                phase__gte=phase)
+            phase_filter = Q(fase=phase) if phase_exact else Q(
+                fase__gte=phase)
             phase_queries = all_queries.filter(phase_filter)
             return phase_queries
         return all_queries

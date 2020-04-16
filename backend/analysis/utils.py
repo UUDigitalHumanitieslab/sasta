@@ -81,7 +81,7 @@ def getprocess(process):
     if process.lower() == CORE_PROCESS_STR:
         return CORE_PROCESS
     elif process.lower() == POST_PROCESS_STR:
-        return POST_PROCESS_STR
+        return POST_PROCESS
     else:
         logger.error('Illegal value for process {}'.format(process))
         return -1
@@ -93,17 +93,17 @@ def read_TAM(method) -> None:
     dataframe = pd.read_excel(filepath,
                               true_values=['yes'], false_values=['no'])
     column_names = [c.lower() for c in dataframe.columns]
-    column_names[0] = 'query_id'
     dataframe.columns = column_names
-    dataframe.rename(columns={'fase': 'phase'}, inplace=True)
+    dataframe.rename(columns={'id': 'query_id'}, inplace=True)
     dataframe = dataframe.where(dataframe.notnull(), None)
 
     for _i, series in dataframe.iterrows():
         # workaround for getting value to None instead of NaN
         try:
-            series.phase = int(series.phase)
+            series.fase = int(series.phase)
         except:
-            series.phase = None
+            series.fase = None
+        series.process = getprocess(series.process)
         create_query_from_series(series, method)
     logger.info(f'TAM-Reader:\treading done')
 
@@ -116,10 +116,9 @@ def create_query_from_series(series: pd.Series, method) -> None:
         instance.save()
     except IntegrityError as error:
         logger.error(error)
-        pass
 
 
-def v1_to_xlsx(data: Dict[str, Any], dest):
+def v1_to_xlsx(data: Dict[str, Any]):
     # writes the v1 results as excel file
     # rows contain query_id, utt_id, and number of matches
     # query_id is only written if different from previous row
@@ -149,7 +148,7 @@ def v1_to_xlsx(data: Dict[str, Any], dest):
         logger.exception(e)
 
 
-def v2_to_xlsx(data: Dict[str, Any], out_path: str):
+def v2_to_xlsx(data: Dict[str, Any]):
     try:
         wb = Workbook()
         worksheet = wb.active

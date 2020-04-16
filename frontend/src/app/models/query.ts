@@ -11,8 +11,12 @@ export interface Query {
     implies?: string;
     original?: boolean;
     pages?: string;
-    phase?: string;
+    fase?: string;
     query?: string;
+    inform?: string;
     screening?: boolean;
+    process?: number;
+    special1?: string;
+    special2?: string;
     comments?: string;
 }
