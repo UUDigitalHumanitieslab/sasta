@@ -7,11 +7,13 @@ import { CorpusComponent } from '../corpus/corpus.component';
 import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
 import { LoginComponent } from '../auth/login.component';
+import { ProcessComponent } from '../process/process.component';
 
 const routes: Routes = [
     {
         path: 'home',
-        component: HomeComponent,
+        // component: HomeComponent,
+        component: ProcessComponent,
     },
     {
         path: 'upload',

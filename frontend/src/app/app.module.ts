@@ -34,6 +34,7 @@ import { MethodComponent } from './method/method.component';
 import { UploadComponent } from './upload/upload.component';
 
 import { effects, reducers } from './store';
+import { ProcessComponent } from './process/process.component';
 
 
 
@@ -53,7 +54,8 @@ import { effects, reducers } from './store';
         CorpusComponent,
         ListMethodComponent,
         MethodComponent,
-        LoginComponent
+        LoginComponent,
+        ProcessComponent,
     ],
     imports: [
         AppRoutingModule,
