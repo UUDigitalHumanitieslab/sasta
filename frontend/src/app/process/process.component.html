@@ -1,3 +1,6 @@
-<p-steps [model]="stepsItems" [activeIndex]="stepsIndex"></p-steps>
-<button (click)="go()">Go</button>
-<!-- <progress class="progress is-primary" [value]="curProgress" [max]="curMax"></progress> -->
+<ng-container *ngIf="corpus">
+    <h1 class="title">{{corpus.name}}</h1>
+    <h2 class="subtitle">{{corpus.transcripts.length}} transcripts</h2>
+    <p-steps [model]="stepsItems" [activeIndex]="stepsIndex"></p-steps>
+    <button class="button is-primary" [ngClass]=" {'is-loading': processing}" (click)="full_process()">Process</button>
+</ng-container>

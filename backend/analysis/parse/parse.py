@@ -5,13 +5,35 @@ from bs4 import BeautifulSoup
 from corpus2alpino.annotators.alpino import AlpinoAnnotator
 from corpus2alpino.collectors.filesystem import FilesystemCollector
 from corpus2alpino.converter import Converter
+from corpus2alpino.log import Log, LogSingleton, LogTarget
+from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
 from django.core.files import File
+from django.db.models import Q
 
-from ..models import Utterance
+from ..models import Transcript, Utterance
 
 logger = logging.getLogger('sasta')
+
+
+def parse_and_create(transcript):
+    log_target = LogTarget(target=FilesystemTarget(
+        'logs'))
+    log_target.document = Document(CollectedFile(
+        '', 'parse.log', 'text/plain', ''), [])
+    LogSingleton.set(Log(log_target, strict=False))
+
+    try:
+        output_path = transcript.content.path.replace(
+            '/transcripts', '/parsed')
+        output_dir = os.path.dirname(output_path)
+        os.makedirs(output_dir, exist_ok=True)
+        result = parse_transcript(transcript, output_dir, output_path)
+        create_utterance_objects(transcript, output_path)
+        return result
+    except Exception as e:
+        logger.exception(f'ERROR parsing {transcript.name}')
 
 
 def parse_transcript(transcript, output_dir, output_path):
@@ -34,11 +56,12 @@ def parse_transcript(transcript, output_dir, output_path):
             logger.info(f'Succesfully parsed:\t{transcript.name}\n')
         transcript.status = 'parsed'
         transcript.save()
-        with open(output_path, 'rb') as parsed_file_content:
-            parsed_filename = os.path.basename(
-                output_path).replace('.cha', '.xml')
-            transcript.parsed_content.save(
-                parsed_filename, File(parsed_file_content))
+        parsed_file_content = open(output_path, 'rb')
+        parsed_filename = os.path.basename(
+            output_path).replace('.cha', '.xml')
+        transcript.parsed_content.save(
+            parsed_filename, File(parsed_file_content))
+        return transcript
 
     except Exception as e:
         logger.exception(

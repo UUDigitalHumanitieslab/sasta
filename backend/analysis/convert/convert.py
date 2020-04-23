@@ -24,6 +24,7 @@ def convert(transcript):
         transcript.content = cha_name
         transcript.status = 'converted'
         transcript.save()
+        return transcript
 
     except Exception:
         transcript.status = 'conversion-failed'

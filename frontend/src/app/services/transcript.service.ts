@@ -10,4 +10,12 @@ export class TranscriptService {
 
   constructor(private httpClient: HttpClient) { }
 
+  toCHAT(id): Promise<Transcript> {
+    return this.httpClient.get<Transcript>(`api/transcripts/${id}/toCHAT/`).toPromise();
+  }
+
+  parse(id): Promise<Transcript> {
+    return this.httpClient.get<Transcript>(`api/transcripts/${id}/parse/`).toPromise();
+  }
+
 }

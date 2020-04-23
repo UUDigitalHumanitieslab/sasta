@@ -70,7 +70,7 @@ export class UploadComponent implements OnDestroy {
             .subscribe(
                 response => {
                     this.uploading = false;
-                    this.router.navigate([`/corpora/${response.corpus_id}`])
+                    this.router.navigate([`/process/${response.corpus_id}`])
                 },
                 error => {
                     this.uploading = false;

@@ -12,8 +12,7 @@ import { ProcessComponent } from '../process/process.component';
 const routes: Routes = [
     {
         path: 'home',
-        // component: HomeComponent,
-        component: ProcessComponent,
+        component: HomeComponent,
     },
     {
         path: 'upload',
@@ -26,6 +25,10 @@ const routes: Routes = [
     {
         path: 'corpora/:id',
         component: CorpusComponent
+    },
+    {
+        path: 'process/:id',
+        component: ProcessComponent
     },
     {
         path: 'methods',

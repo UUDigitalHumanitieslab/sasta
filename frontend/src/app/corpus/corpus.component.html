@@ -5,6 +5,7 @@
             <tr>
                 <th>Transcript</th>
                 <th>Status</th>
+                <th>Files</th>
                 <th class="has-text-right">Actions</th>
             </tr>
         </thead>
@@ -12,25 +13,25 @@
             <tr *ngFor="let transcript of corpus.transcripts">
                 <td>{{transcript.name}}</td>
                 <td>{{transcript.status}}</td>
-                <td class="has-text-right">
-                    <div class="buttons is-right">
+                <td>
+                    <div class="buttons">
                         <button class="button is-primary" pTooltip="view CHAT"
-                            [disabled]="!transcript.status=='converted'" (click)="showChat(transcript)">
+                            [disabled]="!(transcript.status=='converted' || transcript.status=='parsed')"
+                            (click)="showChat(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faFile"></fa-icon>
                             </span>
                         </button>
-                        <!-- <button class="button is-primary" pTooltip="parse with alpino" [disabled]="true">
-                        <span class="icon is-small">
-                            <fa-icon [icon]="faCogs"></fa-icon>
-                        </span>
-                    </button> -->
                         <button class="button is-primary" pTooltip="view alpino parse"
                             [disabled]="!(transcript.status=='parsed')" (click)="showLassy(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faFileCode"></fa-icon>
                             </span>
                         </button>
+                    </div>
+                </td>
+                <td class="has-text-right">
+                    <div class="buttons is-right">
                         <button class="button is-primary" pTooltip="score transcript"
                             [disabled]="!(transcript.status=='parsed')" (click)="showDialog(transcript)">
                             <span class="icon is-small">
