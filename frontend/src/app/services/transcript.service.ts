@@ -10,19 +10,4 @@ export class TranscriptService {
 
   constructor(private httpClient: HttpClient) { }
 
-  docxToTxt() {
-    return null
-  }
-
-  txtToCHAT(): Observable<Transcript> {
-
-  }
-
-  parse(transcript: Transcript): Observable<Transcript> {
-
-  }
-
-
-
-
 }

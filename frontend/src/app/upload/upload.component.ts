@@ -11,6 +11,7 @@ import { Corpus } from '../models/corpus'
 import { Subscription } from 'rxjs';
 import { CorpusService } from '../services/corpus.service';
 import { UploadFile } from '../models/upload-file';
+import { UploadFileService } from '../services/upload-file.service';
 
 @Component({
     selector: 'sas-upload',
@@ -30,7 +31,7 @@ export class UploadComponent implements OnDestroy {
     corpora: Corpus[];
     selectedCorpus: Corpus;
 
-    constructor(private store: Store<storeStructure>, router: Router, private corpusService: CorpusService) {
+    constructor(private store: Store<storeStructure>, private router: Router, private corpusService: CorpusService, private uploadFileService: UploadFileService) {
         this.subscriptions = [
             this.store.pipe(select('uploadFiles')).subscribe((uploadFiles: UploadFile[]) => {
                 // information about the file is available
@@ -60,16 +61,22 @@ export class UploadComponent implements OnDestroy {
 
     upload() {
         this.uploading = true;
-        this.store.dispatch(upload({
+        this.uploadFileService.upload_obs({
             name: this.fileName,
             content: this.content,
             status: 'uploading',
             corpus: this.selectedCorpus || { name: this.newCorpusName, status: 'created' }
-        }));
-        if (!this.selectedCorpus) {
-            this.store.dispatch(create({ name: this.newCorpusName, status: 'created' }))
-        }
-
+        })
+            .subscribe(
+                response => {
+                    this.uploading = false;
+                    this.router.navigate([`/corpora/${response.corpus_id}`])
+                },
+                error => {
+                    this.uploading = false;
+                    console.log(error);
+                }
+            )
 
     }
 }

@@ -6,11 +6,12 @@ from .models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
 
 class UploadFileSerializer(serializers.ModelSerializer):
     corpus = serializers.CharField(source='corpus.name', required=False)
+    corpus_id = serializers.CharField(source='corpus.id', required=False)
 
     class Meta:
         model = UploadFile
         corpus = serializers.SerializerMethodField()
-        fields = ['name', 'content', 'status', 'corpus']
+        fields = ['name', 'content', 'status', 'corpus', 'corpus_id']
 
     # work around circular dependency
     def get_corpus(self, obj):
