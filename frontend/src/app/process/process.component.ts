@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { Transcript } from '../models/transcript';
 
 @Component({
   selector: 'sas-process',
@@ -6,28 +8,35 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./process.component.scss']
 })
 export class ProcessComponent implements OnInit {
-  extractProgress: number;
-  docxConvertProgress: number;
-  chatConvertProgress: number;
-  parseProgress: number;
 
+  stepsItems: MenuItem[] = [
+    { label: 'Convert .docx' },
+    { label: 'Convert to CHAT' },
+    { label: 'Parse' },
+    { label: 'Done' }
+  ]
+  stepsIndex: number = 0;
 
   constructor() { }
 
   ngOnInit() {
-    this.extractProgress = 0;
-    this.docxConvertProgress = 0;
+    // this.curProgress = 0;
+    // this.curMax = 4;
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  docxToTxt() {
+    // Converts .docx input
+    // Returns ??
   }
 
-  go() {
-    this.extractProgress += 1;
-    this.docxConvertProgress += 1;
+  txtToChat() {
+    // Converts to CHAT
+    // Returns transcript
   }
 
-
+  parse() {
+    // Parses with Alpino
+    // Returns transcript (including parse)
+  }
 
 }

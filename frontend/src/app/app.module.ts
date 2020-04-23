@@ -17,6 +17,7 @@ import { MessageModule } from 'primeng/message';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { StepsModule } from 'primeng/steps';
 
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
@@ -79,6 +80,7 @@ import { ProcessComponent } from './process/process.component';
         MessagesModule,
         ToastModule,
         TooltipModule,
+        StepsModule,
     ],
     providers: [MessageService],
     bootstrap: [AppComponent]
