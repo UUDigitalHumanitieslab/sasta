@@ -33,6 +33,7 @@ def extract(file):
     file.save()
 
     try:
+        created_transcripts = []
         (origin_dir, filename) = os.path.split(file.content.path)
         target_dir = origin_dir.replace('uploads', 'extracted')
         # extract zipped files
@@ -41,7 +42,8 @@ def extract(file):
                 for zip_name in zipfile.namelist():
                     zipfile.extract(zip_name, path=target_dir)
                     extracted_path = os.path.join(target_dir, zip_name)
-                    create_transcript(file, extracted_path)
+                    created_transcripts.append(
+                        create_transcript(file, extracted_path))
         # copy all others
         else:
             try:
@@ -51,10 +53,11 @@ def extract(file):
                     raise
             new_path = os.path.join(target_dir, filename)
             copyfile(file.content.path, os.path.join(target_dir, filename))
-            create_transcript(file, new_path)
+            created_transcripts.append(create_transcript(file, new_path))
 
         file.status = 'extracted'
         file.save()
+        return created_transcripts
 
     except:
         file.status = 'extraction-failed'
@@ -70,14 +73,16 @@ def create_transcript(file, content_path):
 
     _dir, filename = os.path.split(content_path)
 
-    with open(content_path, 'rb') as file_content:
-        transcript = Transcript(
-            name=filename.strip('.txt'),
-            status='created',
-            corpus=file.corpus
-        )
-        transcript.save()
-        transcript.content.save(filename, File(file_content))
+    file_content = open(content_path, 'rb')
+    transcript = Transcript(
+        name=filename.strip('.txt'),
+        status='created',
+        corpus=file.corpus
+    )
+    transcript.save()
+    transcript.content.save(filename, File(file_content))
+    file_content.close()
+    return transcript
 
 
 def iter_paragraphs(parent, recursive=True):

@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from django.conf import settings
 
 from .permissions import IsOwner, IsOwnerOrAdmin
-from .utils import read_TAM
+from .utils import read_TAM, extract
 
 logger = logging.getLogger('sasta')
 
@@ -118,6 +118,15 @@ class UploadFile(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_save, sender=UploadFile)
+def extract_upload_file(sender, instance, created, **kwargs):
+    if created:
+        try:
+            extract(instance)
+        except Exception as error:
+            logger.exception(error)
 
 
 class AssessmentMethod(models.Model):
