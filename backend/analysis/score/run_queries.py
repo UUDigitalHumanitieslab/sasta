@@ -1,7 +1,7 @@
 import logging
 from collections import Counter
 from operator import attrgetter
-from typing import List, Union
+from typing import List, Union, Dict
 
 from bs4 import BeautifulSoup as Soup
 from django.db.models import Q
@@ -9,6 +9,7 @@ from lxml import etree as ET
 
 from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
 from . import external_functions
+from ..macros.macros import expandmacros, get_macros_dict
 
 logger = logging.getLogger('sasta')
 
@@ -40,10 +41,11 @@ def utt_from_tree(tree: str):
     return sorted(utt_words, key=attrgetter('begin'))
 
 
-def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
+def compile_xpath_or_func(query: str, macrodict: Dict[str, str]) -> Union[ET.XPath, None]:
     try:
         if query in dir(external_functions):
             return getattr(external_functions, query)
+        expandend_query = expandmacros(query, macrodict)
         return ET.XPath(query)
     except Exception as error:
         logger.warning(f'cannot compile {query.strip()}:\t{error}')
@@ -52,9 +54,12 @@ def compile_xpath_or_func(query: str) -> Union[ET.XPath, None]:
 
 def compile_queries(queries):
     query_funcs = []
+    macrodict = get_macros_dict()
     for q in queries:
-        func = compile_xpath_or_func(q.query)
-        query_funcs.append({'q_id': q.query_id, 'q_obj': q, 'q_func': func})
+        func = compile_xpath_or_func(q.query, macrodict)
+        if func:
+            query_funcs.append(
+                {'q_id': q.query_id, 'q_obj': q, 'q_func': func})
     return query_funcs
 
 

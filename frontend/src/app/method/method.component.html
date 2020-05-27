@@ -1,12 +1,13 @@
 <ng-container *ngIf="method">
     <h1 class="title">{{method.name}}</h1>
-    <h2 class="subtitle">{{method.queries?.length}} queries</h2>
+    <h2 class="subtitle">{{method.date_added}} | {{method.queries?.length}} queries</h2>
 
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
+                <th>Code</th>
+                <th>Item</th>
                 <th>Query</th>
-                <th>XPath</th>
                 <th class="has-text-right">Actions</th>
             </tr>
         </thead>
@@ -14,6 +15,7 @@
         <tbody>
             <tr *ngFor="let query of method.queries">
                 <td>{{query.query_id}}</td>
+                <td>{{query.item}}</td>
                 <td>
                     <span *ngIf="query.query" class="icon is-small">
                         <fa-icon [icon]="faCheck"></fa-icon>
