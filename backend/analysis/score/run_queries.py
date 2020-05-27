@@ -57,7 +57,9 @@ def compile_queries(queries):
     macrodict = get_macros_dict()
     for q in queries:
         func = compile_xpath_or_func(q.query, macrodict)
-        query_funcs.append({'q_id': q.query_id, 'q_obj': q, 'q_func': func})
+        if func:
+            query_funcs.append(
+                {'q_id': q.query_id, 'q_obj': q, 'q_func': func})
     return query_funcs
 
 
