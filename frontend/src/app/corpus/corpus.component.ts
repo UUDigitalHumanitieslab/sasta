@@ -37,6 +37,7 @@ export class CorpusComponent implements OnInit {
   displayScore: boolean = false;
   currentTranscript: Transcript;
   queryAction: "annotate" | "query";
+  onlyInform: boolean = true;
   querying: boolean = false;
 
   constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute, private messageService: MessageService) {
@@ -87,7 +88,7 @@ export class CorpusComponent implements OnInit {
   annotateTranscript(transcript: Transcript, method: Method) {
     this.querying = true;
     this.corpusService
-      .annotate_transcript(transcript.id, method.name)
+      .annotate_transcript(transcript.id, method.name, this.onlyInform)
       .subscribe(
         response => {
           this.downloadFile(response.body, `${transcript.name}_SAF.xlsx`);

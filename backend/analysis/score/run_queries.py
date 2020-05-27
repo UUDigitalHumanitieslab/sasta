@@ -63,33 +63,23 @@ def compile_queries(queries):
     return query_funcs
 
 
-def annotate_transcript(transcript: Transcript, method: AssessmentMethod):
+def annotate_transcript(transcript: Transcript, method: AssessmentMethod, only_include_inform: bool):
     logger.info(f'Annotating {transcript.name}')
     queries = filter_queries(method)
     queries_with_funcs = compile_queries(queries)
     utterances = Utterance.objects.filter(transcript=transcript)
-
-    results = v2_results(transcript, method, utterances, queries_with_funcs)
-    # spreadsheet = v2_to_xlsx(v2)
-
+    results = v2_results(transcript, method, utterances,
+                         queries_with_funcs, only_include_inform=only_include_inform)
     logger.info(f'Succes, annotated {transcript.name}')
     return results
 
 
 def query_transcript(transcript: Transcript, method: AssessmentMethod):
     logger.info(f'Start querying {transcript.name}')
-
     queries = filter_queries(method)
     queries_with_funcs = compile_queries(queries)
-
     utterances = Utterance.objects.filter(transcript=transcript)
-
     v1 = v1_results(transcript, method, utterances, queries_with_funcs)
-    # v1_to_xlsx(v1_results, '/Users/3248526/Documents/v1_test.xlsx')
-
-    v2 = v2_results(transcript, method, utterances, queries_with_funcs)
-    # v2_to_xlsx(v2, '/Users/3248526/Documents/v2_test.xlsx')
-
     logger.info(f'Succes querying {transcript.name}')
     return v1
 
@@ -114,7 +104,7 @@ def v1_results(transcript, method, utterances, queries_with_funcs):
     return results
 
 
-def v2_results(transcript, method, utterances, queries_with_funcs):
+def v2_results(transcript, method, utterances, queries_with_funcs, only_include_inform):
     # match aggregate, grouped by utterance
     results = {
         'transcript': transcript.name,
@@ -129,7 +119,8 @@ def v2_results(transcript, method, utterances, queries_with_funcs):
         for q in queries_with_funcs:
             q_res = single_query_single_utt(q['q_func'], utt)
             for res in q_res:
-                if q['q_obj'].original and q['q_obj'].inform:
+                if q['q_obj'].original and (
+                        q['q_obj'].inform if only_include_inform else True):
                     res_begin = int(res.get('begin'))
                     hit = {
                         'level': q['q_obj'].level,

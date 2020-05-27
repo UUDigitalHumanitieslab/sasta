@@ -45,12 +45,12 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_name = request.data.get('method')
+        only_include_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.filter(name=method_name).first()
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
-
-        v2res = annotate_transcript(transcript, method)
+        v2res = annotate_transcript(transcript, method, only_include_inform)
         spreadsheet = v2_to_xlsx(v2res)
         spreadsheet.save(response)
 

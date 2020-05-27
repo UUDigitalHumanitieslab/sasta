@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { AccordionModule } from 'primeng/accordion';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
@@ -74,6 +75,7 @@ import { ProcessComponent } from './process/process.component';
         NgxJsonViewerModule,
         // PrimeNG
         AccordionModule,
+        CheckboxModule,
         DialogModule,
         DropdownModule,
         MessageModule,

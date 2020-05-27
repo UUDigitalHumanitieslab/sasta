@@ -48,13 +48,19 @@
 <p-dialog header="{{currentTranscript?.name}}" [(visible)]="displayScore" (onHide)="closeDialog()"
     [dismissableMask]="true" [modal]="true">
     <ng-container *ngIf="currentTranscript">
-        <form (submit)="performQuerying(currentTranscript, currentTam)">
-            <div class="field is-grouped">
+        <form (submit)="performQuerying(currentTranscript, currentTam, onlyInform)">
+            <div class="field">
                 <div class="control">
                     <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown" placeholder="Assessment Method"
                         [(ngModel)]="currentTam" showClear="true" [disabled]="!tams?.length > 0" appendTo="body">
                     </p-dropdown>
                 </div>
+            </div>
+            <div class="field">
+                <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">
+                </p-checkbox>
+            </div>
+            <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
                         [ngClass]="{'is-loading': querying}">Query</button>
