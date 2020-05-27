@@ -134,6 +134,7 @@ class AssessmentMethod(models.Model):
         return os.path.join('files', 'TAMs', filename)
 
     name = models.CharField(max_length=50, unique=True)
+    date_added = models.DateField(auto_now_add=True)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
 
     def __str__(self):

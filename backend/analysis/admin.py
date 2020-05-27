@@ -44,6 +44,7 @@ class UploadFileAdmin(admin.ModelAdmin):
 @admin.register(AssessmentMethod)
 class AssessmentMethodAdmin(admin.ModelAdmin):
     model = AssessmentMethod
+    readonly_fields = ('date_added',)
 
 
 @admin.register(AssessmentQuery)

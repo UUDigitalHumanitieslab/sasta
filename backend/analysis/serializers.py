@@ -53,7 +53,8 @@ class AssessmentQuerySerializer(serializers.ModelSerializer):
 class AssessmentMethodSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     queries = AssessmentQuerySerializer(read_only=True, many=True)
+    date_added = serializers.DateField(format='%d-%m-%Y', read_only=True)
 
     class Meta:
         model = AssessmentMethod
-        fields = ('id', 'name', 'content', 'queries')
+        fields = ('id', 'name', 'content', 'date_added', 'queries')

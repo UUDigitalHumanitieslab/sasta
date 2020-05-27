@@ -2,12 +2,14 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Created</th>
             <th>Queries (#)</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let method of methods" [routerLink]="['/methods/', method.id]">
             <td>{{method.name}}</td>
+            <td>{{method.date_added}}</td>
             <td>{{method?.queries?.length || '0'}}</td>
         </tr>
     </tbody>
