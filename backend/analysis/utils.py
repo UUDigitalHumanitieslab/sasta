@@ -77,7 +77,8 @@ def create_transcript(file, content_path):
     transcript = Transcript(
         name=filename.strip('.txt'),
         status='created',
-        corpus=file.corpus
+        corpus=file.corpus,
+        extracted_filename=content_path
     )
     transcript.save()
     transcript.content.save(filename, File(file_content))

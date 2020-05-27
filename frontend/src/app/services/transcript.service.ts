@@ -18,4 +18,7 @@ export class TranscriptService {
     return this.httpClient.get<Transcript>(`api/transcripts/${id}/parse/`).toPromise();
   }
 
+  delete(id): Observable<{}> {
+    return this.httpClient.delete(`api/transcripts/${id}/`);
+  }
 }

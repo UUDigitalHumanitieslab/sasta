@@ -79,6 +79,8 @@ class Transcript(models.Model):
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
     parsed_content = models.FileField(
         upload_to=upload_path_parsed, blank=True, null=True)
+    extracted_filename = models.CharField(
+        max_length=500, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -88,6 +90,8 @@ class Transcript(models.Model):
 def transcript_delete(sender, instance, **kwargs):
     instance.content.delete(False)
     instance.parsed_content.delete(False)
+    if instance.extracted_filename:
+        os.remove(instance.extracted_filename)
 
 
 class Utterance(models.Model):
