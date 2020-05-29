@@ -6,6 +6,7 @@ from pprint import pprint
 from typing import Any
 from typing import Counter as CounterType
 from typing import DefaultDict, Dict, List, Optional, Pattern, Tuple
+import subprocess
 
 import pandas as pd
 
@@ -20,7 +21,7 @@ CounterDict = Dict[str, CounterType[str]]
 
 # Global
 ITEMSEPPATTERN = r'[,-; ]'
-LABELSEP = ';'
+LABELSEP = ','
 UTTLEVEL = 'utt'
 HEADER_VARIANTS = {
     'speaker': ['speaker', 'spreker', 'spk'],
@@ -116,7 +117,6 @@ def enrich(labelstr: str, lcprefix: str) -> str:
         labels = labelstr.split(LABELSEP)
         newlabels = []
         for label in labels:
-            # should already be cleaned
             cleanlabel = clean(label)
             if cleanlabel != "" and lcprefix != "":
                 newlabels.append(lcprefix+":" + cleanlabel)
@@ -129,17 +129,6 @@ def enrich(labelstr: str, lcprefix: str) -> str:
         return labelstr
 
 
-def getitem2levelmap(mapping: TupleStrDict):
-    resultmap: DefaultDict[str, List[str]] = defaultdict(list)
-    for (item, level) in mapping:
-        if item and level:
-            if item in resultmap:
-                resultmap[item].append(level)
-            else:
-                resultmap[item] = [level]
-    return resultmap
-
-
 def codeadapt(code: str) -> str:
     result = code
     result = re.sub(r'\.', r'\\.', result)
@@ -149,6 +138,7 @@ def codeadapt(code: str) -> str:
     result = re.sub(r'\*', r'\\*', result)
     result = re.sub(r'\+', r'\\+', result)
     result = re.sub(r' ', r'\\s+', result)
+
     return result
 
 
@@ -158,29 +148,8 @@ def mkpatterns(allcodes: List[str]) -> Tuple[Pattern, Pattern]:
     adaptedcodes = [codeadapt(c) for c in sortedallcodes]
     basepattern = r'' + '|'.join(adaptedcodes) + '|' + ITEMSEPPATTERN
     fullpattern = r'^(' + basepattern + r')*$'
+
     return(re.compile(basepattern), re.compile(fullpattern))
-
-
-def read_headers(row):
-    headers: Dict[str, str] = {}
-    # for colctr in range(startcol, lastcol):
-    #     headers[colctr] = sheet.cell_value(rowctr, colctr)
-    #     if iswordcolumn(headers[colctr]):
-    #         lastwordcol = colctr
-    #         if isfirstwordcolumn(headers[colctr]):
-    #             firstwordcol = colctr
-    #     elif clean(headers[colctr]) in speakerheaders:
-    #         spkcol = colctr
-    #     elif clean(headers[colctr]) in uttidheaders:
-    #         uttidcol = colctr
-    #     elif clean(headers[colctr]) in levelheaders:
-    #         levelcol = colctr
-    #     elif clean(headers[colctr]) in stagesheaders:
-    #         stagescol = colctr
-    #     elif clean(headers[colctr]) in commentsheaders:
-    #         commentscol = colctr
-    for cell in row:
-        pass
 
 
 def standardize_header_name(header: str) -> str:
@@ -207,17 +176,16 @@ def parse_word(idx: int, colname: str,
         label = data[data.level == level][colname].values[0]
 
         enriched_label = enrich(label.lower(), PREFIX.lower())
-        # labels = getlabels(enriched_label, patterns)
+        labels = getlabels(enriched_label, patterns)
 
-        # cleanlevelsandlabels = getcleanlevelsandlabels(
-        #     thelabelstr, thelevel, PREFIX, patterns)
-
-        instance.annotations.append(SAFAnnotation(
-            clean(level), clean(enriched_label)))
+        for label in labels:
+            instance.annotations.append(SAFAnnotation(
+                clean(level), clean(label)))
     return instance
 
 
-def parse_utterance(utt_id: int, data: pd.DataFrame, word_cols: List[str], patterns: Tuple[Pattern, Pattern]) -> SAFUtterance:
+def parse_utterance(utt_id: int, data: pd.DataFrame,
+                    word_cols: List[str], patterns: Tuple[Pattern, Pattern]) -> SAFUtterance:
     instance = SAFUtterance(utt_id)
     words = [parse_word(i+1, wcol, data[['level', wcol]], patterns)
              for i, wcol in enumerate(word_cols)]
@@ -241,6 +209,13 @@ def pandas_read(infilename):
     return data
 
 
+def map2queryid(item_level: Tuple[str, str], mapping: TupleStrDict) -> str:
+    if item_level in mapping:
+        return mapping[item_level]
+    else:
+        return f'invalid: ({item_level[0]},{item_level[1]})'
+
+
 def get_annotations(infilename, patterns: Tuple[Pattern, Pattern]):
     '''
     Reads the file with name filename in SASTA Annotation Format
@@ -248,81 +223,36 @@ def get_annotations(infilename, patterns: Tuple[Pattern, Pattern]):
     :param patterns
     :return: a dictionary  with as  key a tuple (level, item) and as value a Counter  with key uttid and value its count
     '''
-    # thedata = defaultdict(list)
-    # cdata = {}
-    uttlevel = 'utt'
-    prefix = ""
+
     doc = SAFDocument(os.path.basename(infilename))
 
     data = pandas_read(infilename)
-
     word_cols = [c for c in data.columns if c.startswith('word')]
     utterance_rows = data[['utt_id', 'level'] +
-                          word_cols][data.level == uttlevel]
-    non_utt_rows = data[word_cols+['level']][data.level != uttlevel]
+                          word_cols][data.level == UTTLEVEL]
+    non_utt_rows = data[word_cols+['level']][data.level != UTTLEVEL]
 
     for idx in data.utt_id.unique():
         utt_data = data[data.utt_id == idx]
         doc.utterances.append(parse_utterance(
             idx, utt_data, word_cols, patterns))
 
-    pprint(doc.label_counts)
-    # total_counter = Counter()
-    # data[word_cols] = data[word_cols].applymap(lambda x: enrich(
-    #     x, prefix))
-    # for wcol in word_cols:
-    #     count = non_utt_rows.groupby('level')[wcol].value_counts()
-    #     total_counter += count
-    # pprint(total_counter)
-    # return total_counter
-
-    #         if sheet.cell_value(rowctr, uttidcol) != "":
-    #             uttid = str(int(sheet.cell_value(rowctr, uttidcol)))
-    #         thelevel = sheet.cell_value(rowctr, levelcol)
-    #         thelevel = clean(thelevel)
-    #         all_levels.add(thelevel)
-    #         for colctr in range(firstwordcol, sheet.ncols):
-    #             if thelevel != uttlevel and colctr != stagescol and colctr != commentscol:
-    #                 thelabelstr = sheet.cell_value(rowctr, colctr)
-    #                 thelevel = sheet.cell_value(rowctr, levelcol)
-    #                 if lastwordcol+1 <= colctr < sheet.ncols:
-    #                     # prefix = headers[colctr] aangepast om het simpeler te houden
-    #                     prefix = ""
-    #                 else:
-    #                     prefix = ""
-    #                 cleanlevelsandlabels = getcleanlevelsandlabels(
-    #                     thelabelstr, thelevel, prefix, patterns)
-    #                 for (cleanlevel, cleanlabel) in cleanlevelsandlabels:
-    #                     thedata[(cleanlevel, cleanlabel)].append(uttid)
-    # # wb.close() there is no way to close the workbook
-    # for atuple in thedata:
-    #     cdata[atuple] = Counter(thedata[atuple])
-    # return cdata
-    return None
+    # pprint(doc.label_counts)
+    return doc.label_counts
 
 
-def get_golddata(filename, mapping, altcodes, queries, includeimplies=False):
-    item2levelmap = {}
-    mappingitem2levelmap = getitem2levelmap(mapping)
-    altcodesitem2levelmap = getitem2levelmap(altcodes)
-    # Todo: None types??
+def get_golddata(filename, mapping, queries, includeimplies=False):
     allmappingitems = [item for (item, _) in mapping if item]
-    allaltcodesitems = [item for (item, _) in altcodes if item]
-    allitems = allmappingitems + allaltcodesitems
-    patterns = mkpatterns(allitems)
+    patterns = mkpatterns(allmappingitems)
     basicdata = get_annotations(filename, patterns)
-    # results = {}
-    return allitems
+    return basicdata
 
 
-def read_method(method: AssessmentMethod):
+def get_methoddata(method: AssessmentMethod):
     queries: List[AssessmentQuery] = list(method.queries.all())
-    item2idmap: TupleStrDict = {
-        (lowerc(q.item), lowerc(q.level)): q.query_id for q in queries}
-    altcodes: Dict[Any, Any] = {
-        (lowerc(q.altitems), lowerc(q.level)): q.query_id for q in queries}
+    item2idmap = method.get_item_mapping(',')
     postquerylist: List[str] = [q.query_id for q in queries if q.process == 1]
-    return queries, item2idmap, altcodes, postquerylist
+    return queries, item2idmap, postquerylist
 
 
 def read_annotations(method: AssessmentMethod, annotationfilename, includeimplies=False) -> None:
@@ -330,10 +260,10 @@ def read_annotations(method: AssessmentMethod, annotationfilename, includeimplie
     :param includeimplies: a parameter to specify whether information in the implies column
     of the method must be taken into account (default False, keep it that way)
     '''
-    (queries, item2idmap, altcodes, postquerylist) = read_method(method)
+    (queries, item2idmap, postquerylist) = get_methoddata(method)
     annotationfilename = os.path.join(os.path.dirname(
         os.path.realpath(__file__)), 'test_sample.xlsx')
     richscores = get_golddata(
-        annotationfilename, item2idmap, altcodes, queries, includeimplies)
-    # results = richscores2scores(richscores)
+        annotationfilename, item2idmap, queries, includeimplies)
+    pprint(richscores)
     return None

@@ -144,6 +144,13 @@ class AssessmentMethod(models.Model):
     def __str__(self):
         return self.name
 
+    def get_item_mapping(self, sep):
+        queries = self.queries.all()
+        mapping = {}
+        for q in queries:
+            mapping.update(q.get_item_mapping(sep))
+        return mapping
+
 
 @receiver(post_save, sender=AssessmentMethod)
 def read_tam_file(sender, instance, created, **kwargs):
@@ -181,15 +188,27 @@ class AssessmentQuery(models.Model):
     def __str__(self):
         return self.query_id
 
-    def altitems_list(self, sep):
+    def get_altitems_list(self, sep):
         if not self.altitems:
             return []
         return get_items_list(self.altitems, sep)
 
-    def implies_list(self, sep):
+    def get_implies_list(self, sep):
         if not self.implies:
             return []
         return get_items_list(self.implies, sep)
+
+    def get_item_mapping(self, sep):
+        ''' mapping of all possible items (including altitems) to this query'''
+        if (not self.item) or (not self.level):
+            return {}
+        result = {(self.item.lower(), self.level.lower()): self.query_id}
+        alt_items = self.get_altitems_list(sep)
+        if alt_items:
+            for item in alt_items:
+                if (item, self.level.lower()) not in result:
+                    result[(item, self.level.lower())] = self.query_id
+        return result
 
     class Meta:
         unique_together = ('method', 'query_id')
