@@ -18,6 +18,7 @@ pip-delete-this-directory.txt
 coverage.xml
 *.cover
 .pytest_cache/
+.mypy_cache/
 
 # pyenv
 .python-version

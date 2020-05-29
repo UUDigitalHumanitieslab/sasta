@@ -120,3 +120,12 @@ class CorpusViewSet(viewsets.ModelViewSet):
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()
     serializer_class = AssessmentMethodSerializer
+
+    @action(detail=True, methods=['GET'], name='testread')
+    def testread(self, request, *args, **kwargs):
+        from .sastadev.safreader import read_method, read_annotations
+        method = self.get_object()
+        read_method(method)
+        read_annotations(method, '')
+
+        return Response('heehee')
