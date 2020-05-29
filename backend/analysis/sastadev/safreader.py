@@ -315,24 +315,6 @@ def get_golddata(filename, mapping, altcodes, queries, includeimplies=False):
     return allitems
 
 
-def getaltitems(str):
-    result = getlistofitems(str, ALTITEMSEP)
-    return result
-
-
-def getimplies(str):
-    result = getlistofitems(str, IMPLIESSEP)
-    return result
-
-
-def getlistofitems(str, sep):
-    rawresult = str.split(sep)
-    cleanresult = [w.strip().lower() for w in rawresult]
-    if cleanresult == ['']:
-        cleanresult = []
-    return cleanresult
-
-
 def read_method(method: AssessmentMethod):
     queries: List[AssessmentQuery] = list(method.queries.all())
     item2idmap: TupleStrDict = {
