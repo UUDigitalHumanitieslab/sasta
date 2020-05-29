@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from django.conf import settings
 
 from .permissions import IsOwner, IsOwnerOrAdmin
-from .utils import read_TAM, extract
+from .utils import read_TAM, extract, get_items_list
 
 logger = logging.getLogger('sasta')
 
@@ -180,6 +180,18 @@ class AssessmentQuery(models.Model):
 
     def __str__(self):
         return self.query_id
+
+    @property
+    def altitems_list(self, sep):
+        if not self.altitems:
+            return []
+        return get_items_list(self.altitems, sep)
+
+    @property
+    def implies_list(self, sep):
+        if not self.implies:
+            return []
+        return get_items_list(self.implies, sep)
 
     class Meta:
         unique_together = ('method', 'query_id')
