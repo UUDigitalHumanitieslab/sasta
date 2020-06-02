@@ -1,12 +1,12 @@
 import errno
+import logging
 import os
 import re
-from typing import List, Optional, Union, Pattern
-import logging
+from typing import List, Optional, Pattern, Union
+
 logger = logging.getLogger('sasta')
 
 
-# TODO handle corpus name/transcript title
 # TODO move to config
 AGE_FIELD_NAMES = ['age', 'leeftijd']
 SEX_FIELD_NAMES = ['sex', 'gender', 'geslacht']
@@ -121,7 +121,7 @@ class SifDocument:
                  participants: List[Participant],
                  content: List[Union[Utterance, Tier]],
                  meta_comments: List[MetaComment],
-                 title: Union[str, None]):
+                 title: Optional[str]):
         self.participants = participants
         self.content = content
         self.meta_comments = meta_comments
