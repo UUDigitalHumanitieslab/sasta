@@ -1,6 +1,7 @@
-from pprint import pprint
 import logging
 import os
+from pprint import pprint
+from typing import List
 
 import pandas as pd
 
@@ -9,7 +10,6 @@ from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
 from .config import LABELSEP, PREFIX, UTTLEVEL
 from .utils import (clean_cell, enrich, getlabels, item2queryid, mkpatterns,
                     standardize_header_name)
-from typing import List
 
 logger = logging.getLogger('sasta')
 
@@ -27,8 +27,6 @@ class SAFReader:
         self.document = SAFDocument(os.path.basename(
             filepath), method.name, self.levels)
         self.get_annotations(self.data)
-
-        pprint(self.document.results)
 
     def loaddata(self, filepath):
         data = pd.read_excel(filepath)
@@ -78,10 +76,11 @@ class SAFReader:
             split_labels = getlabels(enriched_label, self.patterns)
 
             for label in split_labels:
-                query_id = item2queryid(label, level, self.item_mapping)
-                if query_id:
+                mapped = item2queryid(label, level, self.item_mapping)
+                if mapped:
+                    query_id, fase = mapped
                     instance.annotations.append(SAFAnnotation(
-                        level, label, query_id))
+                        level, label, fase, query_id))
                 else:
                     logger.warning(
                         'Cannot resolve query_id for (%s, %s)', level, label)

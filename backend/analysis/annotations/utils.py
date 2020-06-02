@@ -82,7 +82,8 @@ def getlabels(labelstr, patterns):
     return results
 
 
-def item2queryid(item: str, level: str, mapping: TupleStrDict) -> Optional[str]:
+def item2queryid(item: str, level: str,
+                 mapping: TupleStrDict):
     if (item, level) in mapping:
         return mapping[(item, level)]
     return None

@@ -15,6 +15,8 @@ from .utils import v1_to_xlsx, v2_to_xlsx
 from .convert.convert import convert
 from .parse.parse import parse_and_create
 
+from pprint import pprint
+
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     queryset = UploadFile.objects.all()
@@ -123,10 +125,11 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['GET'], name='testread')
     def testread(self, request, *args, **kwargs):
-        from .sastadev.safreader import read_annotations
         from .annotations.safreader import SAFReader
         method = self.get_object()
-        # read_annotations(method, '')
-        SAFReader('', method)
+        reader = SAFReader('', method)
+        doc = reader.document
+        res = doc.results
+        # pprint(res.hits)
 
         return Response('heehee')

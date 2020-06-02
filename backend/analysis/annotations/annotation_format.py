@@ -5,9 +5,10 @@ from functools import reduce
 
 
 class SAFAnnotation:
-    def __init__(self, level, label, query_id=None):
+    def __init__(self, level, label, fase=None, query_id=None):
         self.level: str = level
         self.label: str = label
+        self.fase: str = fase
         self.query_id: Optional[str] = query_id
 
 

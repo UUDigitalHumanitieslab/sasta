@@ -202,12 +202,14 @@ class AssessmentQuery(models.Model):
         ''' mapping of all possible items (including altitems) to this query'''
         if (not self.item) or (not self.level):
             return {}
-        result = {(self.item.lower(), self.level.lower()): self.query_id}
+        result = {(self.item.lower(), self.level.lower())
+                   : (self.query_id, self.fase)}
         alt_items = self.get_altitems_list(sep)
         if alt_items:
             for item in alt_items:
                 if (item, self.level.lower()) not in result:
-                    result[(item, self.level.lower())] = self.query_id
+                    result[(item, self.level.lower())] = (
+                        self.query_id, self.fase)
         return result
 
     class Meta:
