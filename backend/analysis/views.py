@@ -122,14 +122,3 @@ class CorpusViewSet(viewsets.ModelViewSet):
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()
     serializer_class = AssessmentMethodSerializer
-
-    @action(detail=True, methods=['GET'], name='testread')
-    def testread(self, request, *args, **kwargs):
-        from .annotations.safreader import SAFReader
-        method = self.get_object()
-        reader = SAFReader('', method)
-        doc = reader.document
-        res = doc.results
-        # pprint(res.hits)
-
-        return Response('heehee')
