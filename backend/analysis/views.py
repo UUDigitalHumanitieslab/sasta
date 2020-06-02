@@ -124,7 +124,9 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='testread')
     def testread(self, request, *args, **kwargs):
         from .sastadev.safreader import read_annotations
+        from .annotations.safreader import SAFReader
         method = self.get_object()
-        read_annotations(method, '')
+        # read_annotations(method, '')
+        SAFReader('', method)
 
         return Response('heehee')
