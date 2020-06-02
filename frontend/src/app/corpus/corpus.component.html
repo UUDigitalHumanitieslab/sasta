@@ -38,6 +38,12 @@
                                 <fa-icon [icon]="faCalculator"></fa-icon>
                             </span>
                         </button>
+                        <button class="button is-primary" pTooltip="delete transcript"
+                            (click)="deleteTranscript(transcript)">
+                            <span class="icon is-small">
+                                <fa-icon [icon]="faTrash"></fa-icon>
+                            </span>
+                        </button>
                     </div>
                 </td>
             </tr>

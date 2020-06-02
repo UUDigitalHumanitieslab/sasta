@@ -28,6 +28,14 @@ CORE_PROCESS, POST_PROCESS = 0, 1
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 
 
+def get_items_list(str, sep):
+    rawresult = str.split(sep)
+    cleanresult = [w.strip().lower() for w in rawresult]
+    if cleanresult == ['']:
+        return []
+    return cleanresult
+
+
 def extract(file):
     file.status = 'extracting'
     file.save()
@@ -77,7 +85,8 @@ def create_transcript(file, content_path):
     transcript = Transcript(
         name=filename.strip('.txt'),
         status='created',
-        corpus=file.corpus
+        corpus=file.corpus,
+        extracted_filename=content_path
     )
     transcript.save()
     transcript.content.save(filename, File(file_content))

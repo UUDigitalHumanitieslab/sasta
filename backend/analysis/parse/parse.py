@@ -30,7 +30,7 @@ def parse_and_create(transcript):
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         result = parse_transcript(transcript, output_dir, output_path)
-        create_utterance_objects(transcript, output_path)
+        create_utterance_objects(transcript)
         return result
     except Exception as e:
         logger.exception(f'ERROR parsing {transcript.name}')
@@ -61,6 +61,7 @@ def parse_transcript(transcript, output_dir, output_path):
             output_path).replace('.cha', '.xml')
         transcript.parsed_content.save(
             parsed_filename, File(parsed_file_content))
+        os.remove(output_path)
         return transcript
 
     except Exception as e:
@@ -70,8 +71,8 @@ def parse_transcript(transcript, output_dir, output_path):
         transcript.save()
 
 
-def create_utterance_objects(transcript, parsed_filepath):
-    with open(parsed_filepath, 'rb') as f:
+def create_utterance_objects(transcript):
+    with open(transcript.parsed_content.path, 'rb') as f:
         try:
             doc = BeautifulSoup(f.read(), 'xml')
             utts = doc.find_all('alpino_ds')

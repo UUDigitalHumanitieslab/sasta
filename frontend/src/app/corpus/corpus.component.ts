@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faCalculator, faCogs, faFile, faFileCode, faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { faCalculator, faCogs, faFile, faFileCode, faFileExport, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
@@ -9,6 +9,7 @@ import { Method } from '../models/method';
 import { Transcript } from '../models/transcript';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
+import { TranscriptService } from '../services/transcript.service';
 
 
 
@@ -32,6 +33,7 @@ export class CorpusComponent implements OnInit {
   faFileExport = faFileExport;
   faCogs = faCogs;
   faCalculator = faCalculator;
+  faTrash = faTrash;
 
 
   displayScore: boolean = false;
@@ -40,18 +42,25 @@ export class CorpusComponent implements OnInit {
   onlyInform: boolean = true;
   querying: boolean = false;
 
-  constructor(private corpusService: CorpusService, private methodService: MethodService, private route: ActivatedRoute, private messageService: MessageService) {
+  constructor(private corpusService: CorpusService,
+    private transcriptService: TranscriptService,
+    private methodService: MethodService,
+    private route: ActivatedRoute,
+    private messageService: MessageService) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
   }
 
   ngOnInit() {
-    this.corpusService
-      .get_by_id(this.id)
-      .subscribe(res => this.corpus = res);
-
+    this.get_corpus()
     this.methodService
       .list()
       .subscribe(res => this.tams = res);
+  }
+
+  get_corpus() {
+    this.corpusService
+      .get_by_id(this.id)
+      .subscribe(res => this.corpus = res);
   }
 
   showChat(transcript: Transcript) {
@@ -118,6 +127,19 @@ export class CorpusComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Error querying', detail: err.message, sticky: true });
           this.querying = false;
         });
+  }
 
+  deleteTranscript(transcript: Transcript) {
+    this.transcriptService
+      .delete(transcript.id)
+      .subscribe(
+        _res => {
+          this.get_corpus();
+          this.messageService.add({ severity: 'success', summary: 'Removed transcript', detail: '' });
+        },
+        err => {
+          console.log(err);
+          this.messageService.add({ severity: 'error', summary: 'Error removing transcript', detail: err.message, sticky: true });
+        });
   }
 }

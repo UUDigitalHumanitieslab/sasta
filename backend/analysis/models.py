@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from django.conf import settings
 
 from .permissions import IsOwner, IsOwnerOrAdmin
-from .utils import read_TAM, extract
+from .utils import read_TAM, extract, get_items_list
 
 logger = logging.getLogger('sasta')
 
@@ -79,6 +79,8 @@ class Transcript(models.Model):
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
     parsed_content = models.FileField(
         upload_to=upload_path_parsed, blank=True, null=True)
+    extracted_filename = models.CharField(
+        max_length=500, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -88,6 +90,8 @@ class Transcript(models.Model):
 def transcript_delete(sender, instance, **kwargs):
     instance.content.delete(False)
     instance.parsed_content.delete(False)
+    if instance.extracted_filename:
+        os.remove(instance.extracted_filename)
 
 
 class Utterance(models.Model):
@@ -140,6 +144,13 @@ class AssessmentMethod(models.Model):
     def __str__(self):
         return self.name
 
+    def get_item_mapping(self, sep):
+        queries = self.queries.all()
+        mapping = {}
+        for q in queries:
+            mapping.update(q.get_item_mapping(sep))
+        return mapping
+
 
 @receiver(post_save, sender=AssessmentMethod)
 def read_tam_file(sender, instance, created, **kwargs):
@@ -176,6 +187,30 @@ class AssessmentQuery(models.Model):
 
     def __str__(self):
         return self.query_id
+
+    def get_altitems_list(self, sep):
+        if not self.altitems:
+            return []
+        return get_items_list(self.altitems, sep)
+
+    def get_implies_list(self, sep):
+        if not self.implies:
+            return []
+        return get_items_list(self.implies, sep)
+
+    def get_item_mapping(self, sep):
+        ''' mapping of all possible items (including altitems) to this query'''
+        if (not self.item) or (not self.level):
+            return {}
+        result = {(self.item.lower(), self.level.lower())
+                   : (self.query_id, self.fase)}
+        alt_items = self.get_altitems_list(sep)
+        if alt_items:
+            for item in alt_items:
+                if (item, self.level.lower()) not in result:
+                    result[(item, self.level.lower())] = (
+                        self.query_id, self.fase)
+        return result
 
     class Meta:
         unique_together = ('method', 'query_id')
