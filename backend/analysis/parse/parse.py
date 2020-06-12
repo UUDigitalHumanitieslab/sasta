@@ -43,7 +43,7 @@ def parse_transcript(transcript, output_dir, output_path):
     try:
         logger.info(f'Parsing:\t{transcript.name}\n')
 
-        alpino = AlpinoAnnotator("localhost", 7001)
+        alpino = AlpinoAnnotator("127.0.0.1", 7001)
 
         converter = Converter(
             collector=FilesystemCollector([transcript.content.path]),

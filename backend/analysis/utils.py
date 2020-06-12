@@ -120,7 +120,7 @@ def iter_paragraphs(parent, recursive=True):
                             yield child_paragraph
 
 
-def docx_to_txt(filepath):
+def docx_to_txt(filepath, delete_docx=True):
     logger.info(f'DOC2TXT:\tconverting {os.path.basename(filepath)}')
     try:
         document = Document(filepath)
@@ -138,7 +138,8 @@ def docx_to_txt(filepath):
                         print(paragraph.text, file=txt_file)
                 else:
                     print(paragraph.text, file=txt_file)
-        os.remove(filepath)
+        if delete_docx:
+            os.remove(filepath)
         logger.info(f'DOC2TXT:\tconverting succes')
         return txt_path
     except Exception as error:

@@ -15,7 +15,7 @@ MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
 COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
-COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter']
+COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
 
 
 def match_pattern(pattern: Pattern, line: str):
@@ -47,7 +47,7 @@ def fill_places_persons(string):
 
     except Exception as e:
         logger.error(e)
-        print('error in fill_places_persons:\t', e)
+        print('error in fill_places_persons:\t', string,  e)
         return string
 
 
@@ -82,6 +82,9 @@ class Participant:
         '''part of CHAT @Participants header'''
         return f'{self.code} {self.code.lower()} {self.role or self.role_from_age()}'
 
+    def __repr__(self):
+        return self.participant_header
+
 
 class Utterance:
     def __init__(self, speaker_code: str, text: str, utt_id: Optional[int] = None):
@@ -95,11 +98,14 @@ class Utterance:
 
 class Tier:
     def __init__(self, code: str, value: str):
-        self.code = code
+        self.code = code[1:] if code.startswith(r'%') else code
         self.value = value
 
     def __str__(self):
         return f'%{self.code}:\t{self.value}'
+
+    def __repr__(self):
+        return f'({self.code}, {self.value})'
 
 
 class MetaValue:

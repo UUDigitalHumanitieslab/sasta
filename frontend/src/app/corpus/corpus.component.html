@@ -5,6 +5,7 @@
             <tr>
                 <th>Transcript</th>
                 <th>Status</th>
+                <th>Utterances (#)</th>
                 <th>Files</th>
                 <th class="has-text-right">Actions</th>
             </tr>
@@ -13,6 +14,7 @@
             <tr *ngFor="let transcript of corpus.transcripts">
                 <td>{{transcript.name}}</td>
                 <td>{{transcript.status}}</td>
+                <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
                 <td>
                     <div class="buttons">
                         <button class="button is-primary" pTooltip="view CHAT"
