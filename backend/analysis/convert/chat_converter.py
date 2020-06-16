@@ -30,7 +30,7 @@ def match_pattern(pattern: Pattern, line: str):
 def fill_places_persons(string):
     try:
         place_pattern = re.compile(r'PLAATSNAAM(\d)?')
-        person_pattern = re.compile(r'NAAM(\d)?')
+        person_pattern = re.compile(r'NAAM|BROER|ZUS(\d)?')
 
         def replace_place(match):
             index = int(match.group(1) or 0)
@@ -196,6 +196,10 @@ class SifReader:
             tier_pattern, single_speaker_pattern,
             target_uttids_pattern]]
 
+    @property
+    def utterances(self):
+        return [c for c in self.content if isinstance(c, Utterance)]
+
     def parse_utterance(self, utterance):
         utt_id, code, text = utterance
         known_participant_codes = [p.code for p in self.participants]
@@ -204,11 +208,31 @@ class SifReader:
         if text != '':
             self.content.append(Utterance(code, text, utt_id))
 
+    def find_target(self):
+        ''' If no target speaker was defined, set it to the first speaker with a numbered utterance '''
+        logger.info(
+            'CHAT-Converter:\tNo target speaker found, attempting to determine')
+        numbered_utts = [
+            utt for utt in self.utterances if utt.utt_id is not None]
+        if numbered_utts:
+            logger.info(
+                'CHAT-Converter:\tSet target speaker from numbered utterance')
+            first_code = numbered_utts[0].speaker_code
+            return next((spk for spk in self.participants if spk.code == first_code), None)
+        logger.info(
+            'CHAT-Converter:\tNo numbered utterances, set target speaker to first speaker')
+        return next((spk for spk in self.participants), None)
+
     def parse_metadata(self):
         ''' Metadata pertaining to target speaker'''
         logger.info(f'CHAT-Converter:\tparsing metadata for {self.title}')
-        target_speaker = [
-            p for p in self.participants if p.target_speaker][0] or None
+        targeted_speakers = [
+            p for p in self.participants if p.target_speaker]
+        if not targeted_speakers:
+            target_speaker = self.find_target()
+        else:
+            target_speaker = targeted_speakers[0]
+
         for meta in self.metadata:
             # parse age
             if meta.key.lower() in AGE_FIELD_NAMES:

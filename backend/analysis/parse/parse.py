@@ -19,7 +19,7 @@ logger = logging.getLogger('sasta')
 
 def parse_and_create(transcript):
     log_target = LogTarget(target=FilesystemTarget(
-        'logs'))
+        '.logs'))
     log_target.document = Document(CollectedFile(
         '', 'parse.log', 'text/plain', ''), [])
     LogSingleton.set(Log(log_target, strict=False))
