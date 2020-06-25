@@ -2,16 +2,19 @@ import csv
 import logging
 import os
 import shutil
+from io import BytesIO
+import zipfile
+from itertools import chain
 from uuid import uuid4
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from django.conf import settings
 
 from .permissions import IsOwner, IsOwnerOrAdmin
-from .utils import read_TAM, extract, get_items_list
+from .utils import extract, get_items_list, read_TAM
 
 logger = logging.getLogger('sasta')
 
@@ -55,11 +58,23 @@ class Corpus(models.Model):
     def __str__(self):
         return self.name
 
+    def download_as_zip(self):
+        stream = BytesIO()
+        transcripts = self.transcripts.all()
+        files = [(t.content.path, t.parsed_content.path) for t in transcripts]
+        files = list(chain.from_iterable(files))
+        zipf = zipfile.ZipFile(stream, "w")
+        for f in files:
+            arcname = os.path.split(f)[1]
+            zipf.write(f, arcname)
+        zipf.close()
+        return stream
+
     class Meta:
         verbose_name_plural = 'corpora'
 
 
-@receiver(post_delete, sender=Corpus)
+@ receiver(post_delete, sender=Corpus)
 def corpus_delete(sender, instance, **kwargs):
     corpus_dir = os.path.join(settings.MEDIA_ROOT, 'files', str(instance.uuid))
     shutil.rmtree(corpus_dir, ignore_errors=True)
@@ -86,7 +101,7 @@ class Transcript(models.Model):
         return self.name
 
 
-@receiver(post_delete, sender=Transcript)
+@ receiver(post_delete, sender=Transcript)
 def transcript_delete(sender, instance, **kwargs):
     instance.content.delete(False)
     instance.parsed_content.delete(False)
@@ -124,7 +139,7 @@ class UploadFile(models.Model):
         return self.name
 
 
-@receiver(post_save, sender=UploadFile)
+@ receiver(post_save, sender=UploadFile)
 def extract_upload_file(sender, instance, created, **kwargs):
     if created:
         try:
@@ -152,7 +167,7 @@ class AssessmentMethod(models.Model):
         return mapping
 
 
-@receiver(post_save, sender=AssessmentMethod)
+@ receiver(post_save, sender=AssessmentMethod)
 def read_tam_file(sender, instance, created, **kwargs):
     if not created:
         # on update: delete all queries related to this method
@@ -202,8 +217,7 @@ class AssessmentQuery(models.Model):
         ''' mapping of all possible items (including altitems) to this query'''
         if (not self.item) or (not self.level):
             return {}
-        result = {(self.item.lower(), self.level.lower())
-                   : (self.query_id, self.fase)}
+        result = {(self.item.lower(), self.level.lower())                  : (self.query_id, self.fase)}
         alt_items = self.get_altitems_list(sep)
         if alt_items:
             for item in alt_items:
@@ -216,8 +230,8 @@ class AssessmentQuery(models.Model):
         unique_together = ('method', 'query_id')
 
 
-@receiver(post_delete, sender=UploadFile)
-@receiver(post_delete, sender=AssessmentMethod)
-@receiver(post_delete, sender=CompoundFile)
+@ receiver(post_delete, sender=UploadFile)
+@ receiver(post_delete, sender=AssessmentMethod)
+@ receiver(post_delete, sender=CompoundFile)
 def file_delete(sender, instance, **kwargs):
     instance.content.delete(False)

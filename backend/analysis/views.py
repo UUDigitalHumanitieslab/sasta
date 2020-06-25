@@ -118,6 +118,16 @@ class CorpusViewSet(viewsets.ModelViewSet):
                 return Response('Failed', status.HTTP_400_BAD_REQUEST)
         return Response(self.get_serializer(corpus).data)
 
+    @action(detail=True, methods=['POST'], name='download')
+    def download(self, request, *args, **kwargs):
+        corpus = self.get_object()
+        stream = corpus.download_as_zip()
+        response = HttpResponse(
+            stream.getvalue(), content_type='application/x-zip-compressed')
+        response['Content-Disposition'] = f'attachment; filename={corpus.name}.zip'
+
+        return response
+
 
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()

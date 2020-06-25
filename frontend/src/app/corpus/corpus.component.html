@@ -1,5 +1,11 @@
 <ng-container *ngIf="corpus">
     <h1 class="title">{{corpus.name}}</h1>
+    <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
+        <span class="icon is-small">
+            <fa-icon [icon]="faDownload"></fa-icon>
+        </span>
+        <span>Download</span>
+    </button>
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
