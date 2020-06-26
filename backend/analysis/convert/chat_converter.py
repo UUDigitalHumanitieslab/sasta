@@ -17,6 +17,9 @@ FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
 COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
 
+PLACE_CODES = ['PLAATSNAAM', 'PLAATS']
+PERSON_CODES = ['NAAM', 'BROER', 'ZUS']
+
 
 def match_pattern(pattern: Pattern, line: str):
     match = re.match(pattern, line)
@@ -29,21 +32,32 @@ def match_pattern(pattern: Pattern, line: str):
 
 def fill_places_persons(string):
     try:
-        place_pattern = re.compile(r'PLAATSNAAM(\d)?')
-        person_pattern = re.compile(r'NAAM|BROER|ZUS(\d)?')
+        nr_place = fr'\b\w*.*(?:{"|".join(PLACE_CODES)})(\d+).*\b'
+        place = fr'\b\w*(?:{"|".join(PLACE_CODES)})\b'
+
+        nr_pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\w*(\d+)\b'
+        pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\b'
 
         def replace_place(match):
-            index = int(match.group(1) or 0)
+            try:
+                index = int(match.group(1))
+            except:
+                index = 0
             return COMMON_PLACE_NAMES[index]
 
         def replace_person(match):
-            index = int(match.group(1) or 0)
+            try:
+                index = int(match.group(1))
+            except:
+                index = 0
             return COMMON_PERSON_NAMES[index]
 
-        subbed_place_string = re.sub(place_pattern, replace_place, string)
-        subbed_pers_string = re.sub(
-            person_pattern, replace_person, subbed_place_string)
-        return subbed_pers_string
+        string = re.sub(nr_place, replace_place, string)
+        string = re.sub(place, replace_place, string)
+        string = re.sub(nr_pers, replace_person, string)
+        string = re.sub(pers, replace_person, string)
+
+        return string
 
     except Exception as e:
         logger.error(e)
