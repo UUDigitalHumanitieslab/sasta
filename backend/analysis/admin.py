@@ -9,9 +9,14 @@ from .models import (AssessmentMethod, AssessmentQuery, Corpus, Compound, Compou
 from .score.run_queries import query_transcript
 
 
+class TranscriptInline(admin.TabularInline):
+    model = Transcript
+
+
 @admin.register(Corpus)
 class CorpusAdmin(admin.ModelAdmin):
     model = Corpus
+    inlines = (TranscriptInline,)
 
 
 @admin.register(Utterance)

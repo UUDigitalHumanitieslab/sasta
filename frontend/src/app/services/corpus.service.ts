@@ -44,5 +44,10 @@ export class CorpusService {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/parse_all/`);
   }
 
+  download_zip(id): Observable<any> {
+    const formData: FormData = new FormData();
+    return this.httpClient.post(`api/corpora/${id}/download/`, formData, { observe: 'response', responseType: 'blob' });
+  }
+
 }
 

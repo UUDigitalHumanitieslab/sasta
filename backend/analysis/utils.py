@@ -14,6 +14,7 @@ import pandas as pd
 from django.core.files import File
 from django.db.utils import IntegrityError
 from docx import Document
+
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
 
@@ -120,7 +121,7 @@ def iter_paragraphs(parent, recursive=True):
                             yield child_paragraph
 
 
-def docx_to_txt(filepath):
+def docx_to_txt(filepath, delete_docx=True):
     logger.info(f'DOC2TXT:\tconverting {os.path.basename(filepath)}')
     try:
         document = Document(filepath)
@@ -138,7 +139,8 @@ def docx_to_txt(filepath):
                         print(paragraph.text, file=txt_file)
                 else:
                     print(paragraph.text, file=txt_file)
-        os.remove(filepath)
+        if delete_docx:
+            os.remove(filepath)
         logger.info(f'DOC2TXT:\tconverting succes')
         return txt_path
     except Exception as error:
@@ -217,7 +219,7 @@ def v1_to_xlsx(data: Dict[str, Any]):
         logger.exception(e)
 
 
-def v2_to_xlsx(data: Dict[str, Any]):
+def v2_to_xlsx(data: Dict[str, Any], zc_embeddings=False):
     try:
         wb = Workbook()
         worksheet = wb.active
@@ -231,6 +233,17 @@ def v2_to_xlsx(data: Dict[str, Any]):
         # levels = sorted(list(data['levels']))
         levels = LEVELS
 
+        # How many ZC levels are there?
+        if zc_embeddings:
+            levels = [l for l in levels if l != 'Zc']
+            max_embed = 0
+            for _, words in items:
+                embed_levels = {
+                    w.zc_embedding for w in words if w.zc_embedding}
+                if embed_levels:
+                    max_embed = max(max_embed, max(embed_levels))
+            embed_range = range(0, max_embed+1)
+
         for utt_id, words in items:
             # Utt row, containing the word tokens
             words_row = [utt_id, 'Utt'] + [w.word for w in words]
@@ -242,18 +255,31 @@ def v2_to_xlsx(data: Dict[str, Any]):
             level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [None] + [[]]
                           for level in levels]
 
+            if zc_embeddings:
+                zc_rows = [[utt_id, 'Zc']+[set([]) for _ in range(max_words+1)] + [None] + [[]]
+                           for _ in embed_range]
+
             # iterate over hits
             # fill in items on their respective level
             # leaving cells without hits as None
             for i_word, word in enumerate(words):
                 for hit in word.hits:
-                    i_level = levels.index(hit['level'])
-                    level_rows[i_level][i_word+2].add(hit['item'])
-                    try:
-                        level_rows[i_level][-1].append(
-                            ROMAN_NUMS[int(hit['fase'])])
-                    except:
-                        pass
+                    if zc_embeddings and hit['level'].lower() == 'zc':
+                        i_level = word.zc_embedding
+                        zc_rows[i_level][i_word+2].add(hit['item'])
+                        try:
+                            zc_rows[i_level][-1].append(
+                                ROMAN_NUMS[int(hit['fase'])])
+                        except:
+                            pass
+                    else:
+                        i_level = levels.index(hit['level'])
+                        level_rows[i_level][i_word+2].add(hit['item'])
+                        try:
+                            level_rows[i_level][-1].append(
+                                ROMAN_NUMS[int(hit['fase'])])
+                        except:
+                            pass
 
             worksheet.append(words_row)
             # condense cells and append to xlsx
@@ -263,6 +289,13 @@ def v2_to_xlsx(data: Dict[str, Any]):
                        else cell
                        for cell in row]
                 worksheet.append(row)
+            if zc_embeddings:
+                for row in zc_rows:
+                    row = [','.join(sorted(cell)) or None
+                           if (isinstance(cell, set) or isinstance(cell, list))
+                           else cell
+                           for cell in row]
+                    worksheet.append(row)
 
         # Formatting
         header = worksheet["1:1"]
@@ -270,7 +303,8 @@ def v2_to_xlsx(data: Dict[str, Any]):
             # bold headers
             cell.font = Font(bold=True)
 
-        nth_row = len(levels) + 1
+        nth_row = len(levels) + 1 + \
+            len(embed_range) if zc_embeddings else len(levels) + 1
         for i, row in enumerate(worksheet.rows):
             # yellow background for each utterance row
             if i % nth_row == 1:

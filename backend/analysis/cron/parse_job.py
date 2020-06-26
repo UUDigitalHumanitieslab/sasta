@@ -21,7 +21,7 @@ class ParseJob(CronJobBase):
 
     def do(self):
         log_target = LogTarget(target=FilesystemTarget(
-            'logs'))
+            '.logs'))
         log_target.document = Document(CollectedFile(
             '', 'parse.log', 'text/plain', ''), [])
         LogSingleton.set(Log(log_target, strict=False))
@@ -33,6 +33,6 @@ class ParseJob(CronJobBase):
                 output_dir = os.path.dirname(output_path)
                 os.makedirs(output_dir, exist_ok=True)
                 parse_transcript(transcript, output_dir, output_path)
-                create_utterance_objects(transcript, output_path)
+                create_utterance_objects(transcript)
             except Exception as e:
                 logger.exception(f'ERROR parsing {transcript.name}')

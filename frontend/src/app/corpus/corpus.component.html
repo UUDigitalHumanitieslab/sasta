@@ -1,10 +1,17 @@
 <ng-container *ngIf="corpus">
     <h1 class="title">{{corpus.name}}</h1>
+    <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
+        <span class="icon is-small">
+            <fa-icon [icon]="faDownload"></fa-icon>
+        </span>
+        <span>Download</span>
+    </button>
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
                 <th>Transcript</th>
                 <th>Status</th>
+                <th>Utterances (#)</th>
                 <th>Files</th>
                 <th class="has-text-right">Actions</th>
             </tr>
@@ -13,6 +20,7 @@
             <tr *ngFor="let transcript of corpus.transcripts">
                 <td>{{transcript.name}}</td>
                 <td>{{transcript.status}}</td>
+                <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
                 <td>
                     <div class="buttons">
                         <button class="button is-primary" pTooltip="view CHAT"

@@ -7,4 +7,5 @@ export interface Transcript {
     parsed_content: string;
     status: 'created' | 'converting' | 'converted' | 'conversion-failed';
     corpus: Corpus;
+    utterances?: any[];
 }

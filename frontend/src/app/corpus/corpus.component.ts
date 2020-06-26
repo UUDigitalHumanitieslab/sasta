@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faCalculator, faCogs, faFile, faFileCode, faFileExport, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCalculator, faCogs, faDownload, faFile, faFileCode, faFileExport, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
@@ -33,6 +33,7 @@ export class CorpusComponent implements OnInit {
   faFileExport = faFileExport;
   faCogs = faCogs;
   faCalculator = faCalculator;
+  faDownload = faDownload;
   faTrash = faTrash;
 
 
@@ -142,4 +143,19 @@ export class CorpusComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Error removing transcript', detail: err.message, sticky: true });
         });
   }
+
+  downloadZip() {
+    this.corpusService
+      .download_zip(this.corpus.id)
+      .subscribe(
+        response => {
+          this.downloadFile(response.body, `${this.corpus.name}.zip`)
+          this.messageService.add({ severity: 'success', summary: 'Downloaded corpus', detail: '' });
+        },
+        err => {
+          console.log(err);
+          this.messageService.add({ severity: 'error', summary: 'Error downloading', detail: err.message, sticky: true });
+        });
+  }
+
 }

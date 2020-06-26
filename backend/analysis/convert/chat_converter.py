@@ -15,7 +15,10 @@ MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
 COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
-COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter']
+COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
+
+PLACE_CODES = ['PLAATSNAAM', 'PLAATS']
+PERSON_CODES = ['NAAM', 'BROER', 'ZUS']
 
 
 def match_pattern(pattern: Pattern, line: str):
@@ -29,25 +32,36 @@ def match_pattern(pattern: Pattern, line: str):
 
 def fill_places_persons(string):
     try:
-        place_pattern = re.compile(r'PLAATSNAAM(\d)?')
-        person_pattern = re.compile(r'NAAM(\d)?')
+        nr_place = fr'\b\w*.*(?:{"|".join(PLACE_CODES)})(\d+).*\b'
+        place = fr'\b\w*(?:{"|".join(PLACE_CODES)})\b'
+
+        nr_pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\w*(\d+)\b'
+        pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\b'
 
         def replace_place(match):
-            index = int(match.group(1) or 0)
+            try:
+                index = int(match.group(1))
+            except:
+                index = 0
             return COMMON_PLACE_NAMES[index]
 
         def replace_person(match):
-            index = int(match.group(1) or 0)
+            try:
+                index = int(match.group(1))
+            except:
+                index = 0
             return COMMON_PERSON_NAMES[index]
 
-        subbed_place_string = re.sub(place_pattern, replace_place, string)
-        subbed_pers_string = re.sub(
-            person_pattern, replace_person, subbed_place_string)
-        return subbed_pers_string
+        string = re.sub(nr_place, replace_place, string)
+        string = re.sub(place, replace_place, string)
+        string = re.sub(nr_pers, replace_person, string)
+        string = re.sub(pers, replace_person, string)
+
+        return string
 
     except Exception as e:
         logger.error(e)
-        print('error in fill_places_persons:\t', e)
+        print('error in fill_places_persons:\t', string,  e)
         return string
 
 
@@ -82,6 +96,9 @@ class Participant:
         '''part of CHAT @Participants header'''
         return f'{self.code} {self.code.lower()} {self.role or self.role_from_age()}'
 
+    def __repr__(self):
+        return self.participant_header
+
 
 class Utterance:
     def __init__(self, speaker_code: str, text: str, utt_id: Optional[int] = None):
@@ -95,11 +112,14 @@ class Utterance:
 
 class Tier:
     def __init__(self, code: str, value: str):
-        self.code = code
+        self.code = code[1:] if code.startswith(r'%') else code
         self.value = value
 
     def __str__(self):
         return f'%{self.code}:\t{self.value}'
+
+    def __repr__(self):
+        return f'({self.code}, {self.value})'
 
 
 class MetaValue:
@@ -190,6 +210,10 @@ class SifReader:
             tier_pattern, single_speaker_pattern,
             target_uttids_pattern]]
 
+    @property
+    def utterances(self):
+        return [c for c in self.content if isinstance(c, Utterance)]
+
     def parse_utterance(self, utterance):
         utt_id, code, text = utterance
         known_participant_codes = [p.code for p in self.participants]
@@ -198,11 +222,31 @@ class SifReader:
         if text != '':
             self.content.append(Utterance(code, text, utt_id))
 
+    def find_target(self):
+        ''' If no target speaker was defined, set it to the first speaker with a numbered utterance '''
+        logger.info(
+            'CHAT-Converter:\tNo target speaker found, attempting to determine')
+        numbered_utts = [
+            utt for utt in self.utterances if utt.utt_id is not None]
+        if numbered_utts:
+            logger.info(
+                'CHAT-Converter:\tSet target speaker from numbered utterance')
+            first_code = numbered_utts[0].speaker_code
+            return next((spk for spk in self.participants if spk.code == first_code), None)
+        logger.info(
+            'CHAT-Converter:\tNo numbered utterances, set target speaker to first speaker')
+        return next((spk for spk in self.participants), None)
+
     def parse_metadata(self):
         ''' Metadata pertaining to target speaker'''
         logger.info(f'CHAT-Converter:\tparsing metadata for {self.title}')
-        target_speaker = [
-            p for p in self.participants if p.target_speaker][0] or None
+        targeted_speakers = [
+            p for p in self.participants if p.target_speaker]
+        if not targeted_speakers:
+            target_speaker = self.find_target()
+        else:
+            target_speaker = targeted_speakers[0]
+
         for meta in self.metadata:
             # parse age
             if meta.key.lower() in AGE_FIELD_NAMES:

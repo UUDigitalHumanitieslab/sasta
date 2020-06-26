@@ -10,16 +10,18 @@ from lxml import etree as ET
 from ..macros.macros import expandmacros, get_macros_dict
 from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
 from . import external_functions
+from analysis.score.zc_embedding import get_zc_embeddings
 
 logger = logging.getLogger('sasta')
 
 
 class UtteranceWord:
-    def __init__(self, word: str, begin: int, end: int, hits: List[str]):
+    def __init__(self, word: str, begin: int, end: int, hits: List[str], zc_embedding=None):
         self.word = word
         self.begin = begin
         self.end = end
         self.hits = hits
+        self.zc_embedding = zc_embedding
 
     def __str__(self):
         return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'
@@ -28,15 +30,23 @@ class UtteranceWord:
         return self.__str__()
 
 
-def utt_from_tree(tree: str):
+def utt_from_tree(tree: str, embeddings=False):
     # From a LASSY syntax tree, construct utterance representation
     # Output: sorted list of UtteranceWord instances
     soup = Soup(tree, 'lxml')
     utt = soup.alpino_ds
 
+    if embeddings:
+        embed_dict = get_zc_embeddings(ET.fromstring(tree))
+
     words = utt.findAll('node', {'word': True})
-    utt_words = [UtteranceWord(w.get('word'), w.get(
-        'begin'), w.get('end'), []) for w in words]
+    utt_words = [UtteranceWord(
+        word=w.get('word'),
+        begin=w.get('begin'),
+        end=w.get('end'),
+        hits=[],
+        zc_embedding=embed_dict[str(w.get('begin'))] if embed_dict else None)
+        for w in words]
 
     return sorted(utt_words, key=attrgetter('begin'))
 
@@ -63,13 +73,13 @@ def compile_queries(queries):
     return query_funcs
 
 
-def annotate_transcript(transcript: Transcript, method: AssessmentMethod, only_include_inform: bool):
+def annotate_transcript(transcript: Transcript, method: AssessmentMethod, only_include_inform: bool, zc_embeddings: bool):
     logger.info(f'Annotating {transcript.name}')
     queries = filter_queries(method)
     queries_with_funcs = compile_queries(queries)
     utterances = Utterance.objects.filter(transcript=transcript)
     results = v2_results(transcript, method, utterances,
-                         queries_with_funcs, only_include_inform=only_include_inform)
+                         queries_with_funcs, only_include_inform, zc_embeddings)
     logger.info(f'Succes, annotated {transcript.name}')
     return results
 
@@ -104,7 +114,7 @@ def v1_results(transcript, method, utterances, queries_with_funcs):
     return results
 
 
-def v2_results(transcript, method, utterances, queries_with_funcs, only_include_inform):
+def v2_results(transcript, method, utterances, queries_with_funcs, only_include_inform, zc_embeddings):
     # match aggregate, grouped by utterance
     results = {
         'transcript': transcript.name,
@@ -114,7 +124,7 @@ def v2_results(transcript, method, utterances, queries_with_funcs, only_include_
     }
     for utt in utterances:
         utt_res = []
-        utt_res = utt_from_tree(utt.parse_tree)
+        utt_res = utt_from_tree(utt.parse_tree, zc_embeddings)
 
         for q in queries_with_funcs:
             q_res = single_query_single_utt(q['q_func'], utt)
@@ -125,7 +135,7 @@ def v2_results(transcript, method, utterances, queries_with_funcs, only_include_
                     hit = {
                         'level': q['q_obj'].level,
                         'item': q['q_obj'].item,
-                        'fase': q['q_obj'].fase
+                        'fase': q['q_obj'].fase,
                     }
                     results['levels'].add(q['q_obj'].level)
                     utt_res[res_begin].hits.append(hit)
