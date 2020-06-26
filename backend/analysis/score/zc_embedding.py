@@ -34,7 +34,10 @@ def solve(node, embed, results):
 
 
 def get_zc_embeddings(syntree) -> Dict[str, int]:
-    root = syntree.getroot()
-    top_node = root[0]
+    try:
+        root = syntree.getroot()
+    except:
+        root = syntree
+    top_node = root.find('node')
     results = solve(top_node, 0, {})
     return results

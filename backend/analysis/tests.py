@@ -1,6 +1,13 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+import pytest
+from analysis.models import AssessmentMethod, Transcript
 
-from django.test import TestCase
 
-# Create your tests here.
+@pytest.mark.django_db
+def test_embed_annotate(admin_client):
+    # Todo: proper test
+    method = AssessmentMethod.objects.first()
+    transcript = Transcript.objects.get(id=826)
+
+    response = admin_client.post('/api/transcripts/826/annotate/',
+                                 {'method': method.name})
+    assert 1 == 0

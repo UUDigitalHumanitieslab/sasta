@@ -14,8 +14,9 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
 from .utils import v1_to_xlsx, v2_to_xlsx
 from .convert.convert import convert
 from .parse.parse import parse_and_create
+from lxml import etree as ET
 
-from pprint import pprint
+from .score.zc_embedding import get_zc_embeddings
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
@@ -47,13 +48,21 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_name = request.data.get('method')
+        # todo: robust way to deal with this
+        if 'tarsp' in method_name.lower():
+            zc_embeddings = True
+        else:
+            zc_embeddings = False
+
         only_include_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.filter(name=method_name).first()
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
-        v2res = annotate_transcript(transcript, method, only_include_inform)
-        spreadsheet = v2_to_xlsx(v2res)
+
+        v2res = annotate_transcript(
+            transcript, method, only_include_inform, zc_embeddings)
+        spreadsheet = v2_to_xlsx(v2res, zc_embeddings)
         spreadsheet.save(response)
 
         return response
