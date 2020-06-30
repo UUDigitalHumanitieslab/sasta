@@ -18,6 +18,7 @@ COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
 COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
 
 PLACE_CODES = ['PLAATSNAAM', 'PLAATS']
+# NOUN_PLACE = MAIL STUREN
 PERSON_CODES = ['NAAM', 'BROER', 'ZUS']
 
 
@@ -41,14 +42,14 @@ def fill_places_persons(string):
         def replace_place(match):
             try:
                 index = int(match.group(1))
-            except:
+            except IndexError:
                 index = 0
             return COMMON_PLACE_NAMES[index]
 
         def replace_person(match):
             try:
                 index = int(match.group(1))
-            except:
+            except IndexError:
                 index = 0
             return COMMON_PERSON_NAMES[index]
 
@@ -60,7 +61,7 @@ def fill_places_persons(string):
         return string
 
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
         print('error in fill_places_persons:\t', string,  e)
         return string
 
@@ -89,25 +90,29 @@ class Participant:
     @property
     def id_header(self) -> str:
         '''CHAT @ID header'''
-        return f'@ID:\tnld||{self.code}|{self.age or ""}|{self.sex or ""}|||{self.role or self.role_from_age()}|||'
+        return f'@ID:\tnld||{self.code}|{self.age or ""}' \
+            f'|{self.sex or ""}|||{self.role or self.role_from_age()}|||'
 
     @property
     def participant_header(self) -> str:
         '''part of CHAT @Participants header'''
-        return f'{self.code} {self.code.lower()} {self.role or self.role_from_age()}'
+        return f'{self.code} {self.code.lower()}' \
+            f'{self.role or self.role_from_age()}'
 
     def __repr__(self):
         return self.participant_header
 
 
 class Utterance:
-    def __init__(self, speaker_code: str, text: str, utt_id: Optional[int] = None):
+    def __init__(self, speaker_code: str,
+                 text: str, utt_id: Optional[int] = None):
         self.speaker_code = speaker_code
         self.utt_id = utt_id
         self.text = text
 
     def __str__(self):
-        return f'*{self.speaker_code}:\t{self.text}' + ('\n'+str(Tier('xsid', self.utt_id)) if self.utt_id else '')
+        return f'*{self.speaker_code}:\t{self.text}' + \
+            ('\n'+str(Tier('xsid', self.utt_id)) if self.utt_id else '')
 
 
 class Tier:
@@ -162,10 +167,12 @@ class SifDocument:
             # File headers
             print('@UTF8', '@Begin', '@Languages:\tnld', sep='\n', file=file)
             # @Participants header
-            print(
-                f'@Participants:\t{", ".join([p.participant_header for p in self.participants])}', file=file)
+            part_headers = ", ".join(
+                [p.participant_header for p in self.participants])
+            print(f'@Participants:\t{part_headers}', file=file)
             # @ID headers
-            print(*[p.id_header for p in self.participants], sep='\n', file=file)
+            print(*[p.id_header for p in self.participants],
+                  sep='\n', file=file)
             # Metadata comments
             print(*self.meta_comments, sep='\n', file=file)
             print('\r', file=file)
@@ -190,13 +197,14 @@ class SifReader:
 
     @property
     def document(self):
-        return SifDocument(self.participants, self.content, self.meta_comments, self.title)
+        return SifDocument(self.participants, self.content,
+                           self.meta_comments, self.title)
 
     @property
     def patterns(self):
         # groups:   1) type     2) field    3) value
         meta_pattern = r'^##META\s+(\w+)\s+(\w+)\s=\s(.*)$'
-        # groups:   1) optional utterance_id    2) speaker code     3) utterance
+        # groups:   1) optional utterance_id    2) speaker code   3) utterance
         utterance_pattern = r'^(?:(\S+)\s*\|.*?)?\*?([A-Z*]{3}):(?:\s*)(.*)$'
         # groups:   1) tier code    2) value
         tier_pattern = r'^(%\w{3,4}):\s*(.*)$'
@@ -223,18 +231,21 @@ class SifReader:
             self.content.append(Utterance(code, text, utt_id))
 
     def find_target(self):
-        ''' If no target speaker was defined, set it to the first speaker with a numbered utterance '''
+        ''' If no target speaker was defined,
+            set it to the first speaker with a numbered utterance '''
         logger.info(
-            'CHAT-Converter:\tNo target speaker found, attempting to determine')
+            'CHAT-Converter:\tNo target speaker found, determining')
         numbered_utts = [
             utt for utt in self.utterances if utt.utt_id is not None]
         if numbered_utts:
             logger.info(
                 'CHAT-Converter:\tSet target speaker from numbered utterance')
             first_code = numbered_utts[0].speaker_code
-            return next((spk for spk in self.participants if spk.code == first_code), None)
+            return next(
+                (spk for spk in self.participants if spk.code == first_code),
+                None)
         logger.info(
-            'CHAT-Converter:\tNo numbered utterances, set target speaker to first speaker')
+            'CHAT-Converter:\tNo numbered utterances, target speaker = first')
         return next((spk for spk in self.participants), None)
 
     def parse_metadata(self):
@@ -270,7 +281,8 @@ class SifReader:
                 [meta, utt, tier, single_spk, tar_uttids] = [match_pattern(
                     pattern, line) for pattern in self.patterns]
                 if meta:
-                    if meta[1] in AGE_FIELD_NAMES or meta[1] in SEX_FIELD_NAMES:
+                    if meta[1] in AGE_FIELD_NAMES or \
+                            meta[1] in SEX_FIELD_NAMES:
                         self.metadata.append(
                             MetaValue(*meta))
                     elif meta[1] in TITLE_FIELD_NAMES:

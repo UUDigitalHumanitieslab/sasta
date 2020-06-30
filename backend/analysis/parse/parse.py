@@ -10,9 +10,8 @@ from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
 from django.core.files import File
-from django.db.models import Q
 
-from ..models import Transcript, Utterance
+from analysis.models import Utterance
 
 logger = logging.getLogger('sasta')
 
@@ -32,7 +31,7 @@ def parse_and_create(transcript):
         result = parse_transcript(transcript, output_dir, output_path)
         create_utterance_objects(transcript)
         return result
-    except Exception as e:
+    except Exception:
         logger.exception(f'ERROR parsing {transcript.name}')
 
 
@@ -43,7 +42,7 @@ def parse_transcript(transcript, output_dir, output_path):
     try:
         logger.info(f'Parsing:\t{transcript.name}\n')
 
-        alpino = AlpinoAnnotator("127.0.0.1", 7001)
+        alpino = AlpinoAnnotator("localhost", 7001)
 
         converter = Converter(
             collector=FilesystemCollector([transcript.content.path]),
@@ -64,7 +63,7 @@ def parse_transcript(transcript, output_dir, output_path):
         os.remove(output_path)
         return transcript
 
-    except Exception as e:
+    except Exception:
         logger.exception(
             f'ERROR parsing {transcript.name}')
         transcript.status = 'parsing-failed'
@@ -100,8 +99,10 @@ def create_utterance_objects(transcript):
                     instance.save()
                     num_created += 1
             logger.info(
-                f'Created {num_created} (out of {len(utts)}) utterances for:\t{transcript.name}\n')
+                f'Created {num_created} (out of {len(utts)})'
+                f'utterances for:\t{transcript.name}\n')
 
         except Exception as e:
             logger.exception(
-                f'ERROR creating utterances for:\t{transcript.name} with message:\t"{e}"\n')
+                f'ERROR creating utterances for:\t{transcript.name}'
+                f'with message:\t"{e}"\n')
