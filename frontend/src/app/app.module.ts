@@ -37,6 +37,7 @@ import { UploadComponent } from './upload/upload.component';
 
 import { effects, reducers } from './store';
 import { ProcessComponent } from './process/process.component';
+import { RegisterComponent } from './auth/register.component';
 
 
 
@@ -58,6 +59,7 @@ import { ProcessComponent } from './process/process.component';
         MethodComponent,
         LoginComponent,
         ProcessComponent,
+        RegisterComponent,
     ],
     imports: [
         AppRoutingModule,

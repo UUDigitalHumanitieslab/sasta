@@ -8,6 +8,7 @@ import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
 import { LoginComponent } from '../auth/login.component';
 import { ProcessComponent } from '../process/process.component';
+import { RegisterComponent } from '../auth/register.component';
 
 const routes: Routes = [
     {
@@ -41,6 +42,10 @@ const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'register',
+        component: RegisterComponent
     },
     {
         path: '',
