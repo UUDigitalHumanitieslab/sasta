@@ -45,7 +45,6 @@
                 </div>
                 <p *ngIf="!passwordSame() && password2" class="help is-danger">Passwords don't match</p>
             </div>
-            <p-messages [(value)]="messages" [closable]="false"></p-messages>
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" [ngClass]=" {'is-loading': processing}"

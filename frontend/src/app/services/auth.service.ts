@@ -9,6 +9,7 @@ import { User } from '../models/user';
 })
 export class AuthService {
   isAuthenticated$ = new BehaviorSubject<boolean>(false);
+  authAPI = 'rest-auth'
 
   constructor(private httpClient: HttpClient) {
     this.getUser()
@@ -20,20 +21,20 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<String> {
-    return this.httpClient.post<String>('rest-auth/login/', { username: username, password: password });
+    return this.httpClient.post<String>(`${this.authAPI}/login/`, { username: username, password: password });
   }
 
   logout(): Observable<any> {
-    return this.httpClient.post('rest-auth/logout/', {});
+    return this.httpClient.post(`${this.authAPI}/logout/`, {});
   }
 
   register(username: string, password1: string, password2: string, email: string): Observable<any> {
-    return this.httpClient.post('rest-auth/register/',
+    return this.httpClient.post(`${this.authAPI}/registration/`,
       { username: username, password1: password1, password2: password2, email: email });
   }
 
   getUser(): Observable<User> {
-    return this.httpClient.get<User>('rest-auth/user/');
+    return this.httpClient.get<User>(`${this.authAPI}/user/`);
   }
 
 }
