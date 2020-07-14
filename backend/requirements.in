@@ -1,4 +1,4 @@
-corpus2alpino
+corpus2alpino>=0.3.3
 chamd>=0.5.1
 django>=3.0a1,<4
 django_cron
