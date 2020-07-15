@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 export class MethodComponent implements OnInit {
   id: number;
   method: Method;
-  selectedQuery: Query;
+  selectedQuery: any;
   showDialog = false;
   _: any = _; // Lodash
 
@@ -28,7 +28,7 @@ export class MethodComponent implements OnInit {
   ngOnInit() {
     this.methodService
       .get_by_id(this.id)
-      .subscribe(res => this.method = res);
+      .subscribe(res => { this.method = res; console.log(res); });
   }
 
   showQuery(query: Query) {
