@@ -16,7 +16,7 @@ export class UploadFileService {
     formData.append('name', uploadFile.name);
     formData.append('corpus', uploadFile.corpus.name);
     formData.append('status', 'pending');
-    const response = await this.httpClient.post<UploadFile>('api/upload_files/', formData).toPromise()
+    const response = await this.httpClient.post<UploadFile>('api/upload_files/', formData).toPromise();
     return response;
   }
 
@@ -26,7 +26,7 @@ export class UploadFileService {
     formData.append('name', uploadFile.name);
     formData.append('corpus', uploadFile.corpus.name);
     formData.append('status', 'pending');
-    return this.httpClient.post<UploadFile>('api/upload_files/', formData)
+    return this.httpClient.post<UploadFile>('api/upload_files/', formData);
   }
 
 

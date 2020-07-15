@@ -22,7 +22,7 @@ export class MethodService {
     const formData: FormData = new FormData();
     formData.append('content', method.content as File, method.content.name);
     formData.append('name', method.name);
-    const response = await this.httpClient.post<Method>('api/assessment_methods/', formData).toPromise()
+    const response = await this.httpClient.post<Method>('api/assessment_methods/', formData).toPromise();
     return response;
   }
 }

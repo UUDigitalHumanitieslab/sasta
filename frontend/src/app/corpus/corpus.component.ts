@@ -37,22 +37,22 @@ export class CorpusComponent implements OnInit {
   faTrash = faTrash;
 
 
-  displayScore: boolean = false;
+  displayScore = false;
   currentTranscript: Transcript;
-  queryAction: "annotate" | "query";
-  onlyInform: boolean = true;
-  querying: boolean = false;
+  queryAction: 'annotate' | 'query';
+  onlyInform = true;
+  querying = false;
 
   constructor(private corpusService: CorpusService,
-    private transcriptService: TranscriptService,
-    private methodService: MethodService,
-    private route: ActivatedRoute,
-    private messageService: MessageService) {
+              private transcriptService: TranscriptService,
+              private methodService: MethodService,
+              private route: ActivatedRoute,
+              private messageService: MessageService) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
   }
 
   ngOnInit() {
-    this.get_corpus()
+    this.get_corpus();
     this.methodService
       .list()
       .subscribe(res => this.tams = res);
@@ -82,15 +82,15 @@ export class CorpusComponent implements OnInit {
   }
 
   downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(blob, filename);
   }
 
   performQuerying(transcript: Transcript, method: Method) {
-    if (this.queryAction == 'annotate') {
+    if (this.queryAction === 'annotate') {
       this.annotateTranscript(transcript, method);
     }
-    if (this.queryAction == 'query') {
+    if (this.queryAction === 'query') {
       this.queryTranscript(transcript, method);
     }
   }
@@ -134,7 +134,7 @@ export class CorpusComponent implements OnInit {
     this.transcriptService
       .delete(transcript.id)
       .subscribe(
-        _res => {
+        () => {
           this.get_corpus();
           this.messageService.add({ severity: 'success', summary: 'Removed transcript', detail: '' });
         },
@@ -149,7 +149,7 @@ export class CorpusComponent implements OnInit {
       .download_zip(this.corpus.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.corpus.name}.zip`)
+          this.downloadFile(response.body, `${this.corpus.name}.zip`);
           this.messageService.add({ severity: 'success', summary: 'Downloaded corpus', detail: '' });
         },
         err => {

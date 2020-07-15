@@ -16,8 +16,8 @@ export class MethodComponent implements OnInit {
   id: number;
   method: Method;
   selectedQuery: Query;
-  showDialog: boolean = false;
-  _: any = _; //Lodash
+  showDialog = false;
+  _: any = _; // Lodash
 
   faCheck = faCheck;
   faSearch = faSearch;

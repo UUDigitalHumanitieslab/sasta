@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   password1: string;
   password2: string;
 
-  processing: boolean = false;
+  processing = false;
 
   constructor(private authService: AuthService, private router: Router, private messageService: MessageService) { }
 
@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
   }
 
   passwordSame() {
-    return this.password1 && this.password2 && (this.password1 == this.password2);
+    return this.password1 && this.password2 && (this.password1 === this.password2);
   }
 
   onError(err) {
@@ -35,15 +35,13 @@ export class RegisterComponent implements OnInit {
     this.processing = false;
 
     if (err.error.username) {
-      let msg = { severity: 'error', summary: 'Login failed.', detail: err.error.username[0], sticky: true };
+      const msg = { severity: 'error', summary: 'Login failed.', detail: err.error.username[0], sticky: true };
       this.messageService.add(msg);
-    }
-    else if (err.error.email) {
-      let msg = { severity: 'error', summary: 'Login failed.', detail: err.error.email[0], sticky: true };
+    } else if (err.error.email) {
+      const msg = { severity: 'error', summary: 'Login failed.', detail: err.error.email[0], sticky: true };
       this.messageService.add(msg);
-    }
-    else {
-      let msg = { severity: 'error', summary: 'Login failed.', detail: err.error, sticky: true };
+    } else {
+      const msg = { severity: 'error', summary: 'Login failed.', detail: err.error, sticky: true };
       this.messageService.add(msg);
     }
   }
@@ -60,7 +58,7 @@ export class RegisterComponent implements OnInit {
         },
         err => {
           this.onError(err);
-        })
+        });
   }
 
 }
