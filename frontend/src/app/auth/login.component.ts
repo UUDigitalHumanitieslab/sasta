@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
 
-  processing: boolean = false;
+  processing = false;
 
   messages: { severity: string, summary: string, detail: string }[] = [];
 
@@ -37,11 +37,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/corpora']);
         },
         err => {
-          this.messages.push({ severity: 'error', summary: 'Login failed.', detail: err.error.non_field_errors })
+          this.messages.push({ severity: 'error', summary: 'Login failed.', detail: err.error.non_field_errors });
           console.log('Http Error', err);
           this.authService.isAuthenticated$.next(false);
           this.processing = false;
-        })
+        });
   }
 
 }

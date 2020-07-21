@@ -1,13 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store, select } from '@ngrx/store';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 import { storeStructure } from '../store';
-import { upload } from '../store/upload-files.actions';
-import { create } from '../store/corpus.actions';
-import { Corpus } from '../models/corpus'
+import { Corpus } from '../models/corpus';
 import { Subscription } from 'rxjs';
 import { CorpusService } from '../services/corpus.service';
 import { UploadFile } from '../models/upload-file';
@@ -18,7 +16,7 @@ import { UploadFileService } from '../services/upload-file.service';
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnDestroy {
+export class UploadComponent implements OnDestroy, OnInit {
     content: File;
     newCorpusName: string;
 
@@ -31,7 +29,10 @@ export class UploadComponent implements OnDestroy {
     corpora: Corpus[];
     selectedCorpus: Corpus;
 
-    constructor(private store: Store<storeStructure>, private router: Router, private corpusService: CorpusService, private uploadFileService: UploadFileService) {
+    constructor(private store: Store<storeStructure>,
+        private router: Router,
+        private corpusService: CorpusService,
+        private uploadFileService: UploadFileService) {
         this.subscriptions = [
             this.store.pipe(select('uploadFiles')).subscribe((uploadFiles: UploadFile[]) => {
                 // information about the file is available
@@ -47,7 +48,7 @@ export class UploadComponent implements OnDestroy {
 
     ngOnInit() {
         this.corpusService.list()
-            .then(response => { this.corpora = response; })
+            .then(response => { this.corpora = response; });
     }
 
     ngOnDestroy() {
@@ -70,13 +71,13 @@ export class UploadComponent implements OnDestroy {
             .subscribe(
                 response => {
                     this.uploading = false;
-                    this.router.navigate([`/process/${response.corpus_id}`])
+                    this.router.navigate([`/process/${response.corpus_id}`]);
                 },
                 error => {
                     this.uploading = false;
                     console.log(error);
                 }
-            )
+            );
 
     }
 }

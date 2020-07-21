@@ -28,6 +28,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+ALPINO_HOST = 'localhost'
+ALPINO_PORT = 7001
+CORPUS2ALPINO_LOG_DIR = '.logs'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -10,6 +10,7 @@ from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
 from django.core.files import File
+from django.conf import settings
 
 from analysis.models import Utterance
 
@@ -18,7 +19,7 @@ logger = logging.getLogger('sasta')
 
 def parse_and_create(transcript):
     log_target = LogTarget(target=FilesystemTarget(
-        '.logs'))
+        settings.CORPUS2ALPINO_LOG_DIR))
     log_target.document = Document(CollectedFile(
         '', 'parse.log', 'text/plain', ''), [])
     LogSingleton.set(Log(log_target, strict=False))
@@ -42,7 +43,10 @@ def parse_transcript(transcript, output_dir, output_path):
     try:
         logger.info(f'Parsing:\t{transcript.name}\n')
 
-        alpino = AlpinoAnnotator("localhost", 7001)
+        alpino = AlpinoAnnotator(
+            settings.ALPINO_HOST,
+            settings.ALPINO_PORT
+        )
 
         converter = Converter(
             collector=FilesystemCollector([transcript.content.path]),

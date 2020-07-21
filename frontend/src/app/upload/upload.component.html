@@ -5,7 +5,7 @@
         <label class="label">To corpus</label>
         <div class="control">
             <p-dropdown [options]="corpora" optionLabel="name" name="corpus-dropdown" placeholder="select corpus"
-                [(ngModel)]="selectedCorpus" showClear="true" [disabled]="!corpora?.length > 0">
+                [(ngModel)]="selectedCorpus" showClear="true" [disabled]="!(corpora?.length > 0)">
             </p-dropdown>
 
         </div>

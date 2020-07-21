@@ -18,9 +18,9 @@ export class ProcessComponent implements OnInit {
     { label: 'Convert to CHAT' },
     { label: 'Parse' },
     { label: 'Done' }
-  ]
+  ];
   stepsIndex: number;
-  processing: boolean = false;
+  processing = false;
 
   constructor(private route: ActivatedRoute, private corpusService: CorpusService, private router: Router) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
@@ -41,6 +41,7 @@ export class ProcessComponent implements OnInit {
     this.stepsIndex = 0;
     this.corpusService.convert_all(this.corpus.id)
       .pipe(
+        // tslint:disable-next-line: deprecation
         concat(this.corpusService.parse_all(this.corpus.id)))
       .subscribe(
         res => {
@@ -53,9 +54,9 @@ export class ProcessComponent implements OnInit {
         },
         () => {
           this.processing = false;
-          this.router.navigate([`/corpora/${this.corpus.id}`])
+          this.router.navigate([`/corpora/${this.corpus.id}`]);
         }
-      )
+      );
 
   }
 
