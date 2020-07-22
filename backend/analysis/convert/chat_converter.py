@@ -96,7 +96,7 @@ class Participant:
     @property
     def participant_header(self) -> str:
         '''part of CHAT @Participants header'''
-        return f'{self.code} {self.code.lower()}' \
+        return f'{self.code} {self.code.lower()} ' \
             f'{self.role or self.role_from_age()}'
 
     def __repr__(self):
