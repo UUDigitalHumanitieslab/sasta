@@ -2,6 +2,8 @@ import pytest
 from .macros import expandmacros, get_macros_dict
 import os.path as op
 
+# flake8: noqa: E501
+
 TESTSTRINGS = ['b  = """number(@begin)"""', 'e = """number(@end)"""',
                'single_name = """( @ntype = "eigen" or @postag="SPEC(deeleigen)"  )"""',
                'multi_name =  """( @cat=''mwu'' and node[@rel=''mwp'' and %single_name%] ) """',

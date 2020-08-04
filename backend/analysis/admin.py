@@ -3,9 +3,8 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from .models import (AssessmentMethod, AssessmentQuery, Corpus, Compound, CompoundFile, Transcript,
-                     UploadFile, Utterance)
-
+from .models import (AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
+                     Corpus, Transcript, UploadFile, Utterance)
 from .score.run_queries import query_transcript
 
 

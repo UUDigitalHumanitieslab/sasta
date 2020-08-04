@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import HttpResponse
 from django.db.models import Q
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from django.http import HttpResponse
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
+from .convert.convert import convert
 from .models import AssessmentMethod, Corpus, Transcript, UploadFile
+from .parse.parse import parse_and_create
 from .score.run_queries import annotate_transcript, query_transcript
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           TranscriptSerializer, UploadFileSerializer)
 from .utils import v1_to_xlsx, v2_to_xlsx
-from .convert.convert import convert
-from .parse.parse import parse_and_create
-from lxml import etree as ET
 
-from .score.zc_embedding import get_zc_embeddings
+# flake8: noqa: E501
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):

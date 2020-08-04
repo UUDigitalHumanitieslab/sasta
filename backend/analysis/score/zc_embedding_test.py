@@ -1,6 +1,5 @@
 import os.path as op
 
-import pytest
 from lxml import etree as ET
 
 from .zc_embedding import get_zc_embeddings

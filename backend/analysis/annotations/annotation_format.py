@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import List, Optional
 from collections import Counter
 import operator
 from functools import reduce
@@ -21,7 +21,8 @@ class SAFDocument:
 
     @property
     def all_annotations(self):
-        return reduce(operator.concat, [utt.annotations for utt in self.utterances])
+        return reduce(operator.concat,
+                      [utt.annotations for utt in self.utterances])
 
     @property
     def item_counts(self):

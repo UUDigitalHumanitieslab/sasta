@@ -96,12 +96,6 @@ def create_transcript(file, content_path):
 
 
 def iter_paragraphs(parent, recursive=True):
-    """
-    Yield each paragraph and table child within *parent*, in document order.
-    Each returned value is an instance of Paragraph. *parent*
-    would most commonly be a reference to a main Document object, but
-    also works for a _Cell object, which itself can contain paragraphs and tables.
-    """
     if isinstance(parent, docx.document.Document):
         parent_elm = parent.element.body
     elif isinstance(parent, docx.table._Cell):
@@ -141,10 +135,10 @@ def docx_to_txt(filepath, delete_docx=True):
                     print(paragraph.text, file=txt_file)
         if delete_docx:
             os.remove(filepath)
-        logger.info(f'DOC2TXT:\tconverting succes')
+        logger.info('DOC2TXT:\tconverting succes')
         return txt_path
     except Exception as error:
-        logger.error(f'DOC2TXT:\tconverting failed')
+        logger.error('DOC2TXT:\tconverting failed')
         logger.error(error)
         print('error in docx_to_txt:\t', error)
 
@@ -177,11 +171,11 @@ def read_TAM(method) -> None:
             series.fase = None
         series.process = getprocess(series.process)
         create_query_from_series(series, method)
-    logger.info(f'TAM-Reader:\treading done')
+    logger.info('TAM-Reader:\treading done')
 
 
 def create_query_from_series(series: pd.Series, method) -> None:
-    from .models import AssessmentQuery  # pylint: disable=import-outside-toplevel
+    from .models import AssessmentQuery
 
     instance = AssessmentQuery(method=method, **series)
     try:
@@ -204,7 +198,8 @@ def v1_to_xlsx(data: Dict[str, Any]):
         for cell in header:
             cell.font = Font(bold=True)
 
-        for key, entry in sorted(data['results'].items(), key=lambda x: x[1]['fase']):
+        for key, entry in sorted(data['results'].items(),
+                                 key=lambda x: x[1]['fase']):
             entry = data['results'][key]
             counter = entry['matches']
             for i, ele in enumerate(counter):
@@ -235,7 +230,7 @@ def v2_to_xlsx(data: Dict[str, Any], zc_embeddings=False):
 
         # How many ZC levels are there?
         if zc_embeddings:
-            levels = [l for l in levels if l != 'Zc']
+            levels = [lv for lv in levels if lv != 'Zc']
             max_embed = 0
             for _, words in items:
                 embed_levels = {
@@ -252,11 +247,17 @@ def v2_to_xlsx(data: Dict[str, Any], zc_embeddings=False):
             words_row += [None]*(len(headers) - len(words_row))
 
             # a cell for each word, and one to record phases
-            level_rows = [[utt_id, level]+[set([]) for _ in range(max_words+1)] + [None] + [[]]
+            level_rows = [[utt_id, level]
+                          + [set([]) for _ in range(max_words+1)]
+                          + [None]
+                          + [[]]
                           for level in levels]
 
             if zc_embeddings:
-                zc_rows = [[utt_id, 'Zc']+[set([]) for _ in range(max_words+1)] + [None] + [[]]
+                zc_rows = [[utt_id, 'Zc']
+                           + [set([]) for _ in range(max_words+1)]
+                           + [None]
+                           + [[]]
                            for _ in embed_range]
 
             # iterate over hits
@@ -310,7 +311,9 @@ def v2_to_xlsx(data: Dict[str, Any], zc_embeddings=False):
             if i % nth_row == 1:
                 for cell in row:
                     cell.fill = PatternFill(
-                        start_color="ffff00", end_color="ffff00", fill_type="solid")
+                        start_color="ffff00",
+                        end_color="ffff00",
+                        fill_type="solid")
         return wb
     except Exception as e:
         print(e)

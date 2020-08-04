@@ -16,7 +16,8 @@ logger = logging.getLogger('sasta')
 
 
 class UtteranceWord:
-    def __init__(self, word: str, begin: int, end: int, hits: List[str], zc_embedding=None):
+    def __init__(self, word: str, begin: int, end: int,
+                 hits: List[str], zc_embedding=None):
         self.word = word
         self.begin = begin
         self.end = end
@@ -51,7 +52,8 @@ def utt_from_tree(tree: str, embeddings=False):
     return sorted(utt_words, key=attrgetter('begin'))
 
 
-def compile_xpath_or_func(query: str, macrodict: Dict[str, str]) -> Optional[ET.XPath]:
+def compile_xpath_or_func(query: str,
+                          macrodict: Dict[str, str]) -> Optional[ET.XPath]:
     try:
         if query in dir(external_functions):
             return getattr(external_functions, query)
@@ -73,13 +75,17 @@ def compile_queries(queries):
     return query_funcs
 
 
-def annotate_transcript(transcript: Transcript, method: AssessmentMethod, only_include_inform: bool, zc_embeddings: bool):
+def annotate_transcript(transcript: Transcript,
+                        method: AssessmentMethod,
+                        only_include_inform: bool,
+                        zc_embeddings: bool):
     logger.info(f'Annotating {transcript.name}')
     queries = filter_queries(method)
     queries_with_funcs = compile_queries(queries)
     utterances = Utterance.objects.filter(transcript=transcript)
     results = v2_results(transcript, method, utterances,
-                         queries_with_funcs, only_include_inform, zc_embeddings)
+                         queries_with_funcs,
+                         only_include_inform, zc_embeddings)
     logger.info(f'Succes, annotated {transcript.name}')
     return results
 
@@ -114,7 +120,8 @@ def v1_results(transcript, method, utterances, queries_with_funcs):
     return results
 
 
-def v2_results(transcript, method, utterances, queries_with_funcs, only_include_inform, zc_embeddings):
+def v2_results(transcript, method, utterances,
+               queries_with_funcs, only_include_inform, zc_embeddings):
     # match aggregate, grouped by utterance
     results = {
         'transcript': transcript.name,
@@ -175,11 +182,13 @@ def single_query_single_utt(query_func, utt_obj):
         logger.warning(f'Failed to execute {query_func}')
 
 
-def filter_queries(method: AssessmentMethod, phase: int = None, phase_exact: bool = True):
+def filter_queries(method: AssessmentMethod,
+                   phase: int = None,
+                   phase_exact: bool = True):
     '''
     # TODO: remove?
-    phase_exact:   True returns only that phase
-                    False returns everything up to that phase (e.g. for 3 -> 1,2,3)
+    phase_exact:True returns only that phase
+                False returns everything up to (and including) that phase
     '''
     try:
         all_queries = AssessmentQuery.objects.all().filter(
