@@ -1,55 +1,19 @@
 import logging
 from collections import Counter
-from operator import attrgetter
-from typing import Dict, List, Optional
 
-from bs4 import BeautifulSoup as Soup
+from typing import Dict, Optional
+
+
 from django.db.models import Q
 from lxml import etree as ET
 
 from ..macros.macros import expandmacros, get_macros_dict
 from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
 from . import external_functions
-from analysis.score.zc_embedding import get_zc_embeddings
+import analysis.score.annotate
+from analysis.score.query import utt_from_tree
 
 logger = logging.getLogger('sasta')
-
-
-class UtteranceWord:
-    def __init__(self, word: str, begin: int, end: int,
-                 hits: List[str], zc_embedding=None):
-        self.word = word
-        self.begin = begin
-        self.end = end
-        self.hits = hits
-        self.zc_embedding = zc_embedding
-
-    def __str__(self):
-        return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'
-
-    def __repr__(self):
-        return self.__str__()
-
-
-def utt_from_tree(tree: str, embeddings=False):
-    # From a LASSY syntax tree, construct utterance representation
-    # Output: sorted list of UtteranceWord instances
-    soup = Soup(tree, 'lxml')
-    utt = soup.alpino_ds
-
-    if embeddings:
-        embed_dict = get_zc_embeddings(ET.fromstring(tree))
-
-    words = utt.findAll('node', {'word': True})
-    utt_words = [UtteranceWord(
-        word=w.get('word'),
-        begin=w.get('begin'),
-        end=w.get('end'),
-        hits=[],
-        zc_embedding=embed_dict[str(w.get('begin'))] if embed_dict else None)
-        for w in words]
-
-    return sorted(utt_words, key=attrgetter('begin'))
 
 
 def compile_xpath_or_func(query: str,
@@ -86,6 +50,8 @@ def annotate_transcript(transcript: Transcript,
     results = v2_results(transcript, method, utterances,
                          queries_with_funcs,
                          only_include_inform, zc_embeddings)
+    analysis.score.annotate.annotate_transcript(
+        transcript, method, only_include_inform, zc_embeddings)
     logger.info(f'Succes, annotated {transcript.name}')
     return results
 
