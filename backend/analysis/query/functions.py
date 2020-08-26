@@ -1,16 +1,14 @@
-import logging
-from operator import attrgetter
-from typing import Callable, Dict, List, Union
+from typing import Dict, List, Union, Callable
 
-from bs4 import BeautifulSoup as Soup
 from lxml import etree as ET
 
 from analysis.macros.functions import expandmacros, get_macros_dict
-from analysis.models import AssessmentQuery
-from analysis.results.results import UtteranceWord
 from analysis.score import external_functions
-from analysis.score.zc_embedding import get_zc_embeddings
+from analysis.models import AssessmentQuery, AssessmentMethod, Utterance
 
+from django.db.models import Q
+
+import logging
 logger = logging.getLogger('sasta')
 
 
@@ -96,22 +94,34 @@ def compile_xpath_or_func(query: str,
         return None
 
 
-def utt_from_tree(tree: str, embeddings=False) -> List[UtteranceWord]:
-    # From a LASSY syntax tree, construct utterance representation
-    # Output: sorted list of UtteranceWord instances
-    soup = Soup(tree, 'lxml')
-    utt = soup.alpino_ds
+def filter_queries(method: AssessmentMethod,
+                   phase: int = None,
+                   phase_exact: bool = True):
+    '''
+    # TODO: remove phase filtering?
+    phase_exact:True returns only that phase
+                False returns everything up to (and including) that phase
+    '''
+    try:
+        all_queries = AssessmentQuery.objects.all().filter(
+            Q(method=method) & Q(query__isnull=False))
+        if phase:
+            phase_filter = Q(fase=phase) if phase_exact else Q(
+                fase__gte=phase)
+            phase_queries = all_queries.filter(phase_filter)
+            return phase_queries
+        return all_queries
 
-    if embeddings:
-        embed_dict = get_zc_embeddings(ET.fromstring(tree))
+    except Exception as e:
+        logger.warning(f'cannot filter queries for phase:\t{e}')
+        print(e)
 
-    words = utt.findAll('node', {'word': True})
-    utt_words = [UtteranceWord(
-        word=w.get('word'),
-        begin=w.get('begin'),
-        end=w.get('end'),
-        hits=[],
-        zc_embedding=embed_dict[str(w.get('begin'))] if embed_dict else None)
-        for w in words]
 
-    return sorted(utt_words, key=attrgetter('begin'))
+def single_query_single_utt(query_func: Union[Callable, ET.XPath],
+                            syntree: ET._Element) -> List[ET._Element]:
+    try:
+        results = query_func(syntree)
+        return results
+    except Exception:
+        logger.warning(f'Failed to execute {query_func}')
+        return []

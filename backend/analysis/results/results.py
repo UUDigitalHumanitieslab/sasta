@@ -7,9 +7,10 @@ logger = logging.getLogger('sasta')
 
 QueryTuple = Tuple[str, str]
 SynTree = Union[ET._Element, str]
+# TODO: Match type
 SastaMatch = Tuple[Match, SynTree]
 SastaMatchList = List[SastaMatch]
-SastaMatches = Tuple[QueryTuple, SastaMatchList]
+SastaMatches = Dict[QueryTuple, SastaMatchList]
 SastaResults = Dict[str, Counter[str]]
 SastaAnnotations = Dict[str, List[Any]]
 
@@ -40,7 +41,7 @@ class UtteranceWord:
         self.begin: int = begin
         self.end: int = end
         self.hits: List[Dict] = hits
-        self.zc_embedding: Optional[int] = zc_embedding
+        self.zc_embedding: Optional[int] = zc_embedding or None
 
     def __str__(self):
         return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'

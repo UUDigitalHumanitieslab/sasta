@@ -167,7 +167,7 @@ def read_TAM(method) -> None:
         # workaround for getting value to None instead of NaN
         try:
             series.fase = int(series.fase)
-        except:
+        except Exception:
             series.fase = None
         series.process = getprocess(series.process)
         create_query_from_series(series, method)
@@ -271,7 +271,7 @@ def v2_to_xlsx(data: Dict[str, Any], zc_embeddings=False):
                         try:
                             zc_rows[i_level][-1].append(
                                 ROMAN_NUMS[int(hit['fase'])])
-                        except:
+                        except Exception:
                             pass
                     else:
                         i_level = levels.index(hit['level'])
@@ -279,7 +279,7 @@ def v2_to_xlsx(data: Dict[str, Any], zc_embeddings=False):
                         try:
                             level_rows[i_level][-1].append(
                                 ROMAN_NUMS[int(hit['fase'])])
-                        except:
+                        except Exception:
                             pass
 
             worksheet.append(words_row)

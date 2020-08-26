@@ -1,16 +1,15 @@
 import logging
 from collections import Counter
-
 from typing import Dict, Optional
-
 
 from django.db.models import Q
 from lxml import etree as ET
 
-from ..macros.macros import expandmacros, get_macros_dict
-from ..models import AssessmentMethod, AssessmentQuery, Transcript, Utterance
-from . import external_functions
-import analysis.score.annotate
+from analysis.macros.functions import expandmacros, get_macros_dict
+from analysis.models import (AssessmentMethod, AssessmentQuery, Transcript,
+                             Utterance)
+from analysis.query.run import query_transcript as new_query
+from analysis.score import external_functions
 from analysis.score.query import utt_from_tree
 
 logger = logging.getLogger('sasta')
@@ -50,8 +49,6 @@ def annotate_transcript(transcript: Transcript,
     results = v2_results(transcript, method, utterances,
                          queries_with_funcs,
                          only_include_inform, zc_embeddings)
-    analysis.score.annotate.annotate_transcript(
-        transcript, method, only_include_inform, zc_embeddings)
     logger.info(f'Succes, annotated {transcript.name}')
     return results
 
@@ -62,6 +59,9 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     queries_with_funcs = compile_queries(queries)
     utterances = Utterance.objects.filter(transcript=transcript)
     v1 = v1_results(transcript, method, utterances, queries_with_funcs)
+
+    v1_new = new_query(transcript, method)
+
     logger.info(f'Succes querying {transcript.name}')
     return v1
 

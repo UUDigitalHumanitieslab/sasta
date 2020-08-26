@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from .utils import get_items_list
+from lxml import etree as ET
 
 logger = logging.getLogger('sasta')
 
@@ -90,6 +91,12 @@ class Utterance(models.Model):
     parse_tree = models.TextField(blank=True)
     transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
+
+    @property
+    def syntree(self):
+        if self.parse_tree:
+            return ET.fromstring(self.parse_tree)
+        return None
 
     def __str__(self):
         return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
