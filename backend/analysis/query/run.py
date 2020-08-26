@@ -1,13 +1,15 @@
 import logging
-from typing import List, Set
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
+from pprint import pprint
+from typing import Dict, List, Set
 
+from analysis.config import CORE_PROCESS, POST_PROCESS
 from analysis.models import (AssessmentMethod, AssessmentQuery, Transcript,
                              Utterance)
-from analysis.query.functions import (QueryWithFunction, compile_queries,
-                                      filter_queries)
+from analysis.query.functions import (Query, QueryWithFunction,
+                                      compile_queries, filter_queries,
+                                      single_query_single_utt)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
-from analysis.query.functions import single_query_single_utt
 
 logger = logging.getLogger('sasta')
 
@@ -20,31 +22,37 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     utterances: List[Utterance] = Utterance.objects.filter(
         transcript=transcript)
 
-    coreresults, allmatches, corelevels = core_queries(
+    coreresults, allmatches, corelevels = run_core_queries(
         utterances,
         queries_with_funcs,
         only_include_inform=False,
         generate_zc_embeddings=False,
         generate_annotations=False)
-    # postresults = post_queries()
 
     allresults = AllResults(transcript.name, len(
         utterances), coreresults, None, allmatches, None)
+
+    run_post_queries(allresults, queries_with_funcs)
+    pprint(allresults.postresults)
+
     return coreresults
 
 
-def core_queries(utterances: List[Utterance],
-                 queries: List[QueryWithFunction],
-                 only_include_inform: bool,
-                 generate_zc_embeddings: bool,
-                 generate_annotations: bool):
+def run_core_queries(utterances: List[Utterance],
+                     queries: List[QueryWithFunction],
+                     only_include_inform: bool,
+                     generate_zc_embeddings: bool,
+                     generate_annotations: bool):
     # TODO: annotations
     levels: Set[str] = set([])
     allmatches: SastaMatches = defaultdict(list)
     results: SastaResults = {}
 
+    core_queries: List[QueryWithFunction] = [
+        q for q in queries if q.query.process == CORE_PROCESS]
+
     for utt in utterances:
-        for q in queries:
+        for q in core_queries:
             matches = single_query_single_utt(q.function, utt.syntree)
             if matches:
                 if q.id in results:
@@ -89,6 +97,20 @@ def core_queries(utterances: List[Utterance],
     #             query_counter[utt.utt_id] += len(single_q_res)
 
     #     return (query_counter, query_results) or None
+
+
+def run_post_queries(allresults: SastaResults,
+                     queries: List[QueryWithFunction]) -> None:
+    post_queries: List[QueryWithFunction] = [
+        q for q in queries if q.query.process == POST_PROCESS]
+    flat_queries: Dict[str, Query] = {q.id: q.query for q in queries}
+
+    for q in post_queries:
+        try:
+            result = q.function(allresults, flat_queries)
+            allresults.postresults[q.id] = result
+        except Exception:
+            logger.warning(f'Failed to execute {q.function}')
 
 
 def annotate_transcript(transcript: Transcript,

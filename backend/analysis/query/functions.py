@@ -4,12 +4,16 @@ from lxml import etree as ET
 
 from analysis.macros.functions import expandmacros, get_macros_dict
 from analysis.score import external_functions
-from analysis.models import AssessmentQuery, AssessmentMethod, Utterance
+from analysis.models import AssessmentQuery, AssessmentMethod
+from analysis.query.external_functions import str2functionmap
 
 from django.db.models import Q
 
 import logging
 logger = logging.getLogger('sasta')
+
+core_process_str, post_process_str = 'core', 'post'
+core_process, post_process = 0, 1
 
 
 class QueryWithFunction:
@@ -32,22 +36,22 @@ class Query:
                  original, pages, fase, query, inform,
                  screening, process, special1, special2, comments):
         self.id = id
-        self.cat = cat
-        self.subcat = subcat
-        self.level = level
-        self.item = item
-        self.altitems = altitems
-        self.implies = implies
+        self.cat = cat or ''
+        self.subcat = subcat or ''
+        self.level = level or ''
+        self.item = item or ''
+        self.altitems = altitems or ''
+        self.implies = implies or ''
         self.original = original
-        self.pages = pages
+        self.pages = pages or ''
         self.fase = fase
-        self.query = query
+        self.query = query or ''
         self.inform = inform
         self.screening = screening
         self.process = process
         self.special1 = self.clean(special1)
-        self.special2 = special2
-        self.comments = comments
+        self.special2 = self.clean(special2)
+        self.comments = comments or ''
 
     def __repr__(self):
         return ('\n'.join([f'{k}: {v}' for k, v in vars(self).items()]))
@@ -55,7 +59,7 @@ class Query:
     def clean(self, valstr):
         if valstr:
             return valstr.strip().lower()
-        return valstr
+        return ''
 
     @classmethod
     def from_model(cls, model):
@@ -74,6 +78,7 @@ class Query:
 def compile_queries(queries: List[AssessmentQuery]) -> List[QueryWithFunction]:
     results = []
     macrodict = get_macros_dict()
+
     for query_model in queries:
         query = Query.from_model(query_model)
         func = compile_xpath_or_func(query.query, macrodict)
@@ -85,8 +90,8 @@ def compile_queries(queries: List[AssessmentQuery]) -> List[QueryWithFunction]:
 def compile_xpath_or_func(query: str,
                           macrodict: Dict) -> Union[Callable, ET.XPath]:
     try:
-        if query in dir(external_functions):
-            return getattr(external_functions, query)
+        if query in str2functionmap:
+            return str2functionmap[query]
         expanded_query = expandmacros(query, macrodict)
         return ET.XPath(expanded_query)
     except Exception as error:
