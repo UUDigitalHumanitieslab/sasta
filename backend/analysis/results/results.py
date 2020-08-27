@@ -34,6 +34,18 @@ class AllResults:
         return f'name: {self.filename}, core: {len(self.coreresults)}, post: {len(self.postresults)}, matches: {len(self.allmatches)}'  # noqa: E501
 
 
+def scores2counts(scores):
+    '''
+    input is a dictionary of Counter()s
+    output is a dictionary of ints
+    '''
+    counts = {}
+    for el in scores:
+        countval = len(scores[el])
+        counts[el] = countval
+    return counts
+
+
 class UtteranceWord:
     def __init__(self, word, begin, end,
                  hits, zc_embedding=None):

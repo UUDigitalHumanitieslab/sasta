@@ -33,6 +33,8 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
         utterances), coreresults, None, allmatches, None)
 
     run_post_queries(allresults, queries_with_funcs)
+    pprint(allresults.coreresults)
+    print('------------')
     pprint(allresults.postresults)
 
     return coreresults

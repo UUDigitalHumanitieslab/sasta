@@ -3,7 +3,6 @@ from typing import Dict, List, Union, Callable
 from lxml import etree as ET
 
 from analysis.macros.functions import expandmacros, get_macros_dict
-from analysis.score import external_functions
 from analysis.models import AssessmentQuery, AssessmentMethod
 from analysis.query.external_functions import str2functionmap
 
