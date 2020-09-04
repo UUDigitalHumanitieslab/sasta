@@ -1,6 +1,7 @@
 import re
 from os.path import abspath
 import logging
+logger = logging.getLogger('sasta')
 
 idpat = r'([A-z_][A-z0-9_]*)'
 eqpat = r'='
@@ -37,7 +38,7 @@ def readmacros(macrofile, macrodict):
         macroname = macromatch.group(1)
         macroexpr = macromatch.group(2)
         if macroname in macrodict:
-            logging.warning(
+            logger.warning(
                 'Duplicate macro {} encountered. Ignored'.format(macroname))
         else:
             macrodict[macroname] = macroexpr
@@ -59,7 +60,7 @@ def expandmacrosdict(expr, macrodict):
             newexpr = macrocallre.sub(macrodict[macroname], newexpr)
             thematch = macrocallre.search(newexpr)
         else:
-            logging.error(
+            logger.error(
                 'Unknown macro call encountered: {}.'.format(macroname))
             break
     return newexpr

@@ -5,6 +5,8 @@ from . import cleanCHILDEStokens
 import re
 import logging
 
+logger = logging.getLogger('sasta')
+
 monadic = 1
 dyadic = 2
 
@@ -67,7 +69,7 @@ def doreplacement(token, replacement, tokens):
     elif replacement == eps:
         pass
     else:
-        logging.error('Unknown replacement: {}'.format(replacement))
+        logger.error('Unknown replacement: {}'.format(replacement))
     return newtokens
 
 
@@ -214,7 +216,7 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
             else:
                 (b, e) = scope
                 if ltodotokens == e + 1:
-                    logging.error('Scoped part [{}:{}] without annotation following ignored in {}'.format(
+                    logger.error('Scoped part [{}:{}] without annotation following ignored in {}'.format(
                         b, e, show(todotokens)))
                     newtokens += todotokens[b+1:e]
                     tokenctr = e + 1
@@ -225,7 +227,7 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
                         token.pos for token in todotokens[b+1:e]]
                     if self.arity == dyadic:
                         if ltodotokens <= e+2:
-                            logging.error('Missing second argument for dyadic annotation {} in {}'.format(
+                            logger.error('Missing second argument for dyadic annotation {} in {}'.format(
                                 annotation.name, show(todotokens)))
                             newtokens += todotokens[b + 1:e]
                             break
@@ -238,7 +240,7 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
                         annotatedwords = []
                         annotatedpositions = []
                     else:
-                        logging.error('Illegal arity specification ({}) on {}'.format(
+                        logger.error('Illegal arity specification ({}) on {}'.format(
                             self.arity. annotation.name))
                         annotatedwords = []
                         annotatedpositions = []
@@ -255,7 +257,7 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
                     elif replacement == eps:
                         pass
                     else:
-                        logging.error('Unknown replacement: {} in {}'.format(
+                        logger.error('Unknown replacement: {} in {}'.format(
                             self.replacement, show(tokens)))
                     #todotokens = todotokens[e+2:]
                     tokenctr = e + 2
@@ -276,7 +278,7 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
         while i < ltodotokens:
             if self.compiledre.search(todotokens[i].word):
                 if scopewords == []:
-                    logging.error('First argument of annotation {} missing. Annotation ignored'.format(
+                    logger.error('First argument of annotation {} missing. Annotation ignored'.format(
                         annotation.name))
                 else:
                     if self.arity == monadic:
@@ -290,8 +292,8 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
                         metadata.append(newmeta)
                     elif self.arity == dyadic:
                         if i+1 >= ltodotokens:
-                            logging.error('Missing second argument for dyadic annotation {} in {}'.format(annotation.name,
-                                                                                                          show(todotokens)))
+                            logger.error('Missing second argument for dyadic annotation {} in {}'.format(annotation.name,
+                                                                                                         show(todotokens)))
                         else:
                             annotatedpositions = [todotokens[i+1].pos]
                             annotatedwords = [todotokens[i+1].word]
@@ -372,7 +374,7 @@ class CHAT_ComplexRegex(CHAT_Regex):
             elif state == scopestate:
                 scope = findscope(tokens[tokenctr-1:], offset=tokenctr-1)
                 if scope is None:
-                    logging.error('No closing bracket found for < with pos={} in {}'.format(
+                    logger.error('No closing bracket found for < with pos={} in {}'.format(
                         tokens[tokenctr-1].pos, show(tokens)))
                     state = wstate
                 else:
@@ -404,14 +406,14 @@ class CHAT_ComplexRegex(CHAT_Regex):
                     elif self.scopereplacement == eps:
                         pass
                     else:
-                        logging.error('Unknown replacementtype: {} in {}'.format(
+                        logger.error('Unknown replacementtype: {} in {}'.format(
                             self.scopereplacement), show(tokens))
                     if self.bracketreplacement == keep:
                         newtokens += cleanannotationtokens
                     elif self.bracketreplacement == eps:
                         pass
                     else:
-                        logging.error('Unknown replacementtype: {} in {}'.format(
+                        logger.error('Unknown replacementtype: {} in {}'.format(
                             self.scopereplacement), show(tokens))
                     tobereplacedtokens = []
                     inc = bracketend - bracketbegin
@@ -421,7 +423,7 @@ class CHAT_ComplexRegex(CHAT_Regex):
         if state in estates:
             return(newtokens, metadata)
         else:
-            logging.error('Not in an end state, state={} in {}'.format(
+            logger.error('Not in an end state, state={} in {}'.format(
                 state, show(tokens)))
             return(tokens, [])
 
@@ -520,7 +522,7 @@ def dropchars2(w, c):
 
 
 def CHAT_message(msg):
-    def result(x, y): return logging.warning(msg.format(x, y))
+    def result(x, y): return logger.warning(msg.format(x, y))
     return result
 
 
@@ -727,13 +729,13 @@ def bracketseq(tokenlist, bregex, mregex, eregex):
                 end = tokenctr
                 state = estate
             elif bregex.search(token.word) is not None:
-                logging.error(
+                logger.error(
                     'Range Open symbol encountered inside brackets in {}'.format(show(tokenlist)))
                 state = mstate
             elif mregex.search(token.word) is not None:
                 state = mstate
             else:
-                logging.error('Incorrect element between brackets ({}) in: {}'.format(
+                logger.error('Incorrect element between brackets ({}) in: {}'.format(
                     token.word, show(tokenlist)))
                 state = mstate
         elif state == estate:
@@ -788,7 +790,7 @@ def get_CHATpatterns(annotations):
         elif isinstance(theregex, CHAT_InWordRegex):
             newpats = {}
         else:
-            logging.error('Unknown Regex type: {}'.format(theregex))
+            logger.error('Unknown Regex type: {}'.format(theregex))
             newpats = {}
         result = result.union(newpats)
     return (result, openbrackets, closebrackets)

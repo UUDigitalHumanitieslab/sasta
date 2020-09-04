@@ -66,9 +66,41 @@ Tarsp_OndWBB = """
          (count(node) = 3 and node[@rel="vc" and (@cat="inf" or @cat="ppart") and count(node[@rel="mod" or @rel="ld"]) =2  ])
         )
 """
+
+ASTA_pred =  """(@rel="predc" or @rel="predm" or (@rel="hd" and parent::node[@rel="predc" or @rel="predm"]))"""
+
+ASTA_attr =  """((@rel="mod" and parent::node[node[@rel="hd" and (@pt="n" or @pt="vnw")]] )  or
+       (@rel="hd" and parent::node[@rel="mod" and parent::node[node[@rel="hd" and (@pt="n" or @pt="vnw")]]]))"""
+
+
+ASTA_adverbial = """  
+      ((@rel="mod" and parent::node[node[@rel="hd" and not(@pt="n" or @pt="vnw")]] )  or
+       (@rel="hd" and parent::node[@rel="mod" and parent::node[node[@rel="hd" and not(@pt="n" or @pt="vnw")]]]))
+     """
  
+ASTA_modalww = """  (@lemma="zullen" or @lemma="willen" or @lemma="moeten" or @lemma="mogen" or @lemma="kunnen") """
+
+
+ASTA_kopww = """ (@pt="ww" and @rel="hd" and @lemma!="uit_zien" and @lemma!="heten" and @lemma!="gaan" and @lemma!="zitten" and parent::node[node[@rel="predc"] and not(node[@rel="obj1"])] )""" 
+
+ASTA_wantmaarbijzin = """
+((@cat="smain" or (@cat="du" and node[@cat="smain" and @rel="nucl"])) and 
+  ../node[(@word="want" or @word="maar") and @rel="crd" and @pt="vg"] and 
+  @begin>=../node[(@word="want" or @word="maar")]/@end)
+"""
+
+ASTA_dusbijzin = """
+(@cat="smain" and node[@lemma="dus" and @begin=parent::node/@begin and @pt="bw" and @rel="mod"])
+"""
  
- 
+ASTA_detadjs = """
+ (@pt="vnw" and (@rel="mod" or @rel="det") and @vwtype="onbep" and parent::node[@cat="np"] and
+(@lemma="al" or @lemma="beide" or @lemma="elk" or @lemma="enig" or @lemma="enkel" or @lemma="geen" or @lemma="ieder" or
+ @lemma="meer" or @lemma="meerdere" or @lemma="meest" or @lemma="menig" or @lemma="minder" or 
+ @lemma="minst" or @lemma="sommige" or @lemma="veel" or @lemma="weinig"))
+
+"""
+
  
  
  

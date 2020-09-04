@@ -13,6 +13,8 @@ function to expose to other modules is: screening4stage(uttcount, results)
 
 import os
 import logging
+
+logger = logging.getLogger('sasta')
 from analysis.results.results import scores2counts
 
 
@@ -140,7 +142,7 @@ def stage1(results):
         proportion = stage1count / sumallresults * 100
     else:
         proportion = 0
-        logging.warning('No results found. Output unreliable')
+        logger.warning('No results found. Output unreliable')
     result = proportion >= stage1threshold
     return result
 
@@ -182,16 +184,16 @@ def screening4stage(uttcount, results):
     #   ;param thefilename: name of the treebank file
     #    (inbase, ext) = os.path.splitext(thefilename)
     #    stagesexplainfile = inbase + 'stage_explanation' + '.txt'
-    #    stageslogger = logging.getLogger('Stages:')
-    #    stageslogger.setLevel(logging.INFO)
-    #    ch = logging.FileHandler(stagesexplainfile)
-    #    ch.setLevel(logging.INFO)
+    #    stageslogger = logger.getLogger('Stages:')
+    #    stageslogger.setLevel(logger.INFO)
+    #    ch = logger.FileHandler(stagesexplainfile)
+    #    ch.setLevel(logger.INFO)
 #    stageslogger.addHandler(ch)
 
     if uttcount < uttcountthreshold:
         message = 'TARSP Screening: Less than {} utterances ({}). Results not reliable'.format(
             uttcountthreshold, uttcount)
-        logging.warning(message)
+        logger.warning(message)
         # print(message)
     result = screening(results)
     return result

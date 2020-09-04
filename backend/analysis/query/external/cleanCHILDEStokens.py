@@ -1,10 +1,12 @@
-import logging
-from copy import copy, deepcopy
-from .sastatoken import show
-#from sastatok import sasta_tokenize
-from . import sastatok
-from . import CHAT_Annotation
 import re
+from . import CHAT_Annotation
+from . import sastatok
+from .sastatoken import show
+from copy import copy, deepcopy
+import logging
+
+logger = logging.getLogger('sasta')
+#from sastatok import sasta_tokenize
 
 hexformat = '\\u{0:04X}'
 
@@ -57,7 +59,7 @@ def clearnesting(intokens, repkeep):
             begin = tokenctr
             span = findscopeclose(tokens[tokenctr:], offset=tokenctr)
             if span is None:
-                logging.error('Syntax error:Scope Open Symbol {} with position = {} ignored (no corresponding closing bracket) in:\n {}'.format(
+                logger.error('Syntax error:Scope Open Symbol {} with position = {} ignored (no corresponding closing bracket) in:\n {}'.format(
                     token.word, token.pos, show(tokens)))
             else:
                 (begin, end) = span
@@ -67,7 +69,7 @@ def clearnesting(intokens, repkeep):
                 metadata += midmetadata
                 tokenctr = end
         elif token.word == scope_close:
-            logging.error('Syntax error: unexpected {} excountered with position {} in:\n {}'.format(
+            logger.error('Syntax error: unexpected {} excountered with position {} in:\n {}'.format(
                 token.word, token.pos, show(tokens)))
             newtokens.append(token)
         else:
@@ -145,7 +147,7 @@ def robustness(utt):
     for (regex, instr, outstr, msg) in robustnessrules:
         newnewutt = regex.sub(outstr, newutt)
         if newnewutt != newutt:
-            logging.warning('{}. Interpreted <{}> as <{}> in <{}>'.format(
+            logger.warning('{}. Interpreted <{}> as <{}> in <{}>'.format(
                 msg, instr, outstr, utt))
         newutt = newnewutt
     return newutt

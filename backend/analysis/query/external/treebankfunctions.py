@@ -5,6 +5,8 @@ various treebank functions
 
 import sys
 import logging
+
+logger = logging.getLogger('sasta')
 from lxml import etree
 
 class Metadata:
@@ -234,11 +236,11 @@ def getyield(syntree):  #deze herformuleren in termen van getnodeyield na testen
                     resultlist.append(newel)
                 else:
                     if 'word' not in node.attrib:
-                        logging.error('No word in pt or pos node')
+                        logger.error('No word in pt or pos node')
                     if 'end' not in node.attrib:
-                        logging.error('No end in pt or pos node')
+                        logger.error('No end in pt or pos node')
                     for el in node.attrib:
-                        logging.info('{}\t{}'.format(el, node.attrib[el]))
+                        logger.info('{}\t{}'.format(el, node.attrib[el]))
         sortedresultlist = sorted(resultlist, key=lambda x: x[1])
         theyield = [w for (w, _) in sortedresultlist]
     return theyield
