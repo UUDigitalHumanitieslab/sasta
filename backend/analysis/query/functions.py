@@ -5,8 +5,15 @@ from lxml import etree as ET
 from analysis.macros.functions import expandmacros, get_macros_dict
 from analysis.models import AssessmentQuery, AssessmentMethod
 from analysis.query.external_functions import str2functionmap
+from analysis.results.results import UtteranceWord
+
+from bs4 import BeautifulSoup as Soup
 
 from django.db.models import Q
+
+from operator import attrgetter
+
+from analysis.score.zc_embedding import get_zc_embeddings
 
 import logging
 logger = logging.getLogger('sasta')
@@ -129,3 +136,24 @@ def single_query_single_utt(query_func: Union[Callable, ET.XPath],
     except Exception:
         logger.warning(f'Failed to execute {query_func}')
         return []
+
+
+def utt_from_tree(tree: str, embeddings=False) -> List[UtteranceWord]:
+    # From a LASSY syntax tree, construct utterance representation
+    # Output: sorted list of UtteranceWord instances
+    soup = Soup(tree, 'lxml')
+    utt = soup.alpino_ds
+
+    if embeddings:
+        embed_dict = get_zc_embeddings(ET.fromstring(tree))
+
+    words = utt.findAll('node', {'word': True})
+    utt_words = [UtteranceWord(
+        word=w.get('word'),
+        begin=w.get('begin'),
+        end=w.get('end'),
+        hits=[],
+        zc_embedding=embed_dict[str(w.get('begin'))] if embed_dict else None)
+        for w in words]
+
+    return sorted(utt_words, key=attrgetter('begin'))

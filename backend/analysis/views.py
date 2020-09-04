@@ -13,11 +13,10 @@ from .parse.parse import parse_and_create
 from .score.run_queries import annotate_transcript
 
 from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import v1_to_xlsx
+from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           TranscriptSerializer, UploadFileSerializer)
-from .utils import v2_to_xlsx
 
 # flake8: noqa: E501
 
@@ -41,8 +40,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
-        v1res, queries_with_funcs = query_transcript(transcript, method)
-        spreadsheet = v1_to_xlsx(v1res, queries_with_funcs)
+        allresults, queries_with_funcs = query_transcript(transcript, method)
+
+        wb = v2_to_xlsx(allresults, zc_embeddings=False)
+
+        spreadsheet = v1_to_xlsx(allresults, queries_with_funcs)
         spreadsheet.save(response)
 
         return response
@@ -52,20 +54,24 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         transcript = self.get_object()
         method_name = request.data.get('method')
         # todo: robust way to deal with this
-        if 'tarsp' in method_name.lower():
-            zc_embeddings = True
-        else:
-            zc_embeddings = False
+        # if 'tarsp' in method_name.lower():
+        #     zc_embeddings = True
+        # else:
+        #     zc_embeddings = False
 
-        only_include_inform = request.data.get('only_inform') == 'true'
+        # only_include_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.filter(name=method_name).first()
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
-        v2res = annotate_transcript(
-            transcript, method, only_include_inform, zc_embeddings)
-        spreadsheet = v2_to_xlsx(v2res, zc_embeddings)
+        # v2res = annotate_transcript(
+        #     transcript, method, only_include_inform, zc_embeddings)
+        # spreadsheet = v2_to_xlsx(v2res, zc_embeddings)
+
+        allresults, queries_with_funcs = query_transcript(transcript, method)
+
+        spreadsheet = v2_to_xlsx(allresults, zc_embeddings=False)
         spreadsheet.save(response)
 
         return response

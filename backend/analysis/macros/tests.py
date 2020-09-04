@@ -1,5 +1,5 @@
 import pytest
-from .macros import expandmacros, get_macros_dict
+from .functions import expandmacros, get_macros_dict
 import os.path as op
 
 # flake8: noqa: E501

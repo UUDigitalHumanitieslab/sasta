@@ -6,6 +6,11 @@ from analysis.results.results import AllResults
 
 from typing import List
 from collections import Counter
+import traceback
+
+LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
+ROMAN_NUMS = [None, 'I', 'II', 'III',
+              'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
 
 
 def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
@@ -43,3 +48,111 @@ def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
 
     worksheet.auto_filter.ref = worksheet.dimensions
     return wb
+
+
+def v2_to_xlsx(allresults, zc_embeddings=False):
+    try:
+        wb = Workbook()
+        worksheet = wb.active
+
+        # items = sorted(data['results'].items())
+        items = allresults.annotations.items()
+        items = sorted(items)
+        max_words = max([len(words) for (_, words) in items])
+        word_headers = [f'Word{i}' for i in range(1, max_words+1)]
+        headers = ['ID', 'Level'] + word_headers + \
+            ['Dummy', 'Unaligned', 'Fases', 'Commentaar']
+        worksheet.append(headers)
+        # levels = sorted(list(data['levels']))
+        levels = LEVELS
+
+        # How many ZC levels are there?
+        if zc_embeddings:
+            levels = [lv for lv in levels if lv != 'Zc']
+            max_embed = 0
+            for _, words in items:
+                embed_levels = {
+                    w.zc_embedding for w in words if w.zc_embedding}
+                if embed_levels:
+                    max_embed = max(max_embed, max(embed_levels))
+            embed_range = range(0, max_embed+1)
+
+        for utt_id, words in items:
+            # Utt row, containing the word tokens
+            words_row = [utt_id, 'Utt'] + [w.word for w in words]
+
+            # trailing empty cells, necesarry?
+            words_row += [None]*(len(headers) - len(words_row))
+
+            # a cell for each word, and one to record phases
+            level_rows = [[utt_id, level]
+                          + [set([]) for _ in range(max_words+1)]
+                          + [None]
+                          + [[]]
+                          for level in levels]
+
+            if zc_embeddings:
+                zc_rows = [[utt_id, 'Zc']
+                           + [set([]) for _ in range(max_words+1)]
+                           + [None]
+                           + [[]]
+                           for _ in embed_range]
+
+            # iterate over hits
+            # fill in items on their respective level
+            # leaving cells without hits as None
+            for i_word, word in enumerate(words):
+                for hit in word.hits:
+                    if zc_embeddings and hit['level'].lower() == 'zc':
+                        i_level = word.zc_embedding
+                        print(word.zc_embedding)
+                        zc_rows[i_level][i_word+2].add(hit['item'])
+                        try:
+                            zc_rows[i_level][-1].append(
+                                ROMAN_NUMS[int(hit['fase'])])
+                        except Exception:
+                            pass
+                    else:
+                        i_level = levels.index(hit['level'])
+                        level_rows[i_level][i_word+2].add(hit['item'])
+                        try:
+                            level_rows[i_level][-1].append(
+                                ROMAN_NUMS[int(hit['fase'])])
+                        except Exception:
+                            pass
+
+            worksheet.append(words_row)
+            # condense cells and append to xlsx
+            for row in level_rows:
+                row = [','.join(sorted(cell)) or None
+                       if (isinstance(cell, set) or isinstance(cell, list))
+                       else cell
+                       for cell in row]
+                worksheet.append(row)
+            if zc_embeddings:
+                for row in zc_rows:
+                    row = [','.join(sorted(cell)) or None
+                           if (isinstance(cell, set) or isinstance(cell, list))
+                           else cell
+                           for cell in row]
+                    worksheet.append(row)
+
+        # Formatting
+        header = worksheet["1:1"]
+        for cell in header:
+            # bold headers
+            cell.font = Font(bold=True)
+
+        nth_row = len(levels) + 1 + \
+            len(embed_range) if zc_embeddings else len(levels) + 1
+        for i, row in enumerate(worksheet.rows):
+            # yellow background for each utterance row
+            if i % nth_row == 1:
+                for cell in row:
+                    cell.fill = PatternFill(
+                        start_color="ffff00",
+                        end_color="ffff00",
+                        fill_type="solid")
+        return wb
+    except Exception as e:
+        traceback.print_exc()
