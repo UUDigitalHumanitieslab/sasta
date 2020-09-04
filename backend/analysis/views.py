@@ -10,10 +10,14 @@ from rest_framework.response import Response
 from .convert.convert import convert
 from .models import AssessmentMethod, Corpus, Transcript, UploadFile
 from .parse.parse import parse_and_create
-from .score.run_queries import annotate_transcript, query_transcript
+from .score.run_queries import annotate_transcript
+
+from analysis.query.run import query_transcript
+from analysis.query.xlsx_output import v1_to_xlsx
+
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           TranscriptSerializer, UploadFileSerializer)
-from .utils import v1_to_xlsx, v2_to_xlsx
+from .utils import v2_to_xlsx
 
 # flake8: noqa: E501
 
@@ -37,8 +41,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
-        v1res = query_transcript(transcript, method)
-        spreadsheet = v1_to_xlsx(v1res)
+        v1res, queries_with_funcs = query_transcript(transcript, method)
+        spreadsheet = v1_to_xlsx(v1res, queries_with_funcs)
         spreadsheet.save(response)
 
         return response

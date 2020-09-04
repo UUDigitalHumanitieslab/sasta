@@ -1,3 +1,4 @@
+from analysis.query.xlsx_output import v1_to_xlsx
 import logging
 from collections import Counter, defaultdict
 from pprint import pprint
@@ -33,11 +34,11 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
         utterances), coreresults, None, allmatches, None)
 
     run_post_queries(allresults, queries_with_funcs)
-    pprint(allresults.coreresults)
-    print('------------')
-    pprint(allresults.postresults)
-
-    return coreresults
+    # pprint(allresults.coreresults)
+    # print('------------')
+    # pprint(allresults.postresults)
+    v1_to_xlsx(allresults, queries_with_funcs)
+    return allresults, queries_with_funcs
 
 
 def run_core_queries(utterances: List[Utterance],
@@ -59,10 +60,12 @@ def run_core_queries(utterances: List[Utterance],
             if matches:
                 if q.id in results:
                     results[q.id].update(
-                        {utt.utt_id: len(matches), 'total': len(matches)})
+                        # {utt.utt_id: len(matches), 'total': len(matches)})
+                        {utt.utt_id: len(matches)})
                 else:
                     results[q.id] = Counter(
-                        {utt.utt_id: len(matches), 'total': len(matches)})
+                        # {utt.utt_id: len(matches), 'total': len(matches)})
+                        {utt.utt_id: len(matches)})
                 for m in matches:
                     levels.add(q.query.level)
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
@@ -110,7 +113,8 @@ def run_post_queries(allresults: SastaResults,
     for q in post_queries:
         try:
             result = q.function(allresults, flat_queries)
-            allresults.postresults[q.id] = result
+            if result:
+                allresults.postresults[q.id] = result
         except Exception:
             logger.warning(f'Failed to execute {q.function}')
 

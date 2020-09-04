@@ -63,6 +63,8 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     v1_new = new_query(transcript, method)
 
     logger.info(f'Succes querying {transcript.name}')
+    from pprint import pprint
+    # pprint(v1)
     return v1
 
 
