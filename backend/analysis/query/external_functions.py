@@ -1,7 +1,6 @@
 # source: sastadev 2020-07-21
 import re
 
-# TODO: SASTADEV IMPLEMENTATION
 from analysis.score.external_functions import getcompounds
 
 from .external.imperatives import wond4, wond5plus, wondx, wx, wxy, wxyz, wxyz5
@@ -12,10 +11,10 @@ from .external.TARSPpostfunctions import (gofase, gtotaal, pf, pf2, pf3, pf4,
 from .external.TARSPscreening import tarsp_screening
 from .external.xenx import xenx
 
-# from dedup import mlux, samplesize, neologisme, onvolledig, correct
+from .external.dedup import mlux, samplesize, neologisme, onvolledig, correct
 # from STAPpostfunctions import BB_totaal, GLVU, GL5LVU
-# from ASTApostfunctions import (
-#     wordcountperutt, countwordsandcutoff, KMcount, finietheidsindex)
+from .external.ASTApostfunctions import (
+    wordcountperutt, countwordsandcutoff, KMcount, finietheidsindex)
 # from astaforms import astaform
 
 
@@ -51,12 +50,13 @@ thetarspfunctions = [getcompounds, sziplus6, xenx, vr5plus, wx, wxy, wxyz,
 # thestapfunctions = [BB_totaal, GLVU, GL5LVU]
 
 
-# theastafunctions = [samplesize, mlux, neologisme, onvolledig, correct,
-#                     wordcountperutt, countwordsandcutoff,
-#                     astaform, KMcount, finietheidsindex]
+theastafunctions = [samplesize, mlux, neologisme, onvolledig, correct,
+                    wordcountperutt, countwordsandcutoff,
+                    # astaform, KMcount, finietheidsindex]
+                    KMcount, finietheidsindex]
 
 # thefunctions = thetarspfunctions + thestapfunctions + theastafunctions
-thefunctions = thetarspfunctions
+thefunctions = thetarspfunctions + theastafunctions
 str2functionmap = {}
 
 for f in thefunctions:

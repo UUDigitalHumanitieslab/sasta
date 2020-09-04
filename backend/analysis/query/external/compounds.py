@@ -1,6 +1,6 @@
 import os
 import csv
-import logging
+# import logging
 from collections import defaultdict
 from .treebankfunctions import getattval
 
@@ -16,7 +16,8 @@ Headers[HeadDiaNew] = "HeadDiaNew"
 Headers[Class] = "Class"
 
 comma = ","
-programfolder = r'.'
+# programfolder = r'.'
+programfolder = os.path.dirname(os.path.abspath(__file__))
 dictfilename = os.path.join(
     programfolder, 'compoundfiles', 'Ncompounds-attempt2.txt')
 dictfile = open(dictfilename, 'r', encoding='utf8')
@@ -55,7 +56,7 @@ myquotechar = ''
 
 compounds = nested_dict(2, str)
 
-logging.info("Initializing compound module...")
+# logging.info("Initializing compound module...")
 myreader = csv.reader(dictfile, delimiter=mysep)
 for row in myreader:
     compounds[row[HeadDiaNew]][FlatClass] = row[FlatClass]
