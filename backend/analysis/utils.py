@@ -157,7 +157,7 @@ def read_TAM(method) -> None:
     filepath = method.content.path
     logger.info(f'TAM-Reader:\treading {os.path.basename(filepath)}')
     dataframe = pd.read_excel(filepath,
-                              true_values=['yes'], false_values=['no'])
+                              true_values=['yes'], false_values=['no', 'ignore'])
     column_names = [c.lower() for c in dataframe.columns]
     dataframe.columns = column_names
     dataframe.rename(columns={'id': 'query_id'}, inplace=True)
@@ -181,7 +181,7 @@ def create_query_from_series(series: pd.Series, method) -> None:
     try:
         instance.save()
     except IntegrityError as error:
-        logger.error(error)
+        logger.exception(error)
 
 
 def v1_to_xlsx(data: Dict[str, Any]):

@@ -152,7 +152,7 @@ class AssessmentQuery(models.Model):
     fase = models.IntegerField(blank=True, null=True)
     inform = models.BooleanField()
     query = models.CharField(max_length=5000, blank=True, null=True)
-    screening = models.BooleanField()
+    screening = models.BooleanField(blank=True, null=True)
     process = models.IntegerField()
     special1 = models.CharField(max_length=50, blank=True, null=True)
     special2 = models.CharField(max_length=50, blank=True, null=True)
