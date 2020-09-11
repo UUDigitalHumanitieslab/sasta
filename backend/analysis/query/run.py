@@ -14,7 +14,11 @@ from pprint import pprint
 logger = logging.getLogger('sasta')
 
 
-def query_transcript(transcript: Transcript, method: AssessmentMethod):
+def query_transcript(transcript: Transcript,
+                     method: AssessmentMethod,
+                     annotate: bool = False,
+                     zc_embed: bool = False,
+                     only_inform: bool = False):
     # TODO: LOGGING
 
     queries: List[AssessmentQuery] = filter_queries(method)
@@ -25,9 +29,9 @@ def query_transcript(transcript: Transcript, method: AssessmentMethod):
     coreresults, allmatches, corelevels, annotations = run_core_queries(
         utterances,
         queries_with_funcs,
-        only_include_inform=False,
-        zc_embed=True,
-        annotate=True)
+        only_inform,
+        zc_embed,
+        annotate)
 
     allresults = AllResults(transcript.name,
                             len(utterances),
@@ -45,7 +49,6 @@ def run_core_queries(utterances: List[Utterance],
                      only_include_inform: bool,
                      zc_embed: bool,
                      annotate: bool):
-    # TODO: annotations
     levels: Set[str] = set([])
     allmatches: SastaMatches = defaultdict(list)
     results: SastaResults = {}

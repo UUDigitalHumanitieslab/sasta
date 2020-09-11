@@ -53,7 +53,7 @@ class UtteranceWord:
         self.begin: int = begin
         self.end: int = end
         self.hits: List[Dict] = hits
-        self.zc_embedding: Optional[int] = zc_embedding or None
+        self.zc_embedding: Optional[int] = zc_embedding
 
     def __str__(self):
         return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'

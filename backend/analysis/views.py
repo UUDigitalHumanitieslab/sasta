@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from .convert.convert import convert
 from .models import AssessmentMethod, Corpus, Transcript, UploadFile
 from .parse.parse import parse_and_create
-from .score.run_queries import annotate_transcript
 
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
@@ -53,25 +52,24 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_name = request.data.get('method')
-        # todo: robust way to deal with this
-        # if 'tarsp' in method_name.lower():
-        #     zc_embeddings = True
-        # else:
-        #     zc_embeddings = False
 
-        # only_include_inform = request.data.get('only_inform') == 'true'
+        # todo: robust way to deal with this
+        if 'tarsp' in method_name.lower():
+            zc_embed = True
+        else:
+            zc_embed = False
+
+        only_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.filter(name=method_name).first()
+
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
-        # v2res = annotate_transcript(
-        #     transcript, method, only_include_inform, zc_embeddings)
-        # spreadsheet = v2_to_xlsx(v2res, zc_embeddings)
+        allresults, queries_with_funcs = query_transcript(
+            transcript, method, True, zc_embed, only_inform)
 
-        allresults, queries_with_funcs = query_transcript(transcript, method)
-
-        spreadsheet = v2_to_xlsx(allresults, zc_embeddings=False)
+        spreadsheet = v2_to_xlsx(allresults, zc_embeddings=zc_embed)
         spreadsheet.save(response)
 
         return response

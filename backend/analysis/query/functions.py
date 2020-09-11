@@ -144,8 +144,7 @@ def utt_from_tree(tree: str, embeddings=False) -> List[UtteranceWord]:
     soup = Soup(tree, 'lxml')
     utt = soup.alpino_ds
 
-    if embeddings:
-        embed_dict = get_zc_embeddings(ET.fromstring(tree))
+    embed_dict = get_zc_embeddings(ET.fromstring(tree)) if embeddings else None
 
     words = utt.findAll('node', {'word': True})
     utt_words = [UtteranceWord(

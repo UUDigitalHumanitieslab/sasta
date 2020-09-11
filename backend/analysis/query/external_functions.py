@@ -1,7 +1,7 @@
 # source: sastadev 2020-07-21
 import re
 
-from analysis.score.external_functions import getcompounds
+from analysis.query.external.compounds import getcompounds
 
 from .external.imperatives import wond4, wond5plus, wondx, wx, wxy, wxyz, wxyz5
 from .external.queryfunctions import xneg_neg, xneg_x

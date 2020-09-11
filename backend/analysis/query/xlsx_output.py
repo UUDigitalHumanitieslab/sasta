@@ -8,6 +8,8 @@ from typing import List
 from collections import Counter
 import traceback
 
+from pprint import pprint
+
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 ROMAN_NUMS = [None, 'I', 'II', 'III',
               'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
@@ -105,7 +107,7 @@ def v2_to_xlsx(allresults, zc_embeddings=False):
                 for hit in word.hits:
                     if zc_embeddings and hit['level'].lower() == 'zc':
                         i_level = word.zc_embedding
-                        print(word.zc_embedding)
+                        # print(word.zc_embedding)
                         zc_rows[i_level][i_word+2].add(hit['item'])
                         try:
                             zc_rows[i_level][-1].append(
