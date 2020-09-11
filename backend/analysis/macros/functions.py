@@ -1,5 +1,5 @@
 import re
-from os.path import abspath
+import os.path as op
 import logging
 logger = logging.getLogger('sasta')
 
@@ -15,8 +15,7 @@ macropat = idpat + whitespaces + eqpat + whitespaces + exprpat
 
 macrore = re.compile(macropat, re.S)
 
-MACROFILENAMES = ['analysis/macros/sastamacros1.txt',
-                  'analysis/macros/sastamacros2.txt']
+MACROFILENAMES = ['sastamacros1.txt', 'sastamacros2.txt']
 
 
 def macrostrs2dict(teststrings):
@@ -69,6 +68,9 @@ def expandmacrosdict(expr, macrodict):
 def get_macros_dict(macrofilenames=MACROFILENAMES):
     macrodict = {}
     for macrofilename in macrofilenames:
-        macrofile = open(abspath(macrofilename), 'r', encoding='utf8')
+        script_dir = op.dirname(op.abspath(__file__))
+        file_path = op.join(script_dir, macrofilename)
+        macrofile = open(file_path, 'r', encoding='utf8')
         macrodict = readmacros(macrofile, macrodict)
+        macrofile.close()
     return macrodict
