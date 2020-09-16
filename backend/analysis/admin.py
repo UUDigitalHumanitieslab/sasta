@@ -43,6 +43,12 @@ class UploadFileAdmin(admin.ModelAdmin):
 class AssessmentMethodAdmin(admin.ModelAdmin):
     model = AssessmentMethod
     readonly_fields = ('date_added',)
+    list_display = ('name', 'queries')
+
+    def queries(self, obj):
+        if obj.queries:
+            return len(obj.queries.all())
+        return 0
 
 
 @admin.register(AssessmentQuery)
