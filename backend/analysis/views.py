@@ -41,8 +41,6 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         allresults, queries_with_funcs = query_transcript(transcript, method)
 
-        wb = v2_to_xlsx(allresults, zc_embeddings=False)
-
         spreadsheet = v1_to_xlsx(allresults, queries_with_funcs)
         spreadsheet.save(response)
 
@@ -53,14 +51,9 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         transcript = self.get_object()
         method_name = request.data.get('method')
 
-        # todo: robust way to deal with this
-        if 'tarsp' in method_name.lower():
-            zc_embed = True
-        else:
-            zc_embed = False
-
         only_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.filter(name=method_name).first()
+        zc_embed = method.category.zc_embeddings
 
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
