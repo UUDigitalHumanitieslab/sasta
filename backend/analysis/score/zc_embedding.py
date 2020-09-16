@@ -1,6 +1,8 @@
 
 from typing import Dict
 
+CLAUSALS = ['smain', 'rel', 'whrel', 'whsub', 'whq', 'sv1']
+
 
 def is_token(node):
     return any(x in ['pt', 'pos'] for x in node.keys())
@@ -15,7 +17,7 @@ def is_clausal(node):
 
 
 def is_direct_clausal(node):
-    return node.attrib['cat'] in ['smain', 'rel', 'whrel', 'whsub', 'whq', 'sv1']
+    return node.attrib['cat'] in CLAUSALS
 
 
 def is_child_clausal(node):

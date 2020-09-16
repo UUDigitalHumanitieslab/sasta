@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import List, Pattern, Tuple, Optional
+from typing import List, Pattern, Tuple
 
 from .config import HEADER_VARIANTS, ITEMSEPPATTERN, LABELSEP, TupleStrDict
 

@@ -26,7 +26,7 @@ class ParseJob(CronJobBase):
             '', 'parse.log', 'text/plain', ''), [])
         LogSingleton.set(Log(log_target, strict=False))
 
-        for transcript in Transcript.objects.filter(Q(status='converted') | Q(status='parsing-failed')):
+        for transcript in Transcript.objects.filter(Q(status='converted') | Q(status='parsing-failed')):  # noqa: E501
             try:
                 output_path = transcript.content.path.replace(
                     '/transcripts', '/parsed')
@@ -34,5 +34,5 @@ class ParseJob(CronJobBase):
                 os.makedirs(output_dir, exist_ok=True)
                 parse_transcript(transcript, output_dir, output_path)
                 create_utterance_objects(transcript)
-            except Exception as e:
+            except Exception:
                 logger.exception(f'ERROR parsing {transcript.name}')

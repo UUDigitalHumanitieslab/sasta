@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import HttpResponse
 from django.db.models import Q
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from django.http import HttpResponse
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
+from .convert.convert import convert
 from .models import AssessmentMethod, Corpus, Transcript, UploadFile
-from .score.run_queries import annotate_transcript, query_transcript
+from .parse.parse import parse_and_create
+
+from analysis.query.run import query_transcript
+from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           TranscriptSerializer, UploadFileSerializer)
-from .utils import v1_to_xlsx, v2_to_xlsx
-from .convert.convert import convert
-from .parse.parse import parse_and_create
-from lxml import etree as ET
 
-from .score.zc_embedding import get_zc_embeddings
+# flake8: noqa: E501
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
@@ -38,8 +39,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
-        v1res = query_transcript(transcript, method)
-        spreadsheet = v1_to_xlsx(v1res)
+        allresults, queries_with_funcs = query_transcript(transcript, method)
+
+        wb = v2_to_xlsx(allresults, zc_embeddings=False)
+
+        spreadsheet = v1_to_xlsx(allresults, queries_with_funcs)
         spreadsheet.save(response)
 
         return response
@@ -48,21 +52,24 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_name = request.data.get('method')
+
         # todo: robust way to deal with this
         if 'tarsp' in method_name.lower():
-            zc_embeddings = True
+            zc_embed = True
         else:
-            zc_embeddings = False
+            zc_embed = False
 
-        only_include_inform = request.data.get('only_inform') == 'true'
+        only_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.filter(name=method_name).first()
+
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
-        v2res = annotate_transcript(
-            transcript, method, only_include_inform, zc_embeddings)
-        spreadsheet = v2_to_xlsx(v2res, zc_embeddings)
+        allresults, queries_with_funcs = query_transcript(
+            transcript, method, True, zc_embed, only_inform)
+
+        spreadsheet = v2_to_xlsx(allresults, zc_embeddings=zc_embed)
         spreadsheet.save(response)
 
         return response

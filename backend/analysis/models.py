@@ -1,20 +1,15 @@
-import csv
 import logging
 import os
-import shutil
-from io import BytesIO
 import zipfile
+from io import BytesIO
 from itertools import chain
 from uuid import uuid4
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_delete, post_save
-from django.dispatch import receiver
 
-from .permissions import IsOwner, IsOwnerOrAdmin
-from .utils import extract, get_items_list, read_TAM
+from .utils import get_items_list
+from lxml import etree as ET
 
 logger = logging.getLogger('sasta')
 
@@ -34,18 +29,6 @@ class CompoundFile(models.Model):
 
     def __str__(self):
         return os.path.split(self.content.name)[1]
-
-
-@receiver(post_save, sender=CompoundFile)
-def save_compounds(sender, instance, **kwargs):
-    Compound.objects.all().delete()
-    with open(instance.content.path) as f:
-        data = csv.reader(f, delimiter='\\')
-        compounds = []
-        for i, row in enumerate(data):
-            compounds.append(
-                Compound(HeadDiaNew=row[1], FlatClass=row[0], Class=row[2]))
-        Compound.objects.bulk_create(compounds)
 
 
 class Corpus(models.Model):
@@ -74,18 +57,14 @@ class Corpus(models.Model):
         verbose_name_plural = 'corpora'
 
 
-@ receiver(post_delete, sender=Corpus)
-def corpus_delete(sender, instance, **kwargs):
-    corpus_dir = os.path.join(settings.MEDIA_ROOT, 'files', str(instance.uuid))
-    shutil.rmtree(corpus_dir, ignore_errors=True)
-
-
 class Transcript(models.Model):
     def upload_path(self, filename):
-        return os.path.join('files', f'{self.corpus.uuid}', 'transcripts', filename)
+        return os.path.join('files', f'{self.corpus.uuid}',
+                            'transcripts', filename)
 
     def upload_path_parsed(self, filename):
-        return os.path.join('files', f'{self.corpus.uuid}', 'parsed', filename)
+        return os.path.join('files', f'{self.corpus.uuid}',
+                            'parsed', filename)
 
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
@@ -101,19 +80,7 @@ class Transcript(models.Model):
         return self.name
 
 
-@ receiver(post_delete, sender=Transcript)
-def transcript_delete(sender, instance, **kwargs):
-    instance.content.delete(False)
-    instance.parsed_content.delete(False)
-    if instance.extracted_filename:
-        os.remove(instance.extracted_filename)
-
-
 class Utterance(models.Model):
-    # def upload_path(self, filename):
-    #     transcript_dir, _ = os.path.splitext(self.transcript.content.name)
-    #     return os.path.join(transcript_dir, filename)
-
     sentence = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
     utt_id = models.IntegerField(blank=True, null=True)
@@ -121,31 +88,30 @@ class Utterance(models.Model):
     transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
 
+    @property
+    def syntree(self):
+        if self.parse_tree:
+            return ET.fromstring(self.parse_tree)
+        return None
+
     def __str__(self):
         return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
 
 
 class UploadFile(models.Model):
     def upload_path(self, filename):
-        return os.path.join('files', f'{self.corpus.uuid}', 'uploads', filename)
+        return os.path.join('files', f'{self.corpus.uuid}',
+                            'uploads', filename)
 
     name = models.CharField(max_length=255)
     content = models.FileField(upload_to=upload_path)
     corpus = models.ForeignKey(
-        Corpus, related_name='files', on_delete=models.CASCADE, null=True, blank=True)
+        Corpus, related_name='files', on_delete=models.CASCADE,
+        null=True, blank=True)
     status = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
-
-
-@ receiver(post_save, sender=UploadFile)
-def extract_upload_file(sender, instance, created, **kwargs):
-    if created:
-        try:
-            extract(instance)
-        except Exception as error:
-            logger.exception(error)
 
 
 class AssessmentMethod(models.Model):
@@ -167,18 +133,6 @@ class AssessmentMethod(models.Model):
         return mapping
 
 
-@ receiver(post_save, sender=AssessmentMethod)
-def read_tam_file(sender, instance, created, **kwargs):
-    if not created:
-        # on update: delete all queries related to this method
-        AssessmentQuery.objects.filter(method=instance).delete()
-    try:
-        read_TAM(instance)
-    except Exception as error:
-        logger.error(error)
-        print(f'error in read_tam_file:\t{error}')
-
-
 class AssessmentQuery(models.Model):
     method = models.ForeignKey(AssessmentMethod, related_name='queries',
                                on_delete=models.CASCADE)
@@ -194,7 +148,7 @@ class AssessmentQuery(models.Model):
     fase = models.IntegerField(blank=True, null=True)
     inform = models.BooleanField()
     query = models.CharField(max_length=5000, blank=True, null=True)
-    screening = models.BooleanField()
+    screening = models.BooleanField(blank=True, null=True)
     process = models.IntegerField()
     special1 = models.CharField(max_length=50, blank=True, null=True)
     special2 = models.CharField(max_length=50, blank=True, null=True)
@@ -217,7 +171,8 @@ class AssessmentQuery(models.Model):
         ''' mapping of all possible items (including altitems) to this query'''
         if (not self.item) or (not self.level):
             return {}
-        result = {(self.item.lower(), self.level.lower())                  : (self.query_id, self.fase)}
+        result = {(self.item.lower(), self.level.lower()):
+                  (self.query_id, self.fase)}
         alt_items = self.get_altitems_list(sep)
         if alt_items:
             for item in alt_items:
@@ -228,10 +183,3 @@ class AssessmentQuery(models.Model):
 
     class Meta:
         unique_together = ('method', 'query_id')
-
-
-@ receiver(post_delete, sender=UploadFile)
-@ receiver(post_delete, sender=AssessmentMethod)
-@ receiver(post_delete, sender=CompoundFile)
-def file_delete(sender, instance, **kwargs):
-    instance.content.delete(False)

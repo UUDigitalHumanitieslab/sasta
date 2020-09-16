@@ -34,8 +34,8 @@ class SAFReader:
         data.dropna(how='all', axis=1, inplace=True)
         self.word_cols = [c for c in data.columns if c.startswith('word')]
         relevant_cols = ['utt_id', 'level'] + self.word_cols
-        self.levels = [l for l in list(
-            data.level.unique()) if l.lower() != UTTLEVEL]
+        self.levels = [lv for lv in list(
+            data.level.unique()) if lv.lower() != UTTLEVEL]
         data = data[relevant_cols].applymap(clean_cell)
         return data
 
@@ -68,7 +68,7 @@ class SAFReader:
         text = data.loc[data.level == UTTLEVEL, colname].iloc[0]
         instance = SAFWord(word_id, text)
 
-        word_levels = [l for l in data.level.unique() if l != UTTLEVEL]
+        word_levels = [lv for lv in data.level.unique() if lv != UTTLEVEL]
         for level in word_levels:
             label = data.loc[data.level == level, colname].iloc[0]
             enriched_label = enrich(label, PREFIX.lower())

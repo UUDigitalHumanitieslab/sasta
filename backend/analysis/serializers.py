@@ -24,7 +24,8 @@ class UploadFileSerializer(serializers.ModelSerializer):
             name=corpus_data['name'],
             user=user,
             defaults={'status': 'created'})
-        return UploadFile.objects.create(**validated_data, corpus=corpus_instance)
+        return UploadFile.objects.create(**validated_data,
+                                         corpus=corpus_instance)
 
 
 class TranscriptSerializer(serializers.ModelSerializer):
