@@ -64,5 +64,5 @@ def read_tam_file(sender, instance, created, **kwargs):
     try:
         read_TAM(instance)
     except Exception as error:
-        logger.error(error)
+        logger.exception(error)
         print(f'error in read_tam_file:\t{error}')
