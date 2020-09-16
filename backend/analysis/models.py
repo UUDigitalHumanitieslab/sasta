@@ -81,10 +81,6 @@ class Transcript(models.Model):
 
 
 class Utterance(models.Model):
-    # def upload_path(self, filename):
-    #     transcript_dir, _ = os.path.splitext(self.transcript.content.name)
-    #     return os.path.join(transcript_dir, filename)
-
     sentence = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
     utt_id = models.IntegerField(blank=True, null=True)
