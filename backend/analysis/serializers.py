@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
-                     UploadFile)
+from .models import (AssessmentMethod, AssessmentQuery, Corpus, MethodCategory,
+                     Transcript, UploadFile)
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
@@ -59,3 +59,9 @@ class AssessmentMethodSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssessmentMethod
         fields = ('id', 'name', 'content', 'date_added', 'queries')
+
+
+class MethodCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MethodCategory
+        fields = '__all__'

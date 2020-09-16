@@ -7,15 +7,15 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .convert.convert import convert
-from .models import AssessmentMethod, Corpus, Transcript, UploadFile
-from .parse.parse import parse_and_create
-
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 
+from .convert.convert import convert
+from .models import AssessmentMethod, Corpus, Transcript, UploadFile, MethodCategory
+from .parse.parse import parse_and_create
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          TranscriptSerializer, UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptSerializer,
+                          UploadFileSerializer)
 
 # flake8: noqa: E501
 
@@ -148,3 +148,8 @@ class CorpusViewSet(viewsets.ModelViewSet):
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()
     serializer_class = AssessmentMethodSerializer
+
+
+class MethodCategoryViewSet(viewsets.ModelViewSet):
+    queryset = MethodCategory.objects.all()
+    serializer_class = MethodCategory
