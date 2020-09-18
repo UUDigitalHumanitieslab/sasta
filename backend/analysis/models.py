@@ -6,6 +6,7 @@ from itertools import chain
 from uuid import uuid4
 
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from .utils import get_items_list
@@ -114,6 +115,18 @@ class UploadFile(models.Model):
         return self.name
 
 
+class MethodCategory(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    zc_embeddings = models.BooleanField()
+    levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'method categories'
+
+
 class AssessmentMethod(models.Model):
     def upload_path(self, filename):
         return os.path.join('files', 'TAMs', filename)
@@ -121,6 +134,8 @@ class AssessmentMethod(models.Model):
     name = models.CharField(max_length=50, unique=True)
     date_added = models.DateField(auto_now_add=True)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
+    category = models.ForeignKey(
+        MethodCategory, related_name='definitions', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

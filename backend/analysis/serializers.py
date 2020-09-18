@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
-                     UploadFile)
+from .models import (AssessmentMethod, AssessmentQuery, Corpus, MethodCategory,
+                     Transcript, UploadFile)
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
@@ -51,11 +51,19 @@ class AssessmentQuerySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class MethodCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MethodCategory
+        fields = '__all__'
+
+
 class AssessmentMethodSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     queries = AssessmentQuerySerializer(read_only=True, many=True)
     date_added = serializers.DateField(format='%d-%m-%Y', read_only=True)
+    category = MethodCategorySerializer()
 
     class Meta:
         model = AssessmentMethod
-        fields = ('id', 'name', 'content', 'date_added', 'queries')
+        fields = ('id', 'name', 'category', 'content',
+                  'date_added', 'queries', )

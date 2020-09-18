@@ -65,8 +65,9 @@
         <form (submit)="performQuerying(currentTranscript, currentTam)">
             <div class="field">
                 <div class="control">
-                    <p-dropdown [options]="tams" optionLabel="name" name="tam-dropdown" placeholder="Assessment Method"
-                        [(ngModel)]="currentTam" showClear="true" [disabled]="!(tams?.length > 0)" appendTo="body">
+                    <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
+                        name="tam-dropdown" [group]="true" showClear="true" appendTo="body"
+                        [disabled]="!(groupedTams?.length > 0)">
                     </p-dropdown>
                 </div>
             </div>

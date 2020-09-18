@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from .models import (AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
-                     Corpus, Transcript, UploadFile, Utterance)
+                     Corpus, MethodCategory, Transcript, UploadFile, Utterance)
 
 
 class TranscriptInline(admin.TabularInline):
@@ -43,6 +43,12 @@ class UploadFileAdmin(admin.ModelAdmin):
 class AssessmentMethodAdmin(admin.ModelAdmin):
     model = AssessmentMethod
     readonly_fields = ('date_added',)
+    list_display = ('name', 'queries')
+
+    def queries(self, obj):
+        if obj.queries:
+            return len(obj.queries.all())
+        return 0
 
 
 @admin.register(AssessmentQuery)
@@ -58,3 +64,8 @@ class CompoundFileAdmin(admin.ModelAdmin):
 @admin.register(Compound)
 class CompoundAdmin(admin.ModelAdmin):
     model = Compound
+
+
+@admin.register(MethodCategory)
+class MethodCategoryAdmin(admin.ModelAdmin):
+    model = MethodCategory

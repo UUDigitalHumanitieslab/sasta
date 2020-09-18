@@ -1,0 +1,28 @@
+[{
+        "model": "analysis.methodcategory",
+        "pk": 1,
+        "fields": {
+            "name": "TARSP",
+            "zc_embeddings": true,
+            "levels": ["SS", "Zc", "Wg", "VVW"]
+        }
+    },
+    {
+        "model": "analysis.methodcategory",
+        "pk": 2,
+        "fields": {
+            "name": "ASTA",
+            "zc_embeddings": false,
+            "levels": ["Samplegrootte", "MLU", "Taalmaat", "Lemma", "Grammaticale fout", "QA"]
+        }
+    },
+    {
+        "model": "analysis.methodcategory",
+        "pk": 3,
+        "fields": {
+            "name": "STAP",
+            "zc_embeddings": false,
+            "levels": ["Complexiteit", "Grammaticale fout"]
+        }
+    }
+]

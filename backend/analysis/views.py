@@ -7,15 +7,15 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .convert.convert import convert
-from .models import AssessmentMethod, Corpus, Transcript, UploadFile
-from .parse.parse import parse_and_create
-
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 
+from .convert.convert import convert
+from .models import AssessmentMethod, Corpus, Transcript, UploadFile, MethodCategory
+from .parse.parse import parse_and_create
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          TranscriptSerializer, UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptSerializer,
+                          UploadFileSerializer)
 
 # flake8: noqa: E501
 
@@ -32,16 +32,14 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Score transcript')
     def score(self, request, *args, **kwargs):
         transcript = self.get_object()
-        method_name = request.data.get('method')
-        method = AssessmentMethod.objects.filter(name=method_name).first()
+        method_id = request.data.get('method')
+        method = AssessmentMethod.objects.get(pk=method_id)
 
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
         allresults, queries_with_funcs = query_transcript(transcript, method)
-
-        wb = v2_to_xlsx(allresults, zc_embeddings=False)
 
         spreadsheet = v1_to_xlsx(allresults, queries_with_funcs)
         spreadsheet.save(response)
@@ -51,16 +49,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Annotate')
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
-        method_name = request.data.get('method')
-
-        # todo: robust way to deal with this
-        if 'tarsp' in method_name.lower():
-            zc_embed = True
-        else:
-            zc_embed = False
+        method_id = request.data.get('method')
 
         only_inform = request.data.get('only_inform') == 'true'
-        method = AssessmentMethod.objects.filter(name=method_name).first()
+        method = AssessmentMethod.objects.get(pk=method_id)
+        zc_embed = method.category.zc_embeddings
 
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -148,3 +141,8 @@ class CorpusViewSet(viewsets.ModelViewSet):
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()
     serializer_class = AssessmentMethodSerializer
+
+
+class MethodCategoryViewSet(viewsets.ModelViewSet):
+    queryset = MethodCategory.objects.all()
+    serializer_class = MethodCategory

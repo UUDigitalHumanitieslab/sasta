@@ -158,10 +158,10 @@ def read_TAM(method) -> None:
     logger.info(f'TAM-Reader:\treading {os.path.basename(filepath)}')
     dataframe = pd.read_excel(filepath,
                               true_values=['yes'], false_values=['no', 'ignore'])
-    column_names = [c.lower() for c in dataframe.columns]
-    dataframe.columns = column_names
+    dataframe.columns = [c.lower() for c in dataframe.columns]
     dataframe.rename(columns={'id': 'query_id'}, inplace=True)
     dataframe = dataframe.where(dataframe.notnull(), None)
+    dataframe = dataframe.loc[:, ~dataframe.columns.str.contains('^unnamed')]
 
     for _i, series in dataframe.iterrows():
         # workaround for getting value to None instead of NaN
