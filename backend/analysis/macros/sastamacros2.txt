@@ -35,7 +35,7 @@ not((((@frame="tmp_adverb"
     or (@rel="mod" and
         (@lemma="net" or @lemma="gauw"
         or @lemma="vroeger" or @lemma="toen"
-        or @lemma="soms")))
+        or @lemma="soms" or @lemma="altijd")))
 """
 
 STAP_BB_p = """
