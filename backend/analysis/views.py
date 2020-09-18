@@ -62,7 +62,9 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         allresults, queries_with_funcs = query_transcript(
             transcript, method, True, zc_embed, only_inform)
 
-        spreadsheet = v2_to_xlsx(allresults, zc_embeddings=zc_embed)
+        print(allresults)
+
+        spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
         spreadsheet.save(response)
 
         return response

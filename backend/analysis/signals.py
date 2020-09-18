@@ -37,7 +37,10 @@ def transcript_delete(sender, instance, **kwargs):
     instance.content.delete(False)
     instance.parsed_content.delete(False)
     if instance.extracted_filename:
-        os.remove(instance.extracted_filename)
+        try:
+            os.remove(instance.extracted_filename)
+        except FileNotFoundError:
+            pass
 
 
 @ receiver(post_save, sender=UploadFile)
@@ -53,7 +56,10 @@ def extract_upload_file(sender, instance, created, **kwargs):
 @ receiver(post_delete, sender=AssessmentMethod)
 @ receiver(post_delete, sender=CompoundFile)
 def file_delete(sender, instance, **kwargs):
-    instance.content.delete(False)
+    try:
+        instance.content.delete(False)
+    except FileNotFoundError:
+        pass
 
 
 @ receiver(post_save, sender=AssessmentMethod)

@@ -4,7 +4,7 @@
         "fields": {
             "name": "TARSP",
             "zc_embeddings": true,
-            "levels": ["SS", "Zc", "Wg", "VVW"]
+            "levels": ["Sz", "Zc", "Wg", "VVW"]
         }
     },
     {
@@ -13,7 +13,7 @@
         "fields": {
             "name": "ASTA",
             "zc_embeddings": false,
-            "levels": ["Samplegrootte", "MLU", "Taalmaat", "Lemma", "Grammaticale fout", "QA"]
+            "levels": ["SampleGrootte", "MLU", "Taalmaat", "Lemma", "Grammaticale fout", "QA"]
         }
     },
     {

@@ -9,7 +9,6 @@ from .functions import (Query, QueryWithFunction,
                         compile_queries, filter_queries,
                         single_query_single_utt, utt_from_tree)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
-from pprint import pprint
 
 logger = logging.getLogger('sasta')
 
@@ -88,7 +87,7 @@ def run_core_queries(utterances: List[Utterance],
                 if annotate:
                     annotations[utt.utt_id] = utt_res
 
-    return results, matches, levels, annotations or None
+    return results, allmatches, levels, annotations or None
 
 
 def run_post_queries(allresults: SastaResults,

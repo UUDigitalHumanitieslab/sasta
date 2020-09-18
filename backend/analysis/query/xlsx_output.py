@@ -52,7 +52,7 @@ def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
     return wb
 
 
-def v2_to_xlsx(allresults, zc_embeddings=False):
+def v2_to_xlsx(allresults, method, zc_embeddings=False):
     try:
         wb = Workbook()
         worksheet = wb.active
@@ -66,7 +66,8 @@ def v2_to_xlsx(allresults, zc_embeddings=False):
             ['Dummy', 'Unaligned', 'Fases', 'Commentaar']
         worksheet.append(headers)
         # levels = sorted(list(data['levels']))
-        levels = LEVELS
+        # levels = LEVELS
+        levels = method.category.levels
 
         # How many ZC levels are there?
         if zc_embeddings:

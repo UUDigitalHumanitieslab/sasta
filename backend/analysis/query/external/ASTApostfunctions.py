@@ -23,10 +23,14 @@ def wordcountperutt(allresults, _):
 
 
 def finietheidsindex(allresults, _):
-    okpvs = allresults.coreresults['A024'] if 'A024' in allresults.coreresults else Counter()
-    subpvs = allresults.coreresults['A032'] if 'A032' in allresults.coreresults else Counter()
-    delpvs = allresults.coreresults['A033'] if 'A033' in allresults.coreresults else Counter()
-    tijdfoutpvs = allresults.coreresults['A041'] if 'A041' in allresults.coreresults else Counter()
+    okpvs = allresults.coreresults['A024'] if 'A024' in allresults.coreresults else Counter(
+    )
+    subpvs = allresults.coreresults['A032'] if 'A032' in allresults.coreresults else Counter(
+    )
+    delpvs = allresults.coreresults['A033'] if 'A033' in allresults.coreresults else Counter(
+    )
+    tijdfoutpvs = allresults.coreresults['A041'] if 'A041' in allresults.coreresults else Counter(
+    )
     foutepvs = subpvs + delpvs + tijdfoutpvs
     okpvcount = sumctr(okpvs)
     foutepvcount = sumctr(foutepvs)
@@ -57,8 +61,10 @@ def countwordsandcutoff(allresults, _):
 
 
 def KMcount(allresults, _):
-    Kcount = sumctr(allresults.coreresults['A013']) if 'A013' in allresults.coreresults else 0
-    Mcount = sumctr(allresults.coreresults['A020']) if 'A020' in allresults.coreresults else 0
+    Kcount = sumctr(
+        allresults.coreresults['A013']) if 'A013' in allresults.coreresults else 0
+    Mcount = sumctr(
+        allresults.coreresults['A020']) if 'A020' in allresults.coreresults else 0
     result = Kcount + Mcount
     return result
 
