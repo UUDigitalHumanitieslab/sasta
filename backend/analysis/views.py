@@ -32,8 +32,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Score transcript')
     def score(self, request, *args, **kwargs):
         transcript = self.get_object()
-        method_name = request.data.get('method')
-        method = AssessmentMethod.objects.filter(name=method_name).first()
+        method_id = request.data.get('method')
+        method = AssessmentMethod.objects.get(pk=method_id)
 
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -49,10 +49,10 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Annotate')
     def annotate(self, request, *args, **kwargs):
         transcript = self.get_object()
-        method_name = request.data.get('method')
+        method_id = request.data.get('method')
 
         only_inform = request.data.get('only_inform') == 'true'
-        method = AssessmentMethod.objects.filter(name=method_name).first()
+        method = AssessmentMethod.objects.get(pk=method_id)
         zc_embed = method.category.zc_embeddings
 
         response = HttpResponse(

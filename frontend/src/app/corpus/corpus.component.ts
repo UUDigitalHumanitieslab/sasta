@@ -10,9 +10,8 @@ import { Transcript } from '../models/transcript';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
 import { TranscriptService } from '../services/transcript.service';
-
-
-
+import { SelectItemGroup } from 'primeng/api';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sas-corpus',
@@ -22,11 +21,14 @@ import { TranscriptService } from '../services/transcript.service';
 export class CorpusComponent implements OnInit {
   @ViewChild(Dialog, { static: false }) dialog;
 
+  _: any = _; // Lodash
+
   id: number;
   corpus: Corpus;
 
   tams: Method[];
   currentTam: Method;
+  groupedTams: SelectItemGroup[];
 
   faFile = faFile;
   faFileCode = faFileCode;
@@ -43,11 +45,12 @@ export class CorpusComponent implements OnInit {
   onlyInform = true;
   querying = false;
 
-  constructor(private corpusService: CorpusService,
-              private transcriptService: TranscriptService,
-              private methodService: MethodService,
-              private route: ActivatedRoute,
-              private messageService: MessageService) {
+  constructor(
+    private corpusService: CorpusService,
+    private transcriptService: TranscriptService,
+    private methodService: MethodService,
+    private route: ActivatedRoute,
+    private messageService: MessageService) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
   }
 
@@ -55,7 +58,22 @@ export class CorpusComponent implements OnInit {
     this.get_corpus();
     this.methodService
       .list()
-      .subscribe(res => this.tams = res);
+      .subscribe(res => {
+        this.tams = res;
+        this.groupTams(res);
+      });
+  }
+
+  groupTams(tams) {
+    this.groupedTams = _(tams)
+      .groupBy('category.name')
+      .map((methods, methodCat) =>
+        ({
+          label: methodCat, items: _.map(methods, (m) =>
+            ({ label: m.name, value: m }))
+        })
+      )
+      .value();
   }
 
   get_corpus() {
@@ -98,7 +116,7 @@ export class CorpusComponent implements OnInit {
   annotateTranscript(transcript: Transcript, method: Method) {
     this.querying = true;
     this.corpusService
-      .annotate_transcript(transcript.id, method.name, this.onlyInform)
+      .annotate_transcript(transcript.id, method.id, this.onlyInform)
       .subscribe(
         response => {
           this.downloadFile(response.body, `${transcript.name}_SAF.xlsx`);
@@ -116,7 +134,7 @@ export class CorpusComponent implements OnInit {
   queryTranscript(transcript: Transcript, method: Method) {
     this.querying = true;
     this.corpusService
-      .score_transcript(transcript.id, method.name)
+      .score_transcript(transcript.id, method.id)
       .subscribe(
         response => {
           this.downloadFile(response.body, `${transcript.name}_matches.xlsx`);
