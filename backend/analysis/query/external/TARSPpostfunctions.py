@@ -1,10 +1,10 @@
 '''
 defines functions for the TARSP post part of the methods
-
 '''
 from collections import Counter
-# from allresults import scores2counts
-from analysis.utils import CORE_PROCESS as core_process
+
+# TODO: move to config
+core_process, _post_process = 0, 1
 
 OndVC = 'T071'
 OndWVC = 'T076'
@@ -12,8 +12,7 @@ OndWBVC = 'T075'
 
 vuqueryids = ['T094', 'T095', 'T096', 'T150']
 tarsp_clausetypes = ['mededelende zin', 'vragen', 'gebiedende wijs']
-# TARSP p. 21: hè, Into, Inversie, Kop
-excludedqids = ['T039', 'T048', 'T049', 'T052']
+excludedqids = ['T039', 'T048', 'T049', 'T052']   # TARSP p. 21: hè, Into, Inversie, Kop
 gofase_minthreshold = 0.05  # 5% p21 Tarsp 2005
 
 
@@ -93,11 +92,12 @@ def gofase(allresults, thequeries):
 
 
 def genpfi(stage, allresults, allqueries):
-    theqids = [qid for qid in allqueries if allqueries[qid].fase == stage and allqueries[qid].process == core_process
+    theqids = [qid for qid in allqueries
+               if allqueries[qid].fase == stage
+               and allqueries[qid].process == core_process
                and allqueries[qid].special1 != 'star2']
     coreresults = allresults.coreresults
-    scoredqids = [qid for qid in theqids if qid in coreresults and len(
-        coreresults[qid]) > 0]
+    scoredqids = [qid for qid in theqids if qid in coreresults and len(coreresults[qid]) > 0]
     # OndVC
     if OndWVC in theqids or OndWBVC in scoredqids:
         scoredqids.append(OndVC)

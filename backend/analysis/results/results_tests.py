@@ -1,5 +1,5 @@
 from analysis.models import AssessmentQuery
-from analysis.score.query import Query
+from analysis.query.functions import Query
 import pytest
 
 

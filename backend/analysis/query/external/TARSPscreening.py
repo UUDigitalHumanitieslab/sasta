@@ -10,12 +10,9 @@ Parameters:
 function to expose to other modules is: screening4stage(uttcount, results)
 
 '''
-
-import os
+from .allresults import scores2counts
 import logging
-
 logger = logging.getLogger('sasta')
-from analysis.results.results import scores2counts
 
 
 stage1threshold = 95
@@ -184,10 +181,10 @@ def screening4stage(uttcount, results):
     #   ;param thefilename: name of the treebank file
     #    (inbase, ext) = os.path.splitext(thefilename)
     #    stagesexplainfile = inbase + 'stage_explanation' + '.txt'
-    #    stageslogger = logger.getLogger('Stages:')
-    #    stageslogger.setLevel(logger.INFO)
-    #    ch = logger.FileHandler(stagesexplainfile)
-    #    ch.setLevel(logger.INFO)
+    #    stageslogger = logging.getLogger('Stages:')
+    #    stageslogger.setLevel(logging.INFO)
+    #    ch = logging.FileHandler(stagesexplainfile)
+    #    ch.setLevel(logging.INFO)
 #    stageslogger.addHandler(ch)
 
     if uttcount < uttcountthreshold:
@@ -197,21 +194,3 @@ def screening4stage(uttcount, results):
         # print(message)
     result = screening(results)
     return result
-
-
-def test():
-    from goldcountreader import get_goldcounts
-    inpath = './goldcountstestin'
-    testfilename = 'overzicht_Mieke.xlsx'
-    testfullname = os.path.join(inpath, testfilename)
-    testset = [(200, 'TARSP_MIEKE03_ID.xml'), (200, 'TARSP_MIEKE04_ID.xml'), (200, 'TARSP_MIEKE05_ID.xml'), (200, 'TARSP_MIEKE06_ID.xml'),
-               (200, 'TARSP_MIEKE07_ID.xml'), (200, 'TARSP_MIEKE08_ID.xml')]
-    for (uttcnt, tbn) in testset:
-        print('Processing {}...'.format(tbn))
-        tbndata = get_goldcounts(testfullname, tbn)
-        thestage = screening4stage(uttcnt, tbndata)
-        print('Stage of {}:  {}'.format(tbn, thestage))
-
-
-if __name__ == '__main__':
-    test()

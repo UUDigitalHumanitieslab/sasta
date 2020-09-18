@@ -1,4 +1,6 @@
+
 from . import celexlexicon
+
 
 space = ' '
 celex = 'celex'
@@ -28,8 +30,7 @@ def informlexicon(word):
 
 
 def test():
-    testwords = ['stukkies', 'jochie', 'gevalt', 'stukjes',
-                 'gevallen', 'mouwe', 'mouwen', 'gaatie', 'gaat', 'ie']
+    testwords = ['stukkies', 'jochie', 'gevalt', 'stukjes', 'gevallen', 'mouwe', 'mouwen', 'gaatie', 'gaat', 'ie']
     for w in testwords:
         print(w, informlexicon(w))
 

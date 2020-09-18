@@ -28,7 +28,7 @@ dutch_y_triphthongs = ['y' + d for d in dutch_base_diphthongs] + \
 dutch_trema_diphthongs = ['äa', "ëe", 'ïe', 'öo', 'üu', 'ëi']
 dutch_diphthongs = dutch_base_diphthongs + \
     dutch_y_diphthongs + dutch_trema_diphthongs
-dutch_base_triphthongs = ['aai', 'eeu',  'ooi',   'oei']
+dutch_base_triphthongs = ['aai', 'eeu', 'ooi', 'oei']
 dutch_y_tetraphthongs = ['y' + d for d in dutch_base_triphthongs]
 dutch_triphthongs = dutch_base_triphthongs + dutch_y_triphthongs
 dutch_tetraphthongs = dutch_y_tetraphthongs
@@ -208,33 +208,3 @@ def aigu(c):
     theindex = barevowels.find(c)
     result = aiguvowels[theindex]
     return result
-
-
-def testcondition(condition, word):
-    if condition(word):
-        print('OK:{}'.format(word))
-    else:
-        print('NO:{}'.format(word))
-
-
-def test():
-    monosyllabicwords = ['baai', 'eeuw', 'mooi', 'aap',   'deed', 'Piet', 'noot', 'duut', 'rijd', 'meid', 'rauw', 'koud', 'buit', 'reuk', 'boer', 'la', 'de', 'hik', 'dop', 'dut',
-                         'yell', 'ry', 'Händl', 'Pëtr', 'bït', 'Köln',  'Kür', 'Tÿd']
-    disyllabicwords = ['baaien', 'eeuwen', 'mooie', 'aapje',   'deden', 'Pietje', 'noten', 'dut', 'rijden', 'meiden', 'rauwe', 'koude', 'buitje', 'reuken', 'boeren', 'laden', 'dender',
-                       'hikken', 'doppen', 'dutten', 'yellen', 'ryen', 'Händler', 'Pëtri', 'bïty', 'Kölner',  'Kürer', 'Tÿding', 'naäap', 'meeëten', 'ciën', 'coöp']
-
-    for word in monosyllabicwords:
-        testcondition(monosyllabic, word.lower())
-    for word in disyllabicwords:
-        testcondition(monosyllabic, word.lower())
-
-    for word in monosyllabicwords + disyllabicwords:
-        ms = syllableheadsre.finditer(word)
-        print(word, end=' -- ')
-        for m in ms:
-            print(m.group(0), end=', ')
-        print('')
-
-
-if __name__ == '__main__':
-    test()

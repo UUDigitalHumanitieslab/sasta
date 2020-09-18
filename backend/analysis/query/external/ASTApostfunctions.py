@@ -1,4 +1,5 @@
 from collections import Counter
+
 from .treebankfunctions import getattval
 
 lpad = 3
@@ -22,21 +23,17 @@ def wordcountperutt(allresults, _):
 
 
 def finietheidsindex(allresults, _):
-    okpvs = allresults.coreresults['A024'] if 'A024' in allresults.coreresults else Counter(
-    )
-    subpvs = allresults.coreresults['A032'] if 'A032' in allresults.coreresults else Counter(
-    )
-    delpvs = allresults.coreresults['A033'] if 'A033' in allresults.coreresults else Counter(
-    )
-    tijdfoutpvs = allresults.coreresults['A041'] if 'A041' in allresults.coreresults else Counter(
-    )
+    okpvs = allresults.coreresults['A024'] if 'A024' in allresults.coreresults else Counter()
+    subpvs = allresults.coreresults['A032'] if 'A032' in allresults.coreresults else Counter()
+    delpvs = allresults.coreresults['A033'] if 'A033' in allresults.coreresults else Counter()
+    tijdfoutpvs = allresults.coreresults['A041'] if 'A041' in allresults.coreresults else Counter()
     foutepvs = subpvs + delpvs + tijdfoutpvs
     okpvcount = sumctr(okpvs)
     foutepvcount = sumctr(foutepvs)
     if okpvcount + foutepvcount == 0:
         result = 0
     else:
-        result = okpvcount / (okpvcount+foutepvcount)
+        result = okpvcount / (okpvcount + foutepvcount)
     return result
 
 
@@ -60,9 +57,20 @@ def countwordsandcutoff(allresults, _):
 
 
 def KMcount(allresults, _):
-    Kcount = sumctr(
-        allresults.coreresults['A013']) if 'A013' in allresults.coreresults else 0
-    Mcount = sumctr(
-        allresults.coreresults['A020']) if 'A020' in allresults.coreresults else 0
+    Kcount = sumctr(allresults.coreresults['A013']) if 'A013' in allresults.coreresults else 0
+    Mcount = sumctr(allresults.coreresults['A020']) if 'A020' in allresults.coreresults else 0
     result = Kcount + Mcount
     return result
+
+
+def getlemmas(allresults, _):
+    allmatches = allresults.allmatches
+    allresults.postresults['A046'] = Counter()
+    for el in allmatches:
+        (qid, uttid) = el
+        if qid in ['A021', 'A018']:
+            for amatch in allmatches[el]:
+                # theword = normalizedword(amatch[0])
+                theword = getattval(amatch[0], 'lemma')
+                allresults.postresults['A046'].update([(theword, uttid)])
+    return allresults

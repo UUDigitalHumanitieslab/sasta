@@ -1,6 +1,5 @@
 from .treebankfunctions import parent, getattval, get_left_siblings
 
-
 nietxpath = './/node[@lemma="niet"]'
 wordxpath = './/node[@pt]'
 

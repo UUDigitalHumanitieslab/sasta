@@ -21,7 +21,6 @@ programfolder = os.path.dirname(os.path.abspath(__file__))
 inputfolder = os.path.join(programfolder, 'celexlexicon', 'dutch')
 
 dmwfilename = 'dmwcdok.txt'
-
 dmwfullname = os.path.join(inputfolder, dmwfilename)
 dmwdict = {}
 
@@ -159,10 +158,10 @@ def test():
     testwords = ['liepen', 'gevalt', 'gevallen', 'mouwen', 'stukjes',
                  'vaak', 'mooi', 'gouden', 'mooie', 'mooiere', 'pop', 'popje']
     for w in testwords:
-        #poslist = getposlist(w)
-        #lemmas = getlemmas(w)
-        #infls = getinfls(w)
-        #print(w, lemmas,  poslist, infls)
+        # poslist = getposlist(w)
+        # lemmas = getlemmas(w)
+        # infls = getinfls(w)
+        # print(w, lemmas,  poslist, infls)
         graminfos = getwordinfo(w)
         for (pos, dehet, infl, lemma) in graminfos:
             print(w, lemma, pos, dehet, infl)
