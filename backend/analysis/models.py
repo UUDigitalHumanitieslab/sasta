@@ -131,7 +131,7 @@ class AssessmentMethod(models.Model):
     def upload_path(self, filename):
         return os.path.join('files', 'TAMs', filename)
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     date_added = models.DateField(auto_now_add=True)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
     category = models.ForeignKey(
@@ -139,6 +139,9 @@ class AssessmentMethod(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        unique_together = (('category', 'name'))
 
     def get_item_mapping(self, sep):
         queries = self.queries.all()
