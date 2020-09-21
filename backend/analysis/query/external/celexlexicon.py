@@ -152,20 +152,3 @@ def getwordinfo(word):
             dehet = getdehet(lemmakey)
             pos_infl_lemmas.append((pos, dehet, infl, lemma))
     return pos_infl_lemmas
-
-
-def test():
-    testwords = ['liepen', 'gevalt', 'gevallen', 'mouwen', 'stukjes',
-                 'vaak', 'mooi', 'gouden', 'mooie', 'mooiere', 'pop', 'popje']
-    for w in testwords:
-        # poslist = getposlist(w)
-        # lemmas = getlemmas(w)
-        # infls = getinfls(w)
-        # print(w, lemmas,  poslist, infls)
-        graminfos = getwordinfo(w)
-        for (pos, dehet, infl, lemma) in graminfos:
-            print(w, lemma, pos, dehet, infl)
-
-
-if __name__ == '__main__':
-    test()

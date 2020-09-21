@@ -1,4 +1,4 @@
-from .stringfunctions import monosyllabic, syllableheadsre
+from ..stringfunctions import monosyllabic, syllableheadsre
 
 # TODO: Find out what the test results should be
 
@@ -17,9 +17,11 @@ def test_stringfunctions():
                        'hikken', 'doppen', 'dutten', 'yellen', 'ryen', 'Händler', 'Pëtri', 'bïty', 'Kölner', 'Kürer', 'Tÿding', 'naäap', 'meeëten', 'ciën', 'coöp']
 
     for word in monosyllabicwords:
-        t_condition(monosyllabic, word.lower())
+        # t_condition(monosyllabic, word.lower())
+        assert monosyllabic(word.lower())
     for word in disyllabicwords:
-        t_condition(monosyllabic, word.lower())
+        # t_condition(monosyllabic, word.lower())
+        assert not monosyllabic(word.lower())
 
     for word in monosyllabicwords + disyllabicwords:
         ms = syllableheadsre.finditer(word)

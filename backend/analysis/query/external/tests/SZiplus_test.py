@@ -1,5 +1,5 @@
 from lxml import etree
-from .Sziplus import sziplus6
+from ..Sziplus import sziplus6
 
 testtree1str = '''  <alpino_ds version="1.3" id="Treebank_Schlichting_CHAT-115.xml">
     <node begin="0" cat="top" end="8" id="0" rel="top">
@@ -211,14 +211,8 @@ def report(nodelist, f):
 
 
 def test_sziplus():
-    test1 = sziplus6(testtree1)
-    test2 = sziplus6(testtree2)
-    test3 = sziplus6(testtree3)
-    test4 = sziplus6(testtree4)
-    test5 = sziplus6(testtree5)
-
-    assert test1
-    assert not test2
-    assert not test3
-    assert test4
-    assert not test5
+    assert sziplus6(testtree1)
+    assert not sziplus6(testtree2)
+    assert not sziplus6(testtree3)
+    assert sziplus6(testtree4)
+    assert not sziplus6(testtree5)

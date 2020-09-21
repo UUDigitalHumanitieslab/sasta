@@ -1,5 +1,5 @@
 from lxml import etree
-from .imperatives import wx, wxy, wxyz, wxyz5, wondx, wond4, wond5plus
+from ..imperatives import wx, wxy, wxyz, wxyz5, wondx, wond4, wond5plus
 testtreestr = {}
 
 testtreestr[1] = '''
@@ -300,19 +300,33 @@ testtreestr[13] = '''
 
 testtrees = []
 for ctr in testtreestr:
-    # print(ctr)
     testtrees.append((ctr, etree.fromstring(testtreestr[ctr])))
 
-# testtrees = [(ctr, etree.fromstring(testtreestr[ctr])) for ctr in testtreestr ]
 labeledfs = [('wx', wx), ('wxy', wxy), ('wxyz', wxyz), ('wxyz5', wxyz5),
              ('wondx', wondx), ('wond4', wond4), ('wond5plus', wond5plus)]
+expected = {
+    1: [1, 0, 0, 0, 0, 0, 0],
+    2: [1, 0, 0, 0, 0, 0, 0],
+    3: [0, 1, 0, 0, 0, 0, 0],
+    4: [0, 1, 0, 0, 0, 0, 0],
+    5: [1, 0, 0, 0, 0, 0, 0],
+    6: [0, 0, 0, 1, 0, 0, 0],
+    7: [0, 0, 0, 0, 1, 0, 0],
+    8: [0, 0, 0, 0, 0, 1, 0],
+    9: [0, 0, 0, 0, 0, 1, 0],
+    10: [0, 0, 0, 0, 0, 0, 1],
+    11: [0, 0, 0, 0, 0, 0, 1],
+    12: [0, 0, 0, 0, 1, 0, 0],
+    13: [0, 0, 0, 0, 1, 0, 0]
+}
 
 
 def test_imperatives():
     for (treename, testtree) in testtrees:
-        print(treename)
+        # print(treename)
+        tree_res = []
         for label, thef in labeledfs:
-            # print('starting', label)
             results = thef(testtree)
-            print(label, len(results))
-            # TODO: What should the test results be?
+            # print(label, len(results))
+            tree_res.append(len(results))
+        assert expected[treename] == tree_res
