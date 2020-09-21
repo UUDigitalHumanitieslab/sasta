@@ -1,14 +1,14 @@
+import traceback
+from collections import Counter
+from typing import List
+
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
+from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
+from openpyxl.utils import get_column_letter
 
 from analysis.query.functions import QueryWithFunction
 from analysis.results.results import AllResults
-
-from typing import List
-from collections import Counter
-import traceback
-
-from pprint import pprint
 
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 ROMAN_NUMS = [None, 'I', 'II', 'III',
@@ -49,6 +49,10 @@ def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
                 worksheet.append(row)
 
     worksheet.auto_filter.ref = worksheet.dimensions
+
+    # column widths
+    worksheet = autosize_columns(worksheet)
+
     return wb
 
 
@@ -61,7 +65,7 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
         items = allresults.annotations.items()
         items = sorted(items)
         max_words = max([len(words) for (_, words) in items])
-        word_headers = [f'Word{i}' for i in range(1, max_words+1)]
+        word_headers = [f'Word{i}' for i in range(1, max_words + 1)]
         headers = ['ID', 'Level'] + word_headers + \
             ['Dummy', 'Unaligned', 'Fases', 'Commentaar']
         worksheet.append(headers)
@@ -78,8 +82,9 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
                     w.zc_embedding for w in words if w.zc_embedding}
                 if embed_levels:
                     max_embed = max(max_embed, max(embed_levels))
-            embed_range = range(0, max_embed+1)
+            embed_range = range(0, max_embed + 1)
 
+        lower_levels = [l.lower() for l in levels]
         for utt_id, words in items:
             # Utt row, containing the word tokens
             words_row = [utt_id, 'Utt'] + [w.word for w in words]
@@ -89,14 +94,14 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
 
             # a cell for each word, and one to record phases
             level_rows = [[utt_id, level]
-                          + [set([]) for _ in range(max_words+1)]
+                          + [set([]) for _ in range(max_words + 1)]
                           + [None]
                           + [[]]
                           for level in levels]
 
             if zc_embeddings:
                 zc_rows = [[utt_id, 'Zc']
-                           + [set([]) for _ in range(max_words+1)]
+                           + [set([]) for _ in range(max_words + 1)]
                            + [None]
                            + [[]]
                            for _ in embed_range]
@@ -109,15 +114,20 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
                     if zc_embeddings and hit['level'].lower() == 'zc':
                         i_level = word.zc_embedding
                         # print(word.zc_embedding)
-                        zc_rows[i_level][i_word+2].add(hit['item'])
+                        zc_rows[i_level][i_word + 2].add(hit['item'])
                         try:
                             zc_rows[i_level][-1].append(
                                 ROMAN_NUMS[int(hit['fase'])])
                         except Exception:
                             pass
                     else:
-                        i_level = levels.index(hit['level'])
-                        level_rows[i_level][i_word+2].add(hit['item'])
+                        i_level = lower_levels.index(hit['level'].lower())
+                        print(*level_rows, sep='\n')
+                        # print(level_rows[i_level])
+                        print(i_level)
+                        print(i_word+2)
+                        level_rows[i_level][i_word + 2].add(hit['item'])
+
                         try:
                             level_rows[i_level][-1].append(
                                 ROMAN_NUMS[int(hit['fase'])])
@@ -156,6 +166,20 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
                         start_color="ffff00",
                         end_color="ffff00",
                         fill_type="solid")
+
+        # column widths
+        worksheet = autosize_columns(worksheet)
+
         return wb
-    except Exception as e:
+
+    except Exception:
         traceback.print_exc()
+
+
+def autosize_columns(worksheet):
+    dim_holder = DimensionHolder(worksheet=worksheet)
+    for col in range(worksheet.min_column, worksheet.max_column + 1):
+        dim_holder[get_column_letter(col)] = ColumnDimension(
+            worksheet, min=col, max=col, auto_size=True)
+    worksheet.column_dimensions = dim_holder
+    return worksheet

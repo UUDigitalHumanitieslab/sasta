@@ -1,6 +1,6 @@
 import re
 
-# from .external.STAPpostfunctions import BB_totaal, GLVU, GL5LVU
+from .external.STAPpostfunctions import BB_totaal, GLVU, GL5LVU
 from .external.ASTApostfunctions import (KMcount, countwordsandcutoff,
                                          finietheidsindex, getlemmas,
                                          wordcountperutt)
@@ -41,7 +41,7 @@ def getfname(f):
 thetarspfunctions = [getcompounds, sziplus6, xenx, vr5plus, wx, wxy, wxyz, wxyz5, wondx, wond4, wond5plus,
                      tarsp_screening, vutotaal, gofase, gtotaal, pf2, pf3, pf4, pf5, pf6, pf7, pf, xneg_x, xneg_neg]
 
-# thestapfunctions = [BB_totaal, GLVU, GL5LVU]
+thestapfunctions = [BB_totaal, GLVU, GL5LVU]
 
 
 # theastafunctions = [samplesize, mlux, neologisme, onvolledig, correct,
@@ -50,7 +50,7 @@ theastafunctions = [samplesize, mlux, neologisme, onvolledig, correct,
                     wordcountperutt, countwordsandcutoff, KMcount, finietheidsindex, getlemmas]
 
 # thefunctions = thetarspfunctions + thestapfunctions + theastafunctions
-thefunctions = theastafunctions + thetarspfunctions
+thefunctions = theastafunctions + thetarspfunctions + thestapfunctions
 
 str2functionmap = {}
 
