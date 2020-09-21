@@ -15,6 +15,7 @@ class TranscriptInline(admin.TabularInline):
 class CorpusAdmin(admin.ModelAdmin):
     model = Corpus
     inlines = (TranscriptInline,)
+    list_display = ('name', 'user')
 
 
 @admin.register(Utterance)
