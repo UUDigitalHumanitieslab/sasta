@@ -122,10 +122,6 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
                             pass
                     else:
                         i_level = lower_levels.index(hit['level'].lower())
-                        print(*level_rows, sep='\n')
-                        # print(level_rows[i_level])
-                        print(i_level)
-                        print(i_word+2)
                         level_rows[i_level][i_word + 2].add(hit['item'])
 
                         try:
