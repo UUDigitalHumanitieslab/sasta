@@ -50,8 +50,8 @@ class UtteranceWord:
     def __init__(self, word, begin, end,
                  hits, zc_embedding=None):
         self.word: str = word
-        self.begin: int = begin
-        self.end: int = end
+        self.begin: int = int(begin)
+        self.end: int = int(end)
         self.hits: List[Dict] = hits
         self.zc_embedding: Optional[int] = zc_embedding
 
