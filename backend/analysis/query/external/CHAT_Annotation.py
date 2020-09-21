@@ -1,9 +1,9 @@
-from .sastatoken import Token, show
-from .metadata import Meta
-#from cleanCHILDEStokens import cleantokens
-from . import cleanCHILDEStokens
-import re
 import logging
+import re
+
+from . import cleanCHILDEStokens
+from .metadata import Meta
+from .sastatoken import Token, show
 
 logger = logging.getLogger('sasta')
 
@@ -18,6 +18,7 @@ restart = 'restart'
 scope_open = '<'
 scope_close = '>'
 emptyreplacement = eps
+anybutrb = r'[^\]]*'
 
 
 def fullre(pat):
@@ -31,8 +32,7 @@ def identity(x):
 
 def refunction(x):
     '''
-    The input regular expression is adapted to the requirements, surrounded by ^ and $ (currently, see refunction)
-    or unchanged (identity function) in the latter case search() must be replaced by match() when  applying an r.e.
+    The input regular expression is adapted to the requirements, surrounded by ^ and $ (see refunction)
     :param x: a regular expression
     :return: a modified regular expression
     '''
@@ -49,8 +49,9 @@ wordpat = wordinitial + \
     u'\u2019\u02C8\u02CC\u0329\u02de\u21AB\u2260' + r']*'
 fullwordpat = fullre(wordpat)
 wordre = re.compile(fullwordpat)
-interpunction = r'(:?' + r'[!\?\.,;]' + '|' + u'[\u201C\u201D]' + \
-    r'|' + r'\s:\s' + r')'  # add colon separated by spaces
+# interpunction = r'(:?' + r'[!\?\.,;]' + '|' + u'[\u201C\u201D\u2039\u203A]' + r'|' + r'(?<=\s):' + r')'
+interpunction = r'[!\?\.,;]' + '|' + \
+    u'[\u201C\u201D\u2039\u203A]' + r'|' + r'(?<=\s):'
 filenamepat = r'[\w\.]+'
 fullfilenamepat = fullre(filenamepat)
 fullfilenamere = re.compile(fullfilenamepat)
@@ -60,12 +61,24 @@ wordorpuncpat = r'(:?' + wordpat + '|' + interpunction + ')'
 specialformpat = wordpat + r'(?:@z:\w\w\w|@\w\w?\w?)'
 fullspecialformpat = fullre(specialformpat)
 specialformre = re.compile(fullspecialformpat)
+repkeepannotations = ['Repetition', 'Retracing', 'Reformulation']
 
 
-def doreplacement(token, replacement, tokens):
+def getreplacement(repkeep, annotation):
+    if annotation.name in repkeepannotations:
+        if repkeep:
+            replacement = keep
+        else:
+            replacement = eps
+    else:
+        replacement = annotation.regex.replacement
+    return replacement
+
+
+def doreplacement(repltokens, replacement, tokens):
     newtokens = tokens
     if replacement == keep:
-        newtokens.append(token)
+        newtokens += repltokens
     elif replacement == eps:
         pass
     else:
@@ -190,7 +203,7 @@ class CHAT_SimpleRegex(CHAT_Regex):
 
 
 class CHAT_SimpleScopedRegex(CHAT_Regex):
-    def __init__(self, regex, replacement,  scoped, arity):
+    def __init__(self, regex, replacement, scoped, arity):
         self.regex = regex
         self.replacement = replacement
         self.scoped = scoped
@@ -211,63 +224,54 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
             if scope is None:
                 # hier misschien iets voor [///] en restart
                 newtokens += todotokens[tokenctr:]
-                #result = (newtokens, metadata)
+                # result = (newtokens, metadata)
                 break
             else:
                 (b, e) = scope
                 if ltodotokens == e + 1:
                     logger.error('Scoped part [{}:{}] without annotation following ignored in {}'.format(
                         b, e, show(todotokens)))
-                    newtokens += todotokens[b+1:e]
+                    newtokens += todotokens[b + 1:e]
                     tokenctr = e + 1
-                elif self.compiledre.search(todotokens[e+1].word):
+                elif self.compiledre.search(todotokens[e + 1].word):
                     annotationwords = [
-                        token.word for token in todotokens[b+1:e]]
+                        token.word for token in todotokens[b + 1:e]]
                     annotationpositions = [
-                        token.pos for token in todotokens[b+1:e]]
+                        token.pos for token in todotokens[b + 1:e]]
                     if self.arity == dyadic:
-                        if ltodotokens <= e+2:
-                            logger.error('Missing second argument for dyadic annotation {} in {}'.format(
+                        if ltodotokens <= e + 2:
+                            logging.error('Missing second argument for dyadic annotation {} in {}'.format(
                                 annotation.name, show(todotokens)))
                             newtokens += todotokens[b + 1:e]
                             break
                         else:
                             annotatedwords = [
-                                todotokens[e+2].word] if self.replacement == eps else []
+                                todotokens[e + 2].word] if self.replacement == eps else []
                             annotatedpositions = [
-                                todotokens[e+2].pos] if self.replacement == eps else []
+                                todotokens[e + 2].pos] if self.replacement == eps else []
                     elif self.arity == monadic:
                         annotatedwords = []
                         annotatedpositions = []
                     else:
                         logger.error('Illegal arity specification ({}) on {}'.format(
-                            self.arity. annotation.name))
+                            self.arity, annotation.name))
                         annotatedwords = []
                         annotatedpositions = []
                     newmeta = annotation.metadatafunction(
                         annotation, annotationwords, annotatedpositions, annotatedwords, annotationpositions)
                     metadata.append(newmeta)
                     newtokens += todotokens[tokenctr:b]
-                    if repkeep:
-                        replacement = keep
-                    else:
-                        replacement = self.replacement
-                    if replacement == keep:
-                        newtokens += todotokens[b+1:e]
-                    elif replacement == eps:
-                        pass
-                    else:
-                        logger.error('Unknown replacement: {} in {}'.format(
-                            self.replacement, show(tokens)))
-                    #todotokens = todotokens[e+2:]
+                    replacement = getreplacement(repkeep, annotation)
+                    newtokens = doreplacement(
+                        todotokens[b + 1:e], replacement, newtokens)
                     tokenctr = e + 2
                 else:
-                    newtokens += todotokens[tokenctr:e+1]
-                    #todotokens = todotokens[e+1:]
+                    newtokens += todotokens[tokenctr:e + 1]
+                    # todotokens = todotokens[e+1:]
                     tokenctr = e + 1
 
         # the code with a scoped token sequence
-         # look for the code
+        # look for the code
         todotokens = newtokens
         ltodotokens = len(todotokens)
         newtokens = []
@@ -284,24 +288,26 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
                     if self.arity == monadic:
                         annotatedpositions = []
                         annotatedwords = []
+                        replacement = getreplacement(repkeep, annotation)
                         newtokens = doreplacement(
-                            prevtoken, self.replacement, newtokens)
+                            [prevtoken], replacement, newtokens)
                         prevtoken = None
                         newmeta = annotation.metadatafunction(annotation, scopewords, annotatedpositions,
                                                               annotatedwords, scopepositions)
                         metadata.append(newmeta)
                     elif self.arity == dyadic:
-                        if i+1 >= ltodotokens:
-                            logger.error('Missing second argument for dyadic annotation {} in {}'.format(annotation.name,
-                                                                                                         show(todotokens)))
+                        if i + 1 >= ltodotokens:
+                            logging.error('Missing second argument for dyadic annotation {} in {}'.format(annotation.name,
+                                                                                                          show(todotokens)))
                         else:
-                            annotatedpositions = [todotokens[i+1].pos]
-                            annotatedwords = [todotokens[i+1].word]
+                            annotatedpositions = [todotokens[i + 1].pos]
+                            annotatedwords = [todotokens[i + 1].word]
+                            replacement = getreplacement(repkeep, annotation)
                             newtokens = doreplacement(
-                                prevtoken, self.replacement, newtokens)
+                                [prevtoken], replacement, newtokens)
                             prevtoken = None
                             newmeta = annotation.metadatafunction(
-                                annotation, scopewords, annotatedpositions, annotatedwords,  scopepositions)
+                                annotation, scopewords, annotatedpositions, annotatedwords, scopepositions)
                             metadata.append(newmeta)
             else:
                 if prevtoken is not None:
@@ -317,7 +323,7 @@ class CHAT_SimpleScopedRegex(CHAT_Regex):
 
 
 class CHAT_ComplexRegex(CHAT_Regex):
-    def __init__(self, regextuple, replacementtuple,  scoped, containswords=False):
+    def __init__(self, regextuple, replacementtuple, scoped, containswords=False):
         # 3 elements: begin mid end
         self.regexbegin = regextuple[0]
         self.regexmid = regextuple[1]               # 3 elements: begin mid end
@@ -372,22 +378,22 @@ class CHAT_ComplexRegex(CHAT_Regex):
                     newtokens += tobereplacedtokens
                     tobereplacedtokens = [token]
             elif state == scopestate:
-                scope = findscope(tokens[tokenctr-1:], offset=tokenctr-1)
+                scope = findscope(tokens[tokenctr - 1:], offset=tokenctr - 1)
                 if scope is None:
                     logger.error('No closing bracket found for < with pos={} in {}'.format(
-                        tokens[tokenctr-1].pos, show(tokens)))
+                        tokens[tokenctr - 1].pos, show(tokens)))
                     state = wstate
                 else:
                     (b, e) = scope
-                    tobereplacedtokens = todotokens[b:e+1]
+                    tobereplacedtokens = todotokens[b:e + 1]
                     state = wstate
                     inc = e - tokenctr + 1
             elif state == rfoundstate:
                 bbbe = findbrackets(
-                    todotokens[tokenctr-1:], bracketregexes, offset=tokenctr-1)
+                    todotokens[tokenctr - 1:], bracketregexes, offset=tokenctr - 1)
                 if bbbe is not None:
                     (bracketbegin, bracketend) = bbbe
-                    annotationtokens = todotokens[bracketbegin+1: bracketend]
+                    annotationtokens = todotokens[bracketbegin + 1: bracketend]
                     (cleanannotationtokens, innermetadata) = cleanCHILDEStokens.cleantokens(
                         annotationtokens, repkeep) if self.containswords else (annotationtokens, [])
                     metadata += innermetadata
@@ -401,20 +407,18 @@ class CHAT_ComplexRegex(CHAT_Regex):
                     newmeta = annotation.metadatafunction(
                         annotation, thevalue, annotatedpositions, annotatedwords, annotationpositions)
                     metadata.append(newmeta)
-                    if self.scopereplacement == keep:
-                        newtokens += [t for t in tobereplacedtokens if t.word not in ['<', '>']]
-                    elif self.scopereplacement == eps:
-                        pass
-                    else:
-                        logger.error('Unknown replacementtype: {} in {}'.format(
-                            self.scopereplacement), show(tokens))
+                    replacement = self.scopereplacement
+                    repltokens = [
+                        t for t in tobereplacedtokens if t.word not in ['<', '>']]
+                    newtokens = doreplacement(
+                        repltokens, replacement, newtokens)
                     if self.bracketreplacement == keep:
                         newtokens += cleanannotationtokens
                     elif self.bracketreplacement == eps:
                         pass
                     else:
                         logger.error('Unknown replacementtype: {} in {}'.format(
-                            self.scopereplacement), show(tokens))
+                            self.scopereplacement, show(tokens)))
                     tobereplacedtokens = []
                     inc = bracketend - bracketbegin
                 state = wstate
@@ -457,21 +461,20 @@ def dropbrackets(w):
     return result
 
 
-def simplemetafunction(f): return lambda ann, pos, w: Meta(
-    ann.name,  [f(w)],   annotatedposlist=[pos], annotatedwordlist=[w])
+def simplemetafunction(f):
+    return lambda ann, pos, w: Meta(ann.name, [f(w)], annotatedposlist=[pos], annotatedwordlist=[w])
 
 
-def simplescopedmetafunction(ann, annotationwordlist, annotatedposlist, annotatedwordlist, annotationposlist): return \
-    Meta(ann.name, annotationwordlist, annotationposlist=annotationposlist,
-         annotatedposlist=annotatedposlist, annotatedwordlist=annotatedwordlist)
+def simplescopedmetafunction(ann, annotationwordlist, annotatedposlist, annotatedwordlist, annotationposlist):
+    return Meta(ann.name, annotationwordlist, annotationposlist=annotationposlist, annotatedposlist=annotatedposlist, annotatedwordlist=annotatedwordlist)
 
 
-def complexmetafunction(ann, annotationwordlist, annotatedposlist, annotatedwordlist, annotationposlist): return \
-    Meta(ann.name, annotationwordlist, annotationposlist=annotationposlist,
-         annotatedwordlist=annotatedwordlist, annotatedposlist=annotatedposlist)
+def complexmetafunction(ann, annotationwordlist, annotatedposlist, annotatedwordlist, annotationposlist):
+    return Meta(ann.name, annotationwordlist, annotationposlist=annotationposlist, annotatedwordlist=annotatedwordlist, annotatedposlist=annotatedposlist)
 
 
-def epsf(w): return ''
+def epsf(w):
+    return ''
 
 
 interposedpat = r'^&\*(\w\w\w:[\w:]+)$'
@@ -508,11 +511,12 @@ def dropsubstr(w, s):
     else:
         ls = len(s)
         sindex = w.find(s)
-        result = w[:sindex] + w[sindex+ls:]
+        result = w[:sindex] + w[sindex + ls:]
     return result
 
 
-def dropchars(c): return lambda w: dropchars2(w, c)
+def dropchars(c):
+    return lambda w: dropchars2(w, c)
 
 
 def dropchars2(w, c):
@@ -522,22 +526,27 @@ def dropchars2(w, c):
 
 
 def CHAT_message(msg):
-    def result(x, y): return logger.warning(msg.format(x, y))
+    def result(x, y):
+        return logger.warning(msg.format(x, y))
     return result
 
 
 annotations = [
+    # overlap crucially before annotations taht delete things
+    CHAT_Annotation('Overlap Follows', '8.4:71', '10.3:74-75',
+                    CHAT_SimpleScopedRegex(r'\[\>[0-9]?\]', keep, True, monadic), simplescopedmetafunction),
+    # here additional things could be done
+    CHAT_Annotation('Overlap Precedes', '8.4:71-72', '10.3:75',
+                    CHAT_SimpleScopedRegex(r'\[\<[0-9]?\]', keep, True, monadic), simplescopedmetafunction),
     CHAT_Annotation('Special Form', '6.3:37', '8.3:43-44', CHAT_SimpleRegex(
-        specialformpat, getsfword,  False), simplemetafunction(getsfvalue)),
+        specialformpat, getsfword, False), simplemetafunction(getsfvalue)),
     CHAT_Annotation('Unintelligible Speech', '6.4:41', '8.4:47', CHAT_SimpleRegex(
         r'xxx', keep, False), simplemetafunction(epsf)),
     CHAT_Annotation('Phonological Coding', '6.4:41', '8.4:47', CHAT_SimpleRegex(
         r'yyy', keep, False), simplemetafunction(epsf)),
-    CHAT_Annotation('Untranscribed Material', '6.4:42',  '8.4:47', CHAT_SimpleRegex(
-        r'www', eps, False), simplemetafunction(epsf)),
     CHAT_Annotation('Noncompletion of a Word', '6.5:43', '8.5:48',
                     CHAT_InWordRegex(r'\(([\w\']*)\)', r'\1'), complexmetafunction),
-    CHAT_Annotation('Omitted Word', '6.5:43',  '8.5:48-49',
+    CHAT_Annotation('Omitted Word', '6.5:43', '8.5:48-49',
                     CHAT_SimpleRegex(r'0[\w:]+', dropzero, False), simplemetafunction(dropzero)),
     CHAT_Annotation('Satellite at End', '7.4:58', '9.2:59-60',
                     CHAT_SimpleRegex(r'\s„\s', eps, False), simplemetafunction(identity)),
@@ -553,11 +562,11 @@ annotations = [
                     CHAT_InWordRegex(u'\u02CC', ''), complexmetafunction),
     CHAT_Annotation('Lengthened Syllable', '7.7:59-60', '9.9:63',
                     CHAT_InWordRegex(r':', ''), complexmetafunction),
-    CHAT_Annotation('Blocking', '7.7:60', '9.9:64', CHAT_SimpleRegex(r'\^'+wordpat, dropinitial, False),
+    CHAT_Annotation('Blocking', '7.7:60', '9.9:64', CHAT_SimpleRegex(r'\^' + wordpat, dropinitial, False),
                     simplemetafunction(dropinitial)),  # this one must crucially precede Pause Between Syllables
     CHAT_Annotation('Pause Between Syllables', '7.7:60', '9.9:63-64',
                     CHAT_InWordRegex(r'\^', ''), complexmetafunction),
-    CHAT_Annotation('Simple Event', '7.8.1:60', '9.10.1:64-65', CHAT_SimpleRegex(r'&=\w+', eps, False),
+    CHAT_Annotation('Simple Event', '7.8.1:60', '9.10.1:64-65', CHAT_SimpleRegex(r'&=[\w:]+', eps, False),
                                     simplemetafunction(identity)),
     CHAT_Annotation('Complex Local Event', '7.8.2:61', '9.10.3:65', CHAT_ComplexRegex((r'\[\^\s', wordorpuncpat, r'\]'), (keep, eps), False),
                     complexmetafunction),
@@ -611,22 +620,31 @@ annotations = [
                     simplemetafunction(identity)),
     CHAT_Annotation('Other Completion', '7.10:66', '9.11:69-70', CHAT_SimpleRegex(r'\+\+', eps, False),
                     simplemetafunction(identity)),
-    CHAT_Annotation('Pic Bullet', '8.1:67', '10.1:71', CHAT_ComplexRegex((u'\u00b7' + r'%pic:', filenamepat,  u'\u00b7'), (keep, eps), True),
+
+    # erroR marking crucially before [/] [//] [///] etc
+    CHAT_Annotation('Error Marking', '8.5:75', '10.5:78', CHAT_SimpleScopedRegex(r'\[\*\]', keep, True, monadic),
+                    simplescopedmetafunction),
+    CHAT_Annotation('Error Marking', '8.5:75', '10.5:78',
+                    CHAT_ComplexRegex(
+                        (r'\[\*', r'[\w:\-\+=]+', r'\]'), (keep, eps), False),
+                    complexmetafunction),
+
+    CHAT_Annotation('Pic Bullet', '8.1:67', '10.1:71', CHAT_ComplexRegex((u'\u00b7' + r'%pic:', filenamepat, u'\u00b7'), (keep, eps), True),
                     complexmetafunction),  # pic bullet and text bullet must essentially before time alignment
-    CHAT_Annotation('Text Bullet', '8.1:67', '10.1:71', CHAT_ComplexRegex((u'\u00b7' + r'%txt:', filenamepat,  u'\u00b7'), (keep, eps), True),
+    CHAT_Annotation('Text Bullet', '8.1:67', '10.1:71', CHAT_ComplexRegex((u'\u00b7' + r'%txt:', filenamepat, u'\u00b7'), (keep, eps), True),
                     complexmetafunction),
     CHAT_Annotation('Time Alignment', '7.10:67', '10.1:71', CHAT_ComplexRegex((u'\u00b7', r'[0-9_]+', u'\u00b7'), (keep, eps), True),
                     complexmetafunction),
     CHAT_Annotation('Time Alignment', '7.10:67', '10.1:71', CHAT_ComplexRegex((u'\u0015', r'[0-9_]+', u'\u0015'), (keep, eps), True),
                     complexmetafunction),  # not an official code but it occurs as such in CLPF
-    CHAT_Annotation('Paralinguistic Material', '8.2:68', '10.1:72', CHAT_ComplexRegex((r'\[=!', r'[^\]]*', r'\]'), (keep, eps), True),
+    CHAT_Annotation('Paralinguistic Material', '8.2:68', '10.1:72', CHAT_ComplexRegex((r'\[=!', anybutrb, r'\]'), (keep, eps), True),
                     complexmetafunction),
     CHAT_Annotation('Stressing', '8.2:68', '10.1:72', CHAT_SimpleScopedRegex(r'\[!\]', keep, False, monadic),
                     simplescopedmetafunction),
     CHAT_Annotation('Contrastive Stressing', '8.2:68', '10.1:72', CHAT_SimpleScopedRegex(r'\[!!\]', keep, False, monadic),
                     simplescopedmetafunction),
     # Duration to be added here @@
-    CHAT_Annotation('Explanation', '8.3:69', '10.3:73', CHAT_ComplexRegex((r'\[=', wordorpuncpat, r'\]'), (keep, eps), False),
+    CHAT_Annotation('Explanation', '8.3:69', '10.3:73', CHAT_ComplexRegex((r'\[=', anybutrb, r'\]'), (keep, eps), False),
                     complexmetafunction),
     CHAT_Annotation('Replacement', '8.3:69', '10.3:73',
                     CHAT_ComplexRegex((r'\[:\s', r'([^\]]+)', r'\]'), (eps, keep), True, containswords=True), complexmetafunction),
@@ -635,36 +653,29 @@ annotations = [
     CHAT_Annotation('Alternative Transcription', '8.3:70', '10.3:74',
                     CHAT_ComplexRegex((r'\[=\?', r'([^\]]+)', r'\]'), (keep, eps), True), complexmetafunction),
     CHAT_Annotation('Dependent Tier on Main Line', '8.3:70', 'none',
-                    CHAT_ComplexRegex((r'\[%\w\w\w:', wordorpuncpat, r'\]'), (keep, eps), True), complexmetafunction),  # @@must do something with the speaker
+                    CHAT_ComplexRegex((r'\[%\w\w\w:', anybutrb, r'\]'), (keep, eps), True), complexmetafunction),  # @@must do something with the speaker
     CHAT_Annotation('Comment on Main Line', '8.3:70', '10.3:74',
-                    CHAT_ComplexRegex((r'\[%\s+', wordorpuncpat, r'\]'), (keep, eps), True), complexmetafunction),
+                    CHAT_ComplexRegex((r'\[%\s+', anybutrb, r'\]'), (keep, eps), True), complexmetafunction),
     CHAT_Annotation('Best Guess', '8.3:70-71', '10.3:74', CHAT_SimpleScopedRegex(
         r'\[\?\]', keep, True, monadic), simplescopedmetafunction),
-    CHAT_Annotation('Overlap Follows', '8.4:71', '10.3:74-75', CHAT_SimpleScopedRegex(
-        r'\[\>[0-9]?\]', keep, True, monadic), simplescopedmetafunction),  # here additional things could be done
-    CHAT_Annotation('Overlap Precedes', '8.4:71-72', '10.3:75', CHAT_SimpleScopedRegex(
-        r'\[\<[0-9]?\]', keep, True, monadic), simplescopedmetafunction),
     CHAT_Annotation('Repetition', '8.4:72', '10.4:75-76', CHAT_SimpleScopedRegex(
-        r'\[/\]', eps, True, dyadic), simplescopedmetafunction),
+        r'\[/\]', eps, True, monadic), simplescopedmetafunction),
     CHAT_Annotation('Multiple Repetition', '8.4:72-73', '10.4:76',
                     CHAT_ComplexRegex((r'\[x', r'[0-9]+', r'\]'), (keep, eps), True), complexmetafunction),
     CHAT_Annotation('Retracing', '8.4:73', '10.4:76-77', CHAT_SimpleScopedRegex(
-        r'\[//\]', eps, True, dyadic), simplescopedmetafunction),
+        r'\[//\]', eps, True, monadic), simplescopedmetafunction),
     CHAT_Annotation('Reformulation', '8.4:73-74', '10.4:77', CHAT_SimpleScopedRegex(
-        r'\[///\]', eps, True, dyadic), simplescopedmetafunction),
+        r'\[///\]', eps, True, monadic), simplescopedmetafunction),
     CHAT_Annotation('False Start Without Retracing', '8.4:74', '10.4:77', CHAT_SimpleScopedRegex(
         r'\[/\-\]', eps, True, dyadic), simplescopedmetafunction),
     CHAT_Annotation('Unclear Retracing Type', '8.4:74', '10.4:77', CHAT_SimpleScopedRegex(
-        r'\[/\?\]', keep, True, dyadic), simplescopedmetafunction),
-    # here add [e] @@ 10.4:77-78
+        r'\[/\?\]', keep, True, monadic), simplescopedmetafunction),
+    CHAT_Annotation('Excluded Material', '', '10.4:77-78', CHAT_SimpleScopedRegex(
+        r'\[e\]', eps, True, monadic), simplescopedmetafunction),
     CHAT_Annotation('Clause Delimiter', '8.4:74', '78', CHAT_SimpleRegex(
         r'\[\^c\]', eps, False), simplemetafunction(identity)),    # needs extension
     CHAT_Annotation('Interposed Word', '8.4:74', '9.10.2:65', CHAT_SimpleRegex(r'&\*\w\w\w:[\w:]+', eps, False),  # grouped metadata would come in handy here ID100 text speaker = XXX, ID100 text interposedword = hmm
                     simplemetafunction(interposedword)),
-    CHAT_Annotation('Error Marking', '8.5:75', '10.5:78', CHAT_SimpleScopedRegex(r'\[\*\]', eps, True, monadic),
-                    simplescopedmetafunction),
-    CHAT_Annotation('Error Marking', '8.5:75', '10.5:78', CHAT_ComplexRegex((r'\[\*', r'[\w:\-\+=]+', r'\]'), (keep, eps), False),
-                    complexmetafunction),
     CHAT_Annotation('Postcode', '8.6:75', '10.5:78', CHAT_ComplexRegex((r'\[\+\s+', wordpat, r'\]'), (keep, eps), False),
                     complexmetafunction),
     CHAT_Annotation('Language Precode', '8.6:75', '10.5:79', CHAT_ComplexRegex((r'\[\-\s+', wordpat, r'\]'), (keep, eps), False),
@@ -673,6 +684,8 @@ annotations = [
                     simplemetafunction(interposedword)),
     CHAT_Annotation('Included Utterance', '8.6:76', '10.5:79', CHAT_SimpleRegex(r'\[\+\s+trn\]', eps, False),
                     simplemetafunction(interposedword)),
+    CHAT_Annotation('Zero Utterance', '', '10.5:79, 11.1:81', CHAT_SimpleRegex(r'\b0\b', eps, False),
+                    simplemetafunction(identity)),
     CHAT_Annotation('Segment Repetition', '10:85,11:89', '13:91', CHAT_InWordRegex(
         u'\u21AB.*?\u21AB', ''), complexmetafunction),
     CHAT_Annotation('Joined Words', '6.6.4:46', '8.6.3:51', CHAT_InWordRegex(
@@ -682,6 +695,8 @@ annotations = [
     CHAT_Annotation('Blocked Segments', '10:85,11:89', '13:91', CHAT_InWordRegex(u'\u2260.*?\u2260', ''),
                     complexmetafunction),
     # these must be applied after [/], [//], [///] etc
+    CHAT_Annotation('Untranscribed Material', '6.4:42', '8.4:47', CHAT_SimpleRegex(r'www', eps, False),
+                    simplemetafunction(epsf)),
     CHAT_Annotation('Phonological Fragment', '6.4:42', '8.4:48',
                     CHAT_SimpleRegex(r'&' + wordpat, eps, False), simplemetafunction(identity)),
     CHAT_Annotation('Phonological Fragment', 'None', '8.4:48; https://talkbank.org/manuals/Clin-CLAN.pdf '
@@ -784,7 +799,7 @@ def get_CHATpatterns(annotations):
         elif isinstance(theregex, CHAT_SimpleScopedRegex):
             newpats = {theregex.regex}
         elif isinstance(theregex, CHAT_ComplexRegex):
-            newpats = {theregex.regexbegin,  theregex.regexend}
+            newpats = {theregex.regexbegin, theregex.regexend}
             openbrackets = openbrackets.union({theregex.compiledrebegin})
             closebrackets = closebrackets.union({theregex.compiledreend})
         elif isinstance(theregex, CHAT_InWordRegex):

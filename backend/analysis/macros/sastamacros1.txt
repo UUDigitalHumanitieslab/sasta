@@ -101,6 +101,13 @@ ASTA_detadjs = """
 
 """
 
+Tarsp_kijkeens = """
+(@cat="sv1" and @rel != "--" and
+    node[@pt="ww" and @lemma="kijken" and @rel="hd"  and @pvagr="ev" and @pvtijd="tgw" ] and
+    node[@lemma="eens" and @rel="mod" and @pt="bw"] and count(node)=2) 
+"""
+
+
  
  
  

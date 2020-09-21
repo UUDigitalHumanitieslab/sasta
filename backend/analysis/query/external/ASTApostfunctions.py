@@ -1,4 +1,5 @@
 from collections import Counter
+
 from .treebankfunctions import getattval
 
 lpad = 3
@@ -36,7 +37,7 @@ def finietheidsindex(allresults, _):
     if okpvcount + foutepvcount == 0:
         result = 0
     else:
-        result = okpvcount / (okpvcount+foutepvcount)
+        result = okpvcount / (okpvcount + foutepvcount)
     return result
 
 
@@ -66,3 +67,16 @@ def KMcount(allresults, _):
         allresults.coreresults['A020']) if 'A020' in allresults.coreresults else 0
     result = Kcount + Mcount
     return result
+
+
+def getlemmas(allresults, _):
+    allmatches = allresults.allmatches
+    allresults.postresults['A046'] = Counter()
+    for el in allmatches:
+        (qid, uttid) = el
+        if qid in ['A021', 'A018']:
+            for amatch in allmatches[el]:
+                # theword = normalizedword(amatch[0])
+                theword = getattval(amatch[0], 'lemma')
+                allresults.postresults['A046'].update([(theword, uttid)])
+    return allresults

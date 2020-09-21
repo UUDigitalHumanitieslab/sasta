@@ -178,16 +178,24 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, '.logs', 'sasta.log'),
             'formatter': 'standard'
+        },
+        'console': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
         }
     },
     'formatters': {
         'standard': {
             'format': '[%(asctime)s] %(levelname)s\t%(message)s'
-        }
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['django_debug_file', 'django_info_file', 'django_error_file'],
+            'handlers': ['django_debug_file', 'django_info_file', 'django_error_file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },

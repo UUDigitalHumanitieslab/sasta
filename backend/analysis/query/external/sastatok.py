@@ -1,5 +1,5 @@
-from .sastatoken import stringlist2tokenlist, tokenlist2stringlist
-from .CHAT_Annotation import CHAT_patterns, wordpat
+from .sastatoken import stringlist2tokenlist
+from .CHAT_Annotation import CHAT_patterns, wordpat, interpunction
 import re
 
 
@@ -17,14 +17,14 @@ def alts(pats, grouping=False):
     return result
 
 
-interpunction = r'[!\?\.,;]'  # add colon separated by spaces
-#word = r'[^!\?;\.\[\]<>\s]+'
+# interpunction = r'[!\?\.,;]'  # add colon separated by spaces
+# word = r'[^!\?;\.\[\]<>\s]+'
 word = wordpat
 scope = r'<.+?>'
 scopeorword = alts([scope, word])
 myrepetition = r'\[x\s*[0-9]+\s*\]'
-replacement = scopeorword+r'\s*\[:.+?\]'
-realwordreplacement = scopeorword+r'\s*\[::.+?\]'
+replacement = scopeorword + r'\s*\[:.+?\]'
+realwordreplacement = scopeorword + r'\s*\[::.+?\]'
 alternativetranscription = r'\[=\?.+?\]'
 # dependenttier # p. 71
 commentonmainline = r'\[%.+?\]'  # p. 71
@@ -32,23 +32,19 @@ commentonmainline = r'\[%.+?\]'  # p. 71
 bestguess = r'\[\?\]'
 # overlap follows p. 71
 # overlap precedes p. 71
-# p73 should actually cover the number of words inside the scope
-repetition = scopeorword+r'\s*\[/\]\s*'+word
-retracing = scopeorword+r'\s*\[//\]\s*'+word  # p73
+repetition = scopeorword + r'\s*\[/\]\s*' + word  # p73 should actually cover the number of words inside the scope
+retracing = scopeorword + r'\s*\[//\]\s*' + word  # p73
 whitespace = r'\s+'
 
 
-#sastaspecials = [r'\[::', r'\[=', r'\[:', r'\[=\?', r'\[x', r'\<', r'\>', r'\[\?\]', r'\[/\]', r'\[//\]', r'\[///\]', r'\[%', r'\]']
+# sastaspecials = [r'\[::', r'\[=', r'\[:', r'\[=\?', r'\[x', r'\<', r'\>', r'\[\?\]', r'\[/\]', r'\[//\]', r'\[///\]', r'\[%', r'\]']
 sastaspecials = list(CHAT_patterns)
-sastapatterns = sorted(sastaspecials, key=lambda x: len(
-    x), reverse=True) + [word, interpunction]
+sastapatterns = sorted(sastaspecials, key=lambda x: len(x), reverse=True) + [word, interpunction]
 fullsastapatterns = alts(sastapatterns)
 fullsastare = re.compile(fullsastapatterns)
 
-allpatterns = [realwordreplacement, replacement, myrepetition,
-               alternativetranscription, commentonmainline, bestguess, retracing]
-sortedallpatterns = sorted(allpatterns, key=lambda x: len(
-    x), reverse=True) + [word, interpunction]
+allpatterns = [realwordreplacement, replacement, myrepetition, alternativetranscription, commentonmainline, bestguess, retracing]
+sortedallpatterns = sorted(allpatterns, key=lambda x: len(x), reverse=True) + [word, interpunction]
 fullpattern = alts(sortedallpatterns)
 # print(fullpattern)
 fullre = re.compile(fullpattern)

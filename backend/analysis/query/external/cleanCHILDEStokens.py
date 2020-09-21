@@ -1,12 +1,11 @@
-import re
-from . import CHAT_Annotation
-from . import sastatok
-from .sastatoken import show
-from copy import copy, deepcopy
 import logging
+from copy import deepcopy
+from .sastatoken import show
+from . import sastatok
+from . import CHAT_Annotation
+import re
 
 logger = logging.getLogger('sasta')
-#from sastatok import sasta_tokenize
 
 hexformat = '\\u{0:04X}'
 
@@ -64,7 +63,7 @@ def clearnesting(intokens, repkeep):
             else:
                 (begin, end) = span
                 (midtokens, midmetadata) = cleantokens(
-                    tokens[begin+1:end], repkeep)
+                    tokens[begin + 1:end], repkeep)
                 newtokens += [tokens[tokenctr]] + midtokens + [tokens[end]]
                 metadata += midmetadata
                 tokenctr = end
@@ -94,7 +93,8 @@ def cleantext(utt, repkeep):
     # print(space.join(intokenstrings))
     (newtokens, metadata) = cleantokens(tokens, repkeep)
     resultwordlist = [t.word for t in newtokens]
-    resultstring = space.join(resultwordlist)
+    resultstring = smartjoin(resultwordlist)
+    # resultstring = space.join(resultwordlist)
     # @@adapt metadata @@todo
     resultmetadata = metadata
     return (resultstring, resultmetadata)
@@ -135,8 +135,7 @@ def removesuspects(str):
 robustnessrules = [(re.compile(r'\[\+bch\]'), '[+bch]', '[+ bch]', 'Missing space'),
                    (re.compile(r'\[\+trn\]'), '[+trn]',
                     '[+ trn]', 'Missing space'),
-                   (re.compile(r'\[:(?![:\s])'),
-                    '[:', '[: ', 'Missing space'),
+                   (re.compile(r'\[:(?![:\s])'), '[:', '[: ', 'Missing space'),
                    (re.compile(r'(?<=\w)\+\.\.\.'),
                     '+...', ' +...', 'Missing space')
                    ]
@@ -192,7 +191,7 @@ def test():
         (newtokens, metadata) = cleantext(teststr[i], repkeep)
         tokenstrings = [str(token) for token in newtokens]
         print(space.join(tokenstrings))
-        #mdstrs = [str(m) for m in metadata]
+        # mdstrs = [str(m) for m in metadata]
         # print(space.join(mdstrs))
         for m in metadata:
             print(str(m))
@@ -230,16 +229,16 @@ def testnesting():
                     print(el)
                 print('')
             if oe != None:
-                tokenctr = oe+1
+                tokenctr = oe + 1
             else:
                 tokenctr += 1
 
 
 def testfull():
-    repkeep = False
+    repkeep = True
     teststr = {}
     shorttestlist = ['·%pic: cat.jpg·', 'dit [/] dat', 'dit [/]', '[/] dat', '[?]', 'aap [?]', 'aap [?] mies',
-                     'dit [/] dit [/] dit',  '<dit duurt lang> ·0_1073·',  'mooi ·0_1073·', '·0_1073·',
+                     'dit [/] dit [/] dit', '<dit duurt lang> ·0_1073·', 'mooi ·0_1073·', '·0_1073·',
                      '↫b-b-b↫boy', 'ba↫na-na↫nana', 'This is a ba [/] \u02CCba:\u02C8na:^na [?]',
                      '[- eng] this is my juguete@s.',
                      r'een test < <begin eens> [/] opnieuw en dan < nog eens> [/] opnieuw > [/] opnieuw hoor !',
@@ -282,8 +281,29 @@ def testfull():
                       'Steven een boken@d [: boke@d] eten .']
     shorttestlist += ['ikke [/] (.) ikke <in s> [/] +...']
     shorttestlist += ['en [/] en <toen> [/] ↫t↫ toen hij gewonnen had toen <↫g↫ ging> [//] 	reed hij langs een tunnel waar de trein weer wegging . 36866_48162']
-    shorttestlist = [' ging &jiks [*] [//] Jiska even kijken ?',
-                     ' ging <&jiks [*]> [//] Jiska even kijken ?']
+    shorttestlist += [' ging &jiks [*] [//] Jiska even kijken ?',
+                      ' ging <&jiks [*]> [//] Jiska even kijken ?']
+    shorttestlist += ['<nu sij> [= nu zijn <we er>].']
+    shorttestlist += ['www [>] .']
+    shorttestlist += ['book [*] [/] boek', 'book [* p:r] [/] boek']
+    shorttestlist += ['&=crying [<] .']
+    shorttestlist += ['‹papier ,› heleboel papier . 53796_57231', '0 .']
+    shorttestlist += ['ikke [/] (.) ikke <in s> [/] +...', '0', '0.', 'ik 0doe iets', '0 [% kicks the ball] .',
+                      '&=imit:motor', ' boek[e]', 'boek [e]'  '<dit weg> [e] dit blijft',
+                      '\u2039dit niet\u203a dit wel', '\u2039 dit niet \u203a dit wel', 'ik ze:g: maar : dat is goed']
+    shorttestlist += ['ja , ik vind <dat zo leuk <dat het> [/]> [>] dat het blijft staan .',
+                      '<even on [/] > [<] onderbroek aan .']
+    shorttestlist += ['wat is die [>] [//] +/.']
+    shorttestlist += ['<is dit> [?] [//] <die is> [//] eh deze voor (.) voor Paulien .',
+                      'op die deur <heeft alles> [!] [//] heeft Daan gemaakt , wat op de deur hangt .',
+                      'hier< zo> [?] [/] zo moet ie .', 'ris [=? er is] [/] ris ie niet Koekiemonster ris ris .',
+                      '&=hug:Rosa wat is er , moet jij naar bed ?',
+                      '+, i i ik &jijk &jijk [/] <ik ook ə> [//] <ik ə> [/] <ik ə> [//] ik ook hebben <ook hebben> [//] <ik ə ook> [//] +/.']
+    shorttestlist += ['<<dit die> [/] <dit die> [/]> [<] die [/] die [//] ditte pepot ?',
+                      '<en de [//]> [<] en nog stoomboot <is dit> [>] .', 'rust [!] [//] Daan [>] .',
+                      'en dan gaat lekker het eendje gaat +..?']
+    shorttestlist = [
+        'maar [/] maar <de &+b> [/] de bus was kapot . 26393_29792']
     testlist = shorttestlist
     i = 0
     for el in testlist:
@@ -303,6 +323,24 @@ def testfull():
         for m in metadata:
             print(str(m))
         print('')
+
+
+def ispunctuation(wrd):
+    result = wrd in '.?!;,!<>'
+    return result
+
+
+def smartjoin(strings):
+    result = ''
+    lstrings = len(strings)
+    if lstrings > 0:
+        for i in range(lstrings - 1):
+            if ispunctuation(strings[i + 1]):
+                result += strings[i]
+            else:
+                result += strings[i] + space
+        result += strings[lstrings - 1]
+    return result
 
 
 def testchat():

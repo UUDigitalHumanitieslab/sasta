@@ -1,10 +1,11 @@
-import os
 import csv
-# import logging
+import logging
+import os
 from collections import defaultdict
+
 from .treebankfunctions import getattval
 
-
+logger = logging.getLogger('sasta')
 underscore = "_"
 FlatClass = 0
 HeadDiaNew = 1
@@ -16,7 +17,6 @@ Headers[HeadDiaNew] = "HeadDiaNew"
 Headers[Class] = "Class"
 
 comma = ","
-# programfolder = r'.'
 programfolder = os.path.dirname(os.path.abspath(__file__))
 dictfilename = os.path.join(
     programfolder, 'compoundfiles', 'Ncompounds-attempt2.txt')
@@ -40,7 +40,7 @@ def nested_dict(n, type):
     if n == 1:
         return defaultdict(type)
     else:
-        return defaultdict(lambda: nested_dict(n-1, type))
+        return defaultdict(lambda: nested_dict(n - 1, type))
 
 
 def iscompound(str):
@@ -56,17 +56,8 @@ myquotechar = ''
 
 compounds = nested_dict(2, str)
 
-# logging.info("Initializing compound module...")
+logger.info("Initializing compound module...")
 myreader = csv.reader(dictfile, delimiter=mysep)
 for row in myreader:
     compounds[row[HeadDiaNew]][FlatClass] = row[FlatClass]
     compounds[row[HeadDiaNew]][Class] = row[Class]
-
-
-def test():
-    while True:
-        word = input("Give a word:")
-        if iscompound(word):
-            print("{} is a compound".format(word))
-        else:
-            print("{} is  NOT a compound".format(word))
