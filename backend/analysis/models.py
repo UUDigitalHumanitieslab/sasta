@@ -134,6 +134,9 @@ class MethodCategory(models.Model):
         except KeyError:
             return None
 
+    def has_form(self):
+        return True if self.get_form_function() else False
+
 
 class AssessmentMethod(models.Model):
     def upload_path(self, filename):

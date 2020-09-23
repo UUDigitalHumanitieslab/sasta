@@ -80,13 +80,15 @@
                     <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
                         [ngClass]="{'is-loading': querying}">Query</button>
                 </div>
+                <div class="divider is-vertical">or</div>
                 <div class="control">
                     <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
                         [ngClass]="{'is-loading': querying}">Annotate</button>
                 </div>
+                <div class="divider is-vertical">or</div>
                 <div class="control">
-                    <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='generateForm'"
-                        [ngClass]="{'is-loading': querying}">Generate form</button>
+                    <button class="button is-primary" [disabled]="!currentTam || !currentTam?.category.has_form"
+                        (click)="queryAction='generateForm'" [ngClass]="{'is-loading': querying}">Generate form</button>
                 </div>
             </div>
         </form>
