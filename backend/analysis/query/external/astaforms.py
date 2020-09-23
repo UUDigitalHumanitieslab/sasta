@@ -2,6 +2,7 @@ import xlsxwriter
 import os
 from collections import defaultdict, Counter
 from .treebankfunctions import getattval
+from io import BytesIO
 
 green = '#00FF00'
 red = '#FF0000'
@@ -301,7 +302,7 @@ def resultdict2table(resultdict):
         foutepvs = dictget(uttid_dict, 'foutepvs')
         bijzincount = dictget(uttid_dict, 'bijzincount')
         remarks = dictget(uttid_dict, 'remarks')
-        paddeduttid = uttid.rjust(3, '0')
+        paddeduttid = str(uttid).rjust(3, '0')
         newrow = [paddeduttid, wc, correct,
                   okpvs, foutepvs, bijzincount, remarks]
         table.append(newrow)
@@ -348,10 +349,11 @@ def astaform(allresults, _):
     uttlist = getuttlist(allresults)
     astadata = AstaFormData(noundict, verbdict, vardict, uttlist)
     theform = ExcelForm(tabel, scores)
-    formfilename = getformfilename(allresults.filename)
-    theworkbook = make_astaform(theform, astadata, formfilename)
+    # formfilename = getformfilename(allresults.filename)
+    output = BytesIO()
+    theworkbook = make_astaform(theform, astadata, output)
     theworkbook.close()
-    return(defaultdict())
+    return output
 
 
 def test():

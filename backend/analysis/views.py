@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
 
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
@@ -60,10 +61,36 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
         allresults, queries_with_funcs = query_transcript(
-            transcript, method, True, zc_embed, only_inform)
+            transcript, method, True, zc_embed, only_inform
+        )
 
         spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
         spreadsheet.save(response)
+
+        return response
+
+    @action(detail=True, methods=['POST'], name='Generate form')
+    def generateform(self, request, *args, **kwargs):
+        transcript = self.get_object()
+        method_id = request.data.get('method')
+        method = AssessmentMethod.objects.get(pk=method_id)
+        zc_embed = method.category.zc_embeddings
+
+        # Find the form function for this method
+        form_func = method.category.get_form_function()
+        if not form_func:
+            raise ParseError(detail='No form definition for this method.')
+
+        allresults, _ = query_transcript(
+            transcript, method, False, zc_embed, False
+        )
+
+        form = form_func(allresults, None)
+        form.seek(0)
+        response = HttpResponse(
+            form,
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f"attachment; filename={transcript.name}_{method.category.name}_form.xlsx"
 
         return response
 

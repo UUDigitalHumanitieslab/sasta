@@ -4,7 +4,7 @@ import re
 import os
 from collections import Counter
 from .counterfunctions import counter2liststr
-
+from io import BytesIO
 
 tarspmethodfilename = r'D:\jodijk\Dropbox\jodijk\Utrecht\Projects\CLARIAH CORE\WP3\VKL\tarspdata\TARSP Index Current.xlsx'
 
@@ -83,8 +83,11 @@ def val2str(aval):
 def mktarspform(allresults, _):
     global basesheet
     (base, ext) = os.path.splitext(allresults.filename)
-    outfullname = base + '_TARSP-Form' + xlsxext
-    workbook = xlsxwriter.Workbook(outfullname, {"strings_to_numbers": True})
+    # outfullname = base + '_TARSP-Form' + xlsxext
+    # workbook = xlsxwriter.Workbook(outfullname, {"strings_to_numbers": True})
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(
+        output, options={"strings_to_numbers": True})
     worksheet = workbook.add_worksheet()
 
     for (rowctr, colctr) in basesheet:
@@ -126,6 +129,7 @@ def mktarspform(allresults, _):
     worksheet.hide_gridlines(0)  # do not hide gridlines
 
     workbook.close()
+    return output
 
 
 def test():
