@@ -6,8 +6,6 @@ from collections import Counter
 from .counterfunctions import counter2liststr
 from io import BytesIO
 
-tarspmethodfilename = r'D:\jodijk\Dropbox\jodijk\Utrecht\Projects\CLARIAH CORE\WP3\VKL\tarspdata\TARSP Index Current.xlsx'
-
 ordA = ord('A')
 comma = ','
 xlsxext = '.xlsx'
