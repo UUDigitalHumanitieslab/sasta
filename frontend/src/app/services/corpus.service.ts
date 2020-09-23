@@ -36,6 +36,12 @@ export class CorpusService {
     return this.httpClient.post(`api/transcripts/${transcriptID}/annotate/`, formData, { observe: 'response', responseType: 'blob' });
   }
 
+  generate_form_transcript(transcriptID, methodID): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('method', methodID);
+    return this.httpClient.post(`api/transcripts/${transcriptID}/generateform/`, formData, { observe: 'response', responseType: 'blob' });
+  }
+
   convert_all(id): Observable<Corpus> {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/convert_all/`);
   }

@@ -41,7 +41,7 @@ export class CorpusComponent implements OnInit {
 
   displayScore = false;
   currentTranscript: Transcript;
-  queryAction: 'annotate' | 'query';
+  queryAction: 'annotate' | 'query' | 'generateForm';
   onlyInform = true;
   querying = false;
 
@@ -105,12 +105,20 @@ export class CorpusComponent implements OnInit {
   }
 
   performQuerying(transcript: Transcript, method: Method) {
-    if (this.queryAction === 'annotate') {
-      this.annotateTranscript(transcript, method);
+    switch (this.queryAction) {
+      case 'annotate':
+        this.annotateTranscript(transcript, method);
+        break;
+      case 'query':
+        this.queryTranscript(transcript, method);
+        break;
+      case 'generateForm':
+        this.generateFormTranscript(transcript, method);
+        break;
+      default:
+        break;
     }
-    if (this.queryAction === 'query') {
-      this.queryTranscript(transcript, method);
-    }
+
   }
 
   annotateTranscript(transcript: Transcript, method: Method) {
@@ -144,6 +152,23 @@ export class CorpusComponent implements OnInit {
         err => {
           console.log(err);
           this.messageService.add({ severity: 'error', summary: 'Error querying', detail: err.message, sticky: true });
+          this.querying = false;
+        });
+  }
+
+  generateFormTranscript(transcript: Transcript, method: Method) {
+    this.querying = true;
+    this.corpusService
+      .query_transcript(transcript.id, method.id)
+      .subscribe(
+        response => {
+          this.downloadFile(response.body, `${transcript.name}_${method.category.name}_form.xlsx`);
+          this.messageService.add({ severity: 'success', summary: 'Generated form', detail: '' });
+          this.querying = false;
+        },
+        err => {
+          console.log(err);
+          this.messageService.add({ severity: 'error', summary: 'Error generating form', detail: err.message, sticky: true });
           this.querying = false;
         });
   }
