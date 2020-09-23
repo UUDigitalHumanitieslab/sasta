@@ -40,7 +40,7 @@
                 </td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
-                        <button class="button is-primary" pTooltip="score transcript"
+                        <button class="button is-primary" pTooltip="query transcript"
                             [disabled]="!(transcript.status=='parsed')" (click)="showDialog(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faCalculator"></fa-icon>
@@ -71,18 +71,26 @@
                     </p-dropdown>
                 </div>
             </div>
-            <div class="field">
-                <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">
-                </p-checkbox>
-            </div>
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
                         [ngClass]="{'is-loading': querying}">Query</button>
                 </div>
+                <div class="divider is-vertical">or</div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
+                            [ngClass]="{'is-loading': querying}">Annotate</button>
+                    </div>
+                    <div class="control">
+                        <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">
+                        </p-checkbox>
+                    </div>
+                </div>
+                <div class="divider is-vertical">or</div>
                 <div class="control">
-                    <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
-                        [ngClass]="{'is-loading': querying}">Annotate</button>
+                    <button class="button is-primary" [disabled]="!currentTam || !currentTam?.category.has_form"
+                        (click)="queryAction='generateForm'" [ngClass]="{'is-loading': querying}">Generate form</button>
                 </div>
             </div>
         </form>

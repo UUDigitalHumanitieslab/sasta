@@ -14,8 +14,8 @@ from .external.TARSPpostfunctions import (gofase, gtotaal, pf, pf2, pf3, pf4,
 from .external.TARSPscreening import tarsp_screening
 from .external.xenx import xenx
 
-# from .external.astaforms import astaform
-# from .external.tarspform import mktarspform
+from .external.astaforms import astaform
+from .external.tarspform import mktarspform
 
 normalfunctionpattern = r'<function\s+(\w+)\b'
 builtinfunctionpattern = r'<built-in function\s+(\w+)\b'
@@ -49,7 +49,6 @@ thestapfunctions = [BB_totaal, GLVU, GL5LVU]
 theastafunctions = [samplesize, mlux, neologisme, onvolledig, correct,
                     wordcountperutt, countwordsandcutoff, KMcount, finietheidsindex, getlemmas]
 
-# thefunctions = thetarspfunctions + thestapfunctions + theastafunctions
 thefunctions = theastafunctions + thetarspfunctions + thestapfunctions
 
 str2functionmap = {}
@@ -57,3 +56,8 @@ str2functionmap = {}
 for f in thefunctions:
     fname = getfname(f)
     str2functionmap[fname] = f
+
+form_map = {
+    'TARSP': mktarspform,
+    'ASTA': astaform
+}

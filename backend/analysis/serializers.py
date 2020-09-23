@@ -52,9 +52,11 @@ class AssessmentQuerySerializer(serializers.ModelSerializer):
 
 
 class MethodCategorySerializer(serializers.ModelSerializer):
+    has_form = serializers.BooleanField()
+
     class Meta:
         model = MethodCategory
-        fields = '__all__'
+        fields = ('id', 'name', 'zc_embeddings', 'levels', 'has_form')
 
 
 class AssessmentMethodSerializer(serializers.ModelSerializer):

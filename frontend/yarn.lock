@@ -858,6 +858,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@creativebulma/bulma-divider@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@creativebulma/bulma-divider/-/bulma-divider-1.1.0.tgz#fb0c3527efc5b8d7b1ac52cd065e9f8c57b5a8bc"
+  integrity sha512-Lx5MlUhgAnTF+wNZ5LXcaE1K0F2m0Pkwte1p08FBsIyRV6Oq7BuKPk/O9XJPcF+vR6BjCxNy/hjYFXtNmoXbNg==
+
 "@fortawesome/angular-fontawesome@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.5.0.tgz#5dbc01714b4af45a2ecb8dd63a6f8b462a8337e1"
