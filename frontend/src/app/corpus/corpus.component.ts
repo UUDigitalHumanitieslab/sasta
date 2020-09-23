@@ -134,7 +134,7 @@ export class CorpusComponent implements OnInit {
   queryTranscript(transcript: Transcript, method: Method) {
     this.querying = true;
     this.corpusService
-      .score_transcript(transcript.id, method.id)
+      .query_transcript(transcript.id, method.id)
       .subscribe(
         response => {
           this.downloadFile(response.body, `${transcript.name}_matches.xlsx`);

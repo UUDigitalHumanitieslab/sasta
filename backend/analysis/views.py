@@ -30,7 +30,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     serializer_class = TranscriptSerializer
 
     @action(detail=True, methods=['POST'], name='Score transcript')
-    def score(self, request, *args, **kwargs):
+    def query(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_id = request.data.get('method')
         method = AssessmentMethod.objects.get(pk=method_id)
@@ -61,8 +61,6 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         allresults, queries_with_funcs = query_transcript(
             transcript, method, True, zc_embed, only_inform)
-
-        print(allresults)
 
         spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
         spreadsheet.save(response)

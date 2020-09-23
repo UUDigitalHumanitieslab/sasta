@@ -12,6 +12,8 @@ from django.db import models
 from .utils import get_items_list
 from lxml import etree as ET
 
+from analysis.query.external_functions import form_map
+
 logger = logging.getLogger('sasta')
 
 
@@ -125,6 +127,12 @@ class MethodCategory(models.Model):
 
     class Meta:
         verbose_name_plural = 'method categories'
+
+    def get_form_function(self):
+        try:
+            return form_map.get(self.name)
+        except KeyError:
+            return None
 
 
 class AssessmentMethod(models.Model):
