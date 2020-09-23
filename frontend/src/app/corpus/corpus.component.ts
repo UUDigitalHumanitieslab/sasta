@@ -159,7 +159,7 @@ export class CorpusComponent implements OnInit {
   generateFormTranscript(transcript: Transcript, method: Method) {
     this.querying = true;
     this.corpusService
-      .query_transcript(transcript.id, method.id)
+      .generate_form_transcript(transcript.id, method.id)
       .subscribe(
         response => {
           this.downloadFile(response.body, `${transcript.name}_${method.category.name}_form.xlsx`);
