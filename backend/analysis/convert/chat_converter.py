@@ -62,7 +62,7 @@ def fill_places_persons(string):
 
     except Exception as e:
         logger.exception(e)
-        print('error in fill_places_persons:\t', string,  e)
+        print('error in fill_places_persons:\t', string, e)
         return string
 
 
@@ -112,7 +112,7 @@ class Utterance:
 
     def __str__(self):
         return f'*{self.speaker_code}:\t{self.text}' + \
-            ('\n'+str(Tier('xsid', self.utt_id)) if self.utt_id else '')
+            ('\n' + str(Tier('xsid', self.utt_id)) if self.utt_id else '')
 
 
 class Tier:
@@ -192,6 +192,8 @@ class SifReader:
         self.meta_comments: List[MetaComment] = []
         self.title: Union[str, None] = None
 
+        self.target_utt_ids: bool = False
+
         self.read()
         self.parse_metadata()
 
@@ -212,23 +214,34 @@ class SifReader:
         single_speaker_pattern = r'^##TARGET\sSPEAKER(?:S)?\s=\s([A-Z]{3})$'
         # no groups
         target_uttids_pattern = r'^##TARGET\sUTTIDS$'
+        # no groups
+        comment_pattern = r'^%(?!\w{3,4}:).*$'
+        # no groups
+        empty_pattern = r'^\s*$'
 
-        return [re.compile(p) for p in [
-            meta_pattern, utterance_pattern,
-            tier_pattern, single_speaker_pattern,
-            target_uttids_pattern]]
+        patterns = {
+            'meta': (re.compile(meta_pattern), self.handle_meta),
+            'utt': (re.compile(utterance_pattern), self.handle_utterance),
+            'tier': (re.compile(tier_pattern), self.handle_tier),
+            'tgt_spk': (re.compile(single_speaker_pattern),
+                        self.handle_target_speaker),
+            'tgt_uttid': (re.compile(target_uttids_pattern),
+                          self.handle_target_uttids),
+            'comment': (re.compile(comment_pattern), self.handle_comment),
+            'empty': (re.compile(empty_pattern), self.handle_empty),
+        }
+
+        return patterns
 
     @property
     def utterances(self):
         return [c for c in self.content if isinstance(c, Utterance)]
 
-    def parse_utterance(self, utterance):
-        utt_id, code, text = utterance
-        known_participant_codes = [p.code for p in self.participants]
-        if code not in known_participant_codes:
-            self.participants.append(Participant(code))
-        if text != '':
-            self.content.append(Utterance(code, text, utt_id))
+    def any_pattern_match(self, string: str) -> bool:
+        for ptn, _ in self.patterns.values():
+            if re.match(ptn, string):
+                return True
+        return False
 
     def find_target(self):
         ''' If no target speaker was defined,
@@ -242,8 +255,8 @@ class SifReader:
                 'CHAT-Converter:\tSet target speaker from numbered utterance')
             first_code = numbered_utts[0].speaker_code
             return next(
-                (spk for spk in self.participants if spk.code == first_code),
-                None)
+                (spk for spk in self.participants
+                 if spk.code == first_code), None)
         logger.info(
             'CHAT-Converter:\tNo numbered utterances, target speaker = first')
         return next((spk for spk in self.participants), None)
@@ -274,35 +287,73 @@ class SifReader:
     def read(self):
         logger.info(
             f'CHAT-Converter:\treading {os.path.basename(self.file_path)}')
-        with open(self.file_path, 'r') as file:
-            file_lines = file.readlines()
-            for line in list(file_lines):
-                line = fill_places_persons(line)
-                [meta, utt, tier, single_spk, tar_uttids] = [match_pattern(
-                    pattern, line) for pattern in self.patterns]
-                if meta:
-                    if meta[1] in AGE_FIELD_NAMES or \
-                            meta[1] in SEX_FIELD_NAMES:
-                        self.metadata.append(
-                            MetaValue(*meta))
-                    elif meta[1] in TITLE_FIELD_NAMES:
-                        self.title = meta[2]
-                        # TODO: does CHAT have a place for title??
-                        self.meta_comments.append(MetaComment(*meta))
-                    else:
-                        self.meta_comments.append(MetaComment(*meta))
-                elif utt:
-                    self.parse_utterance(utt)
-                elif tier:
-                    self.content.append(Tier(*tier))
-                elif single_spk:
-                    self.participants.append(Participant(
-                        *single_spk, target_speaker=True))
-                elif tar_uttids:
-                    for line in list(file_lines):
-                        find_utt = re.match(
-                            r'^\S+\s*\|.*?\*?([A-Z*]{3}):\s*.*$', line)
-                        if find_utt:
-                            self.participants.append(Participant(
-                                *find_utt.groups(), target_speaker=True))
+        with open(self.file_path, 'r') as f:
+            filled_lines = [fill_places_persons(li) for li in f.readlines()]
+            concatenated_lines = self.concatenate_multiline_utterances(
+                filled_lines)
+            for line in concatenated_lines:
+                self.line_handler(line)
+
+    def concatenate_multiline_utterances(self, lines: List[str]):
+        results = []
+        skiplines = set([])
+
+        for i, line in enumerate(lines):
+            if i not in skiplines:
+                if match_pattern(self.patterns['utt'][0], line):
+                    results.append(line)
+                    for j, nextline in enumerate(lines[i + 1:]):
+                        if not self.any_pattern_match(nextline):
+                            k = i + j + 1  # real index of nextline
+                            skiplines.add(k)
+                            results[-1] = results[-1].replace(
+                                '\n', '') + nextline
+                        else:
                             break
+                else:
+                    results.append(line)
+        return results
+
+    def line_handler(self, line):
+        for _key, (pattern, handler) in self.patterns.items():
+            match = re.match(pattern, line)
+            if match:
+                handler(match)
+                break
+
+    def handle_utterance(self, match):
+        utt_id, code, text = match.groups()
+        known_participant_codes = [p.code for p in self.participants]
+        if code not in known_participant_codes:
+            self.participants.append(Participant(code))
+        if text != '':
+            self.content.append(Utterance(code, text, utt_id))
+
+    def handle_meta(self, match):
+        groups = match.groups()
+        if groups[1] in AGE_FIELD_NAMES or groups[1] in SEX_FIELD_NAMES:
+            self.metadata.append(MetaValue(*groups))
+        elif groups[1] in TITLE_FIELD_NAMES:
+            self.title = groups[2]
+            # TODO: does CHAT have a place for title??
+            self.meta_comments.append(MetaComment(*groups))
+        else:
+            self.meta_comments.append(MetaComment(*groups))
+
+    def handle_tier(self, match):
+        tier = match.groups()
+        self.content.append(Tier(*tier))
+
+    def handle_target_speaker(self, match):
+        self.participants.append(
+            Participant(*match.groups(), target_speaker=True)
+        )
+
+    def handle_target_uttids(self, match):
+        self.target_utt_ids = True
+
+    def handle_comment(self, match):
+        pass
+
+    def handle_empty(self, match):
+        pass
