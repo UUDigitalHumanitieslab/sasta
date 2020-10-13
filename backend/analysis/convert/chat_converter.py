@@ -66,9 +66,6 @@ def fill_places_persons(string):
         return string
 
 
-
-
-
 class Participant:
     def __init__(self, code: str,
                  age: Optional[str] = None, sex: Optional[str] = None,
@@ -226,20 +223,15 @@ class SifReader:
             'meta': (re.compile(meta_pattern), self.handle_meta),
             'utt': (re.compile(utterance_pattern), self.handle_utterance),
             'tier': (re.compile(tier_pattern), self.handle_tier),
-            'tgt_spk': (re.compile(single_speaker_pattern), self.handle_target_speaker),
-            'tgt_uttid': (re.compile(target_uttids_pattern), self.handle_target_uttids),
+            'tgt_spk': (re.compile(single_speaker_pattern),
+                        self.handle_target_speaker),
+            'tgt_uttid': (re.compile(target_uttids_pattern),
+                          self.handle_target_uttids),
             'comment': (re.compile(comment_pattern), self.handle_comment),
             'empty': (re.compile(empty_pattern), self.handle_empty),
         }
 
-        # return SimpleNamespace(**patterns)
         return patterns
-
-        # return [re.compile(p) for p in [
-        #     meta_pattern, utterance_pattern,
-        #     tier_pattern, single_speaker_pattern,
-        #     target_uttids_pattern, comment_pattern,
-        #     empty_pattern]]
 
     @property
     def utterances(self):
@@ -263,7 +255,8 @@ class SifReader:
                 'CHAT-Converter:\tSet target speaker from numbered utterance')
             first_code = numbered_utts[0].speaker_code
             return next(
-                (spk for spk in self.participants if spk.code == first_code), None)
+                (spk for spk in self.participants
+                 if spk.code == first_code), None)
         logger.info(
             'CHAT-Converter:\tNo numbered utterances, target speaker = first')
         return next((spk for spk in self.participants), None)
