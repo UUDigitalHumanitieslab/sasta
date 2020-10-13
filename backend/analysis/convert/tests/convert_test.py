@@ -1,11 +1,17 @@
-import filecmp
 import os.path as op
-from os import remove
+import os
 
-from analysis.utils import docx_to_txt
-from analysis.convert.chat_converter import SifReader, Utterance, fill_places_persons
+# from analysis.utils import docx_to_txt
+from analysis.convert.chat_converter import SifReader, fill_places_persons
 
 HERE = op.dirname(op.abspath(__file__))
+
+
+def test_chat_basic(testfiles):
+    doc = SifReader(testfiles.STAP_02).document
+    doc.write_chat(op.join(HERE, 'output.cha'))
+    # os.remove(op.join(HERE, 'output.cha'))
+    assert False
 
 
 def test_docx_convert():

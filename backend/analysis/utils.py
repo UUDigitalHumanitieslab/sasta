@@ -139,8 +139,7 @@ def docx_to_txt(filepath, delete_docx=True):
         return txt_path
     except Exception as error:
         logger.error('DOC2TXT:\tconverting failed')
-        logger.error(error)
-        print('error in docx_to_txt:\t', error)
+        logger.exception(error)
 
 
 def getprocess(process):

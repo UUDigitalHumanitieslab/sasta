@@ -1,0 +1,264 @@
+%SASTA
+%Transcript in Word / STAP_02
+
+##META text title = STAP_02
+##META text gender = Jongen
+##META text age = 5;8
+
+1 | CHI:	dees NAAM. 
+%com:	KIND wijst op moeders eerste vinger waarbij ze een andere naam noemde.
+*MOT:	nee dat was &uh Ryder. 
+*MOT:	dan heb je ze.
+*MOT:	en wat doen ze? 
+*CHI:	ieduleen [: iedereen] lettu [: redden].
+*MOT:	iedereen redden.
+*INV:	iedereen redden. 
+*INV:	&oh dus ze gaan iedereen redden.
+*INV:	bijvoorbeeld als je met je auto zo in een gat gevallen bent.
+%com:	KIND knikt en zwijgt.
+*INV:	ja?
+*INV:	en hoe gaat dat dan? 
+%com:	KIND zwijgt en lijkt geblokkeerd.
+*MOT:	wie gaan ze dan redden? 
+*MOT:	hoe gaan ze het redden?
+%com:	KIND zwijgt en lijkt geblokkeerd.
+*INV:	ik denk dat je gewoon kan opbellen. 
+*INV:	hallo Pol Patrol je moet me redden! 
+*INV:	zo?
+%com:	KIND blijft zwijgen.
+*MOT:	gaat het zo?
+%com:	KIND zwijgt en glimlacht een beetje. Vervolgens lacht hij en knikt. 
+*INV:	ja?
+*MOT:	en wat doet Ryder dan?
+*MOT:	waar gaat tie heen?
+*CHI:	in de uitkijktoolu [: uitkijktoren]. 
+*INV:	gaat tie in de uitkijktoren ja.
+*MOT:	en dan?
+%com:	KIND kijkt weg, kijkt M even aan en kijkt dan weer weg. Hij zwijgt en wacht.
+*MOT:	gaat tie dan vertellen wat ze moeten doen. 
+%com:	KIND knikt.
+*MOT:	maar aan wie?
+*CHI:	aan de pups. 
+*INV:	aan de pups &oh.
+*INV:	ziet tie dan?
+*CHI:	wie mee moet. 
+*INV:	wie mee moet oke.
+*MOT:	ja want dat heb je nog niet uitgelegd.
+*MOT:	want wat is Rubble?
+*MOT:	wat is dat voor pup? 
+2 | CHI:	die doe saafu [: graven]. 
+%com:	laterale s.
+*MOT:	die doet graven. 
+*INV:	&oh.
+*MOT:	dan heb je Zoemba.
+*MOT:	wat doet die?
+3 | CHI:	die si o fatta. 
+*MOT:	wat?
+4 | CHI:	die si o(p) wate(r). 
+*MOT:	die zit op het water inderdaad. 
+*MOT:	en dan heb je Sky.
+*CHI:	Kaai.
+5 | CHI:	die doe siesu [: vliegen].  
+*MOT:	die doet vliegen.
+*MOT:	BROER.
+*CHI:	NAAM.
+6 | CHI:	die doe &uh net doen [/] &uhm doen. 
+7 | CHI:	en hee(l) ha(r)d plaatu.  
+*INV:	en hard blaffen?
+*CHI:	ha(r)d praten.
+*MOT:	hard praten.
+*INV:	&oh.
+*MOT:	maar wat is BROER? 
+8 | CHI:	en hij (s)tuk is van een dier.  
+9 | CHI:	toen kan de rest thuis blijven.  
+10 | *CHI:	dan dee de marshmellow om de stok.
+11 | CHI:	toch dan gun [: ging] <leen> [//] (a)leen wind.
+12 | CHI:	jawel dan gin(g) de wind niet uitblazen.
+13 | CHI:	&nou <an> [//] mij(n) broer heet PE.
+14 | CHI:	ik noem som(s) Tony Too.
+15 | CHI:	nee dat is nu weer KIND.
+16 | CHI:	en dan moesten we precies.
+17 | CHI:	die is witte [: wit].
+18 | CHI:	dan dee ik deze niet aan.
+19 | CHI:	dat dee ik niet.
+20 | CHI:	ik ha ook nog mij duim bloed.
+21 | CHI:	nu is al weg.
+22 | CHI:	dan dee [: was] heel veel bloed. 
+23 | CHI:	dan [: toen] ik klaar was dan [: toen] ging [: gingen] we naar oma.
+24 | CHI:	<ik heb> [//] wij heb [: hebben] ook <Ca> [//] thuis Ca(r)s speeloet [: speelgoed]. 
+*INV:	echt waar?
+%com:	KIND knikt.
+*INV:	wat heb je dan allemaal voor speelgoed?
+*CHI:	een lamp fan Cwa(r)s [: Cars].
+*INV:	&oh kan je daarmee spelen met de lamp?
+%com:	KIND knikt.
+25 | CHI:	dan heb ook wielen. 
+*INV:	&oh dat is grappig!
+*INV:	een lamp met wielen?
+%com:	KIND knikt.
+*INV:	&oh wat leuk.
+*INV:	en wat heb je nog meer van Cars?
+%com:	KIND zwijgt en lijkt geblokkeerd.
+*INV:	ik heb natuurlijk &uh heel veel autootjes.
+*INV:	dat weet jij.
+%com:	KIND knikt.
+*INV:	&he daar mag je ook weleens mee spelen.
+26 | CHI:	ja een fan Ca(r)s. 
+*INV:	ja een van Cars.
+*INV:	maar de anderen horen der ook bij toch?
+27 | CHI:	Ca(r)s su siend [: vriend] is daa(r) ook. 
+*INV:	ja Cars ze vriend ook.
+*INV:	hoe heet die ook alweer?
+28 | CHI:	da weet ik niet meer. 
+*INV:	&uh die zo met die grote tanden.
+%com:	KIND denkt na.
+*INV:	Takel?
+%com:	KIND knikt en kijkt blij.
+*INV:	Takel &he!
+*INV:	ja Takel.
+29 | CHI:	desu hoo(r) de(r)bij. 
+*INV:	die hoort der ook bij.
+*INV:	maar die is een beetje gemeen.
+*INV:	kijk maar.
+30 | CHI:	dese niet. 
+*INV:	nee Cars niet.
+*INV:	die lacht.
+*INV:	maar Cars wint ook altijd.
+31 | CHI:	dus ik denk die boos op &uh Ca(r)s. 
+32 | CHI:	i(k) denk het die boos is. 
+*INV:	ja waarom denk je dat?
+33 | CHI:	hij wuw [: wil] denk ik winnen. 
+%com:	KIND lacht.
+*INV:	ja dat denk ik ook ja!
+*INV:	dat denk ik ook.
+*INV:	maar Cars wint altijd.
+*INV:	Takel is zijn grote vriend.
+*CHI:	ja.
+*INV:	dat is altijd supergrappig &he.
+%com:	KIND knikt.
+*INV:	gaan ze de trekkertjes savonds laten schrikken.
+%com:	KIND knikt.
+*INV:	en dan vallen de trekkers zo om!
+*INV:	heb je dat weleens gezien?
+%com:	KIND knikt en kijkt blij.
+*CHI:	op de Eipet [: iPad].
+*INV:	op de iPad ja.
+*INV:	mag je daar filmpjes kijken.
+%com:	KIND knikt.
+34 | CHI:	en om [: op] de teefee mat [: mag het]. 
+*INV:	en wat kijk je nog meer dan?
+*CHI:	Ensu [: Enzo] Slow [: Knol].
+*INV:	Enzo Knol?
+%com:	KIND knikt blij.
+*INV:	kijk je dat ook al?
+*INV:	ja net als je grote broer!
+*CHI:	ja!
+%com:	KIND knikt en lacht blij.
+*INV:	ja en wat doet die allemaal?
+*INV:	want die ken ik niet zo goed.
+*INV:	hoe gaat dat dan?
+%com:	KIND zwijgt en lijkt geblokkeerd.
+*INV:	is die ook heel grappig?
+%com:	KIND knikt.
+*INV:	ja?
+35 | CHI:	hellu [: willen] som(s) (s)pulletjes stuk maken. 
+*INV:	&oh?
+*INV:	is dat leuk?
+%com:	KIND schudt nee en beiden lachen.
+*INV:	spulletjes stuk maken.
+*INV:	nee maar jij vindt dat wel weer grappig denk ik.
+%com:	KIND knikt.
+*INV:	ja en ik zag dat Tony had een map van Enzo Knol &he?
+%com:	KIND knikt.
+*INV:	Knolpower.
+%com:	KIND knikt.
+*INV:	ja.
+36 | CHI:	en een tekting en een teesjut [: tieshirt] en dikku [: sticker].
+*INV:	ja maar jij heb nog geen spulletjes van Enzo.
+%com:	KIND schudt nee.
+*INV:	nee leuk &hoor.
+*INV:	wat kijk je nog meer op de ipad?
+37 | CHI:	da weet ik nie meer. 
+*INV:	Cars Enzo Knol.
+*INV:	Paw Patrol vind je dat nog steeds leuk om te kijken?
+%com:	KIND denkt even na en schudt dan nee.
+*INV:	kijk je dat niet meer?
+%com:	KIND schudt nee.
+*INV:	ben je daar een beetje te groot voor?
+%com:	KIND knikt.
+*INV:	ja.
+38 | CHI:	ik kijk som(s) op de teefee. 
+*INV:	&oh ja.
+39 | CHI:	Paw Putols <tan [: kan] fan die> [//] tan [: kan] soe [: zo] alles
+	stuk maken. 
+40 | CHI:	en <NAAM> [//] tan [: kan] dan niet ieduleen heew [: heel] ha
+	[: hard] lennen [: rennen]. 
+41 | CHI:	leen [: alleen] NAAM. 
+*INV:	&oh?
+*INV:	BROER.
+%com:	KIND knikt.
+*INV:	ja oke wat leuk.
+42 | CHI:	dan is Misjie [: Marshall] Pot [: Porter] fan Paws Patrol.
+*INV:	&oh ja ik ken ze niet allemaal van Paw Patrol.
+*INV:	weet je wie ik ken?
+*INV:	het meisje.
+43 | CHI:	(S)ky. 
+*INV:	Sky ja.
+44 | CHI:	ik ken allemaaw. 
+*INV:	ja jij kent ze allemaal.
+*INV:	jij vindt dat echt leuk.
+%com:	KIND knikt.
+*INV:	de avonturen.
+*INV:	&hee maar ik heb je pas nog gezien KIND.
+*INV:	ik zag jou met mama samen.
+*INV:	maar jij zag mij niet.
+%com:	KIND schudt nee.
+*INV:	weet jij waar dat was?
+%com:	KIND schudt nee.
+*INV:	dat was bij de avondvierdaagse.
+*INV:	ja ik zag je met mama lopen.
+*INV:	ging jij Tony een kadootje brengen?
+%com:	KIND schudt nee.
+*INV:	nee?
+*INV:	wat ging je dan doen?
+%com:	KIND zwijgt en lijkt geblokkeerd.
+*INV:	ging je iemand anders lekker snoepjes brengen?
+45 | CHI:	dat weet ik niet mee(r). 
+*INV:	weet je het niet meer.
+%com:	KIND schudt nee.
+*INV:	nee <maar ik zag je wel met> [//] of heb je zelf meegedaan?
+46 | CHI:	ik heb sewf [: zelf] mee gedaan. 
+*INV:	nee dat kan toch niet.
+%com:	KIND knikt.
+*INV:	heb jij al meegedaan?
+%com:	KIND knikt hardgrondig.
+*INV:	&oh?
+*INV:	vertel eens?
+*INV:	hoe ging dat dan?
+%com:	KIND zwijgt en lijkt geblokkeerd.
+*INV:	heb je echt met de avondvierdaagse meegedaan?
+%com:	KIND knikt.
+*INV:	&oooh!
+*INV:	en je zit pas in groep twee!
+%com:	KIND kijkt trots.
+*INV:	en de andere kindjes uit jouw klas niet.
+%com:	KIND schudt nee.
+*INV:	nee &he?
+*INV:	alleen jij.
+*INV:	ging je met mama samen?
+47 | CHI:	i(k) sas [: zag] lew [: wel] NAAM. 
+48 | CHI:	NAAM sas [: zag] ik ook. 
+*INV:	NAAM was er ook ja.
+*INV:	oke en verder?
+*INV:	ging NAAM ook meelopen?
+*INV:	of ging NAAM alleen kijken?
+49 | CHI:	NAAM slin [: ging] ook meelopen. 
+*INV:	die ging ook meelopen ja.
+%com:	KIND knikt.
+*INV:	net als jij ja.
+%com:	KIND knikt.
+*INV:	&oh ging jij vier avonden?
+*INV:	ging jij alle avonden lopen?
+%com:	KIND knikt.
+*INV:	&oh en toen toen het de laatste avond was wat gebeurde er toen allemaal?
+50 | CHI:	da weet ik nie meer. 
