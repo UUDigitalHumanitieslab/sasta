@@ -147,7 +147,6 @@ class CorpusViewSet(viewsets.ModelViewSet):
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
             Q(status='converted') | Q(status='parsing-failed'))
-
         for t in transcripts:
             res = parse_and_create(t)
             if not res:
