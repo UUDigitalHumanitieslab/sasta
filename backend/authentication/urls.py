@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import include, path
+
 from .views import info_from_confirm_key
 
 urlpatterns = [

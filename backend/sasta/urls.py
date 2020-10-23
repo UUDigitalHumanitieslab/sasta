@@ -13,19 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  path(r'^blog/', include('blog.urls'))
 """
+from analysis import urls as analysis_urls
+from analysis import views as analysis_views
+from authentication.views import redirect_confirm
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, re_path, include
 from django.contrib import admin
+from django.urls import include, path, re_path
 from django.views.generic import RedirectView
-
+from rest_auth.registration.views import VerifyEmailView
 from rest_framework import routers
 
 from .index import index
 from .proxy_frontend import proxy_frontend
-
-from analysis import urls as analysis_urls
-from analysis import views as analysis_views
 
 api_router = routers.DefaultRouter()  # register viewsets with this router
 api_router.register(r'upload_files', analysis_views.UploadFileViewSet)
@@ -51,6 +51,10 @@ urlpatterns = [
         namespace='rest_framework',
     )),
     path('rest-auth/', include('authentication.urls')),
+    re_path(r'^account-confirm-email/$', VerifyEmailView.as_view(),
+            name='account_email_verification_sent'),
+    re_path(r'^account-confirm-email/(?P<key>[-:\w]+)/$',
+            redirect_confirm, name='account_confirm_email'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
