@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth',
     'rest_auth.registration',
     'revproxy',
     'analysis',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -150,7 +152,11 @@ PROXY_FRONTEND = None
 
 # Auth
 SITE_ID = 1
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Logs
 # TODO: set log locations on deployment
@@ -195,7 +201,8 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['django_debug_file', 'django_info_file', 'django_error_file', 'console'],
+            'handlers': ['django_debug_file', 'django_info_file',
+                         'django_error_file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },

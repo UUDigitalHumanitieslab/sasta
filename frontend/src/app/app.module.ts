@@ -3,29 +3,25 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccordionModule } from 'primeng/accordion';
+import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
-import { TooltipModule } from 'primeng/tooltip';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 import { StepsModule } from 'primeng/steps';
-
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
-
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing/app-routing.module';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login.component';
+import { RegisterComponent } from './auth/register.component';
+import { VerifyComponent } from './auth/verify.component';
 import { CorpusComponent } from './corpus/corpus.component';
 import { ListCorpusComponent } from './corpus/list-corpus.component';
 import { FooterComponent } from './footer/footer.component';
@@ -33,18 +29,9 @@ import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
-import { UploadComponent } from './upload/upload.component';
-
-import { effects, reducers } from './store';
 import { ProcessComponent } from './process/process.component';
-import { RegisterComponent } from './auth/register.component';
-
-
-
-
-
-
-
+import { effects, reducers } from './store';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
     declarations: [
@@ -60,6 +47,7 @@ import { RegisterComponent } from './auth/register.component';
         LoginComponent,
         ProcessComponent,
         RegisterComponent,
+        VerifyComponent,
     ],
     imports: [
         AppRoutingModule,

@@ -50,8 +50,7 @@ urlpatterns = [
         'rest_framework.urls',
         namespace='rest_framework',
     )),
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls'))
+    path('rest-auth/', include('authentication.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
