@@ -1,0 +1,15 @@
+<h1 class="title">Confirm E-mail Address</h1>
+<form (submit)=confirm(key) class="box">
+    <div class="field">
+        <label class="label">
+            Please confirm that <a href="mailto:{{email}}">{{email}}</a> is an e-mail address for user {{username}}
+        </label>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-primary" [disabled]="!username || !email">Confirm</button>
+        </div>
+    </div>
+
+
+</form>

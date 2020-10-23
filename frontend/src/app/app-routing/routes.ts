@@ -1,14 +1,15 @@
 import { Routes } from '@angular/router';
-
-import { HomeComponent } from '../home/home.component';
-import { UploadComponent } from '../upload/upload.component';
-import { ListCorpusComponent } from '../corpus/list-corpus.component';
+import { LoginComponent } from '../auth/login.component';
+import { RegisterComponent } from '../auth/register.component';
+import { VerifyComponent } from '../auth/verify.component';
 import { CorpusComponent } from '../corpus/corpus.component';
+import { ListCorpusComponent } from '../corpus/list-corpus.component';
+import { HomeComponent } from '../home/home.component';
 import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
-import { LoginComponent } from '../auth/login.component';
 import { ProcessComponent } from '../process/process.component';
-import { RegisterComponent } from '../auth/register.component';
+import { UploadComponent } from '../upload/upload.component';
+
 
 const routes: Routes = [
     {
@@ -46,6 +47,10 @@ const routes: Routes = [
     {
         path: 'register',
         component: RegisterComponent
+    },
+    {
+        path: 'confirm-email/:key',
+        component: VerifyComponent
     },
     {
         path: '',

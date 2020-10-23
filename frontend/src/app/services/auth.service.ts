@@ -37,4 +37,12 @@ export class AuthService {
     return this.httpClient.get<User>(`${this.authAPI}/user/`);
   }
 
+  infoFromConfirmKey(key: string): Observable<any> {
+    return this.httpClient.get(`${this.authAPI}/infofromkey/${key}/`);
+  }
+
+  confirmEmail(key: string): Observable<any> {
+    return this.httpClient.post(`${this.authAPI}/registration/verify-email/`, { key });
+  }
+
 }
