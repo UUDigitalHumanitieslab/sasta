@@ -52,9 +52,13 @@ export class RegisterComponent implements OnInit {
       .register(this.username, this.password1, this.password2, this.emailAddress)
       .subscribe(
         () => {
-          this.authService.login(this.username, this.password1);
-          this.authService.isAuthenticated$.next(true);
-          this.router.navigate(['/corpora']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Registration success',
+            detail: `E-mail confirmation request sent to ${this.emailAddress}.`,
+            life: 6000
+          });
+          this.router.navigate(['/login']);
         },
         err => {
           this.onError(err);
