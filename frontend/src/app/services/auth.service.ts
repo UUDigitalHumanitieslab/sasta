@@ -12,9 +12,12 @@ export class AuthService {
   authAPI = 'rest-auth';
 
   constructor(private httpClient: HttpClient) {
+    this.checkAuthenticated();
+  }
+
+  checkAuthenticated() {
     this.getUser()
-      .toPromise()
-      .then(
+      .subscribe(
         () => this.isAuthenticated$.next(true),
         () => this.isAuthenticated$.next(false)
       );

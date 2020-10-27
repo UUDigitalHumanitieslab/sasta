@@ -9,6 +9,7 @@ import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
 import { ProcessComponent } from '../process/process.component';
 import { UploadComponent } from '../upload/upload.component';
+import { AuthGuard } from './auth.guard';
 
 
 const routes: Routes = [
@@ -19,26 +20,32 @@ const routes: Routes = [
     {
         path: 'upload',
         component: UploadComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'corpora',
         component: ListCorpusComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'corpora/:id',
-        component: CorpusComponent
+        component: CorpusComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'process/:id',
-        component: ProcessComponent
+        component: ProcessComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'methods',
         component: ListMethodComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'methods/:id',
-        component: MethodComponent
+        component: MethodComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'login',
@@ -54,7 +61,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/home',
+        redirectTo: '/corpora',
         pathMatch: 'full'
     }
 ];

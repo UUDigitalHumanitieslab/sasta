@@ -29,13 +29,16 @@
                 <a [routerLink]="['/home']" routerLinkActive="is-active" class="navbar-item">
                     Home
                 </a>
-                <a [routerLink]="['/corpora']" routerLinkActive="is-active" class="navbar-item">
+                <a *ngIf="isAuthenticated()" [routerLink]="['/corpora']" routerLinkActive="is-active"
+                    class="navbar-item">
                     Corpora
                 </a>
-                <a [routerLink]="['/methods']" routerLinkActive="is-active" class="navbar-item">
+                <a *ngIf="isAuthenticated()" [routerLink]="['/methods']" routerLinkActive="is-active"
+                    class="navbar-item">
                     Methods
                 </a>
-                <a [routerLink]="['/upload']" routerLinkActive="is-active" class="navbar-item">
+                <a *ngIf="isAuthenticated()" [routerLink]="['/upload']" routerLinkActive="is-active"
+                    class="navbar-item">
                     Upload
                 </a>
             </div>

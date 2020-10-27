@@ -37,6 +37,10 @@ export class MenuComponent implements OnInit {
         });
     }
 
+    isAuthenticated() {
+        return this.authService.isAuthenticated$.getValue();
+    }
+
     logout() {
         this.authService
             .logout()
