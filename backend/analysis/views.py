@@ -17,6 +17,7 @@ from .parse.parse import parse_and_create
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
+from .permissions import IsTranscriptOwner, IsCorpusOwner, IsUploadOwner
 
 # flake8: noqa: E501
 
@@ -24,11 +25,16 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
 class UploadFileViewSet(viewsets.ModelViewSet):
     queryset = UploadFile.objects.all()
     serializer_class = UploadFileSerializer
+    permission_classes = (IsUploadOwner, )
 
 
 class TranscriptViewSet(viewsets.ModelViewSet):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
+    permission_classes = (IsTranscriptOwner,)
+
+    def get_queryset(self):
+        return self.queryset.filter(corpus__user=self.request.user)
 
     @action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
@@ -120,6 +126,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 class CorpusViewSet(viewsets.ModelViewSet):
     serializer_class = CorpusSerializer
     queryset = Corpus.objects.all()
+    permission_classes = (IsCorpusOwner, )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
