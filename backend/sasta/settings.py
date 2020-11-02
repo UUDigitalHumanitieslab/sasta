@@ -26,6 +26,7 @@ SECRET_KEY = 'kxreeb3bds$oibo7ex#f3bi5r+d(1x5zljo-#ms=i2%ih-!pvn'
 DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(' ')
+ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
 # Application definition
 ALPINO_HOST = 'alpino'
@@ -99,20 +100,13 @@ WSGI_APPLICATION = 'sasta.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.environ.get("SQL_DATABASE", "sasta"),
+        "USER": os.environ.get("SQL_USER", "sasta"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "sasta"),
         "HOST": os.environ.get("SQL_HOST", "localhost"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
     },
-    'nondocker': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sasta',
-        'USER': 'sasta',
-        'PASSWORD': 'sasta',
-        'HOST': 'localhost',
-    }
 }
 
 
