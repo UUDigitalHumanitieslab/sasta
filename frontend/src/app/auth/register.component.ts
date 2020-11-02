@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   username: string;
   emailAddress: string;
-  password1: string;
+  password1: string = '';
   password2: string;
 
   processing = false;
@@ -30,20 +30,25 @@ export class RegisterComponent implements OnInit {
     return this.password1 && this.password2 && (this.password1 === this.password2);
   }
 
+  passwordMinLength() {
+    return this.password1.length >= 8;
+  }
+
   onError(err) {
     this.authService.isAuthenticated$.next(false);
     this.processing = false;
+    let detailMsg;
 
     if (err.error.username) {
-      const msg = { severity: 'error', summary: 'Login failed.', detail: err.error.username[0], sticky: true };
-      this.messageService.add(msg);
     } else if (err.error.email) {
-      const msg = { severity: 'error', summary: 'Login failed.', detail: err.error.email[0], sticky: true };
-      this.messageService.add(msg);
+      detailMsg = err.error.email[0];
+    } else if (err.error.password1) {
+      detailMsg = err.error.password1[0];
     } else {
-      const msg = { severity: 'error', summary: 'Login failed.', detail: err.error, sticky: true };
-      this.messageService.add(msg);
+      detailMsg = err.error;
     }
+    const msg = { severity: 'error', summary: 'Registration failed.', detail: detailMsg, sticky: true };
+    this.messageService.add(msg);
   }
 
   register() {
@@ -52,9 +57,13 @@ export class RegisterComponent implements OnInit {
       .register(this.username, this.password1, this.password2, this.emailAddress)
       .subscribe(
         () => {
-          this.authService.login(this.username, this.password1);
-          this.authService.isAuthenticated$.next(true);
-          this.router.navigate(['/corpora']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Registration success',
+            detail: `E-mail confirmation request sent to ${this.emailAddress}.`,
+            life: 6000
+          });
+          this.router.navigate(['/login']);
         },
         err => {
           this.onError(err);

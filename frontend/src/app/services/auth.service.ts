@@ -12,9 +12,12 @@ export class AuthService {
   authAPI = 'rest-auth';
 
   constructor(private httpClient: HttpClient) {
+    this.checkAuthenticated();
+  }
+
+  checkAuthenticated() {
     this.getUser()
-      .toPromise()
-      .then(
+      .subscribe(
         () => this.isAuthenticated$.next(true),
         () => this.isAuthenticated$.next(false)
       );
@@ -35,6 +38,14 @@ export class AuthService {
 
   getUser(): Observable<User> {
     return this.httpClient.get<User>(`${this.authAPI}/user/`);
+  }
+
+  infoFromConfirmKey(key: string): Observable<any> {
+    return this.httpClient.get(`${this.authAPI}/infofromkey/${key}/`);
+  }
+
+  confirmEmail(key: string): Observable<any> {
+    return this.httpClient.post(`${this.authAPI}/registration/verify-email/`, { key });
   }
 
 }

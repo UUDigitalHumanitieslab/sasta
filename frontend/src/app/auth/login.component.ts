@@ -28,11 +28,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.processing = true;
+    this.messages = [];
     this.authService
       .login(this.username, this.password)
       .subscribe(
         res => {
-          this.messages = [];
           this.authService.isAuthenticated$.next(true);
           this.router.navigate(['/corpora']);
         },

@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth',
     'rest_auth.registration',
     'revproxy',
     'analysis',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -159,7 +161,13 @@ PROXY_FRONTEND = None
 
 # Auth
 SITE_ID = 1
-ACCOUNT_EMAIL_VERIFICATION = "none"
+SITE_NAME = 'SASTA'
+HOST = 'localhost:5000'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Logs
 # TODO: set log locations on deployment
@@ -183,6 +191,11 @@ LOGGING = {
         #     'class': 'logging.FileHandler',
         #     'filename': os.path.join(BASE_DIR, 'logs', 'django', 'error.log'),
         # },
+        'django_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django.log'),
+        },
         'sasta_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
@@ -205,7 +218,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['django_file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },

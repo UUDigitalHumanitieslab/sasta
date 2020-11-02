@@ -1,14 +1,16 @@
 import { Routes } from '@angular/router';
-
-import { HomeComponent } from '../home/home.component';
-import { UploadComponent } from '../upload/upload.component';
-import { ListCorpusComponent } from '../corpus/list-corpus.component';
+import { LoginComponent } from '../auth/login.component';
+import { RegisterComponent } from '../auth/register.component';
+import { VerifyComponent } from '../auth/verify.component';
 import { CorpusComponent } from '../corpus/corpus.component';
+import { ListCorpusComponent } from '../corpus/list-corpus.component';
+import { HomeComponent } from '../home/home.component';
 import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
-import { LoginComponent } from '../auth/login.component';
 import { ProcessComponent } from '../process/process.component';
-import { RegisterComponent } from '../auth/register.component';
+import { UploadComponent } from '../upload/upload.component';
+import { AuthGuard } from './auth.guard';
+
 
 const routes: Routes = [
     {
@@ -18,26 +20,32 @@ const routes: Routes = [
     {
         path: 'upload',
         component: UploadComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'corpora',
         component: ListCorpusComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'corpora/:id',
-        component: CorpusComponent
+        component: CorpusComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'process/:id',
-        component: ProcessComponent
+        component: ProcessComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'methods',
         component: ListMethodComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'methods/:id',
-        component: MethodComponent
+        component: MethodComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'login',
@@ -48,8 +56,12 @@ const routes: Routes = [
         component: RegisterComponent
     },
     {
+        path: 'confirm-email/:key',
+        component: VerifyComponent
+    },
+    {
         path: '',
-        redirectTo: '/home',
+        redirectTo: '/corpora',
         pathMatch: 'full'
     }
 ];

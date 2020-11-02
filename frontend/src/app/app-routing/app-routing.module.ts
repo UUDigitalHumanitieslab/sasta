@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 import { routes } from './routes';
 
 @NgModule({
@@ -7,10 +8,9 @@ import { routes } from './routes';
         RouterModule.forRoot(routes),
         RouterModule
     ],
-    exports: [
-        RouterModule,
-    ],
-    declarations: []
+    exports: [RouterModule],
+    providers: [AuthGuard],
+    declarations: [],
 })
 export class AppRoutingModule {
 }
