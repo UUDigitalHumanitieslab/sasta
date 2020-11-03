@@ -67,39 +67,6 @@ def fill_places_persons(string):
         print('error in fill_places_persons:\t', string, e)
         return string
 
-    # try:
-    #     nr_place = fr'(\b\w*.*)({"|".join(PLACE_CODES)})(\d+)(.*\b)'
-    #     place = fr'(?:\b\w*)(?:{"|".join(PLACE_CODES)})(?:\b)'
-
-    #     nr_pers = fr'(?:\b\w*)(?:{"|".join(PERSON_CODES)})(?:\w*(\d+)\b)'
-    #     pers = fr'(?:\b\w*)(?:{"|".join(PERSON_CODES)})(?:\b)'
-
-    #     def replace_place(match):
-    #         try:
-    #             index = int(match.group(3))
-    #             return f'{match.group(1)}{COMMON_PLACE_NAMES[index]}{match.group(4)}'
-    #         except IndexError:
-    #             return f'{match.group(1)}{COMMON_PLACE_NAMES[index]}{match.group(4)}'
-
-    #     def replace_person(match):
-    #         try:
-    #             index = int(match.group(1))
-    #         except IndexError:
-    #             index = 0
-    #         return COMMON_PERSON_NAMES[index]
-
-    #     string = re.sub(nr_place, replace_place, string)
-    #     string = re.sub(place, replace_place, string)
-    #     string = re.sub(nr_pers, replace_person, string)
-    #     string = re.sub(pers, replace_person, string)
-
-    #     return string
-
-    # except Exception as e:
-    #     logger.exception(e)
-    #     print('error in fill_places_persons:\t', string, e)
-    #     return string
-
 
 class Participant:
     def __init__(self, code: str,
