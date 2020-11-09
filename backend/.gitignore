@@ -20,6 +20,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 files/
+static/
 
 # pyenv
 .python-version
@@ -37,3 +38,4 @@ venv.bak/
 logs/
 # *.xlsx
 *.docx
+
