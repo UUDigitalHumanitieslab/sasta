@@ -3,6 +3,7 @@ import logging
 import os
 import re
 from typing import List, Optional, Pattern, Union
+from .replacements import fill_name, correct_punctuation
 
 logger = logging.getLogger('sasta')
 
@@ -14,13 +15,10 @@ TITLE_FIELD_NAMES = ['samplename', 'title', 'titel']
 MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
-COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
-COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
-
-PLACE_CODES = ['PLAATSNAAM', 'PLAATS']
-# NOUN_PLACE = MAIL STUREN
-PERSON_CODES = ['NAAM', 'BROER', 'ZUS', 'KIND']
-
+REPLACEMENTS = [
+    {'code': 'ano', 'function': fill_name, 'allow_skip': True},  
+    {'code': 'pct', 'function': correct_punctuation, 'allow_skip': False}
+]
 
 def match_pattern(pattern: Pattern, line: str):
     match = re.match(pattern, line)
@@ -29,44 +27,6 @@ def match_pattern(pattern: Pattern, line: str):
     if match and match.groups():
         return match.groups()
     return match
-
-
-def fill_places_persons(string):
-    try:
-        places = '|'.join(sorted(PLACE_CODES, key=len, reverse=True))
-        names = '|' . join(sorted(PERSON_CODES, key=len, reverse=True))
-
-        # groups: 1) word boundary 2) code 3) counter 4) word boundary
-        place_pat = fr'(\b)\w*({places})[^\d\W]*(\d*)(\b)'
-        # groups: 1) word boundary 2) code 3) counter 4) word boundary
-        pers_pat = fr'(\b)\w*({names})[^\d\W]*(\d*)(\b)'
-
-        def repl_place(match):
-            try:
-                index = int(match.group(3))
-            except (IndexError, ValueError):
-                index = 0
-            repl = COMMON_PLACE_NAMES[index]
-            return match.group(1) + repl + match.group(4)
-
-        def repl_name(match):
-            try:
-                index = int(match.group(3))
-            except (IndexError, ValueError):
-                index = 0
-            repl = COMMON_PERSON_NAMES[index]
-            return match.group(1) + repl + match.group(4)
-
-        string = re.sub(place_pat, repl_place, string)
-        string = re.sub(pers_pat, repl_name, string)
-
-        return string
-
-    except Exception as e:
-        logger.exception(e)
-        print('error in fill_places_persons:\t', string, e)
-        return string
-
 
 class Participant:
     def __init__(self, code: str,
@@ -111,10 +71,53 @@ class Utterance:
         self.speaker_code = speaker_code
         self.utt_id = utt_id
         self.text = text
+        self.tiers = []
+        self.replacements()
 
     def __str__(self):
         return f'*{self.speaker_code}:\t{self.text}' + \
-            ('\n' + str(Tier('xsid', self.utt_id)) if self.utt_id else '')
+            ('\n' + str(Tier('xsid', self.utt_id)) if self.utt_id else '') + \
+            ('\n' + '\n'.join([str(tier) for tier in self.tiers]) if self.tiers else '')
+
+    def add_tier(self, tier):
+        self.tiers.append(tier)
+
+    def replacements(self):
+        #perform all replacements
+        for rep in REPLACEMENTS:
+            code = rep['code']
+            func = rep['function']
+            allow_skip = rep['allow_skip']
+
+            all_comments = []
+            done = False
+            while not done:
+                try:
+                    #apply replacement function
+                    new_text, comment = func(self.text)
+                except Exception as e:
+                    if allow_skip:
+                        #if replacement category is skippable: log and move on
+                        logger.warn(e)
+                        print('error in {} for utterance "{}": {}'.format(func.__name__, self.text, e))
+                        new_text, comment = self.text, None
+                    else:
+                        #else, raise an error
+                        logger.warn(e.args[0])
+                        raise e
+
+                if comment:
+                    #if there was a comment, apply replacement
+                    self.text = new_text
+                    all_comments.append(comment)
+                else:
+                    #no comment means we are done
+                    #add all comments as a tier
+                    if len(all_comments) > 0:
+                        tier_code = 'x' + code
+                        value = ', '.join(all_comments)
+                        self.add_tier(Tier(tier_code, value))
+                    done = True
 
 
 class Tier:
@@ -293,9 +296,8 @@ class SifReader:
             f'CHAT-Converter:\treading {os.path.basename(self.file_path)}')
         with open(self.file_path, 'r') as f:
             lstripped_lines = [li.lstrip() for li in f.readlines()]
-            filled_lines = [fill_places_persons(li) for li in lstripped_lines]
             concatenated_lines = self.concatenate_multiline_utterances(
-                filled_lines)
+                lstripped_lines)
             for line in concatenated_lines:
                 self.line_handler(line)
 
@@ -347,7 +349,11 @@ class SifReader:
 
     def handle_tier(self, match):
         tier = match.groups()
-        self.content.append(Tier(*tier))
+        try:
+            self.utterances[-1].add_tier(Tier(*tier))
+        except IndexError as e:
+            logger.exception(e)
+            print('error in handle_tier: tier occurred before first utterance')
 
     def handle_target_speaker(self, match):
         self.participants.append(

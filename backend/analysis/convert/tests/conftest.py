@@ -1,22 +1,50 @@
 import pytest
 import os.path as op
 
+@pytest.fixture
+def replace_names():
+    #format: (string, expected_corrected_string, expected_comment)
+    return [
+        ('Ik heb honger.', 'Ik heb honger.', None),
+        ('Ik heb een naam.', 'Ik heb een naam.', None),
+        ('Ik heet NAAM.', 'Ik heet Maria.', '8|NAAM|Maria'),
+        ('Ik heet NAAMKIND.', 'Ik heet Maria.', '8|NAAMKIND|Maria'),
+        ('Ik heet NAAM1.', 'Ik heet Jan.', '8|NAAM1|Jan'),
+        ('Ik heet VOORNAAM.', 'Ik heet Maria.', '8|VOORNAAM|Maria'),
+        ('Ik heet NAAMOVERIG1.', 'Ik heet Jan.', '8|NAAMOVERIG1|Jan'),
+        ('Ik heet VOORNAAM1.', 'Ik heet Jan.', '8|VOORNAAM1|Jan'),
+        ('Ik heet ACHTERNAAM1.', 'Ik heet Jan.', '8|ACHTERNAAM1|Jan'),
+        ('Ik heet TWEELINGZUS.', 'Ik heet Maria.', '8|TWEELINGZUS|Maria'),
+        ('Ik heet NAAM1 en hij heet NAAM2.', 
+         'Ik heet Jan en hij heet NAAM2.', 
+         '8|NAAM1|Jan'),
+        ('15 | PMA: in het uh hier in het PLAATSNAAM1 uh silahe ',
+         '15 | PMA: in het uh hier in het Breda uh silahe ', 
+         '32|PLAATSNAAM1|Breda'),
+        ('15 | PMA: in het uh hier in het PLAATSNAAM uh silahe ',
+         '15 | PMA: in het uh hier in het Utrecht uh silahe ', 
+         '32|PLAATSNAAM|Utrecht')
+    ]
 
 @pytest.fixture
-def place_strings():
+def replace_punc():
+    #format: (string, expected_corrected_string, expected_comment)
     return [
-        ('Ik heet NAAM.', 'Ik heet Maria.'),
-        ('Ik heet NAAMKIND.', 'Ik heet Maria.'),
-        ('Ik heet NAAM1.', 'Ik heet Jan.'),
-        ('Ik heet VOORNAAM.', 'Ik heet Maria.'),
-        ('Ik heet NAAMOVERIG1.', 'Ik heet Jan.'),
-        ('Ik heet VOORNAAM1.', 'Ik heet Jan.'),
-        ('Ik heet ACHTERNAAM1.', 'Ik heet Jan.'),
-        ('Ik heet TWEELINGZUS.', 'Ik heet Maria.'),
-        ('15 | PMA: in het uh hier in het PLAATSNAAM1 uh silahe ',
-         '15 | PMA: in het uh hier in het Breda uh silahe '),
-        ('15 | PMA: in het uh hier in het PLAATSNAAM uh silahe ',
-         '15 | PMA: in het uh hier in het Utrecht uh silahe ')
+        ('Dit is een voorbeeldzin.', 'Dit is een voorbeeldzin.', None),
+        ('Dit (.) is (..) een (...) voorbeeldzin.', 'Dit (.) is (..) een (...) voorbeeldzin.', None),
+        ('Dit is een voorbeeldzin...', 'Dit is een voorbeeldzin+...', '23|...|+...'),
+        ('Dit is een voorbeeldzin…', 'Dit is een voorbeeldzin+...', '23|…|+...'),
+        ('Bla bla # bla', 'Bla bla (.) bla', '8|#|(.)'),
+    ]
+
+@pytest.fixture
+def flag_punc():
+    return [
+        'Dit is een (mooie) voorbeeldzin.',
+        'Dit is een (mooie voorbeeldzin.',
+        'Dit is een mooie) voorbeeldzin.',
+        '(... is geen goede pauze',
+        '...) is geen goede pauze'
     ]
 
 
@@ -25,3 +53,38 @@ def testfiles():
     here = op.dirname(op.abspath(__file__))
     fns = ['STAP_02', 'ASTA_01']
     return {fn: op.join(here, f'{fn}.docx') for fn in fns}
+
+@pytest.fixture
+def example_utterances():
+    return [
+        {
+            'text': 'Dit is een voorbeeldzin.',
+            'exp_text': 'Dit is een voorbeeldzin.',
+            'exp_tiers': {},
+        },
+        {
+            'text': 'Ik heet NAAM.',
+            'exp_text': 'Ik heet Maria.',
+            'exp_tiers': {'xano': '8|NAAM|Maria'},
+        },
+        {
+            'text': 'Ik heet NAAM1 en hij heet NAAM2.',
+            'exp_text': 'Ik heet Jan en hij heet Anna.',
+            'exp_tiers': {'xano': '8|NAAM1|Jan, 24|NAAM2|Anna'},
+        },
+        {
+            'text': 'Dit is een voorbeeldzin...',
+            'exp_text': 'Dit is een voorbeeldzin+...',
+            'exp_tiers': {'xpct': '23|...|+...'},
+        },
+        {
+            'text': 'Dit... is een... voorbeeldzin.',
+            'exp_text': 'Dit+... is een+... voorbeeldzin.',
+            'exp_tiers': {'xpct': '3|...|+..., 14|...|+...'},
+        },
+        {
+            'text': 'Ik heet # NAAM.',
+            'exp_text': 'Ik heet (.) Maria.',
+            'exp_tiers': {'xpct': '8|#|(.)', 'xano': '10|NAAM|Maria'},
+        },
+    ]
