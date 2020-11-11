@@ -42,7 +42,7 @@
     </div>
     <div class="field is-grouped">
         <div class="control">
-            <button class="button is-primary" [disabled]="!content"
+            <button class="button is-primary" [disabled]="!fullyFilled()"
                 [ngClass]="{'is-loading': uploading}">Process</button>
         </div>
     </div>

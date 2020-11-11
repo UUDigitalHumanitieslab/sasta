@@ -60,6 +60,10 @@ export class UploadComponent implements OnDestroy, OnInit {
         this.fileName = this.content.name;
     }
 
+    fullyFilled() {
+        return (this.newCorpusName || this.selectedCorpus) && this.content;
+    }
+
     upload() {
         this.uploading = true;
         this.uploadFileService.upload_obs({
