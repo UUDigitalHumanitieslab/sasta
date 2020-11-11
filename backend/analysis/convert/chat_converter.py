@@ -2,7 +2,7 @@ import errno
 import logging
 import os
 import re
-from typing import List, Optional, Pattern, Union
+from typing import List, Optional, Pattern, Union, Dict
 from .replacements import fill_name, correct_punctuation
 
 logger = logging.getLogger('sasta')
@@ -16,9 +16,10 @@ MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
 REPLACEMENTS = [
-    {'code': 'ano', 'function': fill_name, 'allow_skip': True},  
+    {'code': 'ano', 'function': fill_name, 'allow_skip': True},
     {'code': 'pct', 'function': correct_punctuation, 'allow_skip': False}
 ]
+
 
 def match_pattern(pattern: Pattern, line: str):
     match = re.match(pattern, line)
@@ -27,6 +28,7 @@ def match_pattern(pattern: Pattern, line: str):
     if match and match.groups():
         return match.groups()
     return match
+
 
 class Participant:
     def __init__(self, code: str,
@@ -77,13 +79,14 @@ class Utterance:
     def __str__(self):
         return f'*{self.speaker_code}:\t{self.text}' + \
             ('\n' + str(Tier('xsid', self.utt_id)) if self.utt_id else '') + \
-            ('\n' + '\n'.join([str(tier) for tier in self.tiers]) if self.tiers else '')
+            ('\n' + '\n'.join([str(tier)
+                               for tier in self.tiers]) if self.tiers else '')
 
     def add_tier(self, tier):
         self.tiers.append(tier)
 
     def replacements(self):
-        #perform all replacements
+        # perform all replacements
         for rep in REPLACEMENTS:
             code = rep['code']
             func = rep['function']
@@ -93,26 +96,27 @@ class Utterance:
             done = False
             while not done:
                 try:
-                    #apply replacement function
+                    # apply replacement function
                     new_text, comment = func(self.text)
                 except Exception as e:
                     if allow_skip:
-                        #if replacement category is skippable: log and move on
+                        # if replacement category is skippable: log and move on
                         logger.warn(e)
-                        print('error in {} for utterance "{}": {}'.format(func.__name__, self.text, e))
+                        print('error in {} for utterance "{}": {}'.format(
+                            func.__name__, self.text, e))
                         new_text, comment = self.text, None
                     else:
-                        #else, raise an error
+                        # else, raise an error
                         logger.warn(e.args[0])
                         raise e
 
                 if comment:
-                    #if there was a comment, apply replacement
+                    # if there was a comment, apply replacement
                     self.text = new_text
                     all_comments.append(comment)
                 else:
-                    #no comment means we are done
-                    #add all comments as a tier
+                    # no comment means we are done
+                    # add all comments as a tier
                     if len(all_comments) > 0:
                         tier_code = 'x' + code
                         value = ', '.join(all_comments)

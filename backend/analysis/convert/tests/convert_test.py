@@ -26,20 +26,25 @@ def test_docx_to_txt(testfiles):
         if op.exists(cha):
             rm(cha)
 
+
 def test_fill_name(replace_names):
-    #fill in anonymised names
+    # fill in anonymised names
     for string, exp_string, exp_comment in replace_names:
         corrected, comment = fill_name(string)
-        assert corrected == exp_string and comment == exp_comment
+        assert corrected == exp_string
+        assert comment == exp_comment
+
 
 def test_correct_punctuation(replace_punc):
-    #cases where punctuation should be corrected
+    # cases where punctuation should be corrected
     for string, exp_string, exp_comment in replace_punc:
         corrected, comment = correct_punctuation(string)
-        assert corrected == exp_string and comment == exp_comment        
+        assert corrected == exp_string
+        assert comment == exp_comment
+
 
 def test_flag_punctuation(flag_punc):
-    #cases where punctuation should raise an error
+    # cases where punctuation should raise an error
     for string in flag_punc:
         try:
             done = False
@@ -49,8 +54,9 @@ def test_flag_punctuation(flag_punc):
         except ValueError as e:
             assert e.args[0] == 'Parentheses in utterances are not allowed.'
 
+
 def test_fill_utterance(example_utterances):
-    #combined corrections on utterances
+    # combined corrections on utterances
     for data in example_utterances:
         utt = Utterance('XXX', data['text'])
 
@@ -58,6 +64,8 @@ def test_fill_utterance(example_utterances):
 
         for tier_code in data['exp_tiers']:
             tier_value = data['exp_tiers'][tier_code]
-            matching = lambda tier : tier.code == tier_code and tier.value == tier_value
+
+            def matching(tier):
+                return tier.code == tier_code and tier.value == tier_value
 
             assert any(map(matching, utt.tiers))

@@ -1,9 +1,10 @@
 import pytest
 import os.path as op
 
+
 @pytest.fixture
 def replace_names():
-    #format: (string, expected_corrected_string, expected_comment)
+    # format: (string, expected_corrected_string, expected_comment)
     return [
         ('Ik heb honger.', 'Ik heb honger.', None),
         ('Ik heb een naam.', 'Ik heb een naam.', None),
@@ -15,27 +16,30 @@ def replace_names():
         ('Ik heet VOORNAAM1.', 'Ik heet Jan.', '8|VOORNAAM1|Jan'),
         ('Ik heet ACHTERNAAM1.', 'Ik heet Jan.', '8|ACHTERNAAM1|Jan'),
         ('Ik heet TWEELINGZUS.', 'Ik heet Maria.', '8|TWEELINGZUS|Maria'),
-        ('Ik heet NAAM1 en hij heet NAAM2.', 
-         'Ik heet Jan en hij heet NAAM2.', 
+        ('Ik heet NAAM1 en hij heet NAAM2.',
+         'Ik heet Jan en hij heet NAAM2.',
          '8|NAAM1|Jan'),
         ('15 | PMA: in het uh hier in het PLAATSNAAM1 uh silahe ',
-         '15 | PMA: in het uh hier in het Breda uh silahe ', 
+         '15 | PMA: in het uh hier in het Breda uh silahe ',
          '32|PLAATSNAAM1|Breda'),
         ('15 | PMA: in het uh hier in het PLAATSNAAM uh silahe ',
-         '15 | PMA: in het uh hier in het Utrecht uh silahe ', 
+         '15 | PMA: in het uh hier in het Utrecht uh silahe ',
          '32|PLAATSNAAM|Utrecht')
     ]
 
+
 @pytest.fixture
 def replace_punc():
-    #format: (string, expected_corrected_string, expected_comment)
+    # format: (string, expected_corrected_string, expected_comment)
     return [
         ('Dit is een voorbeeldzin.', 'Dit is een voorbeeldzin.', None),
-        ('Dit (.) is (..) een (...) voorbeeldzin.', 'Dit (.) is (..) een (...) voorbeeldzin.', None),
+        ('Dit (.) is (..) een (...) voorbeeldzin.',
+         'Dit (.) is (..) een (...) voorbeeldzin.', None),
         ('Dit is een voorbeeldzin...', 'Dit is een voorbeeldzin+...', '23|...|+...'),
         ('Dit is een voorbeeldzin…', 'Dit is een voorbeeldzin+...', '23|…|+...'),
-        ('Bla bla # bla', 'Bla bla (.) bla', '8|#|(.)'),
+        ('Bla bla # bla...', 'Bla bla (.) bla+...', '8|#|(.),13|...|+...'),
     ]
+
 
 @pytest.fixture
 def flag_punc():
@@ -53,6 +57,7 @@ def testfiles():
     here = op.dirname(op.abspath(__file__))
     fns = ['STAP_02', 'ASTA_01']
     return {fn: op.join(here, f'{fn}.docx') for fn in fns}
+
 
 @pytest.fixture
 def example_utterances():
