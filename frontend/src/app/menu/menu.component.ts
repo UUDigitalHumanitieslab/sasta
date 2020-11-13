@@ -48,6 +48,7 @@ export class MenuComponent implements OnInit {
                 res => {
                     this.router.navigate(['/login']);
                     this.authService.isAuthenticated$.next(false);
+                    this.activeUser = null;
                 },
                 err => console.log('Http Error', err));
     }
