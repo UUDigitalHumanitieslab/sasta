@@ -37,5 +37,4 @@ venv.bak/
 # Application
 logs/
 # *.xlsx
-*.docx
-
+# *.docx

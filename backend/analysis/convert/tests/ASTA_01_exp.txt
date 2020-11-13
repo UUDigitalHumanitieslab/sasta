@@ -1,0 +1,77 @@
+##META text samplenaam = ASTA-01
+##TARGET SPEAKERS = PMA
+
+INV: Kunt u mij vertellen wat er met jou is gebeurd? 
+1 | PMA: Op euh eventien zeventien okt ja  oktober is onze ja 
+2 | PMA: dan heeft het allemaal gebeurd 
+INV: ja 
+3 | PMA: en daar heeft euh  in de euh 
+4 | PMA: ik weet niet wat daar ge gebeurd is  
+INV: wat weet je nog 
+5 | PMA: ik heb nog euh de half euh de euh van de euh voor de euh 
+INV: was je thuis 
+6 | PMA: nee ik was op de tennis-baan 
+INV: oke je was aan het tennissen en ben je toen gevallen?
+7 | PMA: toen heb nee want ik kon m’n m’n m’n kracht niet 
+INV: ja 
+8 | PMA: dus ik kon nog wel uh staan 
+INV: ja maar toen dacht je dit klopt niet 
+9 | PMA: nee 
+INV: en toen 
+10 | PMA: toen heeft een mei een van de meisjes heeft mij opgevangen 
+INV: ja 
+11 | PMA: en die heeft met een naar een naar een bank 
+12 | PMA: en toen euh hebben ze de dokter gebeld
+13 | PMA: en ook nou ja gewoo gewoon naar de am-bu-lan-ce 
+INV: ja 
+14 | PMA: en toen zijn we naar de zie-kon-huis ingegaan 
+INV: en welk ziekenhuis 
+15 | PMA: in het uh hier in het PLAATSNAAM1 uh silahe 
+INV: ik weet welke je bedoelt hoe lang heb je in het ziekenhuis gelegen 
+16 | PMA: ik wacht wij dachten ongeveer een week 
+INV: ja 
+17 | PMA: ja 
+INV: niet eens zo heel lang 
+18 | PMA: nee 
+INV: en toen 
+19 | PMA: ja ik weet niet van al die meer op die nee daar weet ik niets van 
+INV: oke een heel andere vraag wat is jouw beroep 
+20 | PMA: uh mijn be-roep is een uh uh actie nee ak ak nee – activiteiten nee &=laughs euh goh
+21 | PMA: hoe heet het nou 
+22 | PMA: ik ik weet niet
+23 | PMA: het heeft een 
+INV: het heeft een naam ja uh bij wat voor bedrijf is het 
+24 | PMA: uh bij uh ja dat is ook heel moeilijk want dat is ook gewoon euh ja 
+25 | PMA: het is wel een commercieel 
+26 | PMA: en het is ook een ja het is ook wel heel veel euh ja 
+INV: wat jij deed uh deed jij iets met cijfers 
+27| PMA: nee ik weet ik deed alles met de computer
+28 | PMA: en dan maar met de computers met de euh de uh ja inkoop inkoop
+INV: ja 
+29 | PMA: en dan ging ik daar ging ik de van daar o echt dan even de inkoop van de in de 
+INV: ja de bestellingen en zo oke 
+30 | PMA: ja ja ja dat weet dat weet dat ja 
+INV: ja oke met plezier
+31 | PMA: ja altijd met heel veel plezier
+32 | PMA: ik ging ook euh heel even euh drie dagen en dan twee in de halve dagen 
+INV: en nog twee halve dagen dus je was er veel 
+33 | PMA: ja 
+INV: kun je wat vertellen over je gezin 
+34 | PMA: euh wij zijn met z’n drietjes en de euh VOORNAAM1 en dan euh VOORNAAM2  
+35 | PMA: en dat is dan 19 is die geworden 
+INV: ja en wat doet hij nu VOORNAAM2 
+36 | PMA: hij is nu gaat naar euh hij gaat in de euh
+37 | PMA: ik weet niet euh hele moeilijke +… 
+INV: hij gaat naar school 
+38 | PMA: ja 
+INV: al vervolgopleiding 
+39 | PMA: ja 
+INV: in welke plaats 
+40 | PMA: ik euh hier zo in PLAATSNAAM1
+41 | PMA: en dan gaat ook in 
+INV: gaat hij naar 
+42 | PMA: OPLEIDING1 ja 
+INV: en welke studie doet hij 
+43| PMA: Ja dat is nou dat kan ik niet komen nee dat is gewoon ik weet niet euh ik weet niet hoe het heet 
+
+

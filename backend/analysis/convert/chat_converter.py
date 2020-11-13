@@ -19,7 +19,7 @@ COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
 
 PLACE_CODES = ['PLAATSNAAM', 'PLAATS']
 # NOUN_PLACE = MAIL STUREN
-PERSON_CODES = ['NAAM', 'BROER', 'ZUS']
+PERSON_CODES = ['NAAM', 'BROER', 'ZUS', 'KIND']
 
 
 def match_pattern(pattern: Pattern, line: str):
@@ -33,30 +33,32 @@ def match_pattern(pattern: Pattern, line: str):
 
 def fill_places_persons(string):
     try:
-        nr_place = fr'\b\w*.*(?:{"|".join(PLACE_CODES)})(\d+).*\b'
-        place = fr'\b\w*(?:{"|".join(PLACE_CODES)})\b'
+        places = '|'.join(sorted(PLACE_CODES, key=len, reverse=True))
+        names = '|' . join(sorted(PERSON_CODES, key=len, reverse=True))
 
-        nr_pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\w*(\d+)\b'
-        pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\b'
+        # groups: 1) word boundary 2) code 3) counter 4) word boundary
+        place_pat = fr'(\b)\w*({places})[^\d\W]*(\d*)(\b)'
+        # groups: 1) word boundary 2) code 3) counter 4) word boundary
+        pers_pat = fr'(\b)\w*({names})[^\d\W]*(\d*)(\b)'
 
-        def replace_place(match):
+        def repl_place(match):
             try:
-                index = int(match.group(1))
-            except IndexError:
+                index = int(match.group(3))
+            except (IndexError, ValueError):
                 index = 0
-            return COMMON_PLACE_NAMES[index]
+            repl = COMMON_PLACE_NAMES[index]
+            return match.group(1) + repl + match.group(4)
 
-        def replace_person(match):
+        def repl_name(match):
             try:
-                index = int(match.group(1))
-            except IndexError:
+                index = int(match.group(3))
+            except (IndexError, ValueError):
                 index = 0
-            return COMMON_PERSON_NAMES[index]
+            repl = COMMON_PERSON_NAMES[index]
+            return match.group(1) + repl + match.group(4)
 
-        string = re.sub(nr_place, replace_place, string)
-        string = re.sub(place, replace_place, string)
-        string = re.sub(nr_pers, replace_person, string)
-        string = re.sub(pers, replace_person, string)
+        string = re.sub(place_pat, repl_place, string)
+        string = re.sub(pers_pat, repl_name, string)
 
         return string
 
@@ -194,6 +196,8 @@ class SifReader:
 
         self.target_utt_ids: bool = False
 
+        self.replace_mapping: Dict = {}
+
         self.read()
         self.parse_metadata()
 
@@ -238,7 +242,7 @@ class SifReader:
         return [c for c in self.content if isinstance(c, Utterance)]
 
     def any_pattern_match(self, string: str) -> bool:
-        for ptn, _ in self.patterns.values():
+        for ptn, _func in self.patterns.values():
             if re.match(ptn, string):
                 return True
         return False
@@ -288,7 +292,8 @@ class SifReader:
         logger.info(
             f'CHAT-Converter:\treading {os.path.basename(self.file_path)}')
         with open(self.file_path, 'r') as f:
-            filled_lines = [fill_places_persons(li) for li in f.readlines()]
+            lstripped_lines = [li.lstrip() for li in f.readlines()]
+            filled_lines = [fill_places_persons(li) for li in lstripped_lines]
             concatenated_lines = self.concatenate_multiline_utterances(
                 filled_lines)
             for line in concatenated_lines:
@@ -307,7 +312,7 @@ class SifReader:
                             k = i + j + 1  # real index of nextline
                             skiplines.add(k)
                             results[-1] = results[-1].replace(
-                                '\n', '') + nextline
+                                '\n', ' ') + nextline
                         else:
                             break
                 else:
