@@ -28,6 +28,12 @@ DEBUG = True
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(' ')
 ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
 # Application definition
 ALPINO_HOST = 'alpino'
 ALPINO_PORT = 7001
