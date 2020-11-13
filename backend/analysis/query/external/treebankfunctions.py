@@ -2,8 +2,8 @@
 various treebank functions
 
 '''
-from lxml import etree
 import logging
+from lxml import etree
 
 logger = logging.getLogger('sasta')
 
@@ -36,11 +36,11 @@ allrels = ['hdf', 'hd', 'cmp', 'sup', 'su', 'obj1', 'pobj1', 'obj2', 'se', 'pc',
 allcats = ['smain', 'np', 'ppart', 'pp', 'ssub', 'inf', 'cp', 'du', 'ap', 'advp', 'ti',
            'rel', 'whrel', 'whsub', 'conj', 'whq', 'oti', 'ahi', 'detp', 'sv1', 'svan', 'mwu', 'top']
 
-clausecats = ['smain', 'ssub', 'inf', 'cp', 'ti', 'rel',
-              'whrel', 'whsub', 'whq', 'oti', 'ahi', 'sv1', 'svan']
+clausecats = ['smain',  'ssub', 'inf', 'cp',  'ti', 'rel',
+              'whrel', 'whsub',  'whq', 'oti', 'ahi',  'sv1', 'svan']
 
-trueclausecats = ['smain', 'cp', 'rel',
-                  'whrel', 'whsub', 'whq', 'sv1', 'svan']
+trueclausecats = ['smain',  'cp',   'rel',
+                  'whrel', 'whsub',  'whq',    'sv1', 'svan']
 
 complrels = ['su', 'obj1', 'pobj1', 'obj2',
              'se', 'pc', 'vc', 'svp', 'predc', 'ld']
@@ -48,15 +48,16 @@ complrels = ['su', 'obj1', 'pobj1', 'obj2',
 mainclausecats = ['smain', 'whq', 'sv1']
 
 
-# uttidquery = ".//meta[@name='uttid']/@value"
-sentidquery = ".//sentence[@name='sentid']/@value"
-# altquery = ".//meta[@name='alt']/@value"
-metaquerytemplate = ".//meta[@name='{}']/@value"
+#uttidquery = "//meta[@name='uttid']/@value"
+sentidquery = "//sentence[@name='sentid']/@value"
+#altquery = "//meta[@name='alt']/@value"
+metaquerytemplate = "//meta[@name='{}']/@value"
 uniquecounter = 0
 
 
-def getmeta(syntree, attname):
-    thequery = metaquerytemplate.format(attname)
+def getmeta(syntree, attname, treebank=True):
+    prefix = "." if treebank else ""
+    thequery = prefix + metaquerytemplate.format(attname)
     result = getqueryresult(syntree, xpathquery=thequery)
     return result
 
@@ -285,7 +286,7 @@ def is_left_sibling(node1, node2):
 def get_left_siblings(node):
     thesiblings = node.xpath('../node')
     theleftsiblings = [s for s in thesiblings if is_left_sibling(s, node)]
-    return theleftsiblings
+    return theleftsibling
 
 
 def getmarkedutt(m, syntree):

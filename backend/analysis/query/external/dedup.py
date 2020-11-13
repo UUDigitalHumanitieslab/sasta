@@ -2,9 +2,8 @@
 # - prefixes
 # sort tests
 
-import os
 from optparse import OptionParser
-
+import os
 from lxml import etree
 
 from . import compounds
@@ -28,8 +27,9 @@ incomplete_zijn = '''
 '''
 
 incomplete_hebben = '''
-//node[node[@rel="hd" and @lemma="hebben"] and
+//node[node[@rel="hd" and @lemma="hebben"] and 
        (not(node[@rel="obj1" or @rel="vc" or @rel="svp"]) )
+        
        and count(.//node[@pt]) < 6
       ]
 '''
@@ -79,9 +79,9 @@ def findcorrections(nodelist):
     wordlist = [getattval(n, 'word') for n in nodelist]
     resultlist = []
     lnodelist = len(nodelist)
-    for i in range(lnodelist - 1):
+    for i in range(lnodelist-1):
         n1 = nodelist[i]
-        n2 = nodelist[i + 1]
+        n2 = nodelist[i+1]
         if getattval(n1, 'pt') == getattval(n2, 'pt'):
             resultlist.append((n1, n2))
     return resultlist
@@ -136,9 +136,9 @@ def remove_duplicates(wl):
     ml = lwl // 2
     tobedeleted = []
     for curlen in range(ml, 0, -1):
-        for startpos in range(0, lwl - 2 * curlen + 1, 1):
-            if isduplicate(wl[startpos:startpos + curlen], wl[startpos + curlen:startpos + 2 * curlen]):
-                newwl = wl[:startpos] + wl[startpos + curlen:]
+        for startpos in range(0, lwl-2*curlen+1, 1):
+            if isduplicate(wl[startpos:startpos+curlen], wl[startpos+curlen:startpos + 2 * curlen]):
+                newwl = wl[:startpos] + wl[startpos+curlen:]
                 result = remove_duplicates(newwl)
                 stop = True
                 break
@@ -154,11 +154,10 @@ def find_duplicates(wl):  # applies to a token list
     ml = lwl // 2
     result = []
     for curlen in range(ml, 0, -1):
-        for startpos in range(0, lwl - 2 * curlen + 1, 1):
-            if istokenduplicate(wl[startpos:startpos + curlen], wl[startpos + curlen:startpos + 2 * curlen]):
-                result = [wl[p].pos for p in range(
-                    startpos, startpos + curlen)]
-                newwl = wl[:startpos] + wl[startpos + curlen:]
+        for startpos in range(0, lwl-2*curlen+1, 1):
+            if istokenduplicate(wl[startpos:startpos+curlen], wl[startpos+curlen:startpos + 2 * curlen]):
+                result = [wl[p].pos for p in range(startpos, startpos+curlen)]
+                newwl = wl[:startpos] + wl[startpos+curlen:]
                 result += find_duplicates(newwl)
                 stop = True
                 break
@@ -174,10 +173,10 @@ def find_duplicatenodes(wl):  # applies to a sequence of Lassy word nodes
     ml = lwl // 2
     result = []
     for curlen in range(ml, 0, -1):
-        for startpos in range(0, lwl - 2 * curlen + 1, 1):
-            if istokennodeduplicate(wl[startpos:startpos + curlen], wl[startpos + curlen:startpos + 2 * curlen]):
-                result = [wl[p] for p in range(startpos, startpos + curlen)]
-                newwl = wl[:startpos] + wl[startpos + curlen:]
+        for startpos in range(0, lwl-2*curlen+1, 1):
+            if istokennodeduplicate(wl[startpos:startpos+curlen], wl[startpos+curlen:startpos + 2 * curlen]):
+                result = [wl[p] for p in range(startpos, startpos+curlen)]
+                newwl = wl[:startpos] + wl[startpos+curlen:]
                 result += find_duplicatenodes(newwl)
                 stop = True
                 break
@@ -189,9 +188,9 @@ def find_duplicatenodes(wl):  # applies to a sequence of Lassy word nodes
 def find_janeenouduplicatenodes(wl):
     resultlist = []
     lwl = len(wl)
-    for i in range(lwl - 1):
+    for i in range(lwl-1):
         wliw = getattval(wl[i], 'word')
-        wli1w = getattval(wl[i + 1], 'word')
+        wli1w = getattval(wl[i+1], 'word')
         lcwliw = wliw.lower()
         lcwli1w = wli1w.lower()
         if lcwliw in janeenouset and lcwliw == lcwli1w:
@@ -294,7 +293,7 @@ def mlux(stree):
         cleantokennodelist = [
             n for n in cleantokennodelist if n not in tswnodes]
 
-        # corrections = findcorrections(cleantokennodelist)
+        #corrections = findcorrections(cleantokennodelist)
         # if corrections != []:
         #    cleanwordlist = [getattval(n, 'word') for n in cleantokennodelist]
         #    print(space.join(cleanwordlist), file=testfile)
@@ -305,8 +304,9 @@ def mlux(stree):
 
         # remove words in incomplete sentences
         isws = incompletetreeleaves(stree)
-        resultnodelist += isws
-        cleantokenlist = [n for n in cleantokennodelist if n not in isws]
+        pureisws = [n for n in isws if n in cleantokennodelist]
+        resultnodelist += pureisws
+        cleantokenlist = [n for n in cleantokennodelist if n not in pureisws]
     return resultnodelist
 
 
@@ -390,8 +390,7 @@ def samplesize(stree):
         n for n in tokennodelist if n not in janeenouduplicatenodes]
 
     # find prefix herhalingen < 50%
-    def cond(x, y):
-        return len(cleanwordof(x)) / len(cleanwordof(y)) < .5
+    def cond(x, y): return len(cleanwordof(x)) / len(cleanwordof(y)) < .5
     prefixnodes = markprefixwords(tokennodelist, cond)
     resultlist += prefixnodes
     tokennodelist = [n for n in tokennodelist if n not in prefixnodes]
@@ -820,7 +819,7 @@ for x in streestrings:
 
 streemluxtestlist = [(strees[1], ['2', '4', '5', '6', '14']), (strees[2], ['1', '5']), (strees[3], ['2']), (strees[4], ['2', '3', '4', '5', '6', '7', '8']),
                      (strees[5], ['2', '4']), (strees[6], ['2'])]
-streesamplesizetestlist = [(strees[1], ['1', '3', '7', '8', '10', '13', '22']), (strees[2], ['2', '4']), (strees[3], ['1']), (strees[4], ['1']), (strees[5], ['1', '3']),
+streesamplesizetestlist = [(strees[1], ['1', '3', '7', '8',  '10', '13', '22']), (strees[2], ['2', '4']), (strees[3], ['1']), (strees[4], ['1']), (strees[5], ['1', '3']),
                            (strees[6], ['1', '5', '6', '7', '8', '9', '12', '13'])]
 
 

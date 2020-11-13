@@ -1,7 +1,13 @@
-from .treebankfunctions import parent, getattval, get_left_siblings
+from .treebankfunctions import (
+    parent, is_left_sibling, getattval, get_left_siblings)
+
 
 nietxpath = './/node[@lemma="niet"]'
 wordxpath = './/node[@pt]'
+
+vzn1xpath = './/node[ @cat="pp" and (node[@pt="vz"] and node[(@pt="n" or @pt="vnw") and @rel="obj1"] and not(node[@pt="vz" and @vztype="fin"]))]'
+vzn2xpath = './/node[node[@lemma="in" and @rel="mwp"] and node[@lemma="deze" and @rel="mwp"]]'
+vzn3xpath = './/node[@pt="vz" and ../node[(@lemma="dit" or @lemma="dat")  and @begin=../node[@pt="vz"]/@end and count(node)<=3] ]'
 
 
 def xneg(stree):
@@ -36,3 +42,11 @@ def xneg_neg(stree):
 def xneg_x(stree):
     (x, neg) = xneg(stree)
     return x
+
+
+def VzN(stree):
+    results = []
+    results += stree.xpath(vzn1xpath)
+    results += stree.xpath(vzn2xpath)
+    results += stree.xpath(vzn3xpath)
+    return results
