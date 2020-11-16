@@ -28,6 +28,7 @@ export class CorpusComponent implements OnInit {
 
   tams: Method[];
   currentTam: Method;
+  defaultTam: Method;
   groupedTams: SelectItemGroup[];
 
   faFile = faFile;
@@ -79,7 +80,16 @@ export class CorpusComponent implements OnInit {
   get_corpus() {
     this.corpusService
       .get_by_id(this.id)
-      .subscribe(res => this.corpus = res);
+      .subscribe(res => {
+        this.corpus = res;
+        if (res.default_method != null) {
+          this.methodService
+            .get_by_id(res.default_method)
+            .subscribe(res => {
+              this.defaultTam = res
+            });
+        }
+      });
   }
 
   showChat(transcript: Transcript) {
@@ -92,6 +102,7 @@ export class CorpusComponent implements OnInit {
 
   showDialog(transcript: Transcript) {
     this.currentTranscript = transcript;
+    this.currentTam = this.defaultTam;
     this.displayScore = true;
   }
 
