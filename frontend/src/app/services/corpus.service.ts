@@ -10,14 +10,9 @@ export class CorpusService {
 
   constructor(private httpClient: HttpClient) { }
 
-  async list(): Promise<Corpus[]> {
-    return await this.httpClient.get<Corpus[]>('api/corpora/').toPromise();
-  }
-
-  list_obs(): Observable<Corpus[]> {
+  list(): Observable<Corpus[]> {
     return this.httpClient.get<Corpus[]>('api/corpora/');
   }
-
 
   get_by_id(id): Observable<Corpus> {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/`);

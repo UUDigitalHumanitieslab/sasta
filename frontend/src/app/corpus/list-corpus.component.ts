@@ -1,11 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Store, select, State } from '@ngrx/store';
-import { Subscription, interval } from 'rxjs';
-import { storeStructure } from '../store';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, interval, Observable } from 'rxjs';
+import { flatMap, startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
-import { refreshList } from '../store/corpus.actions';
-import { startWith } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { CorpusService } from '../services/corpus.service';
 
 // check every 10 seconds
@@ -16,22 +12,30 @@ const UPDATE_INTERVAL = 10000;
   templateUrl: './list-corpus.component.html',
   styleUrls: ['./list-corpus.component.scss']
 })
-export class ListCorpusComponent implements OnInit {
-  subscriptions: Subscription[];
+export class ListCorpusComponent implements OnInit, OnDestroy {
+  private subscription$: Subscription;
+  interval$: Observable<number>;
   corpora: Corpus[];
 
-  constructor(private corpusService: CorpusService) {
-  }
-
-
+  constructor(private corpusService: CorpusService) { }
 
   ngOnInit() {
-    this.corpusService
-      .list_obs()
+    this.interval$ = interval(UPDATE_INTERVAL);
+    this.subscription$ = this.interval$
+      .pipe(
+        startWith(0),
+        flatMap(() => this.corpusService.list())
+      )
       .subscribe(
-        res => this.corpora = res,
-        err => console.log(err)
+        res => {
+          this.corpora = res;
+        },
+        err => console.error(err)
       );
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 
 }
