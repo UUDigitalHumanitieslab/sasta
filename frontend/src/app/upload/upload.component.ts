@@ -1,14 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Store, select } from '@ngrx/store';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
-import { storeStructure } from '../store';
 import { Corpus } from '../models/corpus';
-import { Subscription } from 'rxjs';
 import { CorpusService } from '../services/corpus.service';
-import { UploadFile } from '../models/upload-file';
 import { UploadFileService } from '../services/upload-file.service';
 
 @Component({
@@ -16,7 +12,7 @@ import { UploadFileService } from '../services/upload-file.service';
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnDestroy, OnInit {
+export class UploadComponent implements OnInit {
     content: File;
     newCorpusName: string;
 
@@ -24,35 +20,16 @@ export class UploadComponent implements OnDestroy, OnInit {
     faUpload = faUpload;
 
     uploading: boolean;
-    subscriptions: Subscription[];
 
     corpora: Corpus[];
     selectedCorpus: Corpus;
 
-    constructor(private store: Store<storeStructure>,
-        private router: Router,
-        private corpusService: CorpusService,
-        private uploadFileService: UploadFileService) {
-        this.subscriptions = [
-            this.store.pipe(select('uploadFiles')).subscribe((uploadFiles: UploadFile[]) => {
-                // information about the file is available
-                if (this.uploading) {
-                    const file = uploadFiles.find(x => x.content.name === this.content.name);
-                    if (file.status === 'uploaded') {
-                        router.navigate(['/corpora']);
-                    }
-                }
-            })
-        ];
+    constructor(private router: Router, private corpusService: CorpusService, private uploadFileService: UploadFileService) {
     }
 
     ngOnInit() {
         this.corpusService.list()
-            .then(response => { this.corpora = response; });
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+            .subscribe(res => this.corpora = res);
     }
 
     fileChange(fileInput: HTMLInputElement) {
@@ -66,7 +43,7 @@ export class UploadComponent implements OnDestroy, OnInit {
 
     upload() {
         this.uploading = true;
-        this.uploadFileService.upload_obs({
+        this.uploadFileService.upload({
             name: this.fileName,
             content: this.content,
             status: 'uploading',

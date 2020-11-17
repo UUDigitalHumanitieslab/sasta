@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccordionModule } from 'primeng/accordion';
 import { MessageService } from 'primeng/api';
@@ -30,7 +28,6 @@ import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
-import { effects, reducers } from './store';
 import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
@@ -60,8 +57,6 @@ import { UploadComponent } from './upload/upload.component';
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken'
         }),
-        EffectsModule.forRoot(effects),
-        StoreModule.forRoot(reducers),
         NgxJsonViewerModule,
         // PrimeNG
         AccordionModule,

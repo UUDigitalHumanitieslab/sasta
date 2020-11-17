@@ -3,4 +3,4 @@ export interface MethodCategory {
     zc_embedding: boolean;
     levels: string[];
     has_form: boolean;
-};
+}
