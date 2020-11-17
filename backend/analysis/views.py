@@ -106,7 +106,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='toCHAT')
     def toCHAT(self, request, *args, **kwargs):
         transcript = self.get_object()
-        if transcript.status == 'converted':
+        if transcript.status == Transcript.CONVERTED:
             return Response(self.get_serializer(transcript).data)
         result = convert(transcript)
         if result:
@@ -116,11 +116,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='parse')
     def parse(self, request, *args, **kwargs):
         transcript = self.get_object()
-        if transcript.status in ('converted', 'parsing-failed'):
+        if transcript.status in (Transcript.CONVERTED, Transcript.PARSING_FAILED):
             result = parse_and_create(transcript)
             if result:
                 return Response(self.get_serializer(result).data)
-        if transcript.status == 'parsed':
+        if transcript.status == Transcript.PARSED:
             return Response(self.get_serializer(transcript).data)
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
@@ -143,7 +143,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
-            Q(status='created') | Q(status='conversion-failed'))
+            Q(status=Transcript.CREATED) | Q(status=Transcript.CONVERSION_FAILED))
 
         for t in transcripts:
             res = convert(t)
@@ -156,7 +156,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
-            Q(status='converted') | Q(status='parsing-failed'))
+            Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED))
         for t in transcripts:
             res = parse_and_create(t)
             if not res:

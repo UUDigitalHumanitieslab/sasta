@@ -85,7 +85,7 @@ def create_transcript(file, content_path):
     file_content = open(content_path, 'rb')
     transcript = Transcript(
         name=filename.strip('.txt'),
-        status='created',
+        status=Transcript.CREATED,
         corpus=file.corpus,
         extracted_filename=content_path
     )

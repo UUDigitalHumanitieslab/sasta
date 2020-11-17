@@ -61,6 +61,22 @@ class Corpus(models.Model):
 
 
 class Transcript(models.Model):
+    UNKNOWN = 0
+    CREATED = 1
+    CONVERTING, CONVERTED, CONVERSION_FAILED = 2, 3, 4
+    PARSING, PARSED, PARSING_FAILED = 5, 6, 7
+
+    STATUS_CHOICES = (
+        (UNKNOWN, 'unknown'),
+        (CREATED, 'created'),
+        (CONVERTING, 'converting'),
+        (CONVERTED, 'converted'),
+        (CONVERSION_FAILED, 'conversion-failed'),
+        (PARSING, 'parsing'),
+        (PARSED, 'parsed'),
+        (PARSING_FAILED, 'parsing-failed'),
+    )
+
     def upload_path(self, filename):
         return os.path.join('files', f'{self.corpus.uuid}',
                             'transcripts', filename)
@@ -70,7 +86,8 @@ class Transcript(models.Model):
                             'parsed', filename)
 
     name = models.CharField(max_length=255)
-    status = models.CharField(max_length=50)
+    status = models.PositiveIntegerField(
+        choices=STATUS_CHOICES, default=UNKNOWN)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.CASCADE)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)

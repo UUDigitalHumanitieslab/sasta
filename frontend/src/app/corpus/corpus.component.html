@@ -19,19 +19,19 @@
         <tbody>
             <tr *ngFor="let transcript of corpus.transcripts">
                 <td>{{transcript.name}}</td>
-                <td>{{transcript.status}}</td>
+                <td>{{transcript.status_name}}</td>
                 <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
                 <td>
                     <div class="buttons">
                         <button class="button is-primary" pTooltip="view CHAT"
-                            [disabled]="!(transcript.status=='converted' || transcript.status=='parsed')"
+                            [disabled]="!(transcript.status_name=='converted' || transcript.status_name=='parsed')"
                             (click)="showChat(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faFile"></fa-icon>
                             </span>
                         </button>
                         <button class="button is-primary" pTooltip="view alpino parse"
-                            [disabled]="!(transcript.status=='parsed')" (click)="showLassy(transcript)">
+                            [disabled]="!(transcript.status_name=='parsed')" (click)="showLassy(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faFileCode"></fa-icon>
                             </span>
@@ -41,7 +41,7 @@
                 <td class="has-text-right">
                     <div class="buttons is-right">
                         <button class="button is-primary" pTooltip="query transcript"
-                            [disabled]="!(transcript.status=='parsed')" (click)="showDialog(transcript)">
+                            [disabled]="!(transcript.status_name=='parsed')" (click)="showDialog(transcript)">
                             <span class="icon is-small">
                                 <fa-icon [icon]="faCalculator"></fa-icon>
                             </span>

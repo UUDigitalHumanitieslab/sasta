@@ -1,10 +1,11 @@
 import os
 
 from .chat_converter import SifReader
+from analysis.models import Transcript
 
 
 def convert(transcript):
-    transcript.status = 'converting'
+    transcript.status = Transcript.CONVERTING
     transcript.save()
 
     try:
@@ -22,11 +23,11 @@ def convert(transcript):
         os.remove(transcript.content.path)
         # set transcript file to .cha file
         transcript.content = cha_name
-        transcript.status = 'converted'
+        transcript.status = Transcript.CONVERTED
         transcript.save()
         return transcript
 
     except Exception:
-        transcript.status = 'conversion-failed'
+        transcript.status = Transcript.CONVERSION_FAILED
         transcript.save()
         raise

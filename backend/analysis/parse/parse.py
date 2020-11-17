@@ -12,7 +12,7 @@ from corpus2alpino.writers.lassy import LassyWriter
 from django.core.files import File
 from django.conf import settings
 
-from analysis.models import Utterance
+from analysis.models import Utterance, Transcript
 
 logger = logging.getLogger('sasta')
 
@@ -37,7 +37,7 @@ def parse_and_create(transcript):
 
 
 def parse_transcript(transcript, output_dir, output_path):
-    transcript.status = 'parsing'
+    transcript.status = Transcript.PARSING
     transcript.save()
 
     try:
@@ -57,7 +57,7 @@ def parse_transcript(transcript, output_dir, output_path):
         parses = converter.convert()
         for _parse in parses:
             logger.info(f'Succesfully parsed:\t{transcript.name}\n')
-        transcript.status = 'parsed'
+        transcript.status = Transcript.PARSED
         transcript.save()
         parsed_file_content = open(output_path, 'rb')
         parsed_filename = os.path.basename(
@@ -70,7 +70,7 @@ def parse_transcript(transcript, output_dir, output_path):
     except Exception:
         logger.exception(
             f'ERROR parsing {transcript.name}')
-        transcript.status = 'parsing-failed'
+        transcript.status = Transcript.PARSING_FAILED
         transcript.save()
 
 
