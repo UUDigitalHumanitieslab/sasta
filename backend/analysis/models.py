@@ -5,14 +5,14 @@ from io import BytesIO
 from itertools import chain
 from uuid import uuid4
 
+from analysis.query.external_functions import form_map
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-
-from .utils import get_items_list
 from lxml import etree as ET
 
-from analysis.query.external_functions import form_map
+from .managers import TranscriptManager
+from .utils import get_items_list
 
 logger = logging.getLogger('sasta')
 
@@ -95,6 +95,8 @@ class Transcript(models.Model):
         upload_to=upload_path_parsed, blank=True, null=True)
     extracted_filename = models.CharField(
         max_length=500, blank=True, null=True)
+
+    objects = TranscriptManager()
 
     def __str__(self):
         return self.name
