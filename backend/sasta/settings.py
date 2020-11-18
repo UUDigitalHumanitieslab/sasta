@@ -169,6 +169,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Celery stuff
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
+CELERY_BROKER_URL = 'amqp://'
+CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_IGNORE_RESULT = False
+CELERY_TIMEZONE = TIME_ZONE
 
 # Logs
 # TODO: set log locations on deployment
