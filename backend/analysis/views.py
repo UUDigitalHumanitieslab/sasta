@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from analysis.query.run import query_transcript
+from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from django.db.models import Q
 from django.http import HttpResponse
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
-
-from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .convert.convert import convert
-from .models import AssessmentMethod, Corpus, Transcript, UploadFile, MethodCategory
+from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
+                     UploadFile)
 from .parse.parse import parse_and_create
+from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
-from .permissions import IsCorpusOwner, IsCorpusChildOwner
 
 # flake8: noqa: E501
 
@@ -182,3 +183,35 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
 class MethodCategoryViewSet(viewsets.ModelViewSet):
     queryset = MethodCategory.objects.all()
     serializer_class = MethodCategory
+
+
+class ProcessAllTranscriptsView(APIView):
+
+    def get(self, request):
+        to_convert = Transcript.objects.need_converting()
+        to_parse = Transcript.objects.need_parsing()
+
+        if (not to_convert) and (not to_parse):
+            return Response('Nothing to do.', status=status.HTTP_204_NO_CONTENT)
+
+        if to_convert:
+            print(f'Attempting to convert {len(to_convert)} transcripts.')
+            for obj in to_convert:
+                res = convert(obj)
+                if res:
+                    print(f'succes for {obj.pk}')
+                else:
+                    print(f'failure for {obj.pk}')
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        if to_parse:
+            print(f'Attempting to parse {len(to_parse)} transcripts.')
+            for obj in to_parse:
+                res = parse_and_create(obj)
+                if res:
+                    print(f'succes for {obj.pk}')
+                else:
+                    print(f'failure for {obj.pk}')
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response('Something went wrong!', status=status.HTTP_400_BAD_REQUEST)
