@@ -82,7 +82,8 @@ export class CorpusComponent implements OnInit {
       .get_by_id(this.id)
       .subscribe(res => {
         this.corpus = res;
-        if (res.default_method != null) {
+        // retrieve default method
+        if (res.default_method) {
           this.methodService
             .get_by_id(res.default_method)
             .subscribe(res => {
@@ -196,6 +197,11 @@ export class CorpusComponent implements OnInit {
           console.log(err);
           this.messageService.add({ severity: 'error', summary: 'Error removing transcript', detail: err.message, sticky: true });
         });
+  }
+
+  changeDefaultMethod() {
+    this.corpusService
+      .set_default_method(this.defaultTam ? this.defaultTam.id : null)
   }
 
   downloadZip() {
