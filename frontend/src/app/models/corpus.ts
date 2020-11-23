@@ -1,4 +1,3 @@
-import { Method } from './method';
 import { Transcript } from './transcript';
 
 export interface Corpus {
@@ -6,6 +5,6 @@ export interface Corpus {
     name: string;
     status: 'created';
     files?: File | { name: string }[];
-    default_method?: Method;
+    default_method?: number;
     transcripts?: Transcript[];
 }

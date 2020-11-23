@@ -58,7 +58,7 @@ export class CorpusService {
   set_default_method(id, methodID): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('method', methodID);
-    return this.httpClient.post(`api/corpora/${id}/setdefaultmethod/`, formData, { observe: 'response', responseType: 'blob' });
+    return this.httpClient.post(`api/corpora/${id}/defaultmethod/`, formData);
   }
 
 }

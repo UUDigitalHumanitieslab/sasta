@@ -163,13 +163,13 @@ class CorpusViewSet(viewsets.ModelViewSet):
         return response
     
     @action(detail=True, methods=['POST'], name='setdefaultmethod')
-    def setdefaultmethod(self, request, *args, **kwargs):
+    def defaultmethod(self, request, *args, **kwargs):
         corpus = self.get_object()
         method_id = request.data.get('method')
-        if method_id != 'null':
-            method = AssessmentMethod.objects.get(pk=method_id)   
-        else:
+        if method_id == 'null':
             method = None
+        else:
+            method = AssessmentMethod.objects.get(pk=method_id)
         corpus.default_method = method
         corpus.save()
         return Response('Succes')
