@@ -34,12 +34,59 @@ class CompoundFile(models.Model):
         return os.path.split(self.content.name)[1]
 
 
+class MethodCategory(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    zc_embeddings = models.BooleanField()
+    levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'method categories'
+
+    def get_form_function(self):
+        try:
+            return form_map.get(self.name)
+        except KeyError:
+            return None
+
+    def has_form(self):
+        return True if self.get_form_function() else False
+
+
+class AssessmentMethod(models.Model):
+    def upload_path(self, filename):
+        return os.path.join('files', 'TAMs', filename)
+
+    name = models.CharField(max_length=50)
+    date_added = models.DateField(auto_now_add=True)
+    content = models.FileField(upload_to=upload_path, blank=True, null=True)
+    category = models.ForeignKey(
+        MethodCategory, related_name='definitions', blank=True, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        unique_together = (('category', 'name'))
+
+    def get_item_mapping(self, sep):
+        queries = self.queries.all()
+        mapping = {}
+        for q in queries:
+            mapping.update(q.get_item_mapping(sep))
+        return mapping
+
+
 class Corpus(models.Model):
     user = models.ForeignKey(
         User, related_name='corpora', on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
     uuid = models.UUIDField(default=uuid4)
+    default_method = models.ForeignKey(AssessmentMethod, 
+        on_delete=models.SET_NULL, related_name = 'corpora', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -117,49 +164,6 @@ class UploadFile(models.Model):
         return self.name
 
 
-class MethodCategory(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    zc_embeddings = models.BooleanField()
-    levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = 'method categories'
-
-    def get_form_function(self):
-        try:
-            return form_map.get(self.name)
-        except KeyError:
-            return None
-
-    def has_form(self):
-        return True if self.get_form_function() else False
-
-
-class AssessmentMethod(models.Model):
-    def upload_path(self, filename):
-        return os.path.join('files', 'TAMs', filename)
-
-    name = models.CharField(max_length=50)
-    date_added = models.DateField(auto_now_add=True)
-    content = models.FileField(upload_to=upload_path, blank=True, null=True)
-    category = models.ForeignKey(
-        MethodCategory, related_name='definitions', blank=True, null=True, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        unique_together = (('category', 'name'))
-
-    def get_item_mapping(self, sep):
-        queries = self.queries.all()
-        mapping = {}
-        for q in queries:
-            mapping.update(q.get_item_mapping(sep))
-        return mapping
 
 
 class AssessmentQuery(models.Model):

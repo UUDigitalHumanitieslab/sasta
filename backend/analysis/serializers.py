@@ -42,7 +42,7 @@ class CorpusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Corpus
-        fields = ('id', 'name', 'status', 'files', 'transcripts')
+        fields = ('id', 'name', 'status', 'default_method', 'files', 'transcripts')
 
 
 class AssessmentQuerySerializer(serializers.ModelSerializer):

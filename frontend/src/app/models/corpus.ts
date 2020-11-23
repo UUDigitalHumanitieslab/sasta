@@ -5,5 +5,6 @@ export interface Corpus {
     name: string;
     status: 'created';
     files?: File | { name: string }[];
+    default_method?: number;
     transcripts?: Transcript[];
 }
