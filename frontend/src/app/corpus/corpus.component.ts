@@ -201,7 +201,14 @@ export class CorpusComponent implements OnInit {
 
   changeDefaultMethod() {
     this.corpusService
-      .set_default_method(this.defaultTam ? this.defaultTam.id : null)
+      .set_default_method(this.corpus.id, this.defaultTam ? this.defaultTam.id : null)
+      .subscribe(
+        reponse => {},
+        err => {
+          console.log(err);
+          this.messageService.add({severity: 'error', summary: 'Error changing default method', detail: err.message, sticky: true })
+        }
+      )
   }
 
   downloadZip() {
