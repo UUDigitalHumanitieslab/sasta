@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../models/user';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-// import { version } from '../../../../package.json';
+import { environment } from '../../environments/environment';
 
 @Component({
     animations,
@@ -19,9 +19,10 @@ export class MenuComponent implements OnInit {
     public isAuthenticated$ = this.authService.isAuthenticated$;
 
     faUser = faUser;
-    // version = version;
+    version = environment.appVersion;
 
-    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) { }
+    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) {
+    }
 
     ngOnInit() {
         this.isAuthenticated$.subscribe(authenticated => {
