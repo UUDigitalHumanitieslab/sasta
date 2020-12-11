@@ -10,10 +10,15 @@ ANONYMIZATIONS = [
         'common': ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
     },
     {
+        'category': 'lastname',
+        'codes': ['ACHTERNAAM'],
+        'common': ['Jansen', 'Hendriks', 'Dekker', 'Dijkstra', 'Veenstra']
+    },
+    {
         'category': 'person',
         'codes': ['NAAM', 'BROER', 'ZUS', 'KIND'],
         'common': ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
-    }
+    },
 ]
 
 

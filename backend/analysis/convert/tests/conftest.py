@@ -14,7 +14,7 @@ def replace_names():
         ('Ik heet VOORNAAM.', 'Ik heet Maria.', '8|VOORNAAM|Maria'),
         ('Ik heet NAAMOVERIG1.', 'Ik heet Jan.', '8|NAAMOVERIG1|Jan'),
         ('Ik heet VOORNAAM1.', 'Ik heet Jan.', '8|VOORNAAM1|Jan'),
-        ('Ik heet ACHTERNAAM1.', 'Ik heet Jan.', '8|ACHTERNAAM1|Jan'),
+        ('Ik heet ACHTERNAAM1.', 'Ik heet Hendriks.', '8|ACHTERNAAM1|Hendriks'),
         ('Ik heet TWEELINGZUS.', 'Ik heet Maria.', '8|TWEELINGZUS|Maria'),
         ('Ik heet NAAM1 en hij heet NAAM2.',
          'Ik heet Jan en hij heet NAAM2.',
@@ -24,7 +24,11 @@ def replace_names():
          '32|PLAATSNAAM1|Breda'),
         ('15 | PMA: in het uh hier in het PLAATSNAAM uh silahe ',
          '15 | PMA: in het uh hier in het Utrecht uh silahe ',
-         '32|PLAATSNAAM|Utrecht')
+         '32|PLAATSNAAM|Utrecht'),
+        ('Mijn achternaam is ACHTERNAAM2',
+         'Mijn achternaam is Dekker',
+         '19|ACHTERNAAM2|Dekker'
+         )
     ]
 
 
@@ -37,7 +41,7 @@ def replace_punc():
          'Dit (.) is (..) een (...) voorbeeldzin.', None),
         ('Dit is een voorbeeldzin...', 'Dit is een voorbeeldzin+...', '23|...|+...'),
         ('Dit is een voorbeeldzin…', 'Dit is een voorbeeldzin+...', '23|…|+...'),
-        ('Bla bla # bla...', 'Bla bla (.) bla+...', '8|#|(.),13|...|+...'),
+        ('Bla bla # bla', 'Bla bla (.) bla', '8|#|(.)'),
     ]
 
 
@@ -92,4 +96,14 @@ def example_utterances():
             'exp_text': 'Ik heet (.) Maria.',
             'exp_tiers': {'xpct': '8|#|(.)', 'xano': '10|NAAM|Maria'},
         },
+        {
+            'text': 'XXX deed ik met VOORNAAM2 ACHTERNAAM2 deed ik samen VOORNAAM2 ACHTERNAAM2.',
+            'exp_text': 'XXX deed ik met Anna Dekker deed ik samen Anna Dekker.',
+            'exp_tiers': {'xano': '26|ACHTERNAAM2|Dekker, 57|ACHTERNAAM2|Dekker, 16|VOORNAAM2|Anna, 42|VOORNAAM2|Anna'}
+        },
+        {
+            'text': 'Bla bla # bla...',
+            'exp_text': 'Bla bla (.) bla+...',
+            'exp_tiers': {'xpct': '13|...|+..., 8|#|(.)'}
+        }
     ]
