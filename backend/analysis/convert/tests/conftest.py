@@ -42,6 +42,7 @@ def replace_punc():
         ('Dit is een voorbeeldzin...', 'Dit is een voorbeeldzin+...', '23|...|+...'),
         ('Dit is een voorbeeldzin…', 'Dit is een voorbeeldzin+...', '23|…|+...'),
         ('Bla bla # bla', 'Bla bla (.) bla', '8|#|(.)'),
+        ('ik noem som(s) Tony Too', 'ik noem som(s) Tony Too', None)
     ]
 
 

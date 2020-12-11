@@ -78,9 +78,9 @@ def correct_punctuation(string):
 
     # flag parentheses
     # pauses (.), (..) and (...) are okay, anything else should raise an error
-    pauses_removed = re.sub(r'\(\.{1,3}\)', '', string)
-    if '(' in pauses_removed or ')' in pauses_removed:
-        raise ValueError('Parentheses in utterances are not allowed.')
+    # pauses_removed = re.sub(r'\(\.{1,3}\)', '', string)
+    # if '(' in pauses_removed or ')' in pauses_removed:
+    #     raise ValueError('Parentheses in utterances are not allowed.')
 
     # if no replacements were made, return original with no comment
     return string, None

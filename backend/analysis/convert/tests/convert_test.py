@@ -43,16 +43,16 @@ def test_correct_punctuation(replace_punc):
         assert comment == exp_comment
 
 
-def test_flag_punctuation(flag_punc):
-    # cases where punctuation should raise an error
-    for string in flag_punc:
-        try:
-            done = False
-            while not done:
-                string, _ = correct_punctuation(string)
-            assert False
-        except ValueError as e:
-            assert e.args[0] == 'Parentheses in utterances are not allowed.'
+# def test_flag_punctuation(flag_punc):
+#     # cases where punctuation should raise an error
+#     for string in flag_punc:
+#         try:
+#             done = False
+#             while not done:
+#                 string, _ = correct_punctuation(string)
+#             assert False
+#         except ValueError as e:
+#             assert e.args[0] == 'Parentheses in utterances are not allowed.'
 
 
 def test_fill_utterance(example_utterances):

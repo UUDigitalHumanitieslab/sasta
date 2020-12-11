@@ -60,7 +60,7 @@
 *CHI:	die si o fatta. 
 %xsid:	3
 *MOT:	wat?
-*CHI:	die si op water. 
+*CHI:	die si o(p) wate(r). 
 %xsid:	4
 *MOT:	die zit op het water inderdaad. 
 *MOT:	en dan heb je Sky.
@@ -74,27 +74,27 @@
 %xano:	0|NAAM|Maria
 *CHI:	die doe &uh net doen [/] &uhm doen. 
 %xsid:	6
-*CHI:	en heel hard plaatu.  
+*CHI:	en hee(l) ha(r)d plaatu.  
 %xsid:	7
 *INV:	en hard blaffen?
-*CHI:	hard praten.
+*CHI:	ha(r)d praten.
 *MOT:	hard praten.
 *INV:	&oh.
 *MOT:	maar wat is Maria? 
 %xano:	12|BROER|Maria
-*CHI:	en hij stuk is van een dier.  
+*CHI:	en hij (s)tuk is van een dier.  
 %xsid:	8
 *CHI:	toen kan de rest thuis blijven.  
 %xsid:	9
 *CHI:	dan dee de marshmellow om de stok.
 %xsid:	10
-*CHI:	toch dan gun [: ging] <leen> [//] aleen wind.
+*CHI:	toch dan gun [: ging] <leen> [//] (a)leen wind.
 %xsid:	11
-*CHI:	jawel dan ging de wind niet uitblazen.
+*CHI:	jawel dan gin(g) de wind niet uitblazen.
 %xsid:	12
-*CHI:	&nou <an> [//] mijn broer heet PE.
+*CHI:	&nou <an> [//] mij(n) broer heet PE.
 %xsid:	13
-*CHI:	ik noem soms Tony Too.
+*CHI:	ik noem som(s) Tony Too.
 %xsid:	14
 *CHI:	nee dat is nu weer Maria.
 %xsid:	15
@@ -115,12 +115,12 @@
 %xsid:	22
 *CHI:	dan [: toen] ik klaar was dan [: toen] ging [: gingen] we naar oma.
 %xsid:	23
-*CHI:	<ik heb> [//] wij heb [: hebben] ook <Ca> [//] thuis Cars speeloet [: speelgoed]. 
+*CHI:	<ik heb> [//] wij heb [: hebben] ook <Ca> [//] thuis Ca(r)s speeloet [: speelgoed]. 
 %xsid:	24
 *INV:	echt waar?
 %com:	KIND knikt.
 *INV:	wat heb je dan allemaal voor speelgoed?
-*CHI:	een lamp fan Cwars [: Cars].
+*CHI:	een lamp fan Cwa(r)s [: Cars].
 *INV:	&oh kan je daarmee spelen met de lamp?
 %com:	KIND knikt.
 *CHI:	dan heb ook wielen. 
@@ -135,11 +135,11 @@
 *INV:	dat weet jij.
 %com:	KIND knikt.
 *INV:	&he daar mag je ook weleens mee spelen.
-*CHI:	ja een fan Cars. 
+*CHI:	ja een fan Ca(r)s. 
 %xsid:	26
 *INV:	ja een van Cars.
 *INV:	maar de anderen horen der ook bij toch?
-*CHI:	Cars su siend [: vriend] is daar ook. 
+*CHI:	Ca(r)s su siend [: vriend] is daa(r) ook. 
 %xsid:	27
 *INV:	ja Cars ze vriend ook.
 *INV:	hoe heet die ook alweer?
@@ -151,7 +151,7 @@
 %com:	KIND knikt en kijkt blij.
 *INV:	Takel &he!
 *INV:	ja Takel.
-*CHI:	desu hoor derbij. 
+*CHI:	desu hoo(r) de(r)bij. 
 %xsid:	29
 *INV:	die hoort der ook bij.
 *INV:	maar die is een beetje gemeen.
@@ -161,9 +161,9 @@
 *INV:	nee Cars niet.
 *INV:	die lacht.
 *INV:	maar Cars wint ook altijd.
-*CHI:	dus ik denk die boos op &uh Cars. 
+*CHI:	dus ik denk die boos op &uh Ca(r)s. 
 %xsid:	31
-*CHI:	ik denk het die boos is. 
+*CHI:	i(k) denk het die boos is. 
 %xsid:	32
 *INV:	ja waarom denk je dat?
 *CHI:	hij wuw [: wil] denk ik winnen. 
@@ -202,7 +202,7 @@
 *INV:	is die ook heel grappig?
 %com:	KIND knikt.
 *INV:	ja?
-*CHI:	hellu [: willen] soms spulletjes stuk maken. 
+*CHI:	hellu [: willen] som(s) (s)pulletjes stuk maken. 
 %xsid:	35
 *INV:	&oh?
 *INV:	is dat leuk?
@@ -231,7 +231,7 @@
 *INV:	ben je daar een beetje te groot voor?
 %com:	KIND knikt.
 *INV:	ja.
-*CHI:	ik kijk soms op de teefee. 
+*CHI:	ik kijk som(s) op de teefee. 
 %xsid:	38
 *INV:	&oh ja.
 *CHI:	Paw Putols <tan [: kan] fan die> [//] tan [: kan] soe [: zo] alles stuk maken. 
@@ -252,7 +252,7 @@
 *INV:	&oh ja ik ken ze niet allemaal van Paw Patrol.
 *INV:	weet je wie ik ken?
 *INV:	het meisje.
-*CHI:	Sky. 
+*CHI:	(S)ky. 
 %xsid:	43
 *INV:	Sky ja.
 *CHI:	ik ken allemaaw. 
@@ -276,7 +276,7 @@
 *INV:	wat ging je dan doen?
 %com:	KIND zwijgt en lijkt geblokkeerd.
 *INV:	ging je iemand anders lekker snoepjes brengen?
-*CHI:	dat weet ik niet meer. 
+*CHI:	dat weet ik niet mee(r). 
 %xsid:	45
 *INV:	weet je het niet meer.
 %com:	KIND schudt nee.
@@ -301,9 +301,9 @@
 *INV:	nee &he?
 *INV:	alleen jij.
 *INV:	ging je met mama samen?
-*CHI:	ik sas [: zag] lew [: wel] Maria. 
+*CHI:	i(k) sas [: zag] lew [: wel] Maria. 
 %xsid:	47
-%xano:	27|NAAM|Maria
+%xano:	29|NAAM|Maria
 *CHI:	Maria sas [: zag] ik ook. 
 %xsid:	48
 %xano:	0|NAAM|Maria
