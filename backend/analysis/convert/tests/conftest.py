@@ -58,6 +58,14 @@ def flag_punc():
 
 
 @pytest.fixture
+def quotemarks():
+    return [
+        "’t kofschip",
+        "‘t kofschip",
+        "'t kofschip"
+    ]
+
+@pytest.fixture
 def testfiles():
     here = op.dirname(op.abspath(__file__))
     fns = ['STAP_02', 'ASTA_01']

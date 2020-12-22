@@ -4,7 +4,7 @@ from os import remove as rm
 
 from analysis.utils import docx_to_txt
 from analysis.convert.chat_converter import SifReader, Utterance
-from analysis.convert.replacements import fill_name, correct_punctuation
+from analysis.convert.replacements import fill_name, correct_punctuation, replace_quotation_marks
 
 HERE = op.dirname(op.abspath(__file__))
 
@@ -69,3 +69,9 @@ def test_fill_utterance(example_utterances):
                 return tier.code == tier_code and tier.value == tier_value
 
             assert any(map(matching, utt.tiers))
+
+
+def test_quotemarks(quotemarks):
+    expected = (quotemarks[-1], None)
+    for line in quotemarks:
+        assert replace_quotation_marks(line) == expected

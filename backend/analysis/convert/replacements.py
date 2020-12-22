@@ -18,7 +18,7 @@ ANONYMIZATIONS = [
         'category': 'person',
         'codes': ['NAAM', 'BROER', 'ZUS', 'KIND'],
         'common': ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
-    },
+    }
 ]
 
 
@@ -84,3 +84,13 @@ def correct_punctuation(string):
 
     # if no replacements were made, return original with no comment
     return string, None
+
+
+def replace_quotation_marks(string):
+    ''' Replace left and right quote marks (Unicode 2018 and 2019)
+        with a single quote (ASCII 39)
+    '''
+    pattern = r"[\u2018-\u2019]"
+    res = re.sub(pattern, chr(39), string)
+
+    return res, None

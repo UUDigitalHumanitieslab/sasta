@@ -2,8 +2,10 @@ import errno
 import logging
 import os
 import re
-from typing import List, Optional, Pattern, Union, Dict
-from .replacements import fill_name, correct_punctuation
+from typing import Dict, List, Optional, Pattern, Union
+
+from .replacements import (correct_punctuation, fill_name,
+                           replace_quotation_marks)
 
 logger = logging.getLogger('sasta')
 
@@ -17,7 +19,8 @@ FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
 REPLACEMENTS = [
     {'code': 'ano', 'function': fill_name, 'allow_skip': True},
-    {'code': 'pct', 'function': correct_punctuation, 'allow_skip': False}
+    {'code': 'pct', 'function': correct_punctuation, 'allow_skip': False},
+    {'code': 'quot', 'function': replace_quotation_marks, 'allow_skip': True}
 ]
 
 
