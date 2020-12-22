@@ -1,7 +1,8 @@
 import os
-
+import logging
 from .chat_converter import SifReader
 
+logger = logging.getLogger('sasta')
 
 def convert(transcript):
     transcript.status = 'converting'
@@ -24,9 +25,11 @@ def convert(transcript):
         transcript.content = cha_name
         transcript.status = 'converted'
         transcript.save()
+        logger.info('Conversion successful')
         return transcript
 
-    except Exception:
+    except Exception as e:
         transcript.status = 'conversion-failed'
         transcript.save()
-        raise
+        logger.warn('Conversion failed')
+        #raise
