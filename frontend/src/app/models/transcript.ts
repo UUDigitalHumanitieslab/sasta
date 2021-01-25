@@ -6,6 +6,6 @@ export interface Transcript {
     content: string;
     parsed_content: string;
     status: 'created' | 'converting' | 'converted' | 'conversion-failed';
-    corpus: Corpus;
+    corpus: number;
     utterances?: any[];
 }

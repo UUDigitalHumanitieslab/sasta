@@ -10,6 +10,10 @@ export class TranscriptService {
 
   constructor(private httpClient: HttpClient) { }
 
+  get_by_id(id): Observable<Transcript> {
+    return this.httpClient.get<Transcript>(`api/transcripts/${id}/`);
+  }
+
   toCHAT(id): Promise<Transcript> {
     return this.httpClient.get<Transcript>(`api/transcripts/${id}/toCHAT/`).toPromise();
   }

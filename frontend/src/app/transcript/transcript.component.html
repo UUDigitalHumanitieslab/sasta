@@ -1,0 +1,90 @@
+<ng-container *ngIf="transcript && corpus">
+    <div class="buttons">
+        <button class="button is-link" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
+            <span class="icon is-small" style="margin-right: 0;">
+                <fa-icon [icon]="faArrowLeft"></fa-icon>
+            </span>
+            <span>{{corpus?.name}}</span>
+        </button>
+    </div>
+
+    <h1 class="title">{{transcript.name}}</h1>
+
+    <div class="block">
+        <p><strong>Status:</strong> {{transcript.status}}</p>
+        <p><strong>Number of utterances:</strong> {{transcript.utterances ? transcript.utterances.length : 0}}</p>
+    </div>
+
+
+    <div class="block">
+        <div class="buttons">
+            <button class="button is-danger"
+                (click)="deleteTranscript()">
+                <span class="icon is-small" style="margin-right: 0;">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                </span>
+                <span>Delete transcript</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="block">
+        <p-panel header="Scoring">
+            <form (submit)="performQuerying(currentTam)">
+                <div class="field">
+                    <div class="control">
+                        <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
+                            name="tam-dropdown" [group]="true" showClear="true" appendTo="body"
+                            [disabled]="!(groupedTams?.length > 0)">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
+                            [ngClass]="{'is-loading': querying}">Query</button>
+                    </div>
+                    <div class="divider is-vertical">or</div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
+                                [ngClass]="{'is-loading': querying}">Annotate</button>
+                        </div>
+                        <div class="control">
+                            <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <div class="divider is-vertical">or</div>
+                    <div class="control">
+                        <button class="button is-primary" [disabled]="!currentTam || !currentTam?.category.has_form"
+                            (click)="queryAction='generateForm'" [ngClass]="{'is-loading': querying}">Generate form</button>
+                    </div>
+                </div>
+            </form>
+        </p-panel>
+    </div>
+
+    <div class="block">
+        <p-panel header="Download files">
+            <div class="buttons">
+                <button class="button is-primary" pTooltip="view CHAT"
+                    [disabled]="!(transcript.status=='converted' || transcript.status=='parsed')"
+                    (click)="showChat()">
+                    <span class="icon is-small">
+                        <fa-icon [icon]="faFile"></fa-icon>
+                    </span>
+                    <span>CHAT</span>
+                </button>
+                <button class="button is-primary" pTooltip="view alpino parse"
+                    [disabled]="!(transcript.status=='parsed')" 
+                    (click)="showLassy()">
+                    <span class="icon is-small">
+                        <fa-icon [icon]="faFileCode"></fa-icon>
+                    </span>
+                    <span>Alpino parse</span>
+                </button>
+            </div>
+        </p-panel>
+    </div>
+</ng-container>

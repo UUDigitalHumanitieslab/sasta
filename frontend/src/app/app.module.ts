@@ -17,6 +17,7 @@ import { MessagesModule } from 'primeng/messages';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import {PanelModule} from 'primeng/panel';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login.component';
@@ -32,6 +33,7 @@ import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
 import { effects, reducers } from './store';
 import { UploadComponent } from './upload/upload.component';
+import { TranscriptComponent } from './transcript/transcript.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +50,7 @@ import { UploadComponent } from './upload/upload.component';
         ProcessComponent,
         RegisterComponent,
         VerifyComponent,
+        TranscriptComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -72,6 +75,7 @@ import { UploadComponent } from './upload/upload.component';
         MessagesModule,
         ToastModule,
         TooltipModule,
+        PanelModule,
         StepsModule,
     ],
     providers: [MessageService],
