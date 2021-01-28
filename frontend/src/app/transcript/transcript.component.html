@@ -20,6 +20,7 @@
     <div class="block">
         <p><strong>Status:</strong> {{transcript.status}}</p>
         <p><strong>Number of utterances:</strong> {{transcript.utterances ? transcript.utterances.length : 0}}</p>
+        <p><strong>Created on:</strong> {{transcript.date_added | date: 'dd/MM/yyyy' }}</p>
     </div>
 
     <div class="block">
