@@ -1,11 +1,18 @@
 <ng-container *ngIf="transcript && corpus">
-    <div class="buttons">
+    <div class="buttons" style="display:flex; justify-content: space-between;">
         <button class="button is-link" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
             <span class="icon is-small" style="margin-right: 0;">
                 <fa-icon [icon]="faArrowLeft"></fa-icon>
             </span>
             <span>{{corpus?.name}}</span>
         </button>
+        <button class="button is-danger"
+        (click)="deleteTranscript()">
+        <span class="icon is-small" style="margin-right: 0;">
+            <fa-icon [icon]="faTrash"></fa-icon>
+        </span>
+        <span>Delete transcript</span>
+    </button>
     </div>
 
     <h1 class="title">{{transcript.name}}</h1>
@@ -13,19 +20,6 @@
     <div class="block">
         <p><strong>Status:</strong> {{transcript.status}}</p>
         <p><strong>Number of utterances:</strong> {{transcript.utterances ? transcript.utterances.length : 0}}</p>
-    </div>
-
-
-    <div class="block">
-        <div class="buttons">
-            <button class="button is-danger"
-                (click)="deleteTranscript()">
-                <span class="icon is-small" style="margin-right: 0;">
-                    <fa-icon [icon]="faTrash"></fa-icon>
-                </span>
-                <span>Delete transcript</span>
-            </button>
-        </div>
     </div>
 
     <div class="block">
