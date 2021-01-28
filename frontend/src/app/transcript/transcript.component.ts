@@ -85,9 +85,16 @@ export class TranscriptComponent implements OnInit {
       .get_by_id(corpus_id)
       .subscribe(res => {
         this.corpus = res;
+        // retrieve default method
+        if (res.default_method) {
+          this.methodService
+            .get_by_id(res.default_method)
+            .subscribe(res => {
+              this.currentTam = res
+            });
+          }
       })
   }
-
 
   performQuerying(method: Method) {
     switch (this.queryAction) {
