@@ -12,6 +12,7 @@
                 <th>Transcript</th>
                 <th>Status</th>
                 <th>Utterances (#)</th>
+                <th>Created on</th>
                 <th class="has-text-right">Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 </td>
                 <td>{{transcript.status}}</td>
                 <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
+                <td>{{transcript.date_added | date: 'dd/MM/yyyy' }}</td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
                         <button class="button is-primary" pTooltip="delete transcript"

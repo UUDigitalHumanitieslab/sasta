@@ -10,6 +10,7 @@ import { TranscriptService } from '../services/transcript.service';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
 import { SelectItemGroup } from 'primeng/api';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sas-transcript',
@@ -17,6 +18,8 @@ import { SelectItemGroup } from 'primeng/api';
   styleUrls: ['./transcript.component.scss']
 })
 export class TranscriptComponent implements OnInit {
+
+  _: any = _; // Lodash
 
   id: number;
   transcript: Transcript;
