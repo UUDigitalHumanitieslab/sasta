@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,9 +19,17 @@ export class AuthService {
   checkAuthenticated() {
     this.getUser()
       .subscribe(
-        () => this.isAuthenticated$.next(true),
-        () => this.isAuthenticated$.next(false)
+        (res) => {
+          this.isAuthenticated$.next(true);
+        },
+        (err) => {
+          this.isAuthenticated$.next(false);
+        }
       );
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.getUser().pipe(map(Boolean));
   }
 
   login(username: string, password: string): Observable<string> {

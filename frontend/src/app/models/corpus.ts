@@ -7,5 +7,6 @@ export interface Corpus {
     date_added?: Date;
     date_modified?: Date;
     files?: File | { name: string }[];
+    default_method?: number;
     transcripts?: Transcript[];
 }

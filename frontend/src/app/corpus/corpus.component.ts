@@ -28,6 +28,7 @@ export class CorpusComponent implements OnInit {
 
   tams: Method[];
   currentTam: Method;
+  defaultTam: Method;
   groupedTams: SelectItemGroup[];
 
   faFile = faFile;
@@ -79,7 +80,17 @@ export class CorpusComponent implements OnInit {
   get_corpus() {
     this.corpusService
       .get_by_id(this.id)
-      .subscribe(res => this.corpus = res);
+      .subscribe(res => {
+        this.corpus = res;
+        // retrieve default method
+        if (res.default_method) {
+          this.methodService
+            .get_by_id(res.default_method)
+            .subscribe(res => {
+              this.defaultTam = res
+            });
+        }
+      });
   }
 
   showChat(transcript: Transcript) {
@@ -92,6 +103,7 @@ export class CorpusComponent implements OnInit {
 
   showDialog(transcript: Transcript) {
     this.currentTranscript = transcript;
+    this.currentTam = this.defaultTam;
     this.displayScore = true;
   }
 
@@ -185,6 +197,18 @@ export class CorpusComponent implements OnInit {
           console.log(err);
           this.messageService.add({ severity: 'error', summary: 'Error removing transcript', detail: err.message, sticky: true });
         });
+  }
+
+  changeDefaultMethod() {
+    this.corpusService
+      .set_default_method(this.corpus.id, this.defaultTam ? this.defaultTam.id : null)
+      .subscribe(
+        reponse => {},
+        err => {
+          console.log(err);
+          this.messageService.add({severity: 'error', summary: 'Error changing default method', detail: err.message, sticky: true })
+        }
+      )
   }
 
   downloadZip() {

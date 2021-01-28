@@ -1,11 +1,25 @@
 <ng-container *ngIf="corpus">
     <h1 class="title">{{corpus.name}}</h1>
-    <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
-        <span class="icon is-small">
-            <fa-icon [icon]="faDownload"></fa-icon>
-        </span>
-        <span>Download</span>
-    </button>
+    <div class="buttons">
+        <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
+            <span class="icon is-small">
+                <fa-icon [icon]="faDownload"></fa-icon>
+            </span>
+            <span>Download</span>
+        </button>
+    </div>
+    <div class="field">
+        <label class="label">
+            Default method
+        </label>
+        <div class="control">
+            <p-dropdown [options]="groupedTams" [(ngModel)]="defaultTam" placeholder="No default"
+                name="default-tam-dropdown" [group]="true" showClear="true" appendTo="body"
+                (onChange) = "changeDefaultMethod()"
+                [disabled]="!(groupedTams?.length > 0)">
+            </p-dropdown>
+        </div>
+    </div>
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
