@@ -36,7 +36,7 @@ const routes: Routes = [
     {
         path: 'transcript/:id',
         component: TranscriptComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
     },
     {
         path: 'process/:id',
