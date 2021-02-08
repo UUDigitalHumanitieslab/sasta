@@ -8,16 +8,14 @@ from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
 from .config import LABELSEP, PREFIX, UTTLEVEL
 from .utils import (clean_cell, enrich, getlabels, item2queryid, mkpatterns,
-                    standardize_header_name)
+                    standardize_header_name, clean_item)
 
 logger = logging.getLogger('sasta')
 
 
 class SAFReader:
     def __init__(self, filepath, method):
-        # self.filepath = filepath
-        filepath = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), 'test_sample.xlsx')
+        self.filepath = filepath
         self.word_cols = []
         self.levels: List[str] = []
         self.data = self.loaddata(filepath)
@@ -70,7 +68,7 @@ class SAFReader:
 
         word_levels = [lv for lv in data.level.unique() if lv != UTTLEVEL]
         for level in word_levels:
-            label = data.loc[data.level == level, colname].iloc[0]
+            label = clean_item(data.loc[data.level == level, colname].iloc[0])
             enriched_label = enrich(label, PREFIX.lower())
             split_labels = getlabels(enriched_label, self.patterns)
 

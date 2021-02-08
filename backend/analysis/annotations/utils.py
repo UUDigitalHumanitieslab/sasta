@@ -81,6 +81,8 @@ def getlabels(labelstr, patterns):
                        labelstr, logstr)
     return results
 
+def clean_item(item: str):
+    return item.lower().strip()
 
 def item2queryid(item: str, level: str,
                  mapping: TupleStrDict):
