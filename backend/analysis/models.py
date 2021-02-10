@@ -85,6 +85,8 @@ class Corpus(models.Model):
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
     uuid = models.UUIDField(default=uuid4)
+    date_added = models.DateField(auto_now_add = True)
+    date_modified = models.DateField(auto_now = True)
     default_method = models.ForeignKey(AssessmentMethod, 
         on_delete=models.SET_NULL, related_name = 'corpora', blank=True, null=True)
 
@@ -125,6 +127,7 @@ class Transcript(models.Model):
         upload_to=upload_path_parsed, blank=True, null=True)
     extracted_filename = models.CharField(
         max_length=500, blank=True, null=True)
+    date_added = models.DateField(auto_now_add = True)
 
     def __str__(self):
         return self.name

@@ -32,7 +32,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcript
         fields = ('id', 'name', 'content',
-                  'parsed_content', 'status', 'corpus', 'utterances')
+                  'parsed_content', 'status', 'date_added', 'corpus', 'utterances')
 
 
 class CorpusSerializer(serializers.ModelSerializer):
@@ -42,7 +42,7 @@ class CorpusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Corpus
-        fields = ('id', 'name', 'status', 'default_method', 'files', 'transcripts')
+        fields = ('id', 'name', 'status', 'default_method', 'date_added', 'date_modified', 'files', 'transcripts')
 
 
 class AssessmentQuerySerializer(serializers.ModelSerializer):
