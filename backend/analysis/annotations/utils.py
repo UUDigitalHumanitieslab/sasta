@@ -82,7 +82,9 @@ def getlabels(labelstr, patterns):
     return results
 
 def clean_item(item: str):
-    return item.lower().strip()
+    clean_item = item.lower().strip()
+    clean_item = re.sub(pattern = r' +', repl = ' ', string = clean_item)
+    return clean_item
 
 def item2queryid(item: str, level: str,
                  mapping: TupleStrDict):
