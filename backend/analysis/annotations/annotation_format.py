@@ -3,6 +3,9 @@ from collections import Counter
 import operator
 from functools import reduce
 
+from analysis.results.results import AllResults
+from analysis.query.xlsx_output import v1_to_xlsx
+from analysis.query.functions import Query, QueryWithFunction
 
 class SAFAnnotation:
     def __init__(self, level, label, fase=None, query_id=None):
@@ -11,6 +14,19 @@ class SAFAnnotation:
         self.fase: str = fase
         self.query_id: Optional[str] = query_id
 
+    def to_query_with_func(self):
+        query = Query(
+            id = self.query_id, 
+            cat = None, subcat = None, 
+            level = self.level, 
+            item = self.label, 
+            altitems = None, implies = None, original = None, pages = None,
+            fase = self.fase, 
+            query = None, inform = None, screening = None, process = None, 
+            special1 = None, special2 = None, comments = None
+        )
+        func = lambda x : None
+        return QueryWithFunction(query, func)
 
 class SAFDocument:
     def __init__(self, name, method_name='', all_levels=None):
@@ -25,6 +41,13 @@ class SAFDocument:
                       [utt.annotations for utt in self.utterances])
 
     @property
+    def queries(self):
+        '''Set of all query IDs in the document'''
+        return set(
+            ann.query_id for ann in self.all_annotations
+        )
+
+    @property
     def item_counts(self):
         return {u.utt_id: u.item_counts for u in self.utterances}
 
@@ -37,6 +60,33 @@ class SAFDocument:
             'results': self.item_counts
         }
 
+    def to_allresults(self):
+        '''Convert to AllResults object (for query and scoring).'''
+        filename = self.name
+        uttcount = len(self.utterances)
+        results = {
+            q : Counter({
+                u.utt_id : u.item_counts[q]
+                for u in self.utterances
+                if u.item_counts[q] > 0
+            }) 
+            for q in self.queries
+        }
+
+        allresults = AllResults(
+            filename,
+            uttcount,
+            coreresults = results
+        )
+
+        return allresults
+
+    def query_output(self):
+        '''Return excel sheet in query format.'''
+        allresults = self.to_allresults()
+        queries_with_funcs = list(set(ann.to_query_with_func() for ann in self.all_annotations))
+        wb = v1_to_xlsx(allresults, queries_with_funcs)
+        return wb
 
 class SAFUtterance:
     def __init__(self, utt_id):

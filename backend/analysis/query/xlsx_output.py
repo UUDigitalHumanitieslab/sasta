@@ -32,7 +32,13 @@ def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
         for q in queries
         if q.query.id in all_data
     }
-    sorted_queries = sorted(query_mapping.items(), key=lambda item: item[1][0])
+    sorted_queries = sorted(
+        sorted(
+            query_mapping.items(),
+            key = lambda item: item[0]
+        ), 
+        key=lambda item: item[1][0]
+    )
 
     for qid, (fase, item) in sorted_queries:
         fase = fase if fase else 'nvt'

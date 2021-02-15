@@ -6,24 +6,14 @@ from ..models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
                              Utterance)
 from ..convert.convert import convert
 from ..parse.parse import parse_and_create
-from ..query.run import query_transcript, run_core_queries
-from ..query.xlsx_output import v2_to_xlsx
+from ..query.run import query_transcript
+from ..query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from .utils import clean_item
+import openpyxl
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-@pytest.mark.django_db
-def test_reader():
-    '''test annotation reader: parse a transcript, write an annotation file, read it
-    back, and check if it matches'''
-    method = AssessmentMethod.objects.first()
-    corpus = Corpus.objects.first()
-
-    # paths
-    filename = 'test_sample_1'
-    cha_path = os.path.join(BASE_DIR, 'test_files', filename + '.cha')
-    xlsx_path = os.path.join(BASE_DIR, 'test_files', filename + '.xlsx')
-
+def create_annotation(filename, cha_path, xlsx_path, method, corpus):
     # parse chat file
     with open(cha_path, 'rb') as cha_content:
         transcript = Transcript(
@@ -34,16 +24,34 @@ def test_reader():
         )
         transcript.save()
         transcript.content.save(filename + '.cha', File(cha_content))
-
+    
     parse_and_create(transcript)
 
     # query
-    true_results, queries_with_funcs = query_transcript(transcript, method, annotate=True)
-    true_annotations = true_results.annotations
+    all_results, queries_with_funcs = query_transcript(transcript, method, annotate=True, only_inform=False)
 
     # export annotation file
-    spreadsheet = v2_to_xlsx(true_results, method)
+    spreadsheet = v2_to_xlsx(all_results, method)
     spreadsheet.save(xlsx_path)
+
+    return all_results, queries_with_funcs
+
+
+@pytest.mark.django_db
+def test_reader():
+    '''test annotation reader: parse a transcript, write an annotation file, read it
+    back, and check if annotations match'''
+    method = AssessmentMethod.objects.first()
+    corpus = Corpus.objects.first()
+
+    # paths
+    filename = 'test_sample_1'
+    cha_path = os.path.join(BASE_DIR, 'test_files', filename + '.cha')
+    xlsx_path = os.path.join(BASE_DIR, 'test_files', filename + '.xlsx')
+
+    # parse chat and export annotation file
+    true_results, _ = create_annotation(filename, cha_path, xlsx_path, method, corpus)
+    true_annotations = true_results.annotations
 
     # read annotation file
     reader = SAFReader(xlsx_path, method)
@@ -84,3 +92,43 @@ def test_reader():
             for ann in anns:
                 #check if found annotation has a match in the true annotations
                 assert any(true_ann for true_ann in true_anns if matching(ann, true_ann))
+
+@pytest.mark.django_db
+def test_annotation_to_query():
+    '''test conversion of annotation reader output to query results: parse a 
+    transcript, write an annotation file and a query file. Read the annotation file, 
+    make new query file based on annotations and compare to real query file.'''
+
+    method = AssessmentMethod.objects.first()
+    corpus = Corpus.objects.first()
+
+    log_file = open('test_log.txt', 'w')
+    log = lambda x : log_file.write(str(x) + '\n')
+
+    # paths
+    filename = 'test_sample_1'
+    cha_path = os.path.join(BASE_DIR, 'test_files', filename + '.cha')
+    annotations_path = os.path.join(BASE_DIR, 'test_files', filename + '.xlsx')
+
+    # parse chat and export annotation file
+    true_all_results, true_queries_with_funcs = create_annotation(filename, cha_path, annotations_path, method, corpus)
+
+    true_query_output = v1_to_xlsx(true_all_results, true_queries_with_funcs)
+
+    # read annotations and generate query file
+    reader = SAFReader(annotations_path, method)
+    query_output = reader.document.query_output()
+
+    # save query output for inspection
+    query_output.save(os.path.join(BASE_DIR, 'test_files', filename + '_query.xlsx'))
+    true_query_output.save(os.path.join(BASE_DIR, 'test_files', filename + '_query_true.xlsx'))
+
+    #compare query_output and true_query_output
+    assert len(query_output.worksheets) == len(true_query_output.worksheets)
+    for sheet, true_sheet in zip(query_output, true_query_output):
+        assert sheet.dimensions == true_sheet.dimensions
+        for row, true_row in zip(sheet.rows, true_sheet.rows):
+            for cell, true_cell in zip(row, true_row):
+                assert cell.value == true_cell.value
+
+    log_file.close()
