@@ -61,6 +61,34 @@
     </div>
 
     <div class="block">
+        <p-panel header="Annotation">
+            <div class="buttons">
+                <button class="button is-primary" pTooltip="download annotation file"
+                    [disabled]="!(transcript.status=='parsed')">
+                    <span class="icon is-small">
+                        <fa-icon [icon]="faDownload"></fa-icon>
+                    </span>
+                    <span>Download annotation</span>
+                </button>
+                <button class="button is-primary" pTooltip="upload corrected annotation file"
+                    [disabled]="!(transcript.status=='parsed')">
+                    <span class="icon is-small">
+                        <fa-icon [icon]="faUpload"></fa-icon>
+                    </span>
+                    <span>Upload annotation</span>
+                </button>
+                <button class="button is-danger" pTooltip="reset corrections to annotation file"
+                    [disabled]="!(transcript.status=='parsed')">
+                    <span class="icon is-small">
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                    </span>
+                    <span>Reset corrections</span>
+                </button>
+            </div>
+        </p-panel>
+    </div>
+
+    <div class="block">
         <p-panel header="Download files">
             <div class="buttons">
                 <button class="button is-primary" pTooltip="view CHAT"

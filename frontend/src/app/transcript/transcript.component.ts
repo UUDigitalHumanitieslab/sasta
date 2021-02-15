@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faFile, faFileCode, faTrash, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faFileCode, faTrash, faArrowLeft, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
 import { Transcript } from '../models/transcript';
@@ -33,6 +33,8 @@ export class TranscriptComponent implements OnInit {
   faFile = faFile;
   faFileCode = faFileCode;
   faArrowLeft = faArrowLeft;
+  faDownload = faDownload;
+  faUpload = faUpload;
 
   queryAction: 'annotate' | 'query' | 'generateForm';
   onlyInform = true;
