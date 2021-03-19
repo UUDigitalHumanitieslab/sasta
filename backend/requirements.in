@@ -15,5 +15,5 @@ pytest-xdist
 python-docx
 python-ucto==0.4.7
 openpyxl
-xlrd
+xlrd>=1.2,<2
 xlsxwriter
