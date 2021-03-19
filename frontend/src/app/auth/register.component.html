@@ -5,10 +5,12 @@
                 <label for="" class="label">Username</label>
                 <div class="control has-icons-left">
                     <input type="username" placeholder="*******" class="input" [(ngModel)]="username" name="username"
+                    [ngClass]="{'is-danger': username && !usernameValid()}"
                         required>
                     <span class="icon is-small is-left">
                         <fa-icon [icon]="faUser"></fa-icon>
                     </span>
+                    <p *ngIf="username && !usernameValid()" class="help is-danger">Username can not contain spaces</p>
                 </div>
             </div>
             <div class="field">
@@ -52,7 +54,7 @@
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" [ngClass]=" {'is-loading': processing}"
-                        [disabled]="!username || !passwordSame() || email.invalid">Register</button>
+                        [disabled]="!username || !passwordSame() || email.invalid || !usernameValid()">Register</button>
                 </div>
             </div>
         </form>

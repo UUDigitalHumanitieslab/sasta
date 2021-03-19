@@ -34,6 +34,14 @@ export class RegisterComponent implements OnInit {
     return this.password1.length >= 8;
   }
 
+  containsSpace(str: string) {
+    return str.indexOf(' ') >= 0;
+  }
+
+  usernameValid() {
+    return !this.containsSpace(this.username);
+  }
+
   onError(err) {
     this.authService.isAuthenticated$.next(false);
     this.processing = false;

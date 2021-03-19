@@ -34,89 +34,6 @@ class CompoundFile(models.Model):
         return os.path.split(self.content.name)[1]
 
 
-class Corpus(models.Model):
-    user = models.ForeignKey(
-        User, related_name='corpora', on_delete=models.PROTECT)
-    name = models.CharField(max_length=255)
-    status = models.CharField(max_length=50)
-    uuid = models.UUIDField(default=uuid4)
-
-    def __str__(self):
-        return self.name
-
-    def download_as_zip(self):
-        stream = BytesIO()
-        transcripts = self.transcripts.all()
-        files = [(t.content.path, t.parsed_content.path) for t in transcripts]
-        files = list(chain.from_iterable(files))
-        zipf = zipfile.ZipFile(stream, "w")
-        for f in files:
-            arcname = os.path.split(f)[1]
-            zipf.write(f, arcname)
-        zipf.close()
-        return stream
-
-    class Meta:
-        verbose_name_plural = 'corpora'
-
-
-class Transcript(models.Model):
-    def upload_path(self, filename):
-        return os.path.join('files', f'{self.corpus.uuid}',
-                            'transcripts', filename)
-
-    def upload_path_parsed(self, filename):
-        return os.path.join('files', f'{self.corpus.uuid}',
-                            'parsed', filename)
-
-    name = models.CharField(max_length=255)
-    status = models.CharField(max_length=50)
-    corpus = models.ForeignKey(
-        Corpus, related_name='transcripts', on_delete=models.CASCADE)
-    content = models.FileField(upload_to=upload_path, blank=True, null=True)
-    parsed_content = models.FileField(
-        upload_to=upload_path_parsed, blank=True, null=True)
-    extracted_filename = models.CharField(
-        max_length=500, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Utterance(models.Model):
-    sentence = models.CharField(max_length=500)
-    speaker = models.CharField(max_length=50)
-    utt_id = models.IntegerField(blank=True, null=True)
-    parse_tree = models.TextField(blank=True)
-    transcript = models.ForeignKey(
-        Transcript, related_name='utterances', on_delete=models.CASCADE)
-
-    @property
-    def syntree(self):
-        if self.parse_tree:
-            return ET.fromstring(self.parse_tree)
-        return None
-
-    def __str__(self):
-        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
-
-
-class UploadFile(models.Model):
-    def upload_path(self, filename):
-        return os.path.join('files', f'{self.corpus.uuid}',
-                            'uploads', filename)
-
-    name = models.CharField(max_length=255)
-    content = models.FileField(upload_to=upload_path)
-    corpus = models.ForeignKey(
-        Corpus, related_name='files', on_delete=models.CASCADE,
-        null=True, blank=True)
-    status = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
 class MethodCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
     zc_embeddings = models.BooleanField()
@@ -160,6 +77,96 @@ class AssessmentMethod(models.Model):
         for q in queries:
             mapping.update(q.get_item_mapping(sep))
         return mapping
+
+
+class Corpus(models.Model):
+    user = models.ForeignKey(
+        User, related_name='corpora', on_delete=models.PROTECT)
+    name = models.CharField(max_length=255)
+    status = models.CharField(max_length=50)
+    uuid = models.UUIDField(default=uuid4)
+    date_added = models.DateField(auto_now_add = True)
+    date_modified = models.DateField(auto_now = True)
+    default_method = models.ForeignKey(AssessmentMethod, 
+        on_delete=models.SET_NULL, related_name = 'corpora', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def download_as_zip(self):
+        stream = BytesIO()
+        transcripts = self.transcripts.all()
+        files = [(t.content.path, t.parsed_content.path) for t in transcripts]
+        files = list(chain.from_iterable(files))
+        zipf = zipfile.ZipFile(stream, "w")
+        for f in files:
+            arcname = os.path.split(f)[1]
+            zipf.write(f, arcname)
+        zipf.close()
+        return stream
+
+    class Meta:
+        verbose_name_plural = 'corpora'
+
+
+class Transcript(models.Model):
+    def upload_path(self, filename):
+        return os.path.join('files', f'{self.corpus.uuid}',
+                            'transcripts', filename)
+
+    def upload_path_parsed(self, filename):
+        return os.path.join('files', f'{self.corpus.uuid}',
+                            'parsed', filename)
+
+    name = models.CharField(max_length=255)
+    status = models.CharField(max_length=50)
+    corpus = models.ForeignKey(
+        Corpus, related_name='transcripts', on_delete=models.CASCADE)
+    content = models.FileField(upload_to=upload_path, blank=True, null=True)
+    parsed_content = models.FileField(
+        upload_to=upload_path_parsed, blank=True, null=True)
+    extracted_filename = models.CharField(
+        max_length=500, blank=True, null=True)
+    date_added = models.DateField(auto_now_add = True)
+
+    def __str__(self):
+        return self.name
+
+
+class Utterance(models.Model):
+    sentence = models.CharField(max_length=500)
+    speaker = models.CharField(max_length=50)
+    utt_id = models.IntegerField(blank=True, null=True)
+    parse_tree = models.TextField(blank=True)
+    transcript = models.ForeignKey(
+        Transcript, related_name='utterances', on_delete=models.CASCADE)
+
+    @property
+    def syntree(self):
+        if self.parse_tree:
+            return ET.fromstring(self.parse_tree)
+        return None
+
+    def __str__(self):
+        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
+
+
+class UploadFile(models.Model):
+    def upload_path(self, filename):
+        return os.path.join('files', f'{self.corpus.uuid}',
+                            'uploads', filename)
+
+    name = models.CharField(max_length=255)
+    content = models.FileField(upload_to=upload_path)
+    corpus = models.ForeignKey(
+        Corpus, related_name='files', on_delete=models.CASCADE,
+        null=True, blank=True)
+    status = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 
 
 class AssessmentQuery(models.Model):

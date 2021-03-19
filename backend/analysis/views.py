@@ -17,6 +17,7 @@ from .parse.parse import parse_and_create
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
+from .permissions import IsCorpusOwner, IsCorpusChildOwner
 
 # flake8: noqa: E501
 
@@ -24,11 +25,19 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
 class UploadFileViewSet(viewsets.ModelViewSet):
     queryset = UploadFile.objects.all()
     serializer_class = UploadFileSerializer
+    permission_classes = (IsCorpusChildOwner, )
+
+    def get_queryset(self):
+        return self.queryset.filter(corpus__user=self.request.user)
 
 
 class TranscriptViewSet(viewsets.ModelViewSet):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
+    permission_classes = (IsCorpusChildOwner,)
+
+    def get_queryset(self):
+        return self.queryset.filter(corpus__user=self.request.user)
 
     @action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
@@ -116,10 +125,10 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
 
-
 class CorpusViewSet(viewsets.ModelViewSet):
     serializer_class = CorpusSerializer
     queryset = Corpus.objects.all()
+    permission_classes = (IsCorpusOwner, )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -162,7 +171,18 @@ class CorpusViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={corpus.name}.zip'
 
         return response
-
+    
+    @action(detail=True, methods=['POST'], name='setdefaultmethod')
+    def defaultmethod(self, request, *args, **kwargs):
+        corpus = self.get_object()
+        method_id = request.data.get('method')
+        if method_id == 'null':
+            method = None
+        else:
+            method = AssessmentMethod.objects.get(pk=method_id)
+        corpus.default_method = method
+        corpus.save()
+        return Response('Succes')
 
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()
