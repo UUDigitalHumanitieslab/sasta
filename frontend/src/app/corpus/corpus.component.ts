@@ -81,7 +81,7 @@ export class CorpusComponent implements OnInit {
   }
 
   downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([data], { type: 'application/zip' });
     saveAs(blob, filename);
   }
 
