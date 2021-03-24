@@ -64,7 +64,7 @@
         <p-panel header="Download files">
             <div class="buttons">
                 <button class="button is-primary" pTooltip="view CHAT"
-                    [disabled]="!(transcript.status=='converted' || transcript.status=='parsed')"
+                    [disabled]="!chatFileAvailable(transcript)"
                     (click)="showChat()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFile"></fa-icon>
@@ -72,7 +72,7 @@
                     <span>CHAT</span>
                 </button>
                 <button class="button is-primary" pTooltip="view alpino parse"
-                    [disabled]="!(transcript.status=='parsed')" 
+                    [disabled]="!lassyFileAvailable(transcript)"
                     (click)="showLassy()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFileCode"></fa-icon>
