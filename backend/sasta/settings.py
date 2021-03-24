@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'revproxy',
     'analysis',
     'authentication',
+    'convert',
 ]
 
 MIDDLEWARE = [
