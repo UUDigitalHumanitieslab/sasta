@@ -204,7 +204,7 @@ LOGGING = {
             'formatter': 'standard'
         },
         'console': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         }
@@ -222,6 +222,11 @@ LOGGING = {
             'handlers': ['django_file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['django_file'],
+            'level': 'DEBUG',
+            'propagate': False
         },
         'sasta': {
             'handlers': ['sasta_file', 'console'],
