@@ -77,6 +77,7 @@ ASTA_adverbial = """
       ((@rel="mod" and parent::node[node[@rel="hd" and not(@pt="n" or @pt="vnw")]] )  or
        (@rel="hd" and parent::node[@rel="mod" and parent::node[node[@rel="hd" and not(@pt="n" or @pt="vnw")]]]))
      """
+
  
 ASTA_modalww = """  (@lemma="zullen" or @lemma="willen" or @lemma="moeten" or @lemma="mogen" or @lemma="kunnen") """
 
@@ -107,6 +108,13 @@ Tarsp_kijkeens = """
     node[@lemma="eens" and @rel="mod" and @pt="bw"] and count(node)=2) 
 """
 
+ASTA_numeral = """
+(@lemma="twee" or @lemma="drie" or @lemma="vier" or @lemma="vijf" or @lemma="zes" or @lemma="zeven" or @lemma="acht" or @lemma="negen" or @lemma="tien" or @lemma="elf" or @lemma="twaalf" or @lemma="dertien" or @lemma="veertien" or @lemma="vijftien" or @lemma="zestien" or @lemma="zeventien" or @lemma="achttien" or @lemma="negentien" or @lemma="twintig" or @lemma="eentje" or  @lemma="tweetjes" or @lemma="drietjes" or @lemma="viertjes" or @lemma="vijfjes" or @lemma="zesjes") 
+""" 
+
+ASTA_filled_pause = """
+(@lemma= "uh" or @lemma ="Uh" or @lemma="Uhm" or @lemma= "uhm" or  @lemma = "euh"or @lemma = "eh" or @lemma = "goh" or @word="xxx" or @word="XXX")
+"""
 
  
  
