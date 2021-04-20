@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faCalculator, faCogs, faDownload, faFile, faFileCode, faFileExport, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
@@ -27,23 +27,11 @@ export class CorpusComponent implements OnInit {
   corpus: Corpus;
 
   tams: Method[];
-  currentTam: Method;
+  defaultTam: Method;
   groupedTams: SelectItemGroup[];
 
-  faFile = faFile;
-  faFileCode = faFileCode;
-  faFileExport = faFileExport;
-  faCogs = faCogs;
-  faCalculator = faCalculator;
   faDownload = faDownload;
   faTrash = faTrash;
-
-
-  displayScore = false;
-  currentTranscript: Transcript;
-  queryAction: 'annotate' | 'query' | 'generateForm';
-  onlyInform = true;
-  querying = false;
 
   constructor(
     private corpusService: CorpusService,
@@ -79,98 +67,22 @@ export class CorpusComponent implements OnInit {
   get_corpus() {
     this.corpusService
       .get_by_id(this.id)
-      .subscribe(res => this.corpus = res);
-  }
-
-  showChat(transcript: Transcript) {
-    window.open(transcript.content, '_blank');
-  }
-
-  showLassy(transcript: Transcript) {
-    window.open(transcript.parsed_content, '_blank');
-  }
-
-  showDialog(transcript: Transcript) {
-    this.currentTranscript = transcript;
-    this.displayScore = true;
-  }
-
-  closeDialog() {
-    this.currentTranscript = null;
+      .subscribe(res => {
+        this.corpus = res;
+        // retrieve default method
+        if (res.default_method) {
+          this.methodService
+            .get_by_id(res.default_method)
+            .subscribe(res => {
+              this.defaultTam = res
+            });
+        }
+      });
   }
 
   downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([data], { type: 'application/zip' });
     saveAs(blob, filename);
-  }
-
-  performQuerying(transcript: Transcript, method: Method) {
-    switch (this.queryAction) {
-      case 'annotate':
-        this.annotateTranscript(transcript, method);
-        break;
-      case 'query':
-        this.queryTranscript(transcript, method);
-        break;
-      case 'generateForm':
-        this.generateFormTranscript(transcript, method);
-        break;
-      default:
-        break;
-    }
-
-  }
-
-  annotateTranscript(transcript: Transcript, method: Method) {
-    this.querying = true;
-    this.corpusService
-      .annotate_transcript(transcript.id, method.id, this.onlyInform)
-      .subscribe(
-        response => {
-          this.downloadFile(response.body, `${transcript.name}_SAF.xlsx`);
-          this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
-          this.querying = false;
-        },
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Error querying', detail: err.message, sticky: true });
-          this.querying = false;
-        }
-      );
-  }
-
-  queryTranscript(transcript: Transcript, method: Method) {
-    this.querying = true;
-    this.corpusService
-      .query_transcript(transcript.id, method.id)
-      .subscribe(
-        response => {
-          this.downloadFile(response.body, `${transcript.name}_matches.xlsx`);
-          this.messageService.add({ severity: 'success', summary: 'Querying success', detail: '' });
-          this.querying = false;
-        },
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Error querying', detail: err.message, sticky: true });
-          this.querying = false;
-        });
-  }
-
-  generateFormTranscript(transcript: Transcript, method: Method) {
-    this.querying = true;
-    this.corpusService
-      .generate_form_transcript(transcript.id, method.id)
-      .subscribe(
-        response => {
-          this.downloadFile(response.body, `${transcript.name}_${method.category.name}_form.xlsx`);
-          this.messageService.add({ severity: 'success', summary: 'Generated form', detail: '' });
-          this.querying = false;
-        },
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Error generating form', detail: err.message, sticky: true });
-          this.querying = false;
-        });
   }
 
   deleteTranscript(transcript: Transcript) {
@@ -185,6 +97,18 @@ export class CorpusComponent implements OnInit {
           console.log(err);
           this.messageService.add({ severity: 'error', summary: 'Error removing transcript', detail: err.message, sticky: true });
         });
+  }
+
+  changeDefaultMethod() {
+    this.corpusService
+      .set_default_method(this.corpus.id, this.defaultTam ? this.defaultTam.id : null)
+      .subscribe(
+        reponse => {},
+        err => {
+          console.log(err);
+          this.messageService.add({severity: 'error', summary: 'Error changing default method', detail: err.message, sticky: true })
+        }
+      )
   }
 
   downloadZip() {

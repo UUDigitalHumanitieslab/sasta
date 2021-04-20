@@ -47,6 +47,7 @@
 *INV:	en welk ziekenhuis 
 *PMA:	in het uh hier in het Breda uh silahe 
 %xsid:	15
+%xano:	22|PLAATSNAAM1|Breda
 *INV:	ik weet welke je bedoelt hoe lang heb je in het ziekenhuis gelegen 
 *PMA:	ik wacht wij dachten ongeveer een week 
 %xsid:	16
@@ -97,9 +98,11 @@
 *INV:	kun je wat vertellen over je gezin 
 *PMA:	euh wij zijn met z’n drietjes en de euh Jan en dan euh Anna  
 %xsid:	34
+%xano:	40|VOORNAAM1|Jan, 55|VOORNAAM2|Anna
 *PMA:	en dat is dan 19 is die geworden 
 %xsid:	35
 *INV:	ja en wat doet hij nu Anna 
+%xano:	22|VOORNAAM2|Anna
 *PMA:	hij is nu gaat naar euh hij gaat in de euh
 %xsid:	36
 *PMA:	ik weet niet euh hele moeilijke +… 
@@ -113,6 +116,7 @@
 *INV:	in welke plaats 
 *PMA:	ik euh hier zo in Breda
 %xsid:	40
+%xano:	18|PLAATSNAAM1|Breda
 *PMA:	en dan gaat ook in 
 %xsid:	41
 *INV:	gaat hij naar 

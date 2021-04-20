@@ -23,7 +23,7 @@ services:
       - type: bind
         source: ./backend
         target: /app
-      - static_data:/app/staticfiles
+      - static_data:/app/static
     depends_on:
       - db
     env_file:
