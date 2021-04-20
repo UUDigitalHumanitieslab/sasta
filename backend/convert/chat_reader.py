@@ -16,7 +16,7 @@ class ChatDocument:
         self.lines: List[ChatLine] = read_document.lines or []
         # SASTA specific attributes
         self.target_speakers: Set[str] = self.find_target_speakers()
-        self.target_uttids: bool = self.has_xsids and not self.target_speakers
+        self.target_uttids: bool = self.has_xsids
 
     @classmethod
     def from_chatfile(cls, filepath: str):
