@@ -137,7 +137,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         user_queryset = self.queryset.filter(user=self.request.user)
         return user_queryset
 
-    @action(detail=True, methods=['GET'], name='parse_all')
+    @action(detail=True, methods=['GET'], name='convert_all')
     def convert_all(self, request, *args, **kwargs):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(

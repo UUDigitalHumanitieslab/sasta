@@ -134,6 +134,10 @@ class Transcript(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def target_speakers_list(self):
+        return self.target_speakers.split(',')
+
 
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)

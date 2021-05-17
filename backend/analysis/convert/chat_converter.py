@@ -158,11 +158,22 @@ class SifDocument:
                  participants: List[Participant],
                  content: List[Union[Utterance, Tier]],
                  meta_comments: List[MetaComment],
-                 title: Optional[str]):
+                 title: Optional[str],
+                 target_uttids: bool):
         self.participants = participants
         self.content = content
         self.meta_comments = meta_comments
         self.title = title
+        self.target_uttids = target_uttids
+
+    @property
+    def target_speaker_codes(self):
+        targetted = [
+            pp.code for pp in self.participants if pp.target_speaker
+        ]
+        if not targetted:
+            return [pp.code for pp in self.participants]
+        return targetted
 
     def write_chat(self, out_file_path: str):
         output_dir = os.path.dirname(out_file_path)
@@ -214,7 +225,8 @@ class SifReader:
     @property
     def document(self):
         return SifDocument(self.participants, self.content,
-                           self.meta_comments, self.title)
+                           self.meta_comments, self.title,
+                           self.target_utt_ids)
 
     @property
     def patterns(self):

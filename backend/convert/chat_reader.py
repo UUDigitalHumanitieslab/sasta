@@ -4,6 +4,10 @@ from chamd.chat_reader import ChatFile, ChatHeader, ChatLine
 from chamd.chat_reader import ChatReader as ChatParser
 from chamd.chat_reader import MetaValue
 
+import logging
+
+logger = logging.getLogger('sasta')
+
 TARGET_ROLES = ['Target_Child', 'Target_Adult', 'Participant']
 
 
@@ -24,7 +28,9 @@ class ChatDocument:
         doc = reader.read_file(filepath)
         # TODO: probably want to let this condition go if it
         # only concerns warning
-        assert not reader.errors
+        # assert not reader.errors
+        for err in reader.errors:
+            logger.warning(err)
         return cls(doc)
 
     def find_target_speakers(self):

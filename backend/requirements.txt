@@ -25,7 +25,7 @@ django-cron==0.5.1        # via -r requirements.in
 django-livereload-server==0.3.2  # via -r requirements.in
 django-rest-auth[with_social]==0.9.5  # via -r requirements.in
 git+git://github.com/TracyWebTech/django-revproxy@master#egg=django-revproxy  # via -r requirements.in
-django==3.2.3             # via -r requirements.in, django-allauth, django-common-helpers, django-cron, django-livereload-server, django-rest-auth, django-revproxy, djangorestframework
+django==3.1.11            # via -r requirements.in, django-allauth, django-common-helpers, django-cron, django-livereload-server, django-rest-auth, django-revproxy, djangorestframework
 djangorestframework==3.12.4  # via -r requirements.in, django-rest-auth
 et-xmlfile==1.1.0         # via openpyxl
 execnet==1.8.0            # via pytest-xdist
