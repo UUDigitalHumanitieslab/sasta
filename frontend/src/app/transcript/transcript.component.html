@@ -43,7 +43,20 @@
                     <div class="field">
                         <div class="control">
                             <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
-                                [ngClass]="{'is-loading': querying}">Annotate</button>
+                                [ngClass]="{'is-loading': querying}">Annotate (xlsx)</button>
+                                </div>
+                                <div class="control">
+                                    <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries"
+                                        name="inform">
+                                    </p-checkbox>
+                                </div>
+                                </div>
+                                <div class="divider is-vertical">or</div>
+                                <div class="field">
+                                    <div class="control">
+                                        <button class="button is-primary" [disabled]="!currentTam"
+                                            (click)="queryAction='annotateChat'"
+                                            [ngClass]="{'is-loading': querying}">Annotate (CHAT)</button>
                         </div>
                         <div class="control">
                             <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">

@@ -12,6 +12,9 @@ import { MethodService } from '../services/method.service';
 import { SelectItemGroup } from 'primeng/api';
 import * as _ from 'lodash';
 
+const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const TXT_MIME = 'text/plain';
+
 @Component({
   selector: 'sas-transcript',
   templateUrl: './transcript.component.html',
@@ -34,7 +37,7 @@ export class TranscriptComponent implements OnInit {
   faFileCode = faFileCode;
   faArrowLeft = faArrowLeft;
 
-  queryAction: 'annotate' | 'query' | 'generateForm';
+  queryAction: 'annotate' | 'annotateChat' | 'query' | 'generateForm';
   onlyInform = true;
   querying = false;
 
@@ -99,7 +102,10 @@ export class TranscriptComponent implements OnInit {
   performQuerying(method: Method) {
     switch (this.queryAction) {
       case 'annotate':
-        this.annotateTranscript(method);
+        this.annotateTranscript(method, 'xlsx');
+        break;
+      case 'annotateChat':
+        this.annotateTranscript(method, 'cha');
         break;
       case 'query':
         this.queryTranscript(method);
@@ -118,13 +124,21 @@ export class TranscriptComponent implements OnInit {
     saveAs(blob, filename);
   }
 
-  annotateTranscript(method: Method) {
+  annotateTranscript(method: Method, outputFormat: 'xlsx' | 'cha') {
     this.querying = true;
     this.corpusService
-      .annotate_transcript(this.id, method.id, this.onlyInform)
+      .annotate_transcript(this.id, method.id, this.onlyInform, outputFormat)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_SAF.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          switch (outputFormat) {
+            case 'xlsx':
+              this.downloadFile(response.body, `${this.transcript.name}_SAF.xlsx`, XLSX_MIME);
+            case 'cha':
+              this.downloadFile(response.body, `${this.transcript.name}_annotated.cha`, TXT_MIME);
+              break;
+            default:
+              break;
+          }
           this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
           this.querying = false;
         },
@@ -142,7 +156,7 @@ export class TranscriptComponent implements OnInit {
       .query_transcript(this.id, method.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_matches.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          this.downloadFile(response.body, `${this.transcript.name}_matches.xlsx`, XLSX_MIME);
           this.messageService.add({ severity: 'success', summary: 'Querying success', detail: '' });
           this.querying = false;
         },
@@ -159,7 +173,7 @@ export class TranscriptComponent implements OnInit {
       .generate_form_transcript(this.id, method.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_${method.category.name}_form.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          this.downloadFile(response.body, `${this.transcript.name}_${method.category.name}_form.xlsx`, XLSX_MIME);
           this.messageService.add({ severity: 'success', summary: 'Generated form', detail: '' });
           this.querying = false;
         },

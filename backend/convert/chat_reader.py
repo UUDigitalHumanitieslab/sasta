@@ -30,7 +30,7 @@ class ChatDocument:
         # only concerns warning
         # assert not reader.errors
         for err in reader.errors:
-            logger.warning(err)
+            logger.debug(err)
         return cls(doc)
 
     def find_target_speakers(self):

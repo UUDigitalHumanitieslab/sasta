@@ -74,9 +74,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         )
 
         format = request.data.get('format', 'xlsx')
-        print('format', format)
         if format == 'xlsx':
-            print('1')
             spreadsheet = v2_to_xlsx(
                 allresults, method, zc_embeddings=zc_embed)
 
@@ -87,8 +85,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
             return response
 
-        if format == 'chat':
-            print('2')
+        if format == 'cha':
             enriched = enrich_chat(transcript, allresults)
             output = StringIO()
             writer = ChatWriter(enriched, target=output)

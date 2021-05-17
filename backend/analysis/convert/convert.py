@@ -1,4 +1,5 @@
 import os
+import os.path as op
 import logging
 
 from analysis.models import Transcript
@@ -36,6 +37,8 @@ def convert(transcript: Transcript):
             doc = ChatDocument.from_chatfile(transcript.content.path)
             transcript.target_ids = doc.target_uttids
             transcript.target_speakers = ','.join(doc.target_speakers)
+            transcript.name = op.splitext(
+                op.basename(transcript.content.name))[0]
 
         transcript.status = 'converted'
         transcript.save()
