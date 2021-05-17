@@ -33,13 +33,9 @@ def convert(transcript: Transcript):
             transcript.content = cha_name
 
         elif transcript.content.name.endswith('.cha'):
-            print('a')
             doc = ChatDocument.from_chatfile(transcript.content.path)
-            print('b')
             transcript.target_ids = doc.target_uttids
-            print('c')
             transcript.target_speakers = ','.join(doc.target_speakers)
-            print('d')
 
         transcript.status = 'converted'
         transcript.save()
