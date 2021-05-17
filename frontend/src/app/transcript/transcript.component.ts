@@ -113,8 +113,8 @@ export class TranscriptComponent implements OnInit {
 
   }
 
-  downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  downloadFile(data: any, filename: string, mimetype: string) {
+    const blob = new Blob([data], { type: mimetype });
     saveAs(blob, filename);
   }
 
@@ -124,7 +124,7 @@ export class TranscriptComponent implements OnInit {
       .annotate_transcript(this.id, method.id, this.onlyInform)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_SAF.xlsx`);
+          this.downloadFile(response.body, `${this.transcript.name}_SAF.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
           this.querying = false;
         },
@@ -142,7 +142,7 @@ export class TranscriptComponent implements OnInit {
       .query_transcript(this.id, method.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_matches.xlsx`);
+          this.downloadFile(response.body, `${this.transcript.name}_matches.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           this.messageService.add({ severity: 'success', summary: 'Querying success', detail: '' });
           this.querying = false;
         },
@@ -159,7 +159,7 @@ export class TranscriptComponent implements OnInit {
       .generate_form_transcript(this.id, method.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_${method.category.name}_form.xlsx`);
+          this.downloadFile(response.body, `${this.transcript.name}_${method.category.name}_form.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           this.messageService.add({ severity: 'success', summary: 'Generated form', detail: '' });
           this.querying = false;
         },

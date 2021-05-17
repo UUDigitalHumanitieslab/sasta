@@ -1,7 +1,6 @@
-from typing import Optional, TextIO
-
 from chamd.chat_reader import ChatHeader, ChatLine
 from convert.chat_reader import ChatDocument
+from typing import TextIO, Optional
 
 
 class ChatWriter:

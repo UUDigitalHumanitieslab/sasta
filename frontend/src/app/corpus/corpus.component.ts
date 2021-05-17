@@ -80,8 +80,8 @@ export class CorpusComponent implements OnInit {
       });
   }
 
-  downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/zip' });
+  downloadFile(data: any, filename: string, mimetype: string) {
+    const blob = new Blob([data], { type: mimetype });
     saveAs(blob, filename);
   }
 
@@ -116,7 +116,7 @@ export class CorpusComponent implements OnInit {
       .download_zip(this.corpus.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.corpus.name}.zip`);
+          this.downloadFile(response.body, `${this.corpus.name}.zip`, 'application/zip');
           this.messageService.add({ severity: 'success', summary: 'Downloaded corpus', detail: '' });
         },
         err => {
