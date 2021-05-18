@@ -133,6 +133,7 @@ export class TranscriptComponent implements OnInit {
           switch (outputFormat) {
             case 'xlsx':
               this.downloadFile(response.body, `${this.transcript.name}_SAF.xlsx`, XLSX_MIME);
+              break;
             case 'cha':
               this.downloadFile(response.body, `${this.transcript.name}_annotated.cha`, TXT_MIME);
               break;

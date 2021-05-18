@@ -86,7 +86,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             return response
 
         if format == 'cha':
-            enriched = enrich_chat(transcript, allresults)
+            enriched = enrich_chat(transcript, allresults, method)
             output = StringIO()
             writer = ChatWriter(enriched, target=output)
             writer.write()

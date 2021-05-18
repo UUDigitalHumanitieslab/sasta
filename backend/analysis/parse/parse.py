@@ -83,18 +83,19 @@ def create_utterance_objects(transcript):
             for utt in utts:
                 xsid = utt.metadata.find(
                     'meta', {'name': 'xsid'})
-                uttid = utt.metadata.find(
-                    'meta', {'name': 'uttid'}
+                uttid_el = utt.metadata.find(
+                    'meta', {'name': 'uttno'}
                 )
                 if xsid:
                     xsid = xsid['value']
-                if uttid:
-                    uttid = uttid['value']
+
+                uttid = uttid_el['value']
+
                 # replace existing utterances
-                existing = Utterance.objects.filter(
-                    transcript=transcript, utt_id=uttid)
-                if existing:
-                    existing.delete()
+                # existing = Utterance.objects.filter(
+                #     transcript=transcript, utt_id=uttid)
+                # if existing:
+                #     existing.delete()
                 sent = utt.sentence.text
                 speaker = utt.metadata.find(
                     'meta', {'name': 'speaker'})['value']
