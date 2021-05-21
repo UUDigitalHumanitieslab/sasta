@@ -34,7 +34,7 @@ idna==2.10                # via requests
 importlib-metadata==3.7.3  # via pluggy, pytest
 iniconfig==1.1.1          # via pytest
 isodate==0.6.0            # via rdflib
-lxml==4.6.2               # via pynlpl, python-docx, tei-reader
+lxml==4.6.3               # via pynlpl, python-docx, tei-reader
 numpy==1.19.5             # via pandas
 oauthlib==3.1.0           # via requests-oauthlib
 openpyxl==3.0.7           # via -r requirements.in
