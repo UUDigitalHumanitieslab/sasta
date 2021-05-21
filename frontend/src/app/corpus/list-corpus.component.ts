@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select, State } from '@ngrx/store';
-import { Subscription, interval } from 'rxjs';
-import { storeStructure } from '../store';
+import { Subscription } from 'rxjs';
 import { Corpus } from '../models/corpus';
-import { refreshList } from '../store/corpus.actions';
-import { startWith } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { CorpusService } from '../services/corpus.service';
 
 // check every 10 seconds
@@ -22,8 +17,6 @@ export class ListCorpusComponent implements OnInit {
 
   constructor(private corpusService: CorpusService) {
   }
-
-
 
   ngOnInit() {
     this.corpusService
