@@ -99,7 +99,7 @@ def run_post_queries(allresults: SastaResults,
     for q in post_queries:
         try:
             result = q.function(allresults, flat_queries)
-            if result:
+            if result is not None:
                 allresults.postresults[q.id] = result
         except Exception:
             logger.warning(f'Failed to execute {q.function}')

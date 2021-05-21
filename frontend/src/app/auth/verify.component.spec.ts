@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from 'primeng/api';
 
 import { VerifyComponent } from './verify.component';
 
@@ -8,7 +11,9 @@ describe('VerifyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerifyComponent ]
+      declarations: [VerifyComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      providers: [MessageService]
     })
     .compileComponents();
   }));

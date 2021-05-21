@@ -4,7 +4,7 @@ from lxml import etree as ET
 
 from analysis.macros.functions import expandmacros, get_macros_dict
 from analysis.models import AssessmentQuery, AssessmentMethod
-from analysis.query.external_functions import str2functionmap
+from analysis.query.external_functions import str2functionmap, form_map
 from analysis.results.results import UtteranceWord
 
 from bs4 import BeautifulSoup as Soup
@@ -114,8 +114,10 @@ def filter_queries(method: AssessmentMethod,
                 False returns everything up to (and including) that phase
     '''
     try:
+        form_queries = [f.__name__ for f in form_map.values()]
         all_queries = AssessmentQuery.objects.all().filter(
-            Q(method=method) & Q(query__isnull=False))
+            Q(method=method) & Q(query__isnull=False) & ~Q(query__in=form_queries)
+        )
         if phase:
             phase_filter = Q(fase=phase) if phase_exact else Q(
                 fase__gte=phase)

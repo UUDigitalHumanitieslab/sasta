@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { Store, select } from '@ngrx/store';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-
-import { storeStructure } from '../store';
-import { Corpus } from '../models/corpus';
 import { Subscription } from 'rxjs';
+import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
-import { UploadFile } from '../models/upload-file';
 import { UploadFileService } from '../services/upload-file.service';
+
+
 
 @Component({
     selector: 'sas-upload',
@@ -29,22 +26,7 @@ export class UploadComponent implements OnDestroy, OnInit {
     corpora: Corpus[];
     selectedCorpus: Corpus;
 
-    constructor(private store: Store<storeStructure>,
-        private router: Router,
-        private corpusService: CorpusService,
-        private uploadFileService: UploadFileService) {
-        this.subscriptions = [
-            this.store.pipe(select('uploadFiles')).subscribe((uploadFiles: UploadFile[]) => {
-                // information about the file is available
-                if (this.uploading) {
-                    const file = uploadFiles.find(x => x.content.name === this.content.name);
-                    if (file.status === 'uploaded') {
-                        router.navigate(['/corpora']);
-                    }
-                }
-            })
-        ];
-    }
+    constructor(private router: Router, private corpusService: CorpusService, private uploadFileService: UploadFileService) { }
 
     ngOnInit() {
         this.corpusService.list()

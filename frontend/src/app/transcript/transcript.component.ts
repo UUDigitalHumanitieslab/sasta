@@ -187,6 +187,13 @@ export class TranscriptComponent implements OnInit {
         });
   }
 
+  chatFileAvailable(transcript) {
+    return ['converted', 'parsed'].includes(transcript.status);
+  }
+
+  lassyFileAvailable(transcript) {
+    return transcript.status === 'parsed';
+  }
   
   showChat() {
     window.open(this.transcript.content, '_blank');
