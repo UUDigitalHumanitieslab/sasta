@@ -3,7 +3,7 @@ import os
 from .safreader import SAFReader
 from django.core.files import File
 from ..models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
-                             Utterance)
+                      Utterance)
 from ..convert.convert import convert
 from ..parse.parse import parse_and_create
 from ..query.run import query_transcript
@@ -13,18 +13,19 @@ import openpyxl
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
+
 def create_annotation(filename, cha_path, xlsx_path, method, corpus):
     # parse chat file
     with open(cha_path, 'rb') as cha_content:
         transcript = Transcript(
-            name = filename, 
-            status = 'converted',
-            corpus = corpus,
-            extracted_filename = filename + '.cha'
+            name=filename,
+            status='converted',
+            corpus=corpus,
+            extracted_filename=filename + '.cha'
         )
         transcript.save()
         transcript.content.save(filename + '.cha', File(cha_content))
-    
+
     parse_and_create(transcript)
 
     # query
@@ -69,29 +70,30 @@ def test_reader():
         assert len(words) == len(true_words)
 
         for word, true_word in zip(words, true_words):
-            #test word
+            # test word
             assert word.text.lower() == true_word.word.lower()
 
-            #test index
+            # test index
             assert word.idx == true_word.begin + 1
 
-            #test annotations
+            # test annotations
             anns = word.annotations
             true_anns = true_word.hits
 
             def matching(ann, true_ann):
-                    matching_level = true_ann['level'].lower() == ann.level
-                    matching_label =  clean_item(true_ann['item']) == ann.label
-                    matching_fase = true_ann['fase'] == ann.fase
-                    return matching_level and matching_label and matching_fase
+                matching_level = true_ann['level'].lower() == ann.level
+                matching_label = clean_item(true_ann['item']) == ann.label
+                matching_fase = true_ann['fase'] == ann.fase
+                return matching_level and matching_label and matching_fase
 
             for true_ann in true_anns:
-                #check if true annotation has a match in the found annotations
+                # check if true annotation has a match in the found annotations
                 assert any(ann for ann in anns if matching(ann, true_ann))
 
             for ann in anns:
-                #check if found annotation has a match in the true annotations
+                # check if found annotation has a match in the true annotations
                 assert any(true_ann for true_ann in true_anns if matching(ann, true_ann))
+
 
 @pytest.mark.django_db
 def test_annotation_to_query():
@@ -101,9 +103,6 @@ def test_annotation_to_query():
 
     method = AssessmentMethod.objects.first()
     corpus = Corpus.objects.first()
-
-    log_file = open('test_log.txt', 'w')
-    log = lambda x : log_file.write(str(x) + '\n')
 
     # paths
     filename = 'test_sample_1'
@@ -123,12 +122,10 @@ def test_annotation_to_query():
     query_output.save(os.path.join(BASE_DIR, 'test_files', filename + '_query.xlsx'))
     true_query_output.save(os.path.join(BASE_DIR, 'test_files', filename + '_query_true.xlsx'))
 
-    #compare query_output and true_query_output
+    # compare query_output and true_query_output
     assert len(query_output.worksheets) == len(true_query_output.worksheets)
     for sheet, true_sheet in zip(query_output, true_query_output):
         assert sheet.dimensions == true_sheet.dimensions
         for row, true_row in zip(sheet.rows, true_sheet.rows):
             for cell, true_cell in zip(row, true_row):
                 assert cell.value == true_cell.value
-
-    log_file.close()
