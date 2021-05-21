@@ -24,7 +24,7 @@
 
     <div class="block">
         <p-panel header="Scoring">
-            <form (submit)="performQuerying(currentTam)">
+            <form>
                 <div class="field">
                     <div class="control">
                         <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
@@ -35,13 +35,14 @@
                 </div>
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
+                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryTranscript()"
                             [ngClass]="{'is-loading': querying}">Query</button>
                     </div>
                     <div class="divider is-vertical">or</div>
                     <div class="field">
                         <div class="control">
-                            <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
+                            <button class="button is-primary" [disabled]="!currentTam"
+                                (click)="annotateTranscript('xlsx')"
                                 [ngClass]="{'is-loading': querying}">Annotate (xlsx)</button>
                         </div>
                         <div class="control">
@@ -54,7 +55,8 @@
                     <div class="field">
                         <div class="control">
                             <button class="button is-primary" [disabled]="!currentTam"
-                                (click)="queryAction='annotateChat'" [ngClass]="{'is-loading': querying}">Annotate
+                                (click)="annotateTranscript('cha')"
+                                [ngClass]="{'is-loading': querying}">Annotate
                                 (CHAT)</button>
                         </div>
                         <div class="control">
@@ -66,7 +68,8 @@
                     <div class="divider is-vertical">or</div>
                     <div class="control">
                         <button class="button is-primary" [disabled]="!currentTam || !currentTam?.category.has_form"
-                            (click)="queryAction='generateForm'" [ngClass]="{'is-loading': querying}">Generate
+                            (click)="generateForm()" [ngClass]="{'is-loading':
+                            querying}">Generate
                             form</button>
                     </div>
                 </div>

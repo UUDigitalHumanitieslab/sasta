@@ -99,35 +99,15 @@ export class TranscriptComponent implements OnInit {
       })
   }
 
-  performQuerying(method: Method) {
-    switch (this.queryAction) {
-      case 'annotate':
-        this.annotateTranscript(method, 'xlsx');
-        break;
-      case 'annotateChat':
-        this.annotateTranscript(method, 'cha');
-        break;
-      case 'query':
-        this.queryTranscript(method);
-        break;
-      case 'generateForm':
-        this.generateFormTranscript(method);
-        break;
-      default:
-        break;
-    }
-
-  }
-
   downloadFile(data: any, filename: string, mimetype: string) {
     const blob = new Blob([data], { type: mimetype });
     saveAs(blob, filename);
   }
 
-  annotateTranscript(method: Method, outputFormat: 'xlsx' | 'cha') {
+  annotateTranscript(outputFormat: 'xlsx' | 'cha') {
     this.querying = true;
     this.corpusService
-      .annotate_transcript(this.id, method.id, this.onlyInform, outputFormat)
+      .annotate_transcript(this.id, this.currentTam.id, this.onlyInform, outputFormat)
       .subscribe(
         response => {
           switch (outputFormat) {
@@ -151,10 +131,10 @@ export class TranscriptComponent implements OnInit {
       );
   }
 
-  queryTranscript(method: Method) {
+  queryTranscript() {
     this.querying = true;
     this.corpusService
-      .query_transcript(this.id, method.id)
+      .query_transcript(this.id, this.currentTam.id)
       .subscribe(
         response => {
           this.downloadFile(response.body, `${this.transcript.name}_matches.xlsx`, XLSX_MIME);
@@ -168,13 +148,13 @@ export class TranscriptComponent implements OnInit {
         });
   }
 
-  generateFormTranscript(method: Method) {
+  generateForm() {
     this.querying = true;
     this.corpusService
-      .generate_form_transcript(this.id, method.id)
+      .generate_form_transcript(this.id, this.currentTam.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.transcript.name}_${method.category.name}_form.xlsx`, XLSX_MIME);
+          this.downloadFile(response.body, `${this.transcript.name}_${this.currentTam.category.name}_form.xlsx`, XLSX_MIME);
           this.messageService.add({ severity: 'success', summary: 'Generated form', detail: '' });
           this.querying = false;
         },
