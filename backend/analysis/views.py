@@ -126,7 +126,6 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
 
-
 class CorpusViewSet(viewsets.ModelViewSet):
     serializer_class = CorpusSerializer
     queryset = Corpus.objects.all()
@@ -173,7 +172,18 @@ class CorpusViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={corpus.name}.zip'
 
         return response
-
+    
+    @action(detail=True, methods=['POST'], name='setdefaultmethod')
+    def defaultmethod(self, request, *args, **kwargs):
+        corpus = self.get_object()
+        method_id = request.data.get('method')
+        if method_id == 'null':
+            method = None
+        else:
+            method = AssessmentMethod.objects.get(pk=method_id)
+        corpus.default_method = method
+        corpus.save()
+        return Response('Succes')
 
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()

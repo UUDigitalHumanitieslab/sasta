@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-
 import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
 import { UploadFileService } from '../services/upload-file.service';
+
 
 @Component({
     selector: 'sas-upload',
@@ -24,8 +23,7 @@ export class UploadComponent implements OnInit {
     corpora: Corpus[];
     selectedCorpus: Corpus;
 
-    constructor(private router: Router, private corpusService: CorpusService, private uploadFileService: UploadFileService) {
-    }
+    constructor(private router: Router, private corpusService: CorpusService, private uploadFileService: UploadFileService) { }
 
     ngOnInit() {
         this.corpusService.list()

@@ -12,6 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
+import { PanelModule } from 'primeng/panel';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
@@ -28,6 +29,7 @@ import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
+import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
@@ -45,6 +47,7 @@ import { UploadComponent } from './upload/upload.component';
         ProcessComponent,
         RegisterComponent,
         VerifyComponent,
+        TranscriptComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -67,6 +70,7 @@ import { UploadComponent } from './upload/upload.component';
         MessagesModule,
         ToastModule,
         TooltipModule,
+        PanelModule,
         StepsModule,
     ],
     providers: [MessageService],

@@ -35,7 +35,7 @@ REST_FRAMEWORK = {
 }
 
 # Application definition
-ALPINO_HOST = 'alpino'
+ALPINO_HOST = 'localhost'
 ALPINO_PORT = 7001
 CORPUS2ALPINO_LOG_DIR = '.logs'
 

@@ -7,7 +7,8 @@ export interface Transcript {
     parsed_content: string;
     status: number;
     status_name: 'unknown' | 'created' | 'converting' | 'converted' | 'conversion-failed' | 'parsing' | 'parsed' | 'parsing-failed';
-    corpus: Corpus;
+    date_added?: Date;
+    corpus: number;
     utterances?: any[];
 }
 

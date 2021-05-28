@@ -50,5 +50,11 @@ export class CorpusService {
     return this.httpClient.post(`api/corpora/${id}/download/`, formData, { observe: 'response', responseType: 'blob' });
   }
 
+  set_default_method(id, methodID): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('method', methodID);
+    return this.httpClient.post(`api/corpora/${id}/defaultmethod/`, formData);
+  }
+
 }
 
