@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   username: string;
   emailAddress: string;
-  password1: '';
+  password1 = '';
   password2: string;
 
   processing = false;
