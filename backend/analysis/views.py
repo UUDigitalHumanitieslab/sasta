@@ -1,23 +1,28 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
+from io import BytesIO
+
+from analysis.query.run import query_transcript
+from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from django.db.models import Q
 from django.http import HttpResponse
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
+from rest_framework.response import Response
 
-from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from analysis.utils import StreamFile
 
 from .convert.convert import convert
-from .models import AssessmentMethod, Corpus, Transcript, UploadFile, MethodCategory
+from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
+                     Transcript, UploadFile)
 from .parse.parse import parse_and_create
+from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
-from .permissions import IsCorpusOwner, IsCorpusChildOwner
 
 # flake8: noqa: E501
 
@@ -38,6 +43,19 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(corpus__user=self.request.user)
+
+    def create_analysis_run(self, transcript, saf_workbook):
+        stream = BytesIO()
+        saf_workbook.save(stream)
+        run = AnalysisRun()
+        run.transcript = transcript
+
+        now = datetime.datetime.now()
+        stamp = now.strftime('%Y%m%d_%H%M')
+
+        filename = f'{transcript.name}_{stamp}_saf.xlsx'
+        run.annotation_file.save(filename, StreamFile(stream))
+        run.save()
 
     @action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
@@ -75,6 +93,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
         spreadsheet.save(response)
+        self.create_analysis_run(transcript, spreadsheet)
 
         return response
 

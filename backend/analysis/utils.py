@@ -12,11 +12,9 @@ import docx.table
 import docx.text.paragraph
 import pandas as pd
 from django.core.files import File
+from django.core.files.base import ContentFile
 from django.db.utils import IntegrityError
 from docx import Document
-
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill
 
 logger = logging.getLogger('sasta')
 
@@ -181,3 +179,15 @@ def create_query_from_series(series: pd.Series, method) -> None:
         instance.save()
     except IntegrityError as error:
         logger.exception(error)
+
+
+class StreamFile(ContentFile):
+    """
+    Django doesn't provide a File wrapper suitable 
+    for file-like objects (eg StringIO)
+    """
+
+    def __init__(self, stream):
+        super(ContentFile, self).__init__(stream)
+        stream.seek(0, 2)
+        self.size = stream.tell()
