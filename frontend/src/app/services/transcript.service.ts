@@ -25,4 +25,8 @@ export class TranscriptService {
   delete(id): Observable<{}> {
     return this.httpClient.delete(`api/transcripts/${id}/`);
   }
+
+  latest_annotations(id): Observable<any> {
+    return this.httpClient.get(`api/transcripts/${id}/latest_annotations/`, { observe: 'response', responseType: 'blob' });
+  }
 }

@@ -20,12 +20,12 @@ from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .parse.parse import parse_and_create
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
-from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
+from .serializers import (AnalysisRunSerializer, AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
 
 # flake8: noqa: E501
-
+SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     queryset = UploadFile.objects.all()
@@ -64,7 +64,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         method = AssessmentMethod.objects.get(pk=method_id)
 
         response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
         allresults, queries_with_funcs = query_transcript(transcript, method)
@@ -84,7 +84,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         zc_embed = method.category.zc_embeddings
 
         response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
 
         allresults, queries_with_funcs = query_transcript(
@@ -96,6 +96,17 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         self.create_analysis_run(transcript, spreadsheet)
 
         return response
+
+    @action(detail=True, methods=['GET'], name='Download latest annotation')
+    def latest_annotations(self, request, *args, **kwargs):
+        obj = self.get_object()
+        run = AnalysisRun.objects.filter(transcript=obj).latest()
+
+        filename = run.annotation_file.name.split('/')[-1]
+        response = HttpResponse(run.annotation_file, content_type=SPREADSHEET_MIMETYPE)
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response
+
 
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):
@@ -117,7 +128,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         form.seek(0)
         response = HttpResponse(
             form,
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = f"attachment; filename={transcript.name}_{method.category.name}_form.xlsx"
 
         return response

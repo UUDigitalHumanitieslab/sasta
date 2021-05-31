@@ -62,9 +62,13 @@
 
     <div class="block">
         <p-panel header="Annotation">
+            <p>Latest Annotation:
+                <span>{{transcript.latest_run.created | date: 'dd/MM/yyyy, HH:mm'}}</span>
+            </p>
             <div class="buttons">
                 <button class="button is-primary" pTooltip="download annotation file"
-                    [disabled]="!(transcript.status=='parsed')">
+                    [disabled]="!(transcript.status=='parsed')"
+                    (click)="downloadLatestAnnotations()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faDownload"></fa-icon>
                     </span>

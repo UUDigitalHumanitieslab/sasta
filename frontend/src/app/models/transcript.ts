@@ -1,5 +1,11 @@
 import { Corpus } from './corpus';
 
+interface AnalysisRun {
+    id: number;
+    created: Date;
+    annotation_file: string;
+}
+
 export interface Transcript {
     id?: number;
     name: string;
@@ -9,4 +15,5 @@ export interface Transcript {
     date_added?: Date;
     corpus: number;
     utterances?: any[];
+    latest_run?: AnalysisRun;
 }

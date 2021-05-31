@@ -78,7 +78,7 @@ export class TranscriptComponent implements OnInit {
       .get_by_id(this.id)
       .subscribe(res => {
         this.transcript = res;
-        this.get_corpus(res.corpus)
+        this.get_corpus(res.corpus);
       });
   }
 
@@ -95,7 +95,7 @@ export class TranscriptComponent implements OnInit {
               this.currentTam = res
             });
           }
-      })
+      });
   }
 
   performQuerying(method: Method) {
@@ -118,6 +118,16 @@ export class TranscriptComponent implements OnInit {
   downloadFile(data: any, filename: string) {
     const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(blob, filename);
+  }
+
+  downloadLatestAnnotations() {
+    this.transcriptService
+      .latest_annotations(this.id)
+      .subscribe(
+        res => {
+          this.downloadFile(res.body, `${this.transcript.name}_latest_SAF.xlsx`);
+        }
+      );
   }
 
   annotateTranscript(method: Method) {
