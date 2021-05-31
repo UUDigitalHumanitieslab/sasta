@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import (AssessmentMethod, AssessmentQuery, Corpus, MethodCategory,
-                     Transcript, UploadFile)
+from .models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Corpus,
+                     MethodCategory, Transcript, UploadFile)
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
@@ -28,11 +28,26 @@ class UploadFileSerializer(serializers.ModelSerializer):
                                          corpus=corpus_instance)
 
 
+class AnalysisRunSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnalysisRun
+        fields = ('id', 'created', 'annotation_file')
+
+
 class TranscriptSerializer(serializers.ModelSerializer):
+    def get_latest_run(self, obj):
+        try:
+            latest = obj.analysisruns.latest()
+            return AnalysisRunSerializer(latest).data
+        except AnalysisRun.DoesNotExist:
+            return None
+
+    latest_run = serializers.SerializerMethodField()
+
     class Meta:
         model = Transcript
         fields = ('id', 'name', 'content',
-                  'parsed_content', 'status', 'date_added', 'corpus', 'utterances')
+                  'parsed_content', 'status', 'date_added', 'corpus', 'utterances', 'latest_run')
 
 
 class CorpusSerializer(serializers.ModelSerializer):

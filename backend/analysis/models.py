@@ -227,7 +227,7 @@ class AnalysisRun(models.Model):
         return os.path.join('files', f'{self.transcript.corpus.uuid}',
                             'analysis_files', filename)
 
-    transcript = models.ForeignKey(Transcript, on_delete=models.CASCADE)
+    transcript = models.ForeignKey(Transcript, related_name='analysisruns', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     query_file = models.FileField(upload_to=upload_path)
     annotation_file = models.FileField(upload_to=upload_path)
