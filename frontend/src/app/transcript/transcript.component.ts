@@ -139,6 +139,7 @@ export class TranscriptComponent implements OnInit {
           this.downloadFile(response.body, `${this.transcript.name}_SAF.xlsx`);
           this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
           this.querying = false;
+          this.get_transcript();
         },
         err => {
           console.log(err);
