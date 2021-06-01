@@ -3,12 +3,13 @@ from collections import Counter, defaultdict
 from typing import Dict, List, Set
 
 from analysis.config import CORE_PROCESS, POST_PROCESS
-from analysis.models import (AssessmentMethod, AssessmentQuery, Transcript,
+from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
                              Utterance)
 from .functions import (Query, QueryWithFunction,
                         compile_queries, filter_queries,
                         single_query_single_utt, utt_from_tree)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
+from analysis.annotations.safreader import SAFReader
 
 logger = logging.getLogger('sasta')
 
@@ -31,6 +32,13 @@ def query_transcript(transcript: Transcript,
         only_inform,
         zc_embed,
         annotate)
+
+    runs = AnalysisRun.objects.filter(transcript=transcript)
+    if runs:  # An annotations file exists, base further results on this
+        latest_run = runs.latest()
+        reader = SAFReader(latest_run.annotation_file.path, method)
+        allresults_pregen = reader.document.to_allresults()
+        coreresults = allresults_pregen.coreresults
 
     allresults = AllResults(transcript.name,
                             len(utterances),

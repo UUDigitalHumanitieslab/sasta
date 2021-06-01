@@ -66,22 +66,22 @@
                 <span>{{transcript.latest_run.created | date: 'dd/MM/yyyy, HH:mm'}}</span>
             </p>
             <div class="buttons">
-                <button class="button is-primary" pTooltip="download annotation file"
+                <button class="button is-primary" pTooltip="Download the latest generated annotations file"
                     [disabled]="!(transcript.latest_run)"
                     (click)="downloadLatestAnnotations()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faDownload"></fa-icon>
                     </span>
-                    <span>Download annotation</span>
+                    <span>Download annotations</span>
                 </button>
-                <button class="button is-primary" pTooltip="upload corrected annotation file"
+                <button class="button is-primary" pTooltip="Provide a manually corrected annotations file"
                     [disabled]="!(transcript.status=='parsed')">
                     <span class="icon is-small">
                         <fa-icon [icon]="faUpload"></fa-icon>
                     </span>
-                    <span>Upload annotation</span>
+                    <span>Upload (corrected) annotations</span>
                 </button>
-                <button class="button is-danger" pTooltip="reset corrections to annotation file"
+                <button class="button is-danger" pTooltip="Reset annotations by querying the original transcript"
                     [disabled]="!(transcript.status=='parsed')">
                     <span class="icon is-small">
                         <fa-icon [icon]="faTrash"></fa-icon>
