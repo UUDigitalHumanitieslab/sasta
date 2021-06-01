@@ -6,13 +6,12 @@
             </span>
             <span>{{corpus?.name}}</span>
         </button>
-        <button class="button is-danger"
-        (click)="deleteTranscript()">
-        <span class="icon is-small" style="margin-right: 0;">
-            <fa-icon [icon]="faTrash"></fa-icon>
-        </span>
-        <span>Delete transcript</span>
-    </button>
+        <button class="button is-danger" (click)="deleteTranscript()">
+            <span class="icon is-small" style="margin-right: 0;">
+                <fa-icon [icon]="faTrash"></fa-icon>
+            </span>
+            <span>Delete transcript</span>
+        </button>
     </div>
 
     <h1 class="title">{{transcript.name}}</h1>
@@ -25,7 +24,7 @@
 
     <div class="block">
         <p-panel header="Scoring">
-            <form (submit)="performQuerying(currentTam)">
+            <form>
                 <div class="field">
                     <div class="control">
                         <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
@@ -36,24 +35,42 @@
                 </div>
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
+                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryTranscript()"
                             [ngClass]="{'is-loading': querying}">Query</button>
                     </div>
                     <div class="divider is-vertical">or</div>
                     <div class="field">
                         <div class="control">
-                            <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
-                                [ngClass]="{'is-loading': querying}">Annotate</button>
+                            <button class="button is-primary" [disabled]="!currentTam"
+                                (click)="annotateTranscript('xlsx')"
+                                [ngClass]="{'is-loading': querying}">Annotate (xlsx)</button>
                         </div>
                         <div class="control">
-                            <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">
+                            <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries"
+                                name="inform">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                    <div class="divider is-vertical">or</div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" [disabled]="!currentTam"
+                                (click)="annotateTranscript('cha')"
+                                [ngClass]="{'is-loading': querying}">Annotate
+                                (CHAT)</button>
+                        </div>
+                        <div class="control">
+                            <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries"
+                                name="inform">
                             </p-checkbox>
                         </div>
                     </div>
                     <div class="divider is-vertical">or</div>
                     <div class="control">
                         <button class="button is-primary" [disabled]="!currentTam || !currentTam?.category.has_form"
-                            (click)="queryAction='generateForm'" [ngClass]="{'is-loading': querying}">Generate form</button>
+                            (click)="generateForm()" [ngClass]="{'is-loading':
+                            querying}">Generate
+                            form</button>
                     </div>
                 </div>
             </form>
@@ -63,8 +80,7 @@
     <div class="block">
         <p-panel header="Download files">
             <div class="buttons">
-                <button class="button is-primary" pTooltip="view CHAT"
-                    [disabled]="!chatFileAvailable(transcript)"
+                <button class="button is-primary" pTooltip="view CHAT" [disabled]="!chatFileAvailable(transcript)"
                     (click)="showChat()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFile"></fa-icon>
@@ -72,8 +88,7 @@
                     <span>CHAT</span>
                 </button>
                 <button class="button is-primary" pTooltip="view alpino parse"
-                    [disabled]="!lassyFileAvailable(transcript)"
-                    (click)="showLassy()">
+                    [disabled]="!lassyFileAvailable(transcript)" (click)="showLassy()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFileCode"></fa-icon>
                     </span>

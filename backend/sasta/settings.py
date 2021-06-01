@@ -25,6 +25,8 @@ SECRET_KEY = 'kxreeb3bds$oibo7ex#f3bi5r+d(1x5zljo-#ms=i2%ih-!pvn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(' ')
 ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
@@ -60,6 +62,7 @@ INSTALLED_APPS = [
     'revproxy',
     'analysis',
     'authentication',
+    'convert',
 ]
 
 MIDDLEWARE = [
@@ -203,7 +206,7 @@ LOGGING = {
             'formatter': 'standard'
         },
         'console': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         }
@@ -221,6 +224,11 @@ LOGGING = {
             'handlers': ['django_file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['django_file'],
+            'level': 'DEBUG',
+            'propagate': False
         },
         'sasta': {
             'handlers': ['sasta_file', 'console'],

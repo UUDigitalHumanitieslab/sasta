@@ -83,25 +83,32 @@ def create_utterance_objects(transcript):
             for utt in utts:
                 xsid = utt.metadata.find(
                     'meta', {'name': 'xsid'})
+                uttid_el = utt.metadata.find(
+                    'meta', {'name': 'uttno'}
+                )
                 if xsid:
-                    utt_id = xsid['value']
-                    # replace existing utterances
-                    existing = Utterance.objects.filter(
-                        transcript=transcript, utt_id=utt_id)
-                    if existing:
-                        existing.delete()
-                    sent = utt.sentence.text
-                    speaker = utt.metadata.find(
-                        'meta', {'name': 'speaker'})['value']
-                    instance = Utterance(
-                        transcript=transcript,
-                        utt_id=utt_id,
-                        speaker=speaker,
-                        sentence=sent,
-                        parse_tree=str(utt)
-                    )
-                    instance.save()
-                    num_created += 1
+                    xsid = xsid['value']
+
+                uttid = uttid_el['value']
+
+                # replace existing utterances
+                # existing = Utterance.objects.filter(
+                #     transcript=transcript, utt_id=uttid)
+                # if existing:
+                #     existing.delete()
+                sent = utt.sentence.text
+                speaker = utt.metadata.find(
+                    'meta', {'name': 'speaker'})['value']
+                instance = Utterance(
+                    transcript=transcript,
+                    utt_id=uttid,
+                    xsid=xsid,
+                    speaker=speaker,
+                    sentence=sent,
+                    parse_tree=str(utt)
+                )
+                instance.save()
+                num_created += 1
             logger.info(
                 f'Created {num_created} (out of {len(utts)})'
                 f'utterances for:\t{transcript.name}\n')
