@@ -37,7 +37,6 @@ export class TranscriptComponent implements OnInit {
   faFileCode = faFileCode;
   faArrowLeft = faArrowLeft;
 
-  queryAction: 'annotate' | 'annotateChat' | 'query' | 'generateForm';
   onlyInform = true;
   querying = false;
 

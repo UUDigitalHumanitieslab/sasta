@@ -145,7 +145,7 @@ class Utterance(models.Model):
     utt_id = models.IntegerField(blank=True, null=True)
     xsid = models.IntegerField(blank=True, null=True)
     parse_tree = models.TextField(blank=True)
-    transcript: Transcript = models.ForeignKey(
+    transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
 
     @property
