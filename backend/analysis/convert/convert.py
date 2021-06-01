@@ -40,12 +40,15 @@ def convert(transcript: Transcript):
             transcript.name = op.splitext(
                 op.basename(transcript.content.name))[0]
 
+        else:
+            raise ValueError('Invalid file extension.')
+
         transcript.status = 'converted'
         transcript.save()
         logger.info('Conversion successful')
         return transcript
 
-    except Exception as e:
+    except Exception:
         transcript.status = 'conversion-failed'
         transcript.save()
         logger.warn('Conversion failed')
