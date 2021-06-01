@@ -21,7 +21,6 @@ export class UploadComponent implements OnDestroy, OnInit {
     faUpload = faUpload;
 
     uploading: boolean;
-    subscriptions: Subscription[];
 
     corpora: Corpus[];
     selectedCorpus: Corpus;
@@ -34,7 +33,6 @@ export class UploadComponent implements OnDestroy, OnInit {
     }
 
     ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     fileChange(fileInput: HTMLInputElement) {
