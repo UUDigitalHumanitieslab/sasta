@@ -65,6 +65,7 @@ def quotemarks():
         "'t kofschip"
     ]
 
+
 @pytest.fixture
 def testfiles():
     here = op.dirname(op.abspath(__file__))

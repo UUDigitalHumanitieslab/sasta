@@ -4,6 +4,7 @@ from .chat_converter import SifReader
 
 logger = logging.getLogger('sasta')
 
+
 def convert(transcript):
     transcript.status = 'converting'
     transcript.save()
@@ -28,8 +29,8 @@ def convert(transcript):
         logger.info('Conversion successful')
         return transcript
 
-    except Exception as e:
+    except Exception:
         transcript.status = 'conversion-failed'
         transcript.save()
         logger.warn('Conversion failed')
-        #raise
+        # raise

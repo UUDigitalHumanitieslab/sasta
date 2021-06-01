@@ -2,13 +2,12 @@ import traceback
 from collections import Counter
 from typing import List
 
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill
-from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
-from openpyxl.utils import get_column_letter
-
 from analysis.query.functions import QueryWithFunction
 from analysis.results.results import AllResults
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 ROMAN_NUMS = [None, 'I', 'II', 'III',
@@ -35,8 +34,8 @@ def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
     sorted_queries = sorted(
         sorted(
             query_mapping.items(),
-            key = lambda item: item[0]
-        ), 
+            key=lambda item: item[0]
+        ),
         key=lambda item: item[1][0]
     )
 

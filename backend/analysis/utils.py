@@ -2,7 +2,6 @@ import errno
 import logging
 import os
 from shutil import copyfile
-from typing import Any, Dict
 from zipfile import ZipFile
 
 import docx.document
@@ -66,7 +65,7 @@ def extract(file):
         file.save()
         return created_transcripts
 
-    except:
+    except Exception:
         file.status = 'extraction-failed'
         file.save()
         raise
@@ -183,7 +182,7 @@ def create_query_from_series(series: pd.Series, method) -> None:
 
 class StreamFile(ContentFile):
     """
-    Django doesn't provide a File wrapper suitable 
+    Django doesn't provide a File wrapper suitable
     for file-like objects (eg StringIO)
     """
 

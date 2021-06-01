@@ -1,15 +1,14 @@
-import pytest
 import os
-from .safreader import SAFReader
+
+import pytest
+from analysis.models import AssessmentMethod, Corpus, Transcript
+from analysis.parse.parse import parse_and_create
+from analysis.query.run import query_transcript
+from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from django.core.files import File
-from ..models import (AssessmentMethod, AssessmentQuery, Corpus, Transcript,
-                      Utterance)
-from ..convert.convert import convert
-from ..parse.parse import parse_and_create
-from ..query.run import query_transcript
-from ..query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+
+from .safreader import SAFReader
 from .utils import clean_item
-import openpyxl
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -97,8 +96,8 @@ def test_reader():
 
 @pytest.mark.django_db
 def test_annotation_to_query():
-    '''test conversion of annotation reader output to query results: parse a 
-    transcript, write an annotation file and a query file. Read the annotation file, 
+    '''test conversion of annotation reader output to query results: parse a
+    transcript, write an annotation file and a query file. Read the annotation file,
     make new query file based on annotations and compare to real query file.'''
 
     method = AssessmentMethod.objects.first()

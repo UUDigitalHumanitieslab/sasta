@@ -53,7 +53,7 @@ class SAFReader:
         instance = SAFUtterance(utt_id)
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
-            word = self.parse_word(idx+1,
+            word = self.parse_word(idx + 1,
                                    wcol, utt_data[relevant_cols])
             if word:
                 instance.words.append(word)

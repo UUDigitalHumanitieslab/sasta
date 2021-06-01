@@ -199,7 +199,7 @@ LOGGING = {
         'sasta_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR,'sasta.log'),
+            'filename': os.path.join(BASE_DIR, 'sasta.log'),
             'formatter': 'standard'
         },
         'console': {

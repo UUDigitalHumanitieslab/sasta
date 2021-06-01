@@ -57,7 +57,7 @@ def enrich(labelstr: str, lcprefix: str) -> str:
         newlabels = []
         for label in labels:
             if label != "" and lcprefix != "":
-                newlabels.append(lcprefix+":" + label)
+                newlabels.append(lcprefix + ":" + label)
             else:
                 newlabels.append(label)
         result = LABELSEP.join(newlabels)
@@ -81,10 +81,12 @@ def getlabels(labelstr, patterns):
                        labelstr, logstr)
     return results
 
+
 def clean_item(item: str):
     clean_item = item.lower().strip()
-    clean_item = re.sub(pattern = r' +', repl = ' ', string = clean_item)
+    clean_item = re.sub(pattern=r' +', repl=' ', string=clean_item)
     return clean_item
+
 
 def item2queryid(item: str, level: str,
                  mapping: TupleStrDict):
