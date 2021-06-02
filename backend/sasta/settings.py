@@ -31,6 +31,10 @@ ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'sasta.authentication.CsrfExemptSessionAuthentication',
     ]
 }
 
@@ -170,8 +174,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Celery stuff
-# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
-CELERY_BROKER_URL = 'amqp://'
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
+# CELERY_BROKER_URL = 'amqp://'
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_IGNORE_RESULT = False
 CELERY_TIMEZONE = TIME_ZONE

@@ -15,7 +15,7 @@ class ParseTaskView(APIView):
         "STARTED": HTTP_202_ACCEPTED,
         "RETRY": HTTP_202_ACCEPTED,
         "FAILURE": HTTP_500_INTERNAL_SERVER_ERROR,
-        "SUCCES": HTTP_200_OK,
+        "SUCCESS": HTTP_200_OK,
     }
 
     def get(self, request, *args, **kwargs):
@@ -32,7 +32,7 @@ class ParseTaskView(APIView):
             "task_status": task.status,
             "task_result": task.result
         }
-        response.status_code = self.status_code_mapping.get(task.status)
+        response.status_code = self.status_code_mapping.get(task.status, HTTP_500_INTERNAL_SERVER_ERROR)
 
         return response
 
@@ -40,7 +40,7 @@ class ParseTaskView(APIView):
         '''Starts a parse task and returns task id'''
         # TODO: start task
         transcript_id = request.data.get('transcript_id')
-        res = test_model.delay(transcript_id)
+        res = test_model.apply_async([transcript_id], countdown=10)
 
         return Response({
             "transcript_id": transcript_id,
