@@ -3,6 +3,12 @@ from __future__ import unicode_literals
 
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from io import StringIO
+
+from analysis.query.enrich_chat import enrich_chat
+from analysis.query.run import query_transcript
+from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
 from rest_framework import status, viewsets
@@ -66,18 +72,34 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         method = AssessmentMethod.objects.get(pk=method_id)
         zc_embed = method.category.zc_embeddings
 
-        response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
-
         allresults, queries_with_funcs = query_transcript(
             transcript, method, True, zc_embed, only_inform
         )
 
-        spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
-        spreadsheet.save(response)
+        format = request.data.get('format', 'xlsx')
+        if format == 'xlsx':
+            spreadsheet = v2_to_xlsx(
+                allresults, method, zc_embeddings=zc_embed)
 
-        return response
+            response = HttpResponse(
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
+            spreadsheet.save(response)
+
+            return response
+
+        if format == 'cha':
+            enriched = enrich_chat(transcript, allresults, method)
+            output = StringIO()
+            writer = ChatWriter(enriched, target=output)
+            writer.write()
+            output.seek(0)
+
+            response = HttpResponse(
+                output.getvalue(), content_type='text/plain')
+            response['Content-Disposition'] = "attachment; filename=annotated.cha"
+
+            return response
 
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):
@@ -126,6 +148,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
 
+
 class CorpusViewSet(viewsets.ModelViewSet):
     serializer_class = CorpusSerializer
     queryset = Corpus.objects.all()
@@ -138,7 +161,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         user_queryset = self.queryset.filter(user=self.request.user)
         return user_queryset
 
-    @action(detail=True, methods=['GET'], name='parse_all')
+    @action(detail=True, methods=['GET'], name='convert_all')
     def convert_all(self, request, *args, **kwargs):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
@@ -172,7 +195,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={corpus.name}.zip'
 
         return response
-    
+
     @action(detail=True, methods=['POST'], name='setdefaultmethod')
     def defaultmethod(self, request, *args, **kwargs):
         corpus = self.get_object()
@@ -184,6 +207,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus.default_method = method
         corpus.save()
         return Response('Succes')
+
 
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()

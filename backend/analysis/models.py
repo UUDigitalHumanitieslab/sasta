@@ -148,15 +148,22 @@ class Transcript(models.Model):
     date_added = models.DateField(auto_now_add=True)
 
     objects = TranscriptManager()
+    target_speakers = models.CharField(max_length=500, blank=True)
+    target_ids = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+    @property
+    def target_speakers_list(self):
+        return self.target_speakers.split(',')
 
 
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
     utt_id = models.IntegerField(blank=True, null=True)
+    xsid = models.IntegerField(blank=True, null=True)
     parse_tree = models.TextField(blank=True)
     transcript = models.ForeignKey(
         Transcript, related_name='utterances', on_delete=models.CASCADE)
@@ -166,6 +173,21 @@ class Utterance(models.Model):
         if self.parse_tree:
             return ET.fromstring(self.parse_tree)
         return None
+
+    @property
+    def for_analysis(self):
+        """ Utterance should be analysed if:
+        - Speaker is in target list
+            - If target xsids, utt should also have xsid
+        OR
+        - Utterance has xsid
+        """
+        if self.speaker in self.transcript.target_speakers_list:
+            if self.transcript.target_ids:
+                return self.xsid is not None
+            return True
+        return self.xsid is not None
+
 
     def __str__(self):
         return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
