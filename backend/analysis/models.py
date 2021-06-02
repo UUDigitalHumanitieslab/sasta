@@ -85,10 +85,10 @@ class Corpus(models.Model):
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=50)
     uuid = models.UUIDField(default=uuid4)
-    date_added = models.DateField(auto_now_add = True)
-    date_modified = models.DateField(auto_now = True)
-    default_method = models.ForeignKey(AssessmentMethod, 
-        on_delete=models.SET_NULL, related_name = 'corpora', blank=True, null=True)
+    date_added = models.DateField(auto_now_add=True)
+    date_modified = models.DateField(auto_now=True)
+    default_method = models.ForeignKey(AssessmentMethod,
+                                       on_delete=models.SET_NULL, related_name='corpora', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -137,6 +137,7 @@ class Transcript(models.Model):
     name = models.CharField(max_length=255)
     status = models.PositiveIntegerField(
         choices=STATUS_CHOICES, default=UNKNOWN)
+    # status = models.CharField(max_length=50)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.CASCADE)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
@@ -144,7 +145,7 @@ class Transcript(models.Model):
         upload_to=upload_path_parsed, blank=True, null=True)
     extracted_filename = models.CharField(
         max_length=500, blank=True, null=True)
-    date_added = models.DateField(auto_now_add = True)
+    date_added = models.DateField(auto_now_add=True)
 
     objects = TranscriptManager()
 
@@ -184,8 +185,6 @@ class UploadFile(models.Model):
 
     def __str__(self):
         return self.name
-
-
 
 
 class AssessmentQuery(models.Model):
