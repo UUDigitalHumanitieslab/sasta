@@ -1,14 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Corpus } from '../models/corpus';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CorpusService {
 
+  public corpora$: BehaviorSubject<Corpus[]> = new BehaviorSubject([] as any);
+
   constructor(private httpClient: HttpClient) { }
+
+  updateCorpora() {
+    this.httpClient.get<Corpus[]>('api/corpora/')
+      .subscribe(res => this.corpora$.next(res));
+  }
 
   list(): Observable<Corpus[]> {
     return this.httpClient.get<Corpus[]>('api/corpora/');
@@ -44,6 +51,11 @@ export class CorpusService {
 
   parse_all(id): Observable<Corpus> {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/parse_all/`);
+  }
+
+  parse_all_async(id): Observable<string> {
+    // returns task id
+    return this.httpClient.get<string>(`api/corpora/${id}/parse_all_async/`);
   }
 
   download_zip(id): Observable<any> {

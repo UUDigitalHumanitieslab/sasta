@@ -14,7 +14,7 @@ attrs==21.2.0             # via pytest
 beautifulsoup4==4.9.3     # via django-livereload-server, tei-reader
 billiard==3.6.4.0         # via celery
 cached-property==1.5.2    # via kombu
-celery==5.1.0             # via -r requirements.in
+celery==5.1.0             # via -r requirements.in, django-celery-results
 certifi==2020.12.5        # via requests
 cffi==1.14.5              # via cryptography
 chamd==0.5.4              # via -r requirements.in, corpus2alpino
@@ -28,6 +28,7 @@ cryptography==3.4.7       # via pyjwt
 cython==0.29.23           # via corpus2alpino, python-ucto
 defusedxml==0.7.1         # via python3-openid
 django-allauth==0.44.0    # via django-rest-auth
+django-celery-results==2.0.1  # via -r requirements.in
 django-common-helpers==0.9.2  # via django-cron
 django-cron==0.5.1        # via -r requirements.in
 django-livereload-server==0.3.2  # via -r requirements.in

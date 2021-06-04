@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'django_cron',
+    'django_celery_results',
     'rest_framework',
     'rest_framework.authtoken',
     'allauth',
@@ -179,7 +180,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Celery stuff
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
 # CELERY_BROKER_URL = 'amqp://'
-CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_RESULT_BACKEND = 'django-db'
 CELERY_IGNORE_RESULT = False
 CELERY_TIMEZONE = TIME_ZONE
 

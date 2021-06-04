@@ -17,6 +17,8 @@ from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from parse.tasks import parse_corpus
+
 from .convert.convert import convert
 from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
                      UploadFile)
@@ -185,6 +187,15 @@ class CorpusViewSet(viewsets.ModelViewSet):
             if not res:
                 return Response('Failed', status.HTTP_400_BAD_REQUEST)
         return Response(self.get_serializer(corpus).data)
+
+    @action(detail=True, methods=['GET'], name='parse_all_async')
+    def parse_all_async(self, request, *args, **kwargs):
+        corpus = self.get_object()
+        task = parse_corpus.delay(corpus.id)
+        if not task:
+            return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
+        return Response(task.id)
+
 
     @action(detail=True, methods=['POST'], name='download')
     def download(self, request, *args, **kwargs):

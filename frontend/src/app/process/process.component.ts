@@ -42,10 +42,11 @@ export class ProcessComponent implements OnInit {
     this.corpusService.convert_all(this.corpus.id)
       .pipe(
         // tslint:disable-next-line: deprecation
-        concat(this.corpusService.parse_all(this.corpus.id)))
+        // concat(this.corpusService.parse_all(this.corpus.id)))
+        concat(this.corpusService.parse_all_async(this.corpus.id)))
       .subscribe(
         res => {
-          console.log(res.transcripts);
+          console.log(res);
           this.stepsIndex += 1;
         },
         err => {

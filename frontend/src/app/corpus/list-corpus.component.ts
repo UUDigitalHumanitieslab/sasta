@@ -14,28 +14,24 @@ const UPDATE_INTERVAL = 10000;
 })
 export class ListCorpusComponent implements OnInit, OnDestroy {
   private subscription$: Subscription;
-  interval$: Observable<number>;
+  interval$: Observable<number> = interval(UPDATE_INTERVAL);
   corpora: Corpus[];
 
   constructor(private corpusService: CorpusService) { }
 
-  ngOnInit() {
-    this.interval$ = interval(UPDATE_INTERVAL);
-    this.subscription$ = this.interval$
-      .pipe(
-        startWith(0),
-        flatMap(() => this.corpusService.list())
-      )
-      .subscribe(
-        res => {
-          this.corpora = res;
-        },
-        err => console.error(err)
-      );
-  }
-
   ngOnDestroy() {
     this.subscription$.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.corpusService.corpora$.subscribe(res => this.corpora = res);
+    this.subscription$ = this.interval$
+      .pipe(startWith(0))
+      .subscribe(() => this.refreshCorpora());
+  }
+
+  refreshCorpora() {
+    this.corpusService.updateCorpora();
   }
 
 }

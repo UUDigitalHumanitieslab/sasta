@@ -1,6 +1,8 @@
+from analysis.parse.parse import parse_and_create
 from sasta import celery_app as app
 from celery import shared_task
-from analysis.models import Transcript
+from analysis.models import Corpus, Transcript
+from django.db.models import Q
 
 
 @app.task
@@ -12,3 +14,21 @@ def add(x, y):
 def test_model(model_id):
     obj = Transcript.objects.get(pk=model_id)
     return obj.name
+
+
+@shared_task
+def parse_corpus(corpus_id: int):
+    corpus = Corpus.objects.get(pk=corpus_id)
+    transcripts = Transcript.objects.filter(Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED))
+
+    succes = 0
+
+    for t in transcripts:
+        parsed = parse_and_create(t)
+        if not parsed:
+            # raise Exception('Parsing failed for %s' % t.name)
+            pass
+        else:
+            succes += 1
+
+    return f'{succes} out of {len(transcripts)} parsed'
