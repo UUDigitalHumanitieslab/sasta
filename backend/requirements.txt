@@ -6,16 +6,23 @@
 #
 --no-binary psycopg2
 
-amqp==5.0.2               # via kombu
+amqp==5.0.6               # via kombu
 apipkg==1.5               # via execnet
 argparse==1.4.0           # via corpus2alpino
 asgiref==3.3.4            # via django
 attrs==21.2.0             # via pytest
 beautifulsoup4==4.9.3     # via django-livereload-server, tei-reader
+billiard==3.6.4.0         # via celery
+cached-property==1.5.2    # via kombu
+celery==5.1.0             # via -r requirements.in
 certifi==2020.12.5        # via requests
 cffi==1.14.5              # via cryptography
 chamd==0.5.4              # via -r requirements.in, corpus2alpino
 chardet==4.0.0            # via requests
+click-didyoumean==0.0.3   # via celery
+click-plugins==1.1.1      # via celery
+click-repl==0.2.0         # via celery
+click==7.1.2              # via celery, click-didyoumean, click-plugins, click-repl
 corpus2alpino==0.3.6      # via -r requirements.in
 cryptography==3.4.7       # via pyjwt
 cython==0.29.23           # via corpus2alpino, python-ucto
@@ -32,9 +39,10 @@ et-xmlfile==1.1.0         # via openpyxl
 execnet==1.8.0            # via pytest-xdist
 httplib2==0.19.1          # via pynlpl
 idna==2.10                # via requests
-importlib-metadata==4.0.1  # via pluggy, pytest
+importlib-metadata==4.0.1  # via kombu, pluggy, pytest
 iniconfig==1.1.1          # via pytest
 isodate==0.6.0            # via rdflib
+kombu==5.1.0              # via celery
 lxml==4.6.3               # via pynlpl, python-docx, tei-reader
 numpy==1.19.5             # via pandas
 oauthlib==3.1.0           # via requests-oauthlib
@@ -42,6 +50,7 @@ openpyxl==3.0.7           # via -r requirements.in
 packaging==20.9           # via pytest
 pandas==1.1.5             # via -r requirements.in
 pluggy==0.13.1            # via pytest
+prompt-toolkit==3.0.18    # via click-repl
 psycopg2==2.8.6           # via -r requirements.in
 py==1.10.0                # via pytest, pytest-forked
 pycparser==2.20           # via cffi
@@ -56,11 +65,11 @@ python-dateutil==2.8.1    # via pandas
 python-docx==0.8.11       # via -r requirements.in
 python-ucto==0.4.7        # via -r requirements.in, corpus2alpino
 python3-openid==3.2.0     # via django-allauth
-pytz==2021.1              # via django, pandas
+pytz==2021.1              # via celery, django, pandas
 rdflib==5.0.0             # via pynlpl
 requests-oauthlib==1.3.0  # via django-allauth
 requests==2.25.1          # via django-allauth, requests-oauthlib
-six==1.16.0               # via django-livereload-server, django-rest-auth, isodate, python-dateutil, rdflib
+six==1.16.0               # via click-repl, django-livereload-server, django-rest-auth, isodate, python-dateutil, rdflib
 soupsieve==2.2.1          # via beautifulsoup4
 sqlparse==0.4.1           # via django
 tei-reader==0.0.17        # via corpus2alpino
@@ -69,6 +78,11 @@ tornado==6.1              # via django-livereload-server
 tqdm==4.60.0              # via corpus2alpino
 typing-extensions==3.10.0.0  # via asgiref, importlib-metadata
 urllib3==1.26.4           # via django-revproxy, requests
+vine==5.0.0               # via amqp, celery, kombu
+wcwidth==0.2.5            # via prompt-toolkit
 xlrd==1.2.0               # via -r requirements.in
 xlsxwriter==1.4.3         # via -r requirements.in
 zipp==3.4.1               # via importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
