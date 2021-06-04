@@ -19,18 +19,18 @@ def test_model(model_id):
 
 @shared_task
 def parse_corpus(corpus_id: int):
-    with connection.cursor as cursor:
-        corpus = Corpus.objects.get(pk=corpus_id)
-        transcripts = Transcript.objects.filter(Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED))
+    # with connection.cursor as cursor:
+    corpus = Corpus.objects.get(pk=corpus_id)
+    transcripts = Transcript.objects.filter(Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED))
 
-        succes = 0
+    succes = 0
 
-        for t in transcripts:
-            parsed = parse_and_create(t)
-            if not parsed:
-                # raise Exception('Parsing failed for %s' % t.name)
-                pass
-            else:
-                succes += 1
+    for t in transcripts:
+        parsed = parse_and_create(t)
+        if not parsed:
+            # raise Exception('Parsing failed for %s' % t.name)
+            pass
+        else:
+            succes += 1
 
-        return f'{succes} out of {len(transcripts)} parsed'
+    return f'{succes} out of {len(transcripts)} parsed'
