@@ -5,7 +5,6 @@ from django.db import connection
 from django.db.models import Q
 
 from sasta import celery_app as app
-ß
 
 @app.task
 def add(x, y):
