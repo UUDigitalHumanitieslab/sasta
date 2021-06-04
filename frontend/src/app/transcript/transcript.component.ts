@@ -130,6 +130,12 @@ export class TranscriptComponent implements OnInit {
       );
   }
 
+  resetAnnotations() {
+    this.transcriptService
+      .reset_annotations(this.id)
+      .subscribe(() => this.get_transcript());
+  }
+
   annotateTranscript(method: Method) {
     this.querying = true;
     this.corpusService
@@ -213,6 +219,8 @@ export class TranscriptComponent implements OnInit {
   showLassy() {
     window.open(this.transcript.parsed_content, '_blank');
   }
+
+
 
 
 }

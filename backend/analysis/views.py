@@ -107,6 +107,13 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
         return response
 
+    @action(detail=True, methods=['GET'], name='Reset annotations')
+    def reset_annotations(self, request, *args, **kwargs):
+        obj = self.get_object()
+        all_runs = AnalysisRun.objects.filter(transcript=obj)
+        all_runs.delete()
+        return Response('Success', status.HTTP_200_OK)
+
 
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):

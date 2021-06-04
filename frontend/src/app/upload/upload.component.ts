@@ -13,7 +13,7 @@ import { UploadFileService } from '../services/upload-file.service';
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnDestroy, OnInit {
+export class UploadComponent implements OnInit {
     content: File;
     newCorpusName: string;
 
@@ -31,10 +31,6 @@ export class UploadComponent implements OnDestroy, OnInit {
     ngOnInit() {
         this.corpusService.list()
             .then(response => { this.corpora = response; });
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     fileChange(fileInput: HTMLInputElement) {
