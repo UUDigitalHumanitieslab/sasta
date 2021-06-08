@@ -1,10 +1,11 @@
 from analysis.models import Corpus, Transcript
-from analysis.parse.parse import parse_and_create
 from celery import shared_task
-from django.db import connection
 from django.db.models import Q
 
 from sasta import celery_app as app
+
+from .parse_utils import parse_and_create
+
 
 @app.task
 def add(x, y):

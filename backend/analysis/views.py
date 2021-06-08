@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from io import StringIO
 
 from analysis.query.enrich_chat import enrich_chat
@@ -11,22 +9,20 @@ from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
+from parse.parse_utils import parse_and_create
+from parse.tasks import parse_corpus
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from parse.tasks import parse_corpus
-
 from .convert.convert import convert
 from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
                      UploadFile)
-from .parse.parse import parse_and_create
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          MethodCategorySerializer, TranscriptSerializer,
-                          UploadFileSerializer)
+                          TranscriptSerializer, UploadFileSerializer)
 
 # flake8: noqa: E501
 
