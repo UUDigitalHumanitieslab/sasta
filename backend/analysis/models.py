@@ -5,13 +5,12 @@ from io import BytesIO
 from itertools import chain
 from uuid import uuid4
 
-from analysis.query.external_functions import form_map
+from sastadev.external_functions import form_map
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from lxml import etree as ET
 
-from .managers import TranscriptManager
 from .utils import get_items_list
 
 logger = logging.getLogger('sasta')
@@ -187,7 +186,6 @@ class Utterance(models.Model):
                 return self.xsid is not None
             return True
         return self.xsid is not None
-
 
     def __str__(self):
         return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'

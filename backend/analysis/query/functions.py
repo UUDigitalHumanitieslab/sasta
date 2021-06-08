@@ -2,9 +2,11 @@ from typing import Dict, List, Union, Callable
 
 from lxml import etree as ET
 
-from analysis.macros.functions import expandmacros, get_macros_dict
+# from analysis.macros.functions import expandmacros, get_macros_dict
+from sastadev.macros import expandmacros, macrodict
 from analysis.models import AssessmentQuery, AssessmentMethod
-from analysis.query.external_functions import str2functionmap, form_map
+# from analysis.query.external_functions import str2functionmap, form_map
+from sastadev.external_functions import str2functionmap, form_map
 from analysis.results.results import UtteranceWord
 
 from bs4 import BeautifulSoup as Soup
@@ -17,9 +19,6 @@ from analysis.score.zc_embedding import get_zc_embeddings
 
 import logging
 logger = logging.getLogger('sasta')
-
-core_process_str, post_process_str = 'core', 'post'
-core_process, post_process = 0, 1
 
 
 class QueryWithFunction:
@@ -83,7 +82,7 @@ class Query:
 
 def compile_queries(queries: List[AssessmentQuery]) -> List[QueryWithFunction]:
     results = []
-    macrodict = get_macros_dict()
+    # macrodict = get_macros_dict()
 
     for query_model in queries:
         query = Query.from_model(query_model)
@@ -98,7 +97,7 @@ def compile_xpath_or_func(query: str,
     try:
         if query in str2functionmap:
             return str2functionmap[query]
-        expanded_query = expandmacros(query, macrodict)
+        expanded_query = expandmacros(query)
         return ET.XPath(expanded_query)
     except Exception as error:
         logger.warning(f'cannot compile {query.strip()}:\t{error}')

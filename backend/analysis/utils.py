@@ -18,13 +18,12 @@ from docx import Document
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
 
+from sastadev.query import getprocess
+
 logger = logging.getLogger('sasta')
 
 ROMAN_NUMS = [None, 'I', 'II', 'III',
               'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
-
-CORE_PROCESS_STR, POST_PROCESS_STR = 'core', 'post'
-CORE_PROCESS, POST_PROCESS = 0, 1
 
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 
@@ -140,16 +139,6 @@ def docx_to_txt(filepath, delete_docx=True):
     except Exception as error:
         logger.error('DOC2TXT:\tconverting failed')
         logger.exception(error)
-
-
-def getprocess(process):
-    if process.lower() == CORE_PROCESS_STR:
-        return CORE_PROCESS
-    elif process.lower() == POST_PROCESS_STR:
-        return POST_PROCESS
-    else:
-        logger.error('Illegal value for process {}'.format(process))
-        return -1
 
 
 def read_TAM(method) -> None:
