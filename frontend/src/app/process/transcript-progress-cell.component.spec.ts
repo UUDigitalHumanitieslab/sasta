@@ -1,4 +1,6 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Transcript } from '../models/transcript';
 
 import { TranscriptProgressCellComponent } from './transcript-progress-cell.component';
 
@@ -8,7 +10,8 @@ describe('TranscriptProgressCellComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TranscriptProgressCellComponent ]
+      declarations: [TranscriptProgressCellComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
