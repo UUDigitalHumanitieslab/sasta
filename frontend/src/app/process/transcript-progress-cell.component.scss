@@ -1,0 +1,11 @@
+@import '../../variables';
+
+.success {
+    color: $success;
+    stroke: $success;
+}
+
+.error {
+    color: $danger;
+    stroke: $danger;
+}

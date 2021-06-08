@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
-import { Dialog } from 'primeng/dialog';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript } from '../models/transcript';
@@ -21,7 +20,6 @@ import { startWith } from 'rxjs/operators';
   styleUrls: ['./corpus.component.scss'],
 })
 export class CorpusComponent implements OnInit, OnDestroy {
-  @ViewChild(Dialog, { static: false }) dialog;
 
   _: any = _; // Lodash
 
@@ -34,6 +32,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
 
   faDownload = faDownload;
   faTrash = faTrash;
+  faCogs = faCogs;
 
   interval$: Observable<number> = interval(5000);
   private subscription$: Subscription;

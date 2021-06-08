@@ -1,5 +1,11 @@
 import { Corpus } from './corpus';
 
+export enum TranscriptStatus {
+    UNKNOWN, CREATED,
+    CONVERTING, CONVERTED, CONVERSION_FAILED,
+    PARSING, PARSED, PARSING_FAILED
+}
+
 export interface Transcript {
     id?: number;
     name: string;

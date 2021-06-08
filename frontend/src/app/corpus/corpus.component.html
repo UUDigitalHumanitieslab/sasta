@@ -5,7 +5,13 @@
             <span class="icon is-small">
                 <fa-icon [icon]="faDownload"></fa-icon>
             </span>
-            <span>Download</span>
+            <span>download</span>
+            </button>
+            <button class="button is-primary" pTooltip="(re)process the corpus" [routerLink]="['/process/', corpus.id]">
+                <span class="icon is-small">
+                    <fa-icon [icon]="faCogs"></fa-icon>
+                </span>
+                <span>(re)process</span>
         </button>
     </div>
     <div class="field">
