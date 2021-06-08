@@ -19,6 +19,7 @@ services:
   backend:
     build:
       context: ./backend
+    image: &backend backend
     volumes:
       - type: bind
         source: ./backend
@@ -26,7 +27,7 @@ services:
       - static_data:/app/static
     depends_on:
       - db
-    env_file:
+    env_file: &envfile
       - ./.env.dev
     command: python manage.py runserver 0.0.0.0:8000
   
@@ -50,6 +51,37 @@ services:
     ports:
       - 80:80
       - 443:443
+  
+  worker:
+    build:
+      context: ./backend
+    image: *backend
+    restart: "no"
+    env_file: *envfile
+    command: ["celery", "--app=sasta.celery.app", "worker", "--concurrency=1", "--hostname=worker@%h", "--loglevel=INFO"]
+    volumes: 
+      - type: bind
+        source: ./backend
+        target: /app
+    depends_on:
+      - rabbitmq
+      - db
+
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3
+    ports:
+      - "5672:5672"
+    restart: on-failure
+
+  flower:
+    image: mher/flower
+    command: ["flower", "--logging=DEBUG"] 
+    env_file: *envfile 
+    depends_on:
+      - rabbitmq
+    ports:
+      - 5555:5555
 
 volumes:
   postgres_data:
