@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List
+from typing import Dict, List, Tuple
 
 import pandas as pd
 
@@ -23,7 +23,14 @@ class SAFReader:
         self.item_mapping, self.patterns = self.make_mappings()
         self.document = SAFDocument(os.path.basename(
             filepath), method.name, self.levels)
+        self.errors: List[Tuple] = []
         self.get_annotations(self.data)
+
+    def formatted_errors(self):
+        results = []
+        for (utt_id, word_id, text, level, label) in self.errors:
+            results.append(f'Unknown item "{label}" found in utterance {utt_id}, word {word_id} ("{text}"), level "{level}"')
+        return results
 
     def loaddata(self, filepath):
         data = pd.read_excel(filepath)
@@ -53,13 +60,14 @@ class SAFReader:
         instance = SAFUtterance(utt_id)
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
-            word = self.parse_word(idx + 1,
+            word = self.parse_word(utt_id, idx + 1,
                                    wcol, utt_data[relevant_cols])
             if word:
                 instance.words.append(word)
+
         return instance
 
-    def parse_word(self, word_id, colname, word_data):
+    def parse_word(self, utt_id, word_id, colname, word_data):
         data = word_data.dropna()
         if data.empty:
             return None
@@ -72,6 +80,9 @@ class SAFReader:
             enriched_label = enrich(label, PREFIX.lower())
             split_labels = getlabels(enriched_label, self.patterns)
 
+            if not split_labels:
+                self.errors.append((utt_id, word_id, text, level, label))
+
             for label in split_labels:
                 mapped = item2queryid(label, level, self.item_mapping)
                 if mapped:
@@ -81,4 +92,5 @@ class SAFReader:
                 else:
                     logger.warning(
                         'Cannot resolve query_id for (%s, %s)', level, label)
+                    self.errors.append((utt_id, word_id, text, level, label))
         return instance
