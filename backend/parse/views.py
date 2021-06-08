@@ -5,7 +5,7 @@ from rest_framework.status import (HTTP_200_OK, HTTP_202_ACCEPTED,
                                    HTTP_500_INTERNAL_SERVER_ERROR)
 from rest_framework.views import APIView
 
-from .tasks import parse_corpus, test_model
+from .tasks import parse_corpus
 
 
 class ParseTaskView(APIView):

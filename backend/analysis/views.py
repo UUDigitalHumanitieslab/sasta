@@ -192,7 +192,6 @@ class CorpusViewSet(viewsets.ModelViewSet):
             return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
         return Response(task.id)
 
-
     @action(detail=True, methods=['POST'], name='download')
     def download(self, request, *args, **kwargs):
         corpus = self.get_object()
@@ -224,35 +223,3 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
 class MethodCategoryViewSet(viewsets.ModelViewSet):
     queryset = MethodCategory.objects.all()
     serializer_class = MethodCategory
-
-
-class ProcessAllTranscriptsView(APIView):
-
-    def get(self, request):
-        to_convert = Transcript.objects.need_converting()
-        to_parse = Transcript.objects.need_parsing()
-
-        if (not to_convert) and (not to_parse):
-            return Response('Nothing to do.', status=status.HTTP_204_NO_CONTENT)
-
-        if to_convert:
-            print(f'Attempting to convert {len(to_convert)} transcripts.')
-            for obj in to_convert:
-                res = convert(obj)
-                if res:
-                    print(f'succes for {obj.pk}')
-                else:
-                    print(f'failure for {obj.pk}')
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        if to_parse:
-            print(f'Attempting to parse {len(to_parse)} transcripts.')
-            for obj in to_parse:
-                res = parse_and_create(obj)
-                if res:
-                    print(f'succes for {obj.pk}')
-                else:
-                    print(f'failure for {obj.pk}')
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        return Response('Something went wrong!', status=status.HTTP_400_BAD_REQUEST)
