@@ -33,6 +33,10 @@ ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'sasta.authentication.CsrfExemptSessionAuthentication',
     ]
 }
 
@@ -52,6 +56,7 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'django_cron',
+    'django_celery_results',
     'rest_framework',
     'rest_framework.authtoken',
     'allauth',
@@ -62,6 +67,7 @@ INSTALLED_APPS = [
     'revproxy',
     'analysis',
     'authentication',
+    'parse',
     'convert',
 ]
 
@@ -171,6 +177,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Celery stuff
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'amqp://guest:guest@localhost:5672')
+# CELERY_BROKER_URL = 'amqp://'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_IGNORE_RESULT = False
+CELERY_TIMEZONE = TIME_ZONE
 
 # Logs
 # TODO: set log locations on deployment

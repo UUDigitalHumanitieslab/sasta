@@ -29,10 +29,13 @@ class UploadFileSerializer(serializers.ModelSerializer):
 
 
 class TranscriptSerializer(serializers.ModelSerializer):
+    status = serializers.ChoiceField(choices=Transcript.STATUS_CHOICES)
+    status_name = serializers.CharField(source='get_status_display')
+
     class Meta:
         model = Transcript
         fields = ('id', 'name', 'content',
-                  'parsed_content', 'status', 'date_added', 'corpus', 'utterances')
+                  'parsed_content', 'status', 'status_name', 'date_added', 'corpus', 'utterances')
 
 
 class CorpusSerializer(serializers.ModelSerializer):

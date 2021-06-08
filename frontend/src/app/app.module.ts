@@ -29,8 +29,11 @@ import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
+import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
+import { TranscriptProgressComponent } from './process/transcript-progress.component';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadComponent } from './upload/upload.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     declarations: [
@@ -48,6 +51,8 @@ import { UploadComponent } from './upload/upload.component';
         RegisterComponent,
         VerifyComponent,
         TranscriptComponent,
+        TranscriptProgressComponent,
+        TranscriptProgressCellComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -72,6 +77,7 @@ import { UploadComponent } from './upload/upload.component';
         TooltipModule,
         PanelModule,
         StepsModule,
+        ProgressSpinnerModule,
     ],
     providers: [MessageService],
     bootstrap: [AppComponent]

@@ -10,7 +10,7 @@ logger = logging.getLogger('sasta')
 
 
 def convert(transcript: Transcript):
-    transcript.status = 'converting'
+    transcript.status = Transcript.CONVERTING
     transcript.save()
 
     try:
@@ -43,13 +43,13 @@ def convert(transcript: Transcript):
         else:
             raise ValueError('Invalid file extension.')
 
-        transcript.status = 'converted'
+        transcript.status = Transcript.CONVERTED
         transcript.save()
         logger.info('Conversion successful')
         return transcript
 
-    except Exception:
-        transcript.status = 'conversion-failed'
+    except Exception as e:
+        transcript.status = Transcript.CONVERSION_FAILED
         transcript.save()
-        logger.warn('Conversion failed')
-        #raise
+        logger.exception(e)
+        # raise

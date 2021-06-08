@@ -9,19 +9,20 @@ from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
+from parse.parse_utils import parse_and_create
+from parse.tasks import parse_corpus
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .convert.convert import convert
 from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
                      UploadFile)
-from .parse.parse import parse_and_create
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          MethodCategorySerializer, TranscriptSerializer,
-                          UploadFileSerializer)
+                          TranscriptSerializer, UploadFileSerializer)
 
 # flake8: noqa: E501
 
@@ -126,7 +127,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='toCHAT')
     def toCHAT(self, request, *args, **kwargs):
         transcript = self.get_object()
-        if transcript.status == 'converted':
+        if transcript.status == Transcript.CONVERTED:
             return Response(self.get_serializer(transcript).data)
         result = convert(transcript)
         if result:
@@ -136,11 +137,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='parse')
     def parse(self, request, *args, **kwargs):
         transcript = self.get_object()
-        if transcript.status in ('converted', 'parsing-failed'):
+        if transcript.status in (Transcript.CONVERTED, Transcript.PARSING_FAILED):
             result = parse_and_create(transcript)
             if result:
                 return Response(self.get_serializer(result).data)
-        if transcript.status == 'parsed':
+        if transcript.status == Transcript.PARSED:
             return Response(self.get_serializer(transcript).data)
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
@@ -163,7 +164,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
-            Q(status='created') | Q(status='conversion-failed'))
+            Q(status=Transcript.CREATED) | Q(status=Transcript.CONVERSION_FAILED))
 
         for t in transcripts:
             res = convert(t)
@@ -176,12 +177,20 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
-            Q(status='converted') | Q(status='parsing-failed'))
+            Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED))
         for t in transcripts:
             res = parse_and_create(t)
             if not res:
                 return Response('Failed', status.HTTP_400_BAD_REQUEST)
         return Response(self.get_serializer(corpus).data)
+
+    @action(detail=True, methods=['GET'], name='parse_all_async')
+    def parse_all_async(self, request, *args, **kwargs):
+        corpus = self.get_object()
+        task = parse_corpus.delay(corpus.id)
+        if not task:
+            return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
+        return Response(task.id)
 
     @action(detail=True, methods=['POST'], name='download')
     def download(self, request, *args, **kwargs):

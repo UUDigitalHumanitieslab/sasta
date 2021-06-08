@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
-import { Dialog } from 'primeng/dialog';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript } from '../models/transcript';
@@ -12,14 +11,15 @@ import { MethodService } from '../services/method.service';
 import { TranscriptService } from '../services/transcript.service';
 import { SelectItemGroup } from 'primeng/api';
 import * as _ from 'lodash';
+import { interval, Observable, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'sas-corpus',
   templateUrl: './corpus.component.html',
   styleUrls: ['./corpus.component.scss'],
 })
-export class CorpusComponent implements OnInit {
-  @ViewChild(Dialog, { static: false }) dialog;
+export class CorpusComponent implements OnInit, OnDestroy {
 
   _: any = _; // Lodash
 
@@ -32,6 +32,10 @@ export class CorpusComponent implements OnInit {
 
   faDownload = faDownload;
   faTrash = faTrash;
+  faCogs = faCogs;
+
+  interval$: Observable<number> = interval(5000);
+  private subscription$: Subscription;
 
   constructor(
     private corpusService: CorpusService,
@@ -43,13 +47,21 @@ export class CorpusComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.get_corpus();
+    this.subscription$ = this.interval$
+      .pipe(startWith(0))
+      .subscribe(() => this.get_corpus());
+
+
     this.methodService
       .list()
       .subscribe(res => {
         this.tams = res;
         this.groupTams(res);
       });
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 
   groupTams(tams) {
@@ -73,9 +85,7 @@ export class CorpusComponent implements OnInit {
         if (res.default_method) {
           this.methodService
             .get_by_id(res.default_method)
-            .subscribe(res => {
-              this.defaultTam = res
-            });
+            .subscribe(tam => this.defaultTam = tam);
         }
       });
   }

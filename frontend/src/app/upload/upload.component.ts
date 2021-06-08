@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { Subscription } from 'rxjs';
 import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
 import { UploadFileService } from '../services/upload-file.service';
-
 
 
 @Component({
@@ -13,7 +11,7 @@ import { UploadFileService } from '../services/upload-file.service';
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnDestroy, OnInit {
+export class UploadComponent implements OnInit {
     content: File;
     newCorpusName: string;
 
@@ -29,10 +27,7 @@ export class UploadComponent implements OnDestroy, OnInit {
 
     ngOnInit() {
         this.corpusService.list()
-            .then(response => { this.corpora = response; });
-    }
-
-    ngOnDestroy() {
+            .subscribe(res => this.corpora = res);
     }
 
     fileChange(fileInput: HTMLInputElement) {
@@ -46,7 +41,7 @@ export class UploadComponent implements OnDestroy, OnInit {
 
     upload() {
         this.uploading = true;
-        this.uploadFileService.upload_obs({
+        this.uploadFileService.upload({
             name: this.fileName,
             content: this.content,
             status: 'uploading',

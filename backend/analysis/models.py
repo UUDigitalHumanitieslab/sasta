@@ -5,14 +5,14 @@ from io import BytesIO
 from itertools import chain
 from uuid import uuid4
 
+from analysis.query.external_functions import form_map
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-
-from .utils import get_items_list
 from lxml import etree as ET
 
-from analysis.query.external_functions import form_map
+from .managers import TranscriptManager
+from .utils import get_items_list
 
 logger = logging.getLogger('sasta')
 
@@ -110,6 +110,22 @@ class Corpus(models.Model):
 
 
 class Transcript(models.Model):
+    UNKNOWN = 0
+    CREATED = 1
+    CONVERTING, CONVERTED, CONVERSION_FAILED = 2, 3, 4
+    PARSING, PARSED, PARSING_FAILED = 5, 6, 7
+
+    STATUS_CHOICES = (
+        (UNKNOWN, 'unknown'),
+        (CREATED, 'created'),
+        (CONVERTING, 'converting'),
+        (CONVERTED, 'converted'),
+        (CONVERSION_FAILED, 'conversion-failed'),
+        (PARSING, 'parsing'),
+        (PARSED, 'parsed'),
+        (PARSING_FAILED, 'parsing-failed'),
+    )
+
     def upload_path(self, filename):
         return os.path.join('files', f'{self.corpus.uuid}',
                             'transcripts', filename)
@@ -119,7 +135,9 @@ class Transcript(models.Model):
                             'parsed', filename)
 
     name = models.CharField(max_length=255)
-    status = models.CharField(max_length=50)
+    status = models.PositiveIntegerField(
+        choices=STATUS_CHOICES, default=UNKNOWN)
+    # status = models.CharField(max_length=50)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.CASCADE)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
@@ -128,6 +146,8 @@ class Transcript(models.Model):
     extracted_filename = models.CharField(
         max_length=500, blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
+
+    # objects = TranscriptManager()
     target_speakers = models.CharField(max_length=500, blank=True)
     target_ids = models.BooleanField(default=False)
 

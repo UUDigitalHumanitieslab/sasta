@@ -5,7 +5,13 @@
             <span class="icon is-small">
                 <fa-icon [icon]="faDownload"></fa-icon>
             </span>
-            <span>Download</span>
+            <span>download</span>
+            </button>
+            <button class="button is-primary" pTooltip="(re)process the corpus" [routerLink]="['/process/', corpus.id]">
+                <span class="icon is-small">
+                    <fa-icon [icon]="faCogs"></fa-icon>
+                </span>
+                <span>(re)process</span>
         </button>
     </div>
     <div class="field">
@@ -35,7 +41,7 @@
                 <td class="transcript-name" [routerLink]="['/transcript/', transcript.id]">
                     <a>{{transcript.name}}</a>
                 </td>
-                <td>{{transcript.status}}</td>
+                <td>{{transcript.status_name}}</td>
                 <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
                 <td>{{transcript.date_added | date: 'dd/MM/yyyy' }}</td>
                 <td class="has-text-right">

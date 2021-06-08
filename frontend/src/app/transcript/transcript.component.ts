@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faFile, faFileCode, faTrash, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import { MessageService } from 'primeng/api';
-import { Transcript } from '../models/transcript';
+import { Transcript, TranscriptStatus } from '../models/transcript';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { TranscriptService } from '../services/transcript.service';
@@ -179,12 +179,12 @@ export class TranscriptComponent implements OnInit {
         });
   }
 
-  chatFileAvailable(transcript) {
-    return ['converted', 'parsed'].includes(transcript.status);
+  chatFileAvailable(transcript): boolean {
+    return [TranscriptStatus.CONVERTED, TranscriptStatus.PARSED].includes(transcript.status);
   }
 
-  lassyFileAvailable(transcript) {
-    return transcript.status === 'parsed';
+  lassyFileAvailable(transcript): boolean {
+    return transcript.status === TranscriptStatus.PARSED;
   }
   
   showChat() {
