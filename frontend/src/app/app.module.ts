@@ -31,6 +31,7 @@ import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadComponent } from './upload/upload.component';
+import { UploadSafComponent } from './transcript/upload-saf.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import { UploadComponent } from './upload/upload.component';
         RegisterComponent,
         VerifyComponent,
         TranscriptComponent,
+        UploadSafComponent,
     ],
     imports: [
         AppRoutingModule,

@@ -40,6 +40,8 @@ export class TranscriptComponent implements OnInit {
   onlyInform = true;
   querying = false;
 
+  displayCorrUpload = false;
+
   constructor(
     private transcriptService: TranscriptService,
     private corpusService: CorpusService,
@@ -220,6 +222,13 @@ export class TranscriptComponent implements OnInit {
     window.open(this.transcript.parsed_content, '_blank');
   }
 
+  showCorrectionsUpload() {
+    this.displayCorrUpload = true;
+  }
+
+  onCorrectionsUploadClose(event) {
+    this.displayCorrUpload = event;
+  }
 
 
 

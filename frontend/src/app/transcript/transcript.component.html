@@ -75,7 +75,8 @@
                     <span>Download annotations</span>
                 </button>
                 <button class="button is-primary" pTooltip="Provide a manually corrected annotations file"
-                    [disabled]="!(transcript.status=='parsed')">
+                    [disabled]="!(transcript.status=='parsed')"
+                    (click)="showCorrectionsUpload()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faUpload"></fa-icon>
                     </span>
@@ -114,4 +115,8 @@
             </div>
         </p-panel>
     </div>
+<sas-upload-saf [display]="displayCorrUpload" (displayChange)="onCorrectionsUploadClose($event)"
+    [transcript]="transcript">
+</sas-upload-saf>
+
 </ng-container>
