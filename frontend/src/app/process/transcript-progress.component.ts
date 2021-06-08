@@ -15,9 +15,12 @@ export class TranscriptProgressComponent implements OnInit {
   }
 
   parseProgress(): number {
+    if (this.transcript.status < 5) {
+      return 0;
+    }
     switch (this.transcript.status) {
       case TranscriptStatus.PARSING_FAILED:
-        return 0;
+        return -1;
       case TranscriptStatus.PARSING:
         return 1;
       case TranscriptStatus.PARSED:
@@ -31,6 +34,8 @@ export class TranscriptProgressComponent implements OnInit {
     }
     switch (this.transcript.status) {
       case TranscriptStatus.CONVERSION_FAILED:
+        return -1;
+      case TranscriptStatus.CREATED:
         return 0;
       case TranscriptStatus.CONVERTING:
         return 1;

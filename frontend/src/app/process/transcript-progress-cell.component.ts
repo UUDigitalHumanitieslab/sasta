@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faCheck, faExclamationTriangle, faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faExclamationTriangle, faQuestion, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: '[sas-transcript-progress-cell]',
@@ -12,6 +12,7 @@ export class TranscriptProgressCellComponent implements OnInit {
   faQuestion = faQuestion;
   faExclamation = faExclamationTriangle;
   faCheck = faCheck;
+  faMinus = faMinus;
 
   constructor() { }
 

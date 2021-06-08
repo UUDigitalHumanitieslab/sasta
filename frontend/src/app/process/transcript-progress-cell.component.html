@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="evalProgress">
-    <span *ngSwitchCase="0" class="icon">
+    <span *ngSwitchCase="-1" class="icon">
         <fa-icon [icon]="faExclamation" class="error"></fa-icon>
     </span>
     <!-- <span *ngSwitchCase="1" class="icon is-small">
@@ -8,6 +8,9 @@
     <p-progressSpinner *ngSwitchCase="1" [style]="{width: '24px', height: '24px'}" animationDuration="1s"
         strokeWidth="5">
     </p-progressSpinner>
+    <span *ngSwitchCase="0" class="icon">
+        <fa-icon [icon]="faMinus" class="neutral"></fa-icon>
+    </span>
     <span *ngSwitchCase="2" class="icon">
         <fa-icon [icon]="faCheck" class="success"></fa-icon>
     </span>
