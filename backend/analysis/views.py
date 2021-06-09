@@ -4,8 +4,10 @@ from __future__ import unicode_literals
 import datetime
 from io import BytesIO
 
+from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from analysis.utils import StreamFile
 from django.db.models import Q
 from django.http import HttpResponse
 from rest_framework import status, viewsets
@@ -13,19 +15,18 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 
-from analysis.utils import StreamFile
-
 from .convert.convert import convert
 from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .parse.parse import parse_and_create
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
-from .serializers import (AnalysisRunSerializer, AssessmentMethodSerializer, CorpusSerializer,
-                          MethodCategorySerializer, TranscriptSerializer,
-                          UploadFileSerializer)
+from .serializers import (AnalysisRunSerializer, AssessmentMethodSerializer,
+                          CorpusSerializer, MethodCategorySerializer,
+                          TranscriptSerializer, UploadFileSerializer)
 
 # flake8: noqa: E501
 SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
 
 class UploadFileViewSet(viewsets.ModelViewSet):
     queryset = UploadFile.objects.all()
@@ -44,9 +45,12 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(corpus__user=self.request.user)
 
-    def create_analysis_run(self, transcript, saf_workbook):
-        stream = BytesIO()
-        saf_workbook.save(stream)
+    def create_analysis_run(self, transcript, saf):
+        if not isinstance(saf, BytesIO):
+            stream = BytesIO()
+            saf.save(stream)
+        else:
+            stream = saf
         run = AnalysisRun()
         run.transcript = transcript
 
@@ -56,6 +60,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         filename = f'{transcript.name}_{stamp}_saf.xlsx'
         run.annotation_file.save(filename, StreamFile(stream))
         run.save()
+        return run
 
     @action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
@@ -97,7 +102,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return response
 
-    @action(detail=True, methods=['GET'], name='Download latest annotation')
+    @action(detail=True, methods=['GET'], name='Download latest annotation', url_path='annotations/latest')
     def latest_annotations(self, request, *args, **kwargs):
         obj = self.get_object()
         run = AnalysisRun.objects.filter(transcript=obj).latest()
@@ -107,13 +112,34 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
         return response
 
-    @action(detail=True, methods=['GET'], name='Reset annotations')
+    @action(detail=True, methods=['GET'], name='Reset annotations', url_path='annotations/reset')
     def reset_annotations(self, request, *args, **kwargs):
         obj = self.get_object()
         all_runs = AnalysisRun.objects.filter(transcript=obj)
         all_runs.delete()
         return Response('Success', status.HTTP_200_OK)
 
+    @action(detail=True, methods=['POST'], name='Upload annotations', url_path='annotations/upload')
+    def upload_annotations(self, request, *args, **kwargs):
+        obj = self.get_object()
+        try:
+            latest_run = AnalysisRun.objects.filter(transcript=obj).latest()
+        except AnalysisRun.DoesNotExist:
+            return Response('No previous annotations found for this transcript. Run regular annotating at least once before providing corrected input.',
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        method = AssessmentMethod.objects.first()
+        file = request.FILES['content'].file
+
+        new_run = self.create_analysis_run(obj, file)
+
+        reader = SAFReader(new_run.annotation_file.path, method)
+
+        if reader.errors:
+            new_run.delete()
+            return Response(reader.formatted_errors(), status.HTTP_400_BAD_REQUEST)
+
+        return Response('Success', status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):
@@ -162,6 +188,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
 
+
 class CorpusViewSet(viewsets.ModelViewSet):
     serializer_class = CorpusSerializer
     queryset = Corpus.objects.all()
@@ -208,7 +235,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={corpus.name}.zip'
 
         return response
-    
+
     @action(detail=True, methods=['POST'], name='setdefaultmethod')
     def defaultmethod(self, request, *args, **kwargs):
         corpus = self.get_object()
@@ -220,6 +247,7 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus.default_method = method
         corpus.save()
         return Response('Succes')
+
 
 class AssessmentMethodViewSet(viewsets.ModelViewSet):
     queryset = AssessmentMethod.objects.all()

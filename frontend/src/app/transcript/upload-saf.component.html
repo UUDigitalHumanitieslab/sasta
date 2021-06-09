@@ -1,3 +1,42 @@
-<p-dialog [(visible)]="display" modal="modal" [responsive]="true" (onHide)="onClose()">
-    <p>Runs!</p>
+<p-dialog [header]="header()" [(visible)]="display" modal="modal" [responsive]="true" (onHide)="onClose()"
+    [dismissableMask]="true">
+
+    <form (submit)="upload()">
+        <div class="field is-grouped">
+            <div class="control">
+                <div class="file" [ngClass]="{'has-name': fileName}">
+                    <label class="file-label">
+                        <input #file class="file-input" type="file" name="file" (change)="onFileChange(file)"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <fa-icon [icon]="faUpload"></fa-icon>
+                            </span>
+                            <span class="file-label">
+                                Choose a file…
+                            </span>
+                        </span>
+                        <span class="file-name" *ngIf="fileName">
+                            {{fileName}}
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-primary" [ngClass]="{'is-loading': uploading}"
+                    [disabled]="!content">upload</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="notification is-warning" *ngIf="parseErrors">
+        <div class="content">
+            <p class="title is-4">Errors reading SAF file</p>
+            <p class="subtitle is-6">Please resolve these and try again.</p>
+            <ul>
+                <li *ngFor="let error of parseErrors">{{error}}</li>
+            </ul>
+        </div>
+    </div>
+
 </p-dialog>
