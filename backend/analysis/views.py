@@ -45,14 +45,13 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(corpus__user=self.request.user)
 
-    def create_analysis_run(self, transcript, saf):
+    def create_analysis_run(self, transcript, method, saf, is_manual=False):
         if not isinstance(saf, BytesIO):
             stream = BytesIO()
             saf.save(stream)
         else:
             stream = saf
-        run = AnalysisRun()
-        run.transcript = transcript
+        run = AnalysisRun(transcript=transcript, method=method, is_manual_correction=is_manual)
 
         now = datetime.datetime.now()
         stamp = now.strftime('%Y%m%d_%H%M')
@@ -98,7 +97,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
         spreadsheet.save(response)
-        self.create_analysis_run(transcript, spreadsheet)
+        self.create_analysis_run(transcript, method, spreadsheet)
 
         return response
 
@@ -128,12 +127,10 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             return Response('No previous annotations found for this transcript. Run regular annotating at least once before providing corrected input.',
                             status=status.HTTP_400_BAD_REQUEST)
 
-        method = AssessmentMethod.objects.first()
         file = request.FILES['content'].file
 
-        new_run = self.create_analysis_run(obj, file)
-
-        reader = SAFReader(new_run.annotation_file.path, method)
+        new_run = self.create_analysis_run(obj, latest_run.method, file, is_manual=True)
+        reader = SAFReader(new_run.annotation_file.path, latest_run.method)
 
         if reader.errors:
             new_run.delete()

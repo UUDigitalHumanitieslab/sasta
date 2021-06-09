@@ -4,6 +4,8 @@ interface AnalysisRun {
     id: number;
     created: Date;
     annotation_file: string;
+    method: number;
+    is_manual_correction: boolean;
 }
 
 export interface Transcript {

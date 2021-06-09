@@ -37,8 +37,7 @@ def query_transcript(transcript: Transcript,
     if runs:  # An annotations file exists, base further results on this
         latest_run = runs.latest()
         reader = SAFReader(latest_run.annotation_file.path, method)
-        allresults_pregen = reader.document.to_allresults()
-        coreresults = allresults_pregen.coreresults
+        coreresults = reader.document.to_allresults().coreresults
 
     allresults = AllResults(transcript.name,
                             len(utterances),

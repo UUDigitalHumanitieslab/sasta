@@ -31,7 +31,7 @@ class UploadFileSerializer(serializers.ModelSerializer):
 class AnalysisRunSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnalysisRun
-        fields = ('id', 'created', 'annotation_file')
+        fields = ('id', 'created', 'annotation_file', 'method', 'is_manual_correction')
 
 
 class TranscriptSerializer(serializers.ModelSerializer):

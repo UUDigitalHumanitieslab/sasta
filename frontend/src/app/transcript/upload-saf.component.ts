@@ -56,6 +56,7 @@ export class UploadSafComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.uploading = false;
+          this.onClose();
           this.messageService.add({
             severity: 'success',
             summary: `Annotations uploaded for ${this.transcript.name}`,

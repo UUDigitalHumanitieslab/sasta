@@ -75,4 +75,4 @@ class MethodCategoryAdmin(admin.ModelAdmin):
 @admin.register(AnalysisRun)
 class AnalysisRunAdmin(admin.ModelAdmin):
     model = AnalysisRun
-    list_display = ('__str__', 'created')
+    list_display = ('__str__', 'created', 'method', 'is_manual_correction')
