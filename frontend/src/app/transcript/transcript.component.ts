@@ -65,6 +65,14 @@ export class TranscriptComponent implements OnInit {
     });
   }
 
+  allowCorrectionUpload() {
+    return this.transcript.status === TranscriptStatus.PARSED && this.transcript.latest_run;
+  }
+
+  allowCorrectionReset() {
+    return this.transcript.latest_run;
+  }
+
   groupTams(tams) {
     this.groupedTams = _(tams)
       .groupBy('category.name')
