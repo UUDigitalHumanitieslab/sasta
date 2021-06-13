@@ -29,9 +29,12 @@ import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
+import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
+import { TranscriptProgressComponent } from './process/transcript-progress.component';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadComponent } from './upload/upload.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     declarations: [
@@ -50,6 +53,8 @@ import { UploadSafComponent } from './transcript/upload-saf.component';
         VerifyComponent,
         TranscriptComponent,
         UploadSafComponent,
+        TranscriptProgressComponent,
+        TranscriptProgressCellComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -74,6 +79,7 @@ import { UploadSafComponent } from './transcript/upload-saf.component';
         TooltipModule,
         PanelModule,
         StepsModule,
+        ProgressSpinnerModule,
     ],
     providers: [MessageService],
     bootstrap: [AppComponent]

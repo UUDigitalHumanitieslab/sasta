@@ -23,6 +23,7 @@
         "test": "yarn test-back && yarn test-front && yarn test-func",
         "start-front": "yarn fyarn stop && yarn fyarn serve",
         "start-back": "cd backend && python manage.py runserver --settings glue --pythonpath ..",
+        "start-celery": "cd backend && celery -A sasta worker --loglevel INFO",
         "livereload-back": "cd backend && python manage.py  livereload --settings glue --pythonpath ..",
         "watch-test-front": "yarn front yarn test",
         "watch-test-back": "yarn test-back --looponfail",

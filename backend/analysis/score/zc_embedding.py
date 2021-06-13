@@ -17,12 +17,12 @@ def is_clausal(node):
 
 
 def is_direct_clausal(node):
-    return node.attrib['cat'] in CLAUSALS
+    return node.attrib.get('cat') in CLAUSALS
 
 
 def is_child_clausal(node):
-    return node.attrib['cat'] in ['cp'] and \
-        any(n.attrib['cat'] in ['ssub', 'ti'] for n in list(node))
+    return node.attrib.get('cat') in ['cp'] and \
+        any(n.attrib.get('cat') in ['ssub', 'ti'] for n in list(node))
 
 
 def solve(node, embed, results):

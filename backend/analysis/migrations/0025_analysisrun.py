@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('analysis', '0018_merge_20210128_1224'),
+        ('analysis', '0024_xsid_data'),
     ]
 
     operations = [

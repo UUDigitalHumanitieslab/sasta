@@ -25,17 +25,23 @@ SECRET_KEY = 'kxreeb3bds$oibo7ex#f3bi5r+d(1x5zljo-#ms=i2%ih-!pvn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(' ')
 ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'sasta.authentication.CsrfExemptSessionAuthentication',
     ]
 }
 
 # Application definition
-ALPINO_HOST = 'localhost'
+ALPINO_HOST = os.environ.get('ALPINO_HOST', 'localhost')
 ALPINO_PORT = 7001
 CORPUS2ALPINO_LOG_DIR = '.logs'
 
@@ -50,6 +56,7 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'django_cron',
+    'django_celery_results',
     'rest_framework',
     'rest_framework.authtoken',
     'allauth',
@@ -60,6 +67,8 @@ INSTALLED_APPS = [
     'revproxy',
     'analysis',
     'authentication',
+    'parse',
+    'convert',
 ]
 
 MIDDLEWARE = [
@@ -168,6 +177,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Celery stuff
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'amqp://guest:guest@localhost:5672')
+# CELERY_BROKER_URL = 'amqp://'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_IGNORE_RESULT = False
+CELERY_TIMEZONE = TIME_ZONE
 
 # Logs
 # TODO: set log locations on deployment
@@ -203,7 +218,7 @@ LOGGING = {
             'formatter': 'standard'
         },
         'console': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         }
@@ -221,6 +236,11 @@ LOGGING = {
             'handlers': ['django_file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['django_file'],
+            'level': 'DEBUG',
+            'propagate': False
         },
         'sasta': {
             'handlers': ['sasta_file', 'console'],

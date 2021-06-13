@@ -1,23 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Corpus } from '../models/corpus';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CorpusService {
 
+  public corpora$: BehaviorSubject<Corpus[]> = new BehaviorSubject([] as any);
+
   constructor(private httpClient: HttpClient) { }
 
-  async list(): Promise<Corpus[]> {
-    return await this.httpClient.get<Corpus[]>('api/corpora/').toPromise();
+  updateCorpora() {
+    this.httpClient.get<Corpus[]>('api/corpora/')
+      .subscribe(res => this.corpora$.next(res));
   }
 
-  list_obs(): Observable<Corpus[]> {
+  list(): Observable<Corpus[]> {
     return this.httpClient.get<Corpus[]>('api/corpora/');
   }
-
 
   get_by_id(id): Observable<Corpus> {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/`);
@@ -29,10 +31,11 @@ export class CorpusService {
     return this.httpClient.post(`api/transcripts/${transcriptID}/query/`, formData, { observe: 'response', responseType: 'blob' });
   }
 
-  annotate_transcript(transcriptID, methodID, onlyInform): Observable<any> {
+  annotate_transcript(transcriptID, methodID, onlyInform, outputFormat): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('method', methodID);
     formData.append('only_inform', onlyInform);
+    formData.append('format', outputFormat)
     return this.httpClient.post(`api/transcripts/${transcriptID}/annotate/`, formData, { observe: 'response', responseType: 'blob' });
   }
 
@@ -48,6 +51,11 @@ export class CorpusService {
 
   parse_all(id): Observable<Corpus> {
     return this.httpClient.get<Corpus>(`api/corpora/${id}/parse_all/`);
+  }
+
+  parse_all_async(id): Observable<string> {
+    // returns task id
+    return this.httpClient.get<string>(`api/corpora/${id}/parse_all_async/`);
   }
 
   download_zip(id): Observable<any> {

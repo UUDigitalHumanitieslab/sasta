@@ -2,14 +2,17 @@
 from __future__ import unicode_literals
 
 import datetime
-from io import BytesIO
+from io import BytesIO, StringIO
 
 from analysis.annotations.safreader import SAFReader
+from analysis.query.enrich_chat import enrich_chat
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
-from analysis.utils import StreamFile
+from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
+from parse.parse_utils import parse_and_create
+from parse.tasks import parse_corpus
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
@@ -18,11 +21,10 @@ from rest_framework.response import Response
 from .convert.convert import convert
 from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
-from .parse.parse import parse_and_create
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
-from .serializers import (AnalysisRunSerializer, AssessmentMethodSerializer,
-                          CorpusSerializer, MethodCategorySerializer,
+from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           TranscriptSerializer, UploadFileSerializer)
+from .utils import StreamFile
 
 # flake8: noqa: E501
 SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -87,19 +89,38 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         method = AssessmentMethod.objects.get(pk=method_id)
         zc_embed = method.category.zc_embeddings
 
-        response = HttpResponse(
-            content_type=SPREADSHEET_MIMETYPE)
-        response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
-
         allresults, queries_with_funcs = query_transcript(
             transcript, method, True, zc_embed, only_inform
         )
 
         spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
-        spreadsheet.save(response)
         self.create_analysis_run(transcript, method, spreadsheet)
 
-        return response
+        format = request.data.get('format', 'xlsx')
+
+        if format == 'xlsx':
+            spreadsheet = v2_to_xlsx(
+                allresults, method, zc_embeddings=zc_embed)
+
+            response = HttpResponse(
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
+            spreadsheet.save(response)
+
+            return response
+
+        if format == 'cha':
+            enriched = enrich_chat(transcript, allresults, method)
+            output = StringIO()
+            writer = ChatWriter(enriched, target=output)
+            writer.write()
+            output.seek(0)
+
+            response = HttpResponse(
+                output.getvalue(), content_type='text/plain')
+            response['Content-Disposition'] = "attachment; filename=annotated.cha"
+
+            return response
 
     @action(detail=True, methods=['GET'], name='Download latest annotation', url_path='annotations/latest')
     def latest_annotations(self, request, *args, **kwargs):
@@ -130,7 +151,12 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         file = request.FILES['content'].file
 
         new_run = self.create_analysis_run(obj, latest_run.method, file, is_manual=True)
-        reader = SAFReader(new_run.annotation_file.path, latest_run.method)
+
+        try:
+            reader = SAFReader(new_run.annotation_file.path, latest_run.method)
+        except Exception as e:
+            new_run.delete()
+            return Response(str(e), status.HTTP_400_BAD_REQUEST)
 
         if reader.errors:
             new_run.delete()
@@ -166,7 +192,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='toCHAT')
     def toCHAT(self, request, *args, **kwargs):
         transcript = self.get_object()
-        if transcript.status == 'converted':
+        if transcript.status == Transcript.CONVERTED:
             return Response(self.get_serializer(transcript).data)
         result = convert(transcript)
         if result:
@@ -176,11 +202,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='parse')
     def parse(self, request, *args, **kwargs):
         transcript = self.get_object()
-        if transcript.status in ('converted', 'parsing-failed'):
+        if transcript.status in (Transcript.CONVERTED, Transcript.PARSING_FAILED):
             result = parse_and_create(transcript)
             if result:
                 return Response(self.get_serializer(result).data)
-        if transcript.status == 'parsed':
+        if transcript.status == Transcript.PARSED:
             return Response(self.get_serializer(transcript).data)
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
@@ -198,12 +224,12 @@ class CorpusViewSet(viewsets.ModelViewSet):
         user_queryset = self.queryset.filter(user=self.request.user)
         return user_queryset
 
-    @action(detail=True, methods=['GET'], name='parse_all')
+    @action(detail=True, methods=['GET'], name='convert_all')
     def convert_all(self, request, *args, **kwargs):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
-            Q(status='created') | Q(status='conversion-failed'))
+            Q(status=Transcript.CREATED) | Q(status=Transcript.CONVERSION_FAILED))
 
         for t in transcripts:
             res = convert(t)
@@ -216,12 +242,20 @@ class CorpusViewSet(viewsets.ModelViewSet):
         corpus = self.get_object()
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus),
-            Q(status='converted') | Q(status='parsing-failed'))
+            Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED))
         for t in transcripts:
             res = parse_and_create(t)
             if not res:
                 return Response('Failed', status.HTTP_400_BAD_REQUEST)
         return Response(self.get_serializer(corpus).data)
+
+    @action(detail=True, methods=['GET'], name='parse_all_async')
+    def parse_all_async(self, request, *args, **kwargs):
+        corpus = self.get_object()
+        task = parse_corpus.delay(corpus.id)
+        if not task:
+            return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
+        return Response(task.id)
 
     @action(detail=True, methods=['POST'], name='download')
     def download(self, request, *args, **kwargs):

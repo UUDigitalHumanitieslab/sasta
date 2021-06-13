@@ -43,11 +43,14 @@ class TranscriptSerializer(serializers.ModelSerializer):
             return None
 
     latest_run = serializers.SerializerMethodField()
+    status = serializers.ChoiceField(choices=Transcript.STATUS_CHOICES)
+    status_name = serializers.CharField(source='get_status_display')
 
     class Meta:
         model = Transcript
         fields = ('id', 'name', 'content',
-                  'parsed_content', 'status', 'date_added', 'corpus', 'utterances', 'latest_run')
+                  'parsed_content', 'status', 'status_name', 'date_added', 
+                  'corpus', 'utterances', 'latest_run')
 
 
 class CorpusSerializer(serializers.ModelSerializer):

@@ -31,7 +31,8 @@ class UtteranceInline(admin.TabularInline):
 @admin.register(Transcript)
 class TranscriptAdmin(admin.ModelAdmin):
     inlines = (UtteranceInline, )
-    list_display = ('__str__', 'status')
+    list_display = ('__str__', 'corpus', 'status')
+    list_filter = ('status',)
     model = Transcript
 
 

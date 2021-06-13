@@ -1,6 +1,33 @@
 <ng-container *ngIf="corpus">
     <h1 class="title">{{corpus.name}}</h1>
     <h2 class="subtitle">{{corpus.transcripts.length}} transcripts</h2>
-    <p-steps [model]="stepsItems" [activeIndex]="stepsIndex"></p-steps>
-    <button class="button is-primary" [ngClass]=" {'is-loading': processing}" (click)="full_process()">Process</button>
+    <!-- <p-steps [model]="stepsItems" [activeIndex]="stepsIndex"></p-steps> -->
+    <div class="buttons">
+        <button class="button is-primary" [ngClass]=" {'is-loading': processing}" (click)="full_process()">
+            <span class="icon is-small">
+                <fa-icon [icon]="faCogs"></fa-icon>
+            </span>
+            <span>process</span>
+        </button>
+        <button class="button is-primary" [routerLink]="['/corpora/', corpus.id]">
+            <span class="icon is-small">
+                <fa-icon [icon]="faArrowRight"></fa-icon>
+            </span>
+            <span>to corpus</span>
+        </button>
+    </div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Transcript</th>
+                <th>Status</th>
+                <th>Convert</th>
+                <th>Parse</th>
+            </tr>
+            <ng-container *ngFor="let transcript of corpus.transcripts">
+                <tr sas-transcript-progress [transcript]="transcript"></tr>
+            </ng-container>
+        </tbody>
+    </table>
+
 </ng-container>

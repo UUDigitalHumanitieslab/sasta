@@ -25,9 +25,12 @@ def query_transcript(transcript: Transcript,
     queries_with_funcs: List[QueryWithFunction] = compile_queries(queries)
     utterances: List[Utterance] = Utterance.objects.filter(
         transcript=transcript)
+    to_analyze_utterances = [x for x in utterances if x.for_analysis]
+    logger.info(
+        f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')
 
     coreresults, allmatches, corelevels, annotations = run_core_queries(
-        utterances,
+        to_analyze_utterances,
         queries_with_funcs,
         only_inform,
         zc_embed,
@@ -40,7 +43,7 @@ def query_transcript(transcript: Transcript,
         coreresults = reader.document.to_allresults().coreresults
 
     allresults = AllResults(transcript.name,
-                            len(utterances),
+                            len(to_analyze_utterances),
                             coreresults,
                             None,
                             allmatches,
