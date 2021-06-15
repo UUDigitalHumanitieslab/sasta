@@ -1,23 +1,16 @@
-from typing import Dict, List, Union, Callable
-
-from lxml import etree as ET
-
-# from analysis.macros.functions import expandmacros, get_macros_dict
-from sastadev.macros import expandmacros, macrodict
-from analysis.models import AssessmentQuery, AssessmentMethod
-# from analysis.query.external_functions import str2functionmap, form_map
-from sastadev.external_functions import str2functionmap, form_map
-from analysis.results.results import UtteranceWord
-
-from bs4 import BeautifulSoup as Soup
-
-from django.db.models import Q
-
-from operator import attrgetter
-
-from analysis.score.zc_embedding import get_zc_embeddings
-
 import logging
+from operator import attrgetter
+from typing import Callable, Dict, List, Union
+
+from analysis.models import AssessmentMethod, AssessmentQuery
+from analysis.results.results import UtteranceWord
+from analysis.score.zc_embedding import get_zc_embeddings
+from bs4 import BeautifulSoup as Soup
+from django.db.models import Q
+from lxml import etree as ET
+from sastadev.external_functions import form_map, str2functionmap
+from sastadev.macros import expandmacros, macrodict
+
 logger = logging.getLogger('sasta')
 
 
