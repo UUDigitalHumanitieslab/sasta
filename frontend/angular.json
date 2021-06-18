@@ -56,7 +56,6 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "extractLicenses": true,
                             "vendorChunk": false,
@@ -82,13 +81,12 @@
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ],
-            "localize": [
-              "en"
-            ],
+                            "localize": [
+                                "en"
+                            ],
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "extractLicenses": true,
                             "vendorChunk": false,
@@ -115,13 +113,12 @@
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ],
-            "localize": [
-              "nl"
-            ],
+                            "localize": [
+                                "nl"
+                            ],
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "extractLicenses": true,
                             "vendorChunk": false,
