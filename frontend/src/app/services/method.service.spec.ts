@@ -9,7 +9,7 @@ describe('TamService', () => {
   }));
 
   it('should be created', () => {
-    const service: MethodService = TestBed.get(MethodService);
+    const service: MethodService = TestBed.inject(MethodService);
     expect(service).toBeTruthy();
   });
 });

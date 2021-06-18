@@ -9,7 +9,7 @@ describe('CorpusService', () => {
   }));
 
   it('should be created', () => {
-    const service: CorpusService = TestBed.get(CorpusService);
+    const service: CorpusService = TestBed.inject(CorpusService);
     expect(service).toBeTruthy();
   });
 });

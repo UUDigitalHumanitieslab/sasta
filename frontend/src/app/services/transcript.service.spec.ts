@@ -9,7 +9,7 @@ describe('TranscriptService', () => {
   }));
 
   it('should be created', () => {
-    const service: TranscriptService = TestBed.get(TranscriptService);
+    const service: TranscriptService = TestBed.inject(TranscriptService);
     expect(service).toBeTruthy();
   });
 });
