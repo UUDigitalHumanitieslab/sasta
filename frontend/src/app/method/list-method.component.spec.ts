@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ListMethodComponent } from './list-method.component';
@@ -8,7 +8,7 @@ describe('ListMethodComponent', () => {
   let component: ListMethodComponent;
   let fixture: ComponentFixture<ListMethodComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ListMethodComponent],
       imports: [RouterTestingModule, HttpClientTestingModule]

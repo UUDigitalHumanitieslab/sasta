@@ -1,7 +1,7 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
@@ -12,7 +12,7 @@ describe('TranscriptComponent', () => {
   let component: TranscriptComponent;
   let fixture: ComponentFixture<TranscriptComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TranscriptComponent],
       imports: [RouterTestingModule, HttpClientTestingModule, DropdownModule],

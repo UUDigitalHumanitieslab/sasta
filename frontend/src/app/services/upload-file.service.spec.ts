@@ -9,7 +9,7 @@ describe('UploadFileService', () => {
   }));
 
   it('should be created', () => {
-    const service: UploadFileService = TestBed.get(UploadFileService);
+    const service: UploadFileService = TestBed.inject(UploadFileService);
     expect(service).toBeTruthy();
   });
 });
