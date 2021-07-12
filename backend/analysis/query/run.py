@@ -2,14 +2,13 @@ import logging
 from collections import Counter, defaultdict
 from typing import Dict, List, Set
 
-from analysis.config import CORE_PROCESS, POST_PROCESS
-from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
+from analysis.models import (AssessmentMethod, AssessmentQuery, Transcript,
                              Utterance)
-from .functions import (Query, QueryWithFunction,
-                        compile_queries, filter_queries,
-                        single_query_single_utt, utt_from_tree)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
-from analysis.annotations.safreader import SAFReader
+from sastadev.query import core_process, post_process
+
+from .functions import (Query, QueryWithFunction, compile_queries,
+                        filter_queries, single_query_single_utt, utt_from_tree)
 
 logger = logging.getLogger('sasta')
 
@@ -64,7 +63,7 @@ def run_core_queries(utterances: List[Utterance],
     annotations = {}
 
     core_queries: List[QueryWithFunction] = [
-        q for q in queries if q.query.process == CORE_PROCESS]
+        q for q in queries if q.query.process == core_process]
 
     for utt in utterances:
         if annotate:
@@ -103,7 +102,7 @@ def run_core_queries(utterances: List[Utterance],
 def run_post_queries(allresults: SastaResults,
                      queries: List[QueryWithFunction]) -> None:
     post_queries: List[QueryWithFunction] = [
-        q for q in queries if q.query.process == POST_PROCESS]
+        q for q in queries if q.query.process == post_process]
     flat_queries: Dict[str, Query] = {q.id: q.query for q in queries}
 
     for q in post_queries:
@@ -111,5 +110,5 @@ def run_post_queries(allresults: SastaResults,
             result = q.function(allresults, flat_queries)
             if result is not None:
                 allresults.postresults[q.id] = result
-        except Exception:
-            logger.warning(f'Failed to execute {q.function}')
+        except Exception as e:
+            logger.exception(e)

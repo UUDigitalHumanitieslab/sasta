@@ -1,0 +1,339 @@
+monthname = """ (@lemma='januari' or @lemma='februari' or @lemma = 'maart' or @lemma= 'april' or @lemma='mei'or @lemma='juni' or @lemma='juli' or @lemma='augustus' or
+                 @lemma = 'september' or @lemma = 'oktober' or @lemma='november' or @lemma='december') """
+
+dayname = """  (@lemma='maandag' or @lemma='dinsdag' or @lemma='woensdag'  or @lemma='donderdag'  or @lemma='vrijdag'  or @lemma='zaterdag'  or @lemma='zondag')  """ 
+
+
+
+
+STAP_geen_BB = """
+not(@lemma="al"
+	or @lemma="dan"
+	or @lemma="dus"
+	or @lemma="eens"
+	or @lemma="gewoon"
+	or @lemma="meer"
+	or @lemma="niet"
+	or @lemma="nog"
+	or @lemma="nou"
+	or @lemma="nu"
+	or @lemma="ook"
+	or @lemma="toch"
+	or @lemma="toen"
+	or @lemma="weer"
+	or @lemma="wel"
+	or @lemma="zo")
+"""
+
+
+STAP_BB_t = """ 
+not((((@frame="tmp_adverb"
+    or @frame="adjective(both(tmpadv))"
+        and not(parent::node[@rel="mod"]))
+    or ((@cat="pp"
+        or @rel="mod")
+        and (node[@special="tmp"
+            or node[@special="tmp"]]))))
+    or (@cat="pp" and node[@pt="vz"
+        and (@lemma="sinds" or @lemma="gedurende"
+            or @lemma="na")])
+    or (@cat="np" and @rel="mod"
+        and node[@lemma="elk" or @rel="det"]
+        and node[@special="tmp"])
+    or (@rel="mod" and
+        (@lemma="net" or @lemma="gauw"
+        or @lemma="vroeger" or @lemma="toen"
+        or @lemma="soms" or @lemma="altijd")))
+"""
+
+STAP_BB_p = """
+not(((@cat="pp"
+        and @rel="ld")
+    or @frame="waar_adverb(naar)"
+    or @frame="waar_adverb(in)"
+    or @frame="waar_adverb(heen)"
+    or @frame="er_wh_loc_adverb"
+    or @frame="wh_loc_adverb"
+    or @frame="er_vp_adverb"
+    or @frame="er_adverb(uit)"
+    or @frame="er_loc_adverb"
+    or @frame="loc_adverb"
+    or (@cat="pp"
+        and node[@pt="vz"
+            and (@lemma="op"
+                or @lemma="bij"
+                or @lemma="in")]))
+    or @cat="pp" and node[@pt="vz"
+        and (@lemma="op" or @lemma="boven" 
+            or @lemma="onder" or @lemma="tussen" 
+            or @lemma="naast" or @lemma="achter"
+            or @lemma="bij" or @lemma="naar")])
+"""
+
+
+//node[((((@frame="tmp_adverb"
+    or @frame="adjective(both(tmpadv))"
+        and not(parent::node[@rel="mod"]))
+    or ((@cat="pp"
+        or @rel="mod")
+        and (node[@special="tmp"
+            or node[@special="tmp"]]))))
+    or (@cat="pp" and node[@pt="vz"
+        and (@lemma="sinds" or @lemma="gedurende"
+            or @lemma="na")])
+   or (@cat="pp" and 
+       node[@rel="obj1" and %tempnoun% ])
+    or (@cat="np" and @rel="mod" 
+        and node[@lemma="elk" or @rel="det"]
+        and node[@special="tmp"])
+    or (@rel="mod" and
+        (@lemma="net" or @lemma="gauw"
+        or @lemma="vroeger" or @lemma="toen"
+        or @lemma="soms")))
+    and %STAP_geen_BB%]
+	
+new_STAP_BB_t = """ 
+   %advBBt% or
+   %advpBBt% or
+   %npBBt% or
+   %apBBt% or
+   %adjBBt% or
+   %ppnpBBt% or
+   %geledenBBt%
+""" 
+   
+temp = """ ((%tempadv% or %templemma%) and not(%excludedlemma%))
+"""
+
+excludedlemma = """ (@lemma="dan" or @lemma="toen" )
+""" 
+
+"""
+
+advBBt = """
+ (@pt="bw" and %BB% and %temp% )
+"""
+
+nonclausalparentnode = """ (parent::node[@cat="np"] or parent::node[@cat="pp"] or parent::node[@cat="ap"] or parent::node[@cat="advp"])
+"""
+
+BB = """ ((@rel="mod" or @rel="dp" or @rel="--" or @rel="nucl" or @rel="whd") and (not(%nonclausalparentnode%) or %adjmodwwBB%))
+""" 
+
+tempadv = """ (@frame="tmp_adverb" or  @frame="wh_tmp_adverb" or @frame="adjective(both(tmpadv))" or @special="tmp"  )
+"""
+
+templemma = """ (@lemma="soms"  or @lemma="altijd" or @lemma="eerst" or @lemma="steeds" or @lemma="eerder" or @lemma="nou")
+"""
+
+advpBBt = """ (@cat="advp" and %BB% and node[@rel="hd" and %temp% ])
+"""
+
+npBBt = """ (@cat="np" and %BB% and node[@rel="hd" and %tempnoun%])
+"""
+
+tempnoun = """ (@special="tmp" or starts-with(@frame, "tmp_noun") or starts-with(@frame, "tmp_np") or %tempnounlemma%)
+"""
+
+tempnounlemma = """ @lemma="ontbijt" or @lemma="kerst_diner" or @lemma="lunch" 
+"""
+
+apBBt = """ (@cat="ap" and @rel="mod" and node[@rel="hd" and %tempadj%] )
+"""
+
+adjBBt = """ (@pt="adj" and @rel="mod" and %notinNP% and %tempadj%)
+"""
+
+tempadj = """ (@special="tmp" or @frame="adjective(er(tmpadv))" or @frame="adjective(tmpadv)" or @lemma="gauw")
+"""
+
+notinNP = """ ( parent::node[@cat!="np"] )
+"""
+
+ppnpBBt = """  (@cat="pp" and (%BB% or @rel="ld") and 
+                (node[@rel="hd" and %tempvz%] or 
+				 node[@cat="np" and @rel="obj1" and %hastempnounhead%] or 
+				 node[@pt and @rel="obj1" and %tempnoun%] or
+				 node[@cat="mwu" and node[@rel="mwp" and %tempnoun%]]
+				)
+			   )
+"""
+
+tempvz = """ (@lemma="na" or @lemma="tijdens" or @lemma="gedurende" or @lemma="sinds" or @lemma="sedert" or @word="hangende" or @word="staande" )
+"""
+
+hastempnounhead = """ node[@rel="hd" and %tempnoun%]
+"""
+
+geledenBBt = """ (@cat="ppart" and %BB% and node[@rel="hd" and @lemma="geleden"])
+"""
+
+new_STAP_BB_p = """
+(
+ (%ld_pp% or
+  %ld_vz% or 
+  %ld_erlocadv% or
+  %loc_ppBB% or
+  %locadvBB%  or
+  %locadvpBB% or
+  %predclocadj% or
+  %predclocap% or
+  %svp_bw% or
+  %loc_vzBB%
+ ) and
+ not(%new_STAP_BB_t%)
+)
+"""
+
+ld_pp = """  (@cat="pp" and @rel="ld")
+"""
+
+ld_vz = """ (@pt="vz" and @rel="ld")
+"""
+
+ld_erlocadv = """ (@rel="ld" and %locadv%)
+"""
+
+locadvBB = """ ((%locadv% and %BB%) or (@pt="bw" and @rel="ld") )
+"""
+
+locadvpBB = """ (@cat="advp" and node[@rel="hd" and %locadv%])
+"""
+
+locadv = """ ( @frame="er_loc_adverb" or 
+               @frame="loc_adverb" or
+			   @frame="er_wh_loc_adverb" or
+			   @frame="er_adverb(uit)" or
+			   @frame="er_adverb(boven)" or
+			   @frame="er_adverb(onder)" or
+			   @frame="er_adverb(tussen)" or
+			   @frame="er_adverb(naast)" or
+			   @frame="er_adverb(achter)" or
+			   @frame="er_adverb(naar)" or
+			   @frame="er_adverb(bij)" or
+			   @frame="er_vp_adverb" 
+)
+"""
+
+svp_bw = """ (@pt="bw" and @rel="svp")
+"""
+
+loc_ppBB = """ (@cat="pp" and %BB% and
+             node[@rel="hd" and %loc_vz% ] )
+"""
+
+loc_vzBB = """ (@pt="vz" and %BB% and %loc_vz%)
+"""
+
+loc_vz = """ ( @lemma="in" or 
+               @lemma="boven" or 
+               @lemma="onder" or 
+ 	  		   @lemma="tussen" or 
+			   @lemma="naast" or
+			   @lemma="achter" or 
+			   @lemma="naar" or
+			   @lemma="uit" or
+			   @lemma="op" or
+			   @lemma="bij" or
+			   @lemma="doorheen" or
+               @lemma="onderdoor" or
+			   @lemma="opaf" or
+			   @lemma="naartoe" or
+			   @frame="adjective(pred(locadv))"
+			 )	
+"""
+
+locadj = """ (@pt = "adj" and (@lemma="hoog" or @lemma="laag" or @lemma="diep"))
+""""			 
+
+predclocadj = """ (@rel="predc" and %locadj%)
+"""
+
+predclocap = """ (@cat="ap" and node[@rel="hd" and %locadj% ])
+"""
+
+pp_ercompl = """ (@cat="pp" and %BB% and node[@rel="obj1" and (@frame="er_loc_adverb" or @frame="er_wh_loc_adverb") ] )
+"""
+
+new_STAP_BB_o = """ ((  %bbo_pt% or %bbo_cat% or %bbo_mwu%) and
+                       not(%excludedadverb%) and 
+                       (%BB% or %pred% or %svp_bbo%) and 
+                       not(%new_STAP_BB_t%) and 
+                       not(%new_STAP_BB_p%) 
+					)
+""" 
+
+pred = """  (@rel="predc"  or @rel="predm")
+"""
+
+excludedadverb = """ ( @lemma="al" or
+                       @lemma="meer" or
+                       @lemma="toch" or
+                       @lemma="dan" or
+                       @lemma="niet" or
+                       @lemma="toen" or
+                       @lemma="dus" or
+                       @lemma="nog" or
+                       @lemma="weer" or
+                       @lemma="eens" or
+                       @lemma="nog" or
+                       @lemma="nu" or
+                       @lemma="wel" or
+                       @lemma="gewoon" or
+                       @lemma="ook" or
+                       @lemma="zo" or
+                       @lemma="maar" or
+                       @lemma="te" 
+                      )
+"""
+
+
+bbo_pt = """ (@pt="bw" or @pr="vz" or @pt="adj" or @pt="tw")
+"""
+
+bbo_cat = """ (@cat="advp" or @cat="ap" or @cat="pp")
+"""
+
+bbo_mwu = """ @cat="mwu" and node[%bbo_pt% ]
+"""
+
+svp_bbo = """ (@rel="svp" and (@pt="adj" or @pt="bw" or @lemma="rond"))
+"""
+
+adjmodwwBB = 
+          """  (@rel="mod" and parent::node[@cat="np" and node[@rel="hd" and @pt="ww"]] and
+                 ((@pt="adj" and @infl="no_e") or
+				  (@cat="ap" and node[@rel="hd" and @pt="adj" and @infl="no_e"]) 
+				 )  
+               )
+"""
+
+test_STAP_BB_o = """ (  %bbo_pt% or %bbo_cat% or %bbo_mwu%) and
+                       not(%excludedadverb%) and 
+                       (%BB% or %pred% or %svp_bbo%) 
+""" 
+
+
+bijvbep = """( (%corebijvbep% or %onbepvnwmod% or %twdet% or %apdet% or %app% or %detn% or %detnp%) and not(%adjmodwwBB%))
+"""
+
+corebijvbep = """ (@rel="mod" and not(@pt="bw" or @cat="advp" or @cat="rel") and parent::node[@cat="np" and not(node[@rel="hd" and @lcat="ap"])])
+"""
+
+onbepvnwmod = """ (@rel="det" and @pt="vnw" and @vwtype="onbep")
+"""
+
+twdet = """ (@pt="tw" and @rel="det")
+"""
+
+apdet = """ (@rel="det" and @cat="ap")
+"""
+
+app = """ (@rel="app" and parent::node[@cat="np"])
+"""
+
+detn = """ (@rel="det" and @pt="n")
+"""
+
+detnp = """ (@rel="det" and @cat="np")
+"""

@@ -180,7 +180,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             transcript, method, False, zc_embed, False
         )
 
-        form = form_func(allresults, None)
+        form = form_func(allresults, None, in_memory=True)
         form.seek(0)
         response = HttpResponse(
             form,
