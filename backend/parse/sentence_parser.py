@@ -1,6 +1,7 @@
 from django.conf import settings
 from contextlib import contextmanager
 import socket
+from lxml import etree
 
 
 class AlpinoSentenceParser:
@@ -27,3 +28,10 @@ class AlpinoSentenceParser:
                     break
                 xml += chunk
             return xml.decode('utf-8')
+
+
+def parse(sentence):
+    ''' Wrapper for use in sastadev'''
+    alp = AlpinoSentenceParser()
+    xml = alp.parse_sentence(sentence)
+    return etree.fromstring(xml)

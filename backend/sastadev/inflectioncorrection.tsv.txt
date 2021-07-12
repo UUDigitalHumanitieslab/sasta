@@ -1,0 +1,2435 @@
+gebakt	gebakken	Overgeneralisation
+ebakt	gebakken	Overgeneralisation
+bakt	gebakken	Overgeneralisation
+gebakte	gebakkene	Overgeneralisation+
+ebakte	gebakkene	Overgeneralisation+Prefix ge without onset
+bakte	gebakkene	Overgeneralisation+Lacking ge prefix
+ebakken	gebakken	Prefix ge without onset
+bakken	gebakken	Lacking ge prefix
+geband	gebannen	Overgeneralisation
+eband	gebannen	Overgeneralisation+Prefix ge without onset
+band	gebannen	Overgeneralisation+Lacking ge prefix
+gebande	gebannene	Overgeneralisation+
+ebande	gebannene	Overgeneralisation+Prefix ge without onset
+bande	gebannene	Overgeneralisation+Lacking ge prefix
+gebant	gebannen	Overgeneralisation
+ebant	gebannen	Overgeneralisation
+bant	gebannen	Overgeneralisation
+ebannen	gebannen	Prefix ge without onset
+bannen	gebannen	Lacking ge prefix
+gebarst	gebarsten	Overgeneralisation
+ebarst	gebarsten	Overgeneralisation
+barst	gebarsten	Overgeneralisation
+gebarste	gebarstene	Overgeneralisation+
+ebarste	gebarstene	Overgeneralisation+Prefix ge without onset
+barste	gebarstene	Overgeneralisation+Lacking ge prefix
+ebarsten	gebarsten	Prefix ge without onset
+barsten	gebarsten	Lacking ge prefix
+bederfde	bedorvene	Overgeneralisation
+bederfden	bedierven	Overgeneralisation
+bederfd	bedorven	Overgeneralisation
+bederft	bedorven	Overgeneralisation
+bederfen	bedorven	Wrong -en suffix
+bedorfd	bedorven	Overgeneralisation
+bedorft	bedorven	Overgeneralisation
+bedriegde	bedrogene	Overgeneralisation
+bedriegden	bedrogen	Overgeneralisation
+bedriegd	bedrogen	Overgeneralisation
+bedriegt	bedrogen	Overgeneralisation
+bedriegen	bedrogen	Wrong -en suffix
+bedroogt	bedrogen	Overgeneralisation
+beginde	begonnene	Overgeneralisation
+beginden	begonnen	Overgeneralisation
+begind	begonnen	Overgeneralisation
+begint	begonnen	Overgeneralisation
+beginnen	begonnen	Wrong -en suffix
+begont	begonnen	Overgeneralisation
+behangde	behangene	Overgeneralisation
+behangden	behingen	Overgeneralisation
+behangd	behangen	Overgeneralisation
+behangt	behangen	Overgeneralisation
+bergde	geborgene	Overgeneralisation+Lacking ge prefix
+bergden	borgen	Overgeneralisation
+gebergd	geborgen	Overgeneralisation+
+ebergd	geborgen	Overgeneralisation+Prefix ge without onset
+bergd	geborgen	Overgeneralisation+Lacking ge prefix
+gebergde	geborgene	Overgeneralisation+
+ebergde	geborgene	Overgeneralisation+Prefix ge without onset
+gebergt	geborgen	Overgeneralisation
+ebergt	geborgen	Overgeneralisation
+bergt	geborgen	Overgeneralisation
+gebergen	geborgen	Wrong -en suffix
+ebergen	geborgen	Wrong -en suffix
+bergen	geborgen	Wrong -en suffix
+geborgd	geborgen	Overgeneralisation
+geborgt	geborgen	Overgeneralisation
+eborgen	geborgen	Prefix ge without onset
+borgen	geborgen	Lacking ge prefix
+beveelde	bevolene	Overgeneralisation
+beveelden	bevalen	Overgeneralisation
+beveeld	bevolen	Overgeneralisation
+beveelt	bevolen	Overgeneralisation
+bevelen	bevolen	Wrong -en suffix
+bevoolt	bevolen	Overgeneralisation
+bezwijkte	bezwekene	Overgeneralisation
+bezwijkten	bezweken	Overgeneralisation
+bezwijkt	bezweken	Overgeneralisation
+bezwijken	bezweken	Wrong -en suffix
+bezweekt	bezweken	Overgeneralisation
+bidde	gebedene	Overgeneralisation+Lacking ge prefix
+bidden	gebeden	Wrong -en suffix
+gebid	gebeden	Overgeneralisation
+ebid	gebeden	Overgeneralisation
+bid	gebeden	Overgeneralisation
+gebidde	gebedene	Overgeneralisation+
+ebidde	gebedene	Overgeneralisation+Prefix ge without onset
+gebidden	gebeden	Wrong -en suffix
+ebidden	gebeden	Wrong -en suffix
+gebeed	gebeden	Overgeneralisation
+ebeden	gebeden	Prefix ge without onset
+beden	gebeden	Lacking ge prefix
+biedde	bood	Overgeneralisation
+biedden	boden	Overgeneralisation
+gebied	geboden	Overgeneralisation
+ebied	geboden	Overgeneralisation
+bied	geboden	Overgeneralisation
+gebiede	gebodene	Overgeneralisation+
+ebiede	gebodene	Overgeneralisation+Prefix ge without onset
+biede	gebodene	Overgeneralisation+Lacking ge prefix
+gebieden	geboden	Wrong -en suffix
+ebieden	geboden	Wrong -en suffix
+bieden	geboden	Wrong -en suffix
+geboodt	geboden	Overgeneralisation
+gebood	geboden	Overgeneralisation
+eboden	geboden	Prefix ge without onset
+boden	geboden	Lacking ge prefix
+bijtte	beet	Overgeneralisation
+bijtten	beten	Overgeneralisation
+gebijt	gebeten	Overgeneralisation
+ebijt	gebeten	Overgeneralisation
+bijt	gebeten	Overgeneralisation
+gebijte	gebetene	Overgeneralisation+
+ebijte	gebetene	Overgeneralisation+Prefix ge without onset
+bijte	gebetene	Overgeneralisation+Lacking ge prefix
+gebijten	gebeten	Wrong -en suffix
+ebijten	gebeten	Wrong -en suffix
+bijten	gebeten	Wrong -en suffix
+gebeet	gebeten	Overgeneralisation
+ebeten	gebeten	Prefix ge without onset
+beten	gebeten	Lacking ge prefix
+bindde	bond	Overgeneralisation
+bindden	bonden	Overgeneralisation
+gebind	gebonden	Overgeneralisation
+ebind	gebonden	Overgeneralisation
+bind	gebonden	Overgeneralisation
+gebinde	gebondene	Overgeneralisation+
+ebinde	gebondene	Overgeneralisation+Prefix ge without onset
+binde	gebondene	Overgeneralisation+Lacking ge prefix
+gebinden	gebonden	Wrong -en suffix
+ebinden	gebonden	Wrong -en suffix
+binden	gebonden	Wrong -en suffix
+gebond	gebonden	Overgeneralisation
+ebonden	gebonden	Prefix ge without onset
+bonden	gebonden	Lacking ge prefix
+blaasde	geblazene	Overgeneralisation+Lacking ge prefix
+blaasden	bliezen	Overgeneralisation
+geblaasd	geblazen	Overgeneralisation
+eblaasd	geblazen	Overgeneralisation+Prefix ge without onset
+blaasd	geblazen	Overgeneralisation+Lacking ge prefix
+geblaasde	geblazene	Overgeneralisation+
+eblaasde	geblazene	Overgeneralisation+Prefix ge without onset
+geblaast	geblazen	Overgeneralisation
+eblaast	geblazen	Overgeneralisation
+blaast	geblazen	Overgeneralisation
+geblasen	geblazen	Wrong -en suffix
+eblasen	geblazen	Wrong -en suffix
+blasen	geblazen	Wrong -en suffix
+eblazen	geblazen	Prefix ge without onset
+blazen	geblazen	Lacking ge prefix
+blijkte	geblekene	Overgeneralisation+Lacking ge prefix
+blijkten	bleken	Overgeneralisation
+geblijkt	gebleken	Overgeneralisation
+eblijkt	gebleken	Overgeneralisation
+blijkt	gebleken	Overgeneralisation
+geblijkte	geblekene	Overgeneralisation+
+eblijkte	geblekene	Overgeneralisation+Prefix ge without onset
+geblijken	gebleken	Wrong -en suffix
+eblijken	gebleken	Wrong -en suffix
+blijken	gebleken	Wrong -en suffix
+gebleekt	gebleken	Overgeneralisation
+ebleken	gebleken	Prefix ge without onset
+bleken	gebleken	Lacking ge prefix
+blijfde	geblevene	Overgeneralisation+Lacking ge prefix
+blijfden	bleven	Overgeneralisation
+geblijfd	gebleven	Overgeneralisation+
+eblijfd	gebleven	Overgeneralisation+Prefix ge without onset
+blijfd	gebleven	Overgeneralisation+Lacking ge prefix
+geblijfde	geblevene	Overgeneralisation+
+eblijfde	geblevene	Overgeneralisation+Prefix ge without onset
+geblijft	gebleven	Overgeneralisation
+eblijft	gebleven	Overgeneralisation
+blijft	gebleven	Overgeneralisation
+geblijfen	gebleven	Wrong -en suffix
+eblijfen	gebleven	Wrong -en suffix
+blijfen	gebleven	Wrong -en suffix
+gebleefd	gebleven	Overgeneralisation
+gebleeft	gebleven	Overgeneralisation
+ebleven	gebleven	Prefix ge without onset
+bleven	gebleven	Lacking ge prefix
+blinkte	geblonkene	Overgeneralisation+Lacking ge prefix
+blinkten	blonken	Overgeneralisation
+geblinkt	geblonken	Overgeneralisation
+eblinkt	geblonken	Overgeneralisation
+blinkt	geblonken	Overgeneralisation
+geblinkte	geblonkene	Overgeneralisation+
+eblinkte	geblonkene	Overgeneralisation+Prefix ge without onset
+geblinken	geblonken	Wrong -en suffix
+eblinken	geblonken	Wrong -en suffix
+blinken	geblonken	Wrong -en suffix
+geblonkt	geblonken	Overgeneralisation
+eblonken	geblonken	Prefix ge without onset
+blonken	geblonken	Lacking ge prefix
+gebraad	gebraden	Overgeneralisation
+ebraad	gebraden	Overgeneralisation
+braad	gebraden	Overgeneralisation
+gebrade	gebradene	Overgeneralisation+
+ebrade	gebradene	Overgeneralisation+Prefix ge without onset
+brade	gebradene	Overgeneralisation+Lacking ge prefix
+ebraden	gebraden	Prefix ge without onset
+braden	gebraden	Lacking ge prefix
+breekte	gebrokene	Overgeneralisation+Lacking ge prefix
+breekten	braken	Overgeneralisation
+gebreekt	gebroken	Overgeneralisation
+ebreekt	gebroken	Overgeneralisation
+breekt	gebroken	Overgeneralisation
+gebreekte	gebrokene	Overgeneralisation+
+ebreekte	gebrokene	Overgeneralisation+Prefix ge without onset
+gebreken	gebroken	Wrong -en suffix
+ebreken	gebroken	Wrong -en suffix
+breken	gebroken	Wrong -en suffix
+gebrookt	gebroken	Overgeneralisation
+ebroken	gebroken	Prefix ge without onset
+broken	gebroken	Lacking ge prefix
+brengde	gebrachte	Overgeneralisation+Lacking ge prefix
+brengden	brachten	Overgeneralisation
+gebrengd	gebracht	Overgeneralisation+
+ebrengd	gebracht	Overgeneralisation+Prefix ge without onset
+brengd	gebracht	Overgeneralisation+Lacking ge prefix
+gebrengde	gebrachte	Overgeneralisation+
+ebrengde	gebrachte	Overgeneralisation+Prefix ge without onset
+gebrengt	gebracht	Overgeneralisation
+ebrengt	gebracht	Overgeneralisation
+brengt	gebracht	Overgeneralisation
+gebrengen	gebracht	Wrong -en suffix
+ebrengen	gebracht	Wrong -en suffix
+brengen	gebracht	Wrong -en suffix
+ebracht	gebracht	Prefix ge without onset
+bracht	gebracht	Lacking ge prefix
+gebrouwd	gebrouwen	Overgeneralisation
+ebrouwd	gebrouwen	Overgeneralisation+Prefix ge without onset
+brouwd	gebrouwen	Overgeneralisation+Lacking ge prefix
+gebrouwde	gebrouwene	Overgeneralisation+
+ebrouwde	gebrouwene	Overgeneralisation+Prefix ge without onset
+brouwde	gebrouwene	Overgeneralisation+Lacking ge prefix
+gebrouwt	gebrouwen	Overgeneralisation
+ebrouwt	gebrouwen	Overgeneralisation
+brouwt	gebrouwen	Overgeneralisation
+ebrouwen	gebrouwen	Prefix ge without onset
+brouwen	gebrouwen	Lacking ge prefix
+buigde	gebogene	Overgeneralisation+Lacking ge prefix
+buigden	bogen	Overgeneralisation
+gebuigd	gebogen	Overgeneralisation+
+ebuigd	gebogen	Overgeneralisation+Prefix ge without onset
+buigd	gebogen	Overgeneralisation+Lacking ge prefix
+gebuigde	gebogene	Overgeneralisation+
+ebuigde	gebogene	Overgeneralisation+Prefix ge without onset
+gebuigt	gebogen	Overgeneralisation
+ebuigt	gebogen	Overgeneralisation
+buigt	gebogen	Overgeneralisation
+gebuigen	gebogen	Wrong -en suffix
+ebuigen	gebogen	Wrong -en suffix
+buigen	gebogen	Wrong -en suffix
+geboogt	gebogen	Overgeneralisation
+ebogen	gebogen	Prefix ge without onset
+bogen	gebogen	Lacking ge prefix
+denkte	gedachte	Overgeneralisation+Lacking ge prefix
+denkten	dachten	Overgeneralisation
+gedenkt	gedacht	Overgeneralisation
+edenkt	gedacht	Overgeneralisation
+denkt	gedacht	Overgeneralisation
+gedenkte	gedachte	Overgeneralisation+
+edenkte	gedachte	Overgeneralisation+Prefix ge without onset
+gedenken	gedacht	Wrong -en suffix
+edenken	gedacht	Wrong -en suffix
+denken	gedacht	Wrong -en suffix
+edacht	gedacht	Prefix ge without onset
+dacht	gedacht	Lacking ge prefix
+dingde	gedongene	Overgeneralisation+Lacking ge prefix
+dingden	dongen	Overgeneralisation
+gedingd	gedongen	Overgeneralisation+
+edingd	gedongen	Overgeneralisation+Prefix ge without onset
+dingd	gedongen	Overgeneralisation+Lacking ge prefix
+gedingde	gedongene	Overgeneralisation+
+edingde	gedongene	Overgeneralisation+Prefix ge without onset
+gedingt	gedongen	Overgeneralisation
+edingt	gedongen	Overgeneralisation
+dingt	gedongen	Overgeneralisation
+gedingen	gedongen	Wrong -en suffix
+edingen	gedongen	Wrong -en suffix
+dingen	gedongen	Wrong -en suffix
+gedongd	gedongen	Overgeneralisation
+gedongt	gedongen	Overgeneralisation
+edongen	gedongen	Prefix ge without onset
+dongen	gedongen	Lacking ge prefix
+doete	gedaane	Overgeneralisation+Lacking ge prefix
+doeten	deden	Overgeneralisation
+gedoet	gedaan	Overgeneralisation
+edoet	gedaan	Overgeneralisation
+doet	gedaan	Overgeneralisation
+gedoete	gedaane	Overgeneralisation+
+edoete	gedaane	Overgeneralisation+Prefix ge without onset
+gedoen	gedaan	Wrong -en suffix
+edoen	gedaan	Wrong -en suffix
+doen	gedaan	Wrong -en suffix
+edaan	gedaan	Prefix ge without onset
+daan	gedaan	Lacking ge prefix
+draagde	gedragene	Overgeneralisation+Lacking ge prefix
+draagden	droegen	Overgeneralisation
+gedraagd	gedragen	Overgeneralisation
+edraagd	gedragen	Overgeneralisation+Prefix ge without onset
+draagd	gedragen	Overgeneralisation+Lacking ge prefix
+gedraagde	gedragene	Overgeneralisation+
+edraagde	gedragene	Overgeneralisation+Prefix ge without onset
+gedraagt	gedragen	Overgeneralisation
+edraagt	gedragen	Overgeneralisation
+draagt	gedragen	Overgeneralisation
+edragen	gedragen	Prefix ge without onset
+dragen	gedragen	Lacking ge prefix
+drijfde	gedrevene	Overgeneralisation+Lacking ge prefix
+drijfden	dreven	Overgeneralisation
+gedrijfd	gedreven	Overgeneralisation+
+edrijfd	gedreven	Overgeneralisation+Prefix ge without onset
+drijfd	gedreven	Overgeneralisation+Lacking ge prefix
+gedrijfde	gedrevene	Overgeneralisation+
+edrijfde	gedrevene	Overgeneralisation+Prefix ge without onset
+gedrijft	gedreven	Overgeneralisation
+edrijft	gedreven	Overgeneralisation
+drijft	gedreven	Overgeneralisation
+gedrijfen	gedreven	Wrong -en suffix
+edrijfen	gedreven	Wrong -en suffix
+drijfen	gedreven	Wrong -en suffix
+gedreefd	gedreven	Overgeneralisation
+gedreeft	gedreven	Overgeneralisation
+edreven	gedreven	Prefix ge without onset
+dreven	gedreven	Lacking ge prefix
+dringde	gedrongene	Overgeneralisation+Lacking ge prefix
+dringden	drongen	Overgeneralisation
+gedringd	gedrongen	Overgeneralisation+
+edringd	gedrongen	Overgeneralisation+Prefix ge without onset
+dringd	gedrongen	Overgeneralisation+Lacking ge prefix
+gedringde	gedrongene	Overgeneralisation+
+edringde	gedrongene	Overgeneralisation+Prefix ge without onset
+gedringt	gedrongen	Overgeneralisation
+edringt	gedrongen	Overgeneralisation
+dringt	gedrongen	Overgeneralisation
+gedringen	gedrongen	Wrong -en suffix
+edringen	gedrongen	Wrong -en suffix
+dringen	gedrongen	Wrong -en suffix
+gedrongd	gedrongen	Overgeneralisation
+gedrongt	gedrongen	Overgeneralisation
+edrongen	gedrongen	Prefix ge without onset
+drongen	gedrongen	Lacking ge prefix
+drinkte	gedronkene	Overgeneralisation+Lacking ge prefix
+drinkten	dronken	Overgeneralisation
+gedrinkt	gedronken	Overgeneralisation
+edrinkt	gedronken	Overgeneralisation
+drinkt	gedronken	Overgeneralisation
+gedrinkte	gedronkene	Overgeneralisation+
+edrinkte	gedronkene	Overgeneralisation+Prefix ge without onset
+gedrinken	gedronken	Wrong -en suffix
+edrinken	gedronken	Wrong -en suffix
+drinken	gedronken	Wrong -en suffix
+gedronkt	gedronken	Overgeneralisation
+edronken	gedronken	Prefix ge without onset
+dronken	gedronken	Lacking ge prefix
+druipte	gedropene	Overgeneralisation+Lacking ge prefix
+druipten	dropen	Overgeneralisation
+gedruipt	gedropen	Overgeneralisation
+edruipt	gedropen	Overgeneralisation
+druipt	gedropen	Overgeneralisation
+gedruipte	gedropene	Overgeneralisation+
+edruipte	gedropene	Overgeneralisation+Prefix ge without onset
+gedruipen	gedropen	Wrong -en suffix
+edruipen	gedropen	Wrong -en suffix
+druipen	gedropen	Wrong -en suffix
+gedroopt	gedropen	Overgeneralisation
+edropen	gedropen	Prefix ge without onset
+dropen	gedropen	Lacking ge prefix
+duikte	gedokene	Overgeneralisation+Lacking ge prefix
+duikten	doken	Overgeneralisation
+geduikt	gedoken	Overgeneralisation
+eduikt	gedoken	Overgeneralisation
+duikt	gedoken	Overgeneralisation
+geduikte	gedokene	Overgeneralisation+
+eduikte	gedokene	Overgeneralisation+Prefix ge without onset
+geduiken	gedoken	Wrong -en suffix
+eduiken	gedoken	Wrong -en suffix
+duiken	gedoken	Wrong -en suffix
+gedookt	gedoken	Overgeneralisation
+edoken	gedoken	Prefix ge without onset
+doken	gedoken	Lacking ge prefix
+dwingde	gedwongene	Overgeneralisation+Lacking ge prefix
+dwingden	dwongen	Overgeneralisation
+gedwingd	gedwongen	Overgeneralisation+
+edwingd	gedwongen	Overgeneralisation+Prefix ge without onset
+dwingd	gedwongen	Overgeneralisation+Lacking ge prefix
+gedwingde	gedwongene	Overgeneralisation+
+edwingde	gedwongene	Overgeneralisation+Prefix ge without onset
+gedwingt	gedwongen	Overgeneralisation
+edwingt	gedwongen	Overgeneralisation
+dwingt	gedwongen	Overgeneralisation
+gedwingen	gedwongen	Wrong -en suffix
+edwingen	gedwongen	Wrong -en suffix
+dwingen	gedwongen	Wrong -en suffix
+gedwongd	gedwongen	Overgeneralisation
+gedwongt	gedwongen	Overgeneralisation
+edwongen	gedwongen	Prefix ge without onset
+dwongen	gedwongen	Lacking ge prefix
+eette	at	Overgeneralisation
+eetten	aten	Overgeneralisation
+geeet	gegeten	Overgeneralisation+
+eeet	gegeten	Overgeneralisation+Prefix ge without onset
+eet	gegeten	Overgeneralisation
+geete	gegetene	Overgeneralisation+
+eete	gegetene	Overgeneralisation+Prefix ge without onset
+ete	gegetene	Overgeneralisation+Lacking ge prefix
+geëet	gegeten	Overgeneralisation
+eëet	gegeten	Overgeneralisation
+geëten	gegeten	Wrong -en suffix
+eëten	gegeten	Wrong -en suffix
+eten	gegeten	Wrong -en suffix
+gegeet	gegeten	Overgeneralisation
+egeten	gegeten	Prefix ge without onset
+geten	gegeten	Lacking ge prefix
+fluitte	floot	Overgeneralisation
+fluitten	floten	Overgeneralisation
+gefluit	gefloten	Overgeneralisation
+efluit	gefloten	Overgeneralisation
+fluit	gefloten	Overgeneralisation
+gefluite	geflotene	Overgeneralisation+
+efluite	geflotene	Overgeneralisation+Prefix ge without onset
+fluite	geflotene	Overgeneralisation+Lacking ge prefix
+gefluiten	gefloten	Wrong -en suffix
+efluiten	gefloten	Wrong -en suffix
+fluiten	gefloten	Wrong -en suffix
+gefloot	gefloten	Overgeneralisation
+efloten	gefloten	Prefix ge without onset
+floten	gefloten	Lacking ge prefix
+gade	gegaane	Overgeneralisation+Lacking ge prefix
+gaden	gingen	Overgeneralisation
+gegaad	gegaan	Overgeneralisation+
+egaad	gegaan	Overgeneralisation+Prefix ge without onset
+gaad	gegaan	Overgeneralisation+Lacking ge prefix
+gegade	gegaane	Overgeneralisation+
+egade	gegaane	Overgeneralisation+Prefix ge without onset
+gegaat	gegaan	Overgeneralisation
+egaat	gegaan	Overgeneralisation
+gaat	gegaan	Overgeneralisation
+egaan	gegaan	Prefix ge without onset
+gaan	gegaan	Lacking ge prefix
+geldde	gold	Overgeneralisation
+geldden	golden	Overgeneralisation
+gegeld	gegolden	Overgeneralisation
+egeld	gegolden	Overgeneralisation
+geld	gegolden	Overgeneralisation
+gegelde	gegoldene	Overgeneralisation+
+egelde	gegoldene	Overgeneralisation+Prefix ge without onset
+gelde	gegoldene	Overgeneralisation+Lacking ge prefix
+gegelden	gegolden	Wrong -en suffix
+egelden	gegolden	Wrong -en suffix
+gelden	gegolden	Wrong -en suffix
+gegold	gegolden	Overgeneralisation
+egolden	gegolden	Prefix ge without onset
+golden	gegolden	Lacking ge prefix
+geneesde	genezene	Overgeneralisation
+geneesden	genazen	Overgeneralisation
+geneesd	genezen	Overgeneralisation
+geneest	genezen	Overgeneralisation
+genesen	genezen	Wrong -en suffix
+enezen	genezen	Prefix ge without onset
+nezen	genezen	Lacking ge prefix
+geniette	genoot	Overgeneralisation
+genietten	genoten	Overgeneralisation
+geniet	genoten	Overgeneralisation
+geniete	genotene	Overgeneralisation
+genieten	genoten	Wrong -en suffix
+genoot	genoten	Overgeneralisation
+enoten	genoten	Prefix ge without onset
+noten	genoten	Lacking ge prefix
+geefde	gegevene	Overgeneralisation+Lacking ge prefix
+geefden	gaven	Overgeneralisation
+gegeefd	gegeven	Overgeneralisation
+egeefd	gegeven	Overgeneralisation+Prefix ge without onset
+geefd	gegeven	Overgeneralisation+Lacking ge prefix
+gegeefde	gegevene	Overgeneralisation+
+egeefde	gegevene	Overgeneralisation+Prefix ge without onset
+gegeeft	gegeven	Overgeneralisation
+egeeft	gegeven	Overgeneralisation
+geeft	gegeven	Overgeneralisation
+gegefen	gegeven	Wrong -en suffix
+egefen	gegeven	Wrong -en suffix
+gefen	gegeven	Wrong -en suffix
+egeven	gegeven	Prefix ge without onset
+geven	gegeven	Lacking ge prefix
+giette	goot	Overgeneralisation
+gietten	goten	Overgeneralisation
+gegiet	gegoten	Overgeneralisation
+egiet	gegoten	Overgeneralisation
+giet	gegoten	Overgeneralisation
+gegiete	gegotene	Overgeneralisation+
+egiete	gegotene	Overgeneralisation+Prefix ge without onset
+giete	gegotene	Overgeneralisation+Lacking ge prefix
+gegieten	gegoten	Wrong -en suffix
+egieten	gegoten	Wrong -en suffix
+gieten	gegoten	Wrong -en suffix
+gegoot	gegoten	Overgeneralisation
+egoten	gegoten	Prefix ge without onset
+goten	gegoten	Lacking ge prefix
+glijdde	gleed	Overgeneralisation
+glijdden	gleden	Overgeneralisation
+geglijd	gegleden	Overgeneralisation
+eglijd	gegleden	Overgeneralisation
+glijd	gegleden	Overgeneralisation
+geglijde	gegledene	Overgeneralisation+
+eglijde	gegledene	Overgeneralisation+Prefix ge without onset
+glijde	gegledene	Overgeneralisation+Lacking ge prefix
+geglijden	gegleden	Wrong -en suffix
+eglijden	gegleden	Wrong -en suffix
+glijden	gegleden	Wrong -en suffix
+gegleed	gegleden	Overgeneralisation
+egleden	gegleden	Prefix ge without onset
+gleden	gegleden	Lacking ge prefix
+glimde	geglommene	Overgeneralisation+Lacking ge prefix
+glimden	glommen	Overgeneralisation
+geglimd	geglommen	Overgeneralisation+
+eglimd	geglommen	Overgeneralisation+Prefix ge without onset
+glimd	geglommen	Overgeneralisation+Lacking ge prefix
+geglimde	geglommene	Overgeneralisation+
+eglimde	geglommene	Overgeneralisation+Prefix ge without onset
+geglimt	geglommen	Overgeneralisation
+eglimt	geglommen	Overgeneralisation
+glimt	geglommen	Overgeneralisation
+geglimmen	geglommen	Wrong -en suffix
+eglimmen	geglommen	Wrong -en suffix
+glimmen	geglommen	Wrong -en suffix
+geglomt	geglommen	Overgeneralisation
+eglommen	geglommen	Prefix ge without onset
+glommen	geglommen	Lacking ge prefix
+graafde	gegravene	Overgeneralisation+Lacking ge prefix
+graafden	groeven	Overgeneralisation
+gegraafd	gegraven	Overgeneralisation
+egraafd	gegraven	Overgeneralisation+Prefix ge without onset
+graafd	gegraven	Overgeneralisation+Lacking ge prefix
+gegraafde	gegravene	Overgeneralisation+
+egraafde	gegravene	Overgeneralisation+Prefix ge without onset
+gegraaft	gegraven	Overgeneralisation
+egraaft	gegraven	Overgeneralisation
+graaft	gegraven	Overgeneralisation
+gegrafen	gegraven	Wrong -en suffix
+egrafen	gegraven	Wrong -en suffix
+grafen	gegraven	Wrong -en suffix
+egraven	gegraven	Prefix ge without onset
+graven	gegraven	Lacking ge prefix
+grijpte	gegrepene	Overgeneralisation+Lacking ge prefix
+grijpten	grepen	Overgeneralisation
+gegrijpt	gegrepen	Overgeneralisation
+egrijpt	gegrepen	Overgeneralisation
+grijpt	gegrepen	Overgeneralisation
+gegrijpte	gegrepene	Overgeneralisation+
+egrijpte	gegrepene	Overgeneralisation+Prefix ge without onset
+gegrijpen	gegrepen	Wrong -en suffix
+egrijpen	gegrepen	Wrong -en suffix
+grijpen	gegrepen	Wrong -en suffix
+gegreept	gegrepen	Overgeneralisation
+egrepen	gegrepen	Prefix ge without onset
+grepen	gegrepen	Lacking ge prefix
+hangde	gehangene	Overgeneralisation+Lacking ge prefix
+hangden	hingen	Overgeneralisation
+gehangd	gehangen	Overgeneralisation
+ehangd	gehangen	Overgeneralisation+Prefix ge without onset
+hangd	gehangen	Overgeneralisation+Lacking ge prefix
+gehangde	gehangene	Overgeneralisation+
+ehangde	gehangene	Overgeneralisation+Prefix ge without onset
+gehangt	gehangen	Overgeneralisation
+ehangt	gehangen	Overgeneralisation
+hangt	gehangen	Overgeneralisation
+ehangen	gehangen	Prefix ge without onset
+hangen	gehangen	Lacking ge prefix
+hebde	gehade	Overgeneralisation+Lacking ge prefix
+hebden	hadden	Overgeneralisation
+gehebd	gehad	Overgeneralisation+
+ehebd	gehad	Overgeneralisation+Prefix ge without onset
+hebd	gehad	Overgeneralisation+Lacking ge prefix
+gehebde	gehade	Overgeneralisation+
+ehebde	gehade	Overgeneralisation+Prefix ge without onset
+gehebt	gehad	Overgeneralisation
+ehebt	gehad	Overgeneralisation
+hebt	gehad	Overgeneralisation
+gehebben	gehad	Wrong -en suffix
+ehebben	gehad	Wrong -en suffix
+hebben	gehad	Wrong -en suffix
+ehad	gehad	Prefix ge without onset
+had	gehad	Lacking ge prefix
+hefte	gehevene	Overgeneralisation+Lacking ge prefix
+heften	hieven	Overgeneralisation
+geheft	geheven	Overgeneralisation
+eheft	geheven	Overgeneralisation
+heft	geheven	Overgeneralisation
+gehefte	gehevene	Overgeneralisation+
+ehefte	gehevene	Overgeneralisation+Prefix ge without onset
+geheffen	geheven	Wrong -en suffix
+eheffen	geheven	Wrong -en suffix
+heffen	geheven	Wrong -en suffix
+geheefd	geheven	Overgeneralisation
+geheeft	geheven	Overgeneralisation
+eheven	geheven	Prefix ge without onset
+heven	geheven	Lacking ge prefix
+helpte	geholpene	Overgeneralisation+Lacking ge prefix
+helpten	hielpen	Overgeneralisation
+gehelpt	geholpen	Overgeneralisation
+ehelpt	geholpen	Overgeneralisation
+helpt	geholpen	Overgeneralisation
+gehelpte	geholpene	Overgeneralisation+
+ehelpte	geholpene	Overgeneralisation+Prefix ge without onset
+gehelpen	geholpen	Wrong -en suffix
+ehelpen	geholpen	Wrong -en suffix
+helpen	geholpen	Wrong -en suffix
+geholpt	geholpen	Overgeneralisation
+eholpen	geholpen	Prefix ge without onset
+holpen	geholpen	Lacking ge prefix
+geheet	geheten	Overgeneralisation
+eheet	geheten	Overgeneralisation
+heet	geheten	Overgeneralisation
+gehete	gehetene	Overgeneralisation+
+ehete	gehetene	Overgeneralisation+Prefix ge without onset
+hete	gehetene	Overgeneralisation+Lacking ge prefix
+eheten	geheten	Prefix ge without onset
+heten	geheten	Lacking ge prefix
+hijste	gehesene	Overgeneralisation+Lacking ge prefix
+hijsten	hesen	Overgeneralisation
+gehijst	gehesen	Overgeneralisation
+ehijst	gehesen	Overgeneralisation
+hijst	gehesen	Overgeneralisation
+gehijste	gehesene	Overgeneralisation+
+ehijste	gehesene	Overgeneralisation+Prefix ge without onset
+gehijsen	gehesen	Wrong -en suffix
+ehijsen	gehesen	Wrong -en suffix
+hijsen	gehesen	Wrong -en suffix
+geheest	gehesen	Overgeneralisation
+ehesen	gehesen	Prefix ge without onset
+hesen	gehesen	Lacking ge prefix
+gehoefd	gehoeven	Overgeneralisation
+ehoefd	gehoeven	Overgeneralisation+Prefix ge without onset
+hoefd	gehoeven	Overgeneralisation+Lacking ge prefix
+gehoefde	gehoevene	Overgeneralisation+
+ehoefde	gehoevene	Overgeneralisation+Prefix ge without onset
+hoefde	gehoevene	Overgeneralisation+Lacking ge prefix
+gehoeft	gehoeven	Overgeneralisation
+ehoeft	gehoeven	Overgeneralisation
+hoeft	gehoeven	Overgeneralisation
+gehoefen	gehoeven	Wrong -en suffix
+ehoefen	gehoeven	Wrong -en suffix
+hoefen	gehoeven	Wrong -en suffix
+ehoeven	gehoeven	Prefix ge without onset
+hoeven	gehoeven	Lacking ge prefix
+houdde	hield	Overgeneralisation
+houdden	hielden	Overgeneralisation
+gehoud	gehouden	Overgeneralisation
+ehoud	gehouden	Overgeneralisation
+houd	gehouden	Overgeneralisation
+gehoude	gehoudene	Overgeneralisation+
+ehoude	gehoudene	Overgeneralisation+Prefix ge without onset
+houde	gehoudene	Overgeneralisation+Lacking ge prefix
+ehouden	gehouden	Prefix ge without onset
+houden	gehouden	Lacking ge prefix
+houwde	gehouwene	Overgeneralisation+Lacking ge prefix
+houwden	hieuwen	Overgeneralisation
+gehouwd	gehouwen	Overgeneralisation
+ehouwd	gehouwen	Overgeneralisation+Prefix ge without onset
+houwd	gehouwen	Overgeneralisation+Lacking ge prefix
+gehouwde	gehouwene	Overgeneralisation+
+ehouwde	gehouwene	Overgeneralisation+Prefix ge without onset
+gehouwt	gehouwen	Overgeneralisation
+ehouwt	gehouwen	Overgeneralisation
+houwt	gehouwen	Overgeneralisation
+ehouwen	gehouwen	Prefix ge without onset
+houwen	gehouwen	Lacking ge prefix
+ejaagd	gejaagd	Prefix ge without onset
+jaagd	gejaagd	Lacking ge prefix
+ejaagde	gejaagde	Overgeneralisation+Prefix ge without onset
+jaagde	gejaagde	Overgeneralisation+Lacking ge prefix
+gejaagt	gejaagd	Overgeneralisation
+ejaagt	gejaagd	Overgeneralisation
+jaagt	gejaagd	Overgeneralisation
+gejagen	gejaagd	Wrong -en suffix
+ejagen	gejaagd	Wrong -en suffix
+jagen	gejaagd	Wrong -en suffix
+kiesde	gekozene	Overgeneralisation+Lacking ge prefix
+kiesden	kozen	Overgeneralisation
+gekiesd	gekozen	Overgeneralisation+
+ekiesd	gekozen	Overgeneralisation+Prefix ge without onset
+kiesd	gekozen	Overgeneralisation+Lacking ge prefix
+gekiesde	gekozene	Overgeneralisation+
+ekiesde	gekozene	Overgeneralisation+Prefix ge without onset
+gekiest	gekozen	Overgeneralisation
+ekiest	gekozen	Overgeneralisation
+kiest	gekozen	Overgeneralisation
+gekiesen	gekozen	Wrong -en suffix
+ekiesen	gekozen	Wrong -en suffix
+kiesen	gekozen	Wrong -en suffix
+gekoost	gekozen	Overgeneralisation
+ekozen	gekozen	Prefix ge without onset
+kozen	gekozen	Lacking ge prefix
+kijkte	gekekene	Overgeneralisation+Lacking ge prefix
+kijkten	keken	Overgeneralisation
+gekijkt	gekeken	Overgeneralisation
+ekijkt	gekeken	Overgeneralisation
+kijkt	gekeken	Overgeneralisation
+gekijkte	gekekene	Overgeneralisation+
+ekijkte	gekekene	Overgeneralisation+Prefix ge without onset
+gekijken	gekeken	Wrong -en suffix
+ekijken	gekeken	Wrong -en suffix
+kijken	gekeken	Wrong -en suffix
+gekeekt	gekeken	Overgeneralisation
+ekeken	gekeken	Prefix ge without onset
+keken	gekeken	Lacking ge prefix
+klimde	geklommene	Overgeneralisation+Lacking ge prefix
+klimden	klommen	Overgeneralisation
+geklimd	geklommen	Overgeneralisation+
+eklimd	geklommen	Overgeneralisation+Prefix ge without onset
+klimd	geklommen	Overgeneralisation+Lacking ge prefix
+geklimde	geklommene	Overgeneralisation+
+eklimde	geklommene	Overgeneralisation+Prefix ge without onset
+geklimt	geklommen	Overgeneralisation
+eklimt	geklommen	Overgeneralisation
+klimt	geklommen	Overgeneralisation
+geklimmen	geklommen	Wrong -en suffix
+eklimmen	geklommen	Wrong -en suffix
+klimmen	geklommen	Wrong -en suffix
+geklomt	geklommen	Overgeneralisation
+eklommen	geklommen	Prefix ge without onset
+klommen	geklommen	Lacking ge prefix
+klinkte	geklonkene	Overgeneralisation+Lacking ge prefix
+klinkten	klonken	Overgeneralisation
+geklinkt	geklonken	Overgeneralisation
+eklinkt	geklonken	Overgeneralisation
+klinkt	geklonken	Overgeneralisation
+geklinkte	geklonkene	Overgeneralisation+
+eklinkte	geklonkene	Overgeneralisation+Prefix ge without onset
+geklinken	geklonken	Wrong -en suffix
+eklinken	geklonken	Wrong -en suffix
+klinken	geklonken	Wrong -en suffix
+geklonkt	geklonken	Overgeneralisation
+eklonken	geklonken	Prefix ge without onset
+klonken	geklonken	Lacking ge prefix
+kluifde	geklovene	Overgeneralisation+Lacking ge prefix
+kluifden	kloven	Overgeneralisation
+gekluifd	gekloven	Overgeneralisation+
+ekluifd	gekloven	Overgeneralisation+Prefix ge without onset
+kluifd	gekloven	Overgeneralisation+Lacking ge prefix
+gekluifde	geklovene	Overgeneralisation+
+ekluifde	geklovene	Overgeneralisation+Prefix ge without onset
+gekluift	gekloven	Overgeneralisation
+ekluift	gekloven	Overgeneralisation
+kluift	gekloven	Overgeneralisation
+gekluifen	gekloven	Wrong -en suffix
+ekluifen	gekloven	Wrong -en suffix
+kluifen	gekloven	Wrong -en suffix
+geklooft	gekloven	Overgeneralisation
+ekloven	gekloven	Prefix ge without onset
+kloven	gekloven	Lacking ge prefix
+knijpte	geknepene	Overgeneralisation+Lacking ge prefix
+knijpten	knepen	Overgeneralisation
+geknijpt	geknepen	Overgeneralisation
+eknijpt	geknepen	Overgeneralisation
+knijpt	geknepen	Overgeneralisation
+geknijpte	geknepene	Overgeneralisation+
+eknijpte	geknepene	Overgeneralisation+Prefix ge without onset
+geknijpen	geknepen	Wrong -en suffix
+eknijpen	geknepen	Wrong -en suffix
+knijpen	geknepen	Wrong -en suffix
+gekneept	geknepen	Overgeneralisation
+eknepen	geknepen	Prefix ge without onset
+knepen	geknepen	Lacking ge prefix
+koopte	gekochte	Overgeneralisation+Lacking ge prefix
+koopten	kochten	Overgeneralisation
+gekoopt	gekocht	Overgeneralisation
+ekoopt	gekocht	Overgeneralisation
+koopt	gekocht	Overgeneralisation
+gekoopte	gekochte	Overgeneralisation+
+ekoopte	gekochte	Overgeneralisation+Prefix ge without onset
+gekopen	gekocht	Wrong -en suffix
+ekopen	gekocht	Wrong -en suffix
+kopen	gekocht	Wrong -en suffix
+ekocht	gekocht	Prefix ge without onset
+kocht	gekocht	Lacking ge prefix
+krijgde	gekregene	Overgeneralisation+Lacking ge prefix
+krijgden	kregen	Overgeneralisation
+gekrijgd	gekregen	Overgeneralisation+
+ekrijgd	gekregen	Overgeneralisation+Prefix ge without onset
+krijgd	gekregen	Overgeneralisation+Lacking ge prefix
+gekrijgde	gekregene	Overgeneralisation+
+ekrijgde	gekregene	Overgeneralisation+Prefix ge without onset
+gekrijgt	gekregen	Overgeneralisation
+ekrijgt	gekregen	Overgeneralisation
+krijgt	gekregen	Overgeneralisation
+gekrijgen	gekregen	Wrong -en suffix
+ekrijgen	gekregen	Wrong -en suffix
+krijgen	gekregen	Wrong -en suffix
+gekreegd	gekregen	Overgeneralisation
+gekreegt	gekregen	Overgeneralisation
+ekregen	gekregen	Prefix ge without onset
+kregen	gekregen	Lacking ge prefix
+krimpte	gekrompene	Overgeneralisation+Lacking ge prefix
+krimpten	krompen	Overgeneralisation
+gekrimpt	gekrompen	Overgeneralisation
+ekrimpt	gekrompen	Overgeneralisation
+krimpt	gekrompen	Overgeneralisation
+gekrimpte	gekrompene	Overgeneralisation+
+ekrimpte	gekrompene	Overgeneralisation+Prefix ge without onset
+gekrimpen	gekrompen	Wrong -en suffix
+ekrimpen	gekrompen	Wrong -en suffix
+krimpen	gekrompen	Wrong -en suffix
+gekrompt	gekrompen	Overgeneralisation
+ekrompen	gekrompen	Prefix ge without onset
+krompen	gekrompen	Lacking ge prefix
+kruipte	gekropene	Overgeneralisation+Lacking ge prefix
+kruipten	kropen	Overgeneralisation
+gekruipt	gekropen	Overgeneralisation
+ekruipt	gekropen	Overgeneralisation
+kruipt	gekropen	Overgeneralisation
+gekruipte	gekropene	Overgeneralisation+
+ekruipte	gekropene	Overgeneralisation+Prefix ge without onset
+gekruipen	gekropen	Wrong -en suffix
+ekruipen	gekropen	Wrong -en suffix
+kruipen	gekropen	Wrong -en suffix
+gekroopt	gekropen	Overgeneralisation
+ekropen	gekropen	Prefix ge without onset
+kropen	gekropen	Lacking ge prefix
+kwijtte	kweet	Overgeneralisation
+kwijtten	kweten	Overgeneralisation
+gekwijt	gekweten	Overgeneralisation
+ekwijt	gekweten	Overgeneralisation
+kwijt	gekweten	Overgeneralisation
+gekwijte	gekwetene	Overgeneralisation+
+ekwijte	gekwetene	Overgeneralisation+Prefix ge without onset
+kwijte	gekwetene	Overgeneralisation+Lacking ge prefix
+gekwijten	gekweten	Wrong -en suffix
+ekwijten	gekweten	Wrong -en suffix
+kwijten	gekweten	Wrong -en suffix
+gekweet	gekweten	Overgeneralisation
+ekweten	gekweten	Prefix ge without onset
+kweten	gekweten	Lacking ge prefix
+lachde	gelachene	Overgeneralisation+Lacking ge prefix
+lachden	lachten	Overgeneralisation
+gelachd	gelachen	Overgeneralisation
+elachd	gelachen	Overgeneralisation+Prefix ge without onset
+lachd	gelachen	Overgeneralisation+Lacking ge prefix
+gelachde	gelachene	Overgeneralisation+
+elachde	gelachene	Overgeneralisation+Prefix ge without onset
+gelacht	gelachen	Overgeneralisation
+elacht	gelachen	Overgeneralisation
+lacht	gelachen	Overgeneralisation
+elachen	gelachen	Prefix ge without onset
+lachen	gelachen	Lacking ge prefix
+gelaad	geladen	Overgeneralisation
+elaad	geladen	Overgeneralisation
+laad	geladen	Overgeneralisation
+gelade	geladene	Overgeneralisation+
+elade	geladene	Overgeneralisation+Prefix ge without onset
+lade	geladene	Overgeneralisation+Lacking ge prefix
+eladen	geladen	Prefix ge without onset
+laden	geladen	Lacking ge prefix
+laatte	liet	Overgeneralisation
+laatten	lieten	Overgeneralisation
+gelaat	gelaten	Overgeneralisation
+elaat	gelaten	Overgeneralisation
+laat	gelaten	Overgeneralisation
+gelate	gelatene	Overgeneralisation+
+elate	gelatene	Overgeneralisation+Prefix ge without onset
+late	gelatene	Overgeneralisation+Lacking ge prefix
+elaten	gelaten	Prefix ge without onset
+laten	gelaten	Lacking ge prefix
+leesde	gelezene	Overgeneralisation+Lacking ge prefix
+leesden	lazen	Overgeneralisation
+geleesd	gelezen	Overgeneralisation
+eleesd	gelezen	Overgeneralisation+Prefix ge without onset
+leesd	gelezen	Overgeneralisation+Lacking ge prefix
+geleesde	gelezene	Overgeneralisation+
+eleesde	gelezene	Overgeneralisation+Prefix ge without onset
+geleest	gelezen	Overgeneralisation
+eleest	gelezen	Overgeneralisation
+leest	gelezen	Overgeneralisation
+gelesen	gelezen	Wrong -en suffix
+elesen	gelezen	Wrong -en suffix
+lesen	gelezen	Wrong -en suffix
+elezen	gelezen	Prefix ge without onset
+lezen	gelezen	Lacking ge prefix
+liegde	gelogene	Overgeneralisation+Lacking ge prefix
+liegden	logen	Overgeneralisation
+geliegd	gelogen	Overgeneralisation+
+eliegd	gelogen	Overgeneralisation+Prefix ge without onset
+liegd	gelogen	Overgeneralisation+Lacking ge prefix
+geliegde	gelogene	Overgeneralisation+
+eliegde	gelogene	Overgeneralisation+Prefix ge without onset
+geliegt	gelogen	Overgeneralisation
+eliegt	gelogen	Overgeneralisation
+liegt	gelogen	Overgeneralisation
+geliegen	gelogen	Wrong -en suffix
+eliegen	gelogen	Wrong -en suffix
+liegen	gelogen	Wrong -en suffix
+geloogt	gelogen	Overgeneralisation
+elogen	gelogen	Prefix ge without onset
+logen	gelogen	Lacking ge prefix
+ligde	gelegene	Overgeneralisation+Lacking ge prefix
+ligden	lagen	Overgeneralisation
+geligd	gelegen	Overgeneralisation+
+eligd	gelegen	Overgeneralisation+Prefix ge without onset
+ligd	gelegen	Overgeneralisation+Lacking ge prefix
+geligde	gelegene	Overgeneralisation+
+eligde	gelegene	Overgeneralisation+Prefix ge without onset
+geligt	gelegen	Overgeneralisation
+eligt	gelegen	Overgeneralisation
+ligt	gelegen	Overgeneralisation
+geliggen	gelegen	Wrong -en suffix
+eliggen	gelegen	Wrong -en suffix
+liggen	gelegen	Wrong -en suffix
+geleegd	gelegen	Overgeneralisation
+geleegt	gelegen	Overgeneralisation
+elegen	gelegen	Prefix ge without onset
+legen	gelegen	Lacking ge prefix
+lijdde	leed	Overgeneralisation
+lijdden	leden	Overgeneralisation
+gelijd	geleden	Overgeneralisation
+elijd	geleden	Overgeneralisation
+lijd	geleden	Overgeneralisation
+gelijde	geledene	Overgeneralisation+
+elijde	geledene	Overgeneralisation+Prefix ge without onset
+lijde	geledene	Overgeneralisation+Lacking ge prefix
+gelijden	geleden	Wrong -en suffix
+elijden	geleden	Wrong -en suffix
+lijden	geleden	Wrong -en suffix
+geleed	geleden	Overgeneralisation
+eleden	geleden	Prefix ge without onset
+leden	geleden	Lacking ge prefix
+lijkte	gelekene	Overgeneralisation+Lacking ge prefix
+lijkten	leken	Overgeneralisation
+gelijkt	geleken	Overgeneralisation
+elijkt	geleken	Overgeneralisation
+lijkt	geleken	Overgeneralisation
+gelijkte	gelekene	Overgeneralisation+
+elijkte	gelekene	Overgeneralisation+Prefix ge without onset
+gelijken	geleken	Wrong -en suffix
+elijken	geleken	Wrong -en suffix
+lijken	geleken	Wrong -en suffix
+geleekt	geleken	Overgeneralisation
+eleken	geleken	Prefix ge without onset
+leken	geleken	Lacking ge prefix
+loopte	gelopene	Overgeneralisation+Lacking ge prefix
+loopten	liepen	Overgeneralisation
+geloopt	gelopen	Overgeneralisation
+eloopt	gelopen	Overgeneralisation
+loopt	gelopen	Overgeneralisation
+geloopte	gelopene	Overgeneralisation+
+eloopte	gelopene	Overgeneralisation+Prefix ge without onset
+elopen	gelopen	Prefix ge without onset
+lopen	gelopen	Lacking ge prefix
+gemaald	gemalen	Overgeneralisation
+emaald	gemalen	Overgeneralisation+Prefix ge without onset
+maald	gemalen	Overgeneralisation+Lacking ge prefix
+gemaalde	gemalene	Overgeneralisation+
+emaalde	gemalene	Overgeneralisation+Prefix ge without onset
+maalde	gemalene	Overgeneralisation+Lacking ge prefix
+gemaalt	gemalen	Overgeneralisation
+emaalt	gemalen	Overgeneralisation
+maalt	gemalen	Overgeneralisation
+emalen	gemalen	Prefix ge without onset
+malen	gemalen	Lacking ge prefix
+emelkt	gemelkt	Prefix ge without onset
+melkt	gemelkt	Lacking ge prefix
+emelkte	gemelkte	Overgeneralisation+Prefix ge without onset
+melkte	gemelkte	Overgeneralisation+Lacking ge prefix
+gemelken	gemelkt	Wrong -en suffix
+emelken	gemelkt	Wrong -en suffix
+melken	gemelkt	Wrong -en suffix
+meette	mat	Overgeneralisation
+meetten	maten	Overgeneralisation
+gemeet	gemeten	Overgeneralisation
+emeet	gemeten	Overgeneralisation
+meet	gemeten	Overgeneralisation
+gemete	gemetene	Overgeneralisation+
+emete	gemetene	Overgeneralisation+Prefix ge without onset
+mete	gemetene	Overgeneralisation+Lacking ge prefix
+emeten	gemeten	Prefix ge without onset
+meten	gemeten	Lacking ge prefix
+mijdde	meed	Overgeneralisation
+mijdden	meden	Overgeneralisation
+gemijd	gemeden	Overgeneralisation
+emijd	gemeden	Overgeneralisation
+mijd	gemeden	Overgeneralisation
+gemijde	gemedene	Overgeneralisation+
+emijde	gemedene	Overgeneralisation+Prefix ge without onset
+mijde	gemedene	Overgeneralisation+Lacking ge prefix
+gemijden	gemeden	Wrong -en suffix
+emijden	gemeden	Wrong -en suffix
+mijden	gemeden	Wrong -en suffix
+gemeed	gemeden	Overgeneralisation
+emeden	gemeden	Prefix ge without onset
+meden	gemeden	Lacking ge prefix
+moette	moest	Overgeneralisation
+moetten	moesten	Overgeneralisation
+gemoet	gemoeten	Overgeneralisation
+emoet	gemoeten	Overgeneralisation
+moet	gemoeten	Overgeneralisation
+gemoete	gemoetene	Overgeneralisation+
+emoete	gemoetene	Overgeneralisation+Prefix ge without onset
+moete	gemoetene	Overgeneralisation+Lacking ge prefix
+emoeten	gemoeten	Prefix ge without onset
+moeten	gemoeten	Lacking ge prefix
+neemde	genomene	Overgeneralisation+Lacking ge prefix
+neemden	namen	Overgeneralisation
+geneemd	genomen	Overgeneralisation+
+eneemd	genomen	Overgeneralisation+Prefix ge without onset
+neemd	genomen	Overgeneralisation+Lacking ge prefix
+geneemde	genomene	Overgeneralisation+
+eneemde	genomene	Overgeneralisation+Prefix ge without onset
+geneemt	genomen	Overgeneralisation
+eneemt	genomen	Overgeneralisation
+neemt	genomen	Overgeneralisation
+genemen	genomen	Wrong -en suffix
+enemen	genomen	Wrong -en suffix
+nemen	genomen	Wrong -en suffix
+genoomt	genomen	Overgeneralisation
+enomen	genomen	Prefix ge without onset
+nomen	genomen	Lacking ge prefix
+nijgde	genegene	Overgeneralisation+Lacking ge prefix
+nijgden	negen	Overgeneralisation
+genijgd	genegen	Overgeneralisation+
+enijgd	genegen	Overgeneralisation+Prefix ge without onset
+nijgd	genegen	Overgeneralisation+Lacking ge prefix
+genijgde	genegene	Overgeneralisation+
+enijgde	genegene	Overgeneralisation+Prefix ge without onset
+genijgt	genegen	Overgeneralisation
+enijgt	genegen	Overgeneralisation
+nijgt	genegen	Overgeneralisation
+genijgen	genegen	Wrong -en suffix
+enijgen	genegen	Wrong -en suffix
+nijgen	genegen	Wrong -en suffix
+geneegd	genegen	Overgeneralisation
+geneegt	genegen	Overgeneralisation
+enegen	genegen	Prefix ge without onset
+negen	genegen	Lacking ge prefix
+ontginde	ontgonnene	Overgeneralisation
+ontginden	ontgonnen	Overgeneralisation
+ontgind	ontgonnen	Overgeneralisation
+ontgint	ontgonnen	Overgeneralisation
+ontginnen	ontgonnen	Wrong -en suffix
+ontgont	ontgonnen	Overgeneralisation
+ontluikte	ontlokene	Overgeneralisation
+ontluikten	ontloken	Overgeneralisation
+ontluikt	ontloken	Overgeneralisation
+ontluiken	ontloken	Wrong -en suffix
+ontlookt	ontloken	Overgeneralisation
+pluisde	geplozene	Overgeneralisation+Lacking ge prefix
+pluisden	plozen	Overgeneralisation
+gepluisd	geplozen	Overgeneralisation+
+epluisd	geplozen	Overgeneralisation+Prefix ge without onset
+pluisd	geplozen	Overgeneralisation+Lacking ge prefix
+gepluisde	geplozene	Overgeneralisation+
+epluisde	geplozene	Overgeneralisation+Prefix ge without onset
+gepluist	geplozen	Overgeneralisation
+epluist	geplozen	Overgeneralisation
+pluist	geplozen	Overgeneralisation
+gepluisen	geplozen	Wrong -en suffix
+epluisen	geplozen	Wrong -en suffix
+pluisen	geplozen	Wrong -en suffix
+geploost	geplozen	Overgeneralisation
+eplozen	geplozen	Prefix ge without onset
+plozen	geplozen	Lacking ge prefix
+prijsde	geprezene	Overgeneralisation+Lacking ge prefix
+prijsden	prezen	Overgeneralisation
+geprijsd	geprezen	Overgeneralisation+
+eprijsd	geprezen	Overgeneralisation+Prefix ge without onset
+prijsd	geprezen	Overgeneralisation+Lacking ge prefix
+geprijsde	geprezene	Overgeneralisation+
+eprijsde	geprezene	Overgeneralisation+Prefix ge without onset
+geprijst	geprezen	Overgeneralisation
+eprijst	geprezen	Overgeneralisation
+prijst	geprezen	Overgeneralisation
+geprijsen	geprezen	Wrong -en suffix
+eprijsen	geprezen	Wrong -en suffix
+prijsen	geprezen	Wrong -en suffix
+gepreesd	geprezen	Overgeneralisation
+gepreest	geprezen	Overgeneralisation
+eprezen	geprezen	Prefix ge without onset
+prezen	geprezen	Lacking ge prefix
+geraad	geraden	Overgeneralisation
+eraad	geraden	Overgeneralisation
+raad	geraden	Overgeneralisation
+gerade	geradene	Overgeneralisation+
+erade	geradene	Overgeneralisation+Prefix ge without onset
+rade	geradene	Overgeneralisation+Lacking ge prefix
+eraden	geraden	Prefix ge without onset
+raden	geraden	Lacking ge prefix
+verraad	verraden	Overgeneralisation
+verrade	verradene	Overgeneralisation
+rijdde	reed	Overgeneralisation
+rijdden	reden	Overgeneralisation
+gerijd	gereden	Overgeneralisation
+erijd	gereden	Overgeneralisation
+rijd	gereden	Overgeneralisation
+gerijde	geredene	Overgeneralisation+
+erijde	geredene	Overgeneralisation+Prefix ge without onset
+rijde	geredene	Overgeneralisation+Lacking ge prefix
+gerijden	gereden	Wrong -en suffix
+erijden	gereden	Wrong -en suffix
+rijden	gereden	Wrong -en suffix
+gereed	gereden	Overgeneralisation
+ereden	gereden	Prefix ge without onset
+reden	gereden	Lacking ge prefix
+rijgde	geregene	Overgeneralisation+Lacking ge prefix
+rijgden	regen	Overgeneralisation
+gerijgd	geregen	Overgeneralisation+
+erijgd	geregen	Overgeneralisation+Prefix ge without onset
+rijgd	geregen	Overgeneralisation+Lacking ge prefix
+gerijgde	geregene	Overgeneralisation+
+erijgde	geregene	Overgeneralisation+Prefix ge without onset
+gerijgt	geregen	Overgeneralisation
+erijgt	geregen	Overgeneralisation
+rijgt	geregen	Overgeneralisation
+gerijgen	geregen	Wrong -en suffix
+erijgen	geregen	Wrong -en suffix
+rijgen	geregen	Wrong -en suffix
+gereegd	geregen	Overgeneralisation
+gereegt	geregen	Overgeneralisation
+eregen	geregen	Prefix ge without onset
+regen	geregen	Lacking ge prefix
+rijtte	reet	Overgeneralisation
+rijtten	reten	Overgeneralisation
+gerijt	gereten	Overgeneralisation
+erijt	gereten	Overgeneralisation
+rijt	gereten	Overgeneralisation
+gerijte	geretene	Overgeneralisation+
+erijte	geretene	Overgeneralisation+Prefix ge without onset
+rijte	geretene	Overgeneralisation+Lacking ge prefix
+gerijten	gereten	Wrong -en suffix
+erijten	gereten	Wrong -en suffix
+rijten	gereten	Wrong -en suffix
+gereet	gereten	Overgeneralisation
+ereten	gereten	Prefix ge without onset
+reten	gereten	Lacking ge prefix
+rijsde	Gerezene	Overgeneralisation+Lacking ge prefix
+rijsden	rezen	Overgeneralisation
+gerijsd	Gerezen	Overgeneralisation+
+erijsd	Gerezen	Overgeneralisation+Prefix ge without onset
+rijsd	Gerezen	Overgeneralisation+Lacking ge prefix
+gerijsde	Gerezene	Overgeneralisation+
+erijsde	Gerezene	Overgeneralisation+Prefix ge without onset
+gerijst	Gerezen	Overgeneralisation
+erijst	Gerezen	Overgeneralisation
+rijst	Gerezen	Overgeneralisation
+gerijsen	Gerezen	Wrong -en suffix
+erijsen	Gerezen	Wrong -en suffix
+rijsen	Gerezen	Wrong -en suffix
+geGereesd	Gerezen	Overgeneralisation
+geGereest	Gerezen	Overgeneralisation
+roepte	geroepene	Overgeneralisation+Lacking ge prefix
+roepten	riepen	Overgeneralisation
+geroept	geroepen	Overgeneralisation
+eroept	geroepen	Overgeneralisation
+roept	geroepen	Overgeneralisation
+geroepte	geroepene	Overgeneralisation+
+eroepte	geroepene	Overgeneralisation+Prefix ge without onset
+eroepen	geroepen	Prefix ge without onset
+roepen	geroepen	Lacking ge prefix
+ruikte	gerokene	Overgeneralisation+Lacking ge prefix
+ruikten	roken	Overgeneralisation
+geruikt	geroken	Overgeneralisation
+eruikt	geroken	Overgeneralisation
+ruikt	geroken	Overgeneralisation
+geruikte	gerokene	Overgeneralisation+
+eruikte	gerokene	Overgeneralisation+Prefix ge without onset
+geruiken	geroken	Wrong -en suffix
+eruiken	geroken	Wrong -en suffix
+ruiken	geroken	Wrong -en suffix
+gerookt	geroken	Overgeneralisation
+eroken	geroken	Prefix ge without onset
+roken	geroken	Lacking ge prefix
+gescheid	gescheiden	Overgeneralisation
+escheid	gescheiden	Overgeneralisation
+scheid	gescheiden	Overgeneralisation
+gescheide	gescheidene	Overgeneralisation+
+escheide	gescheidene	Overgeneralisation+Prefix ge without onset
+scheide	gescheidene	Overgeneralisation+Lacking ge prefix
+escheiden	gescheiden	Prefix ge without onset
+scheiden	gescheiden	Lacking ge prefix
+scheldde	schold	Overgeneralisation
+scheldden	scholden	Overgeneralisation
+gescheld	gescholden	Overgeneralisation
+escheld	gescholden	Overgeneralisation
+scheld	gescholden	Overgeneralisation
+geschelde	gescholdene	Overgeneralisation+
+eschelde	gescholdene	Overgeneralisation+Prefix ge without onset
+schelde	gescholdene	Overgeneralisation+Lacking ge prefix
+geschelden	gescholden	Wrong -en suffix
+eschelden	gescholden	Wrong -en suffix
+schelden	gescholden	Wrong -en suffix
+geschold	gescholden	Overgeneralisation
+escholden	gescholden	Prefix ge without onset
+scholden	gescholden	Lacking ge prefix
+schendde	schond	Overgeneralisation
+schendden	schonden	Overgeneralisation
+geschend	geschonden	Overgeneralisation
+eschend	geschonden	Overgeneralisation
+schend	geschonden	Overgeneralisation
+geschende	geschondene	Overgeneralisation+
+eschende	geschondene	Overgeneralisation+Prefix ge without onset
+schende	geschondene	Overgeneralisation+Lacking ge prefix
+geschenden	geschonden	Wrong -en suffix
+eschenden	geschonden	Wrong -en suffix
+schenden	geschonden	Wrong -en suffix
+geschond	geschonden	Overgeneralisation
+eschonden	geschonden	Prefix ge without onset
+schonden	geschonden	Lacking ge prefix
+schenkte	geschonkene	Overgeneralisation+Lacking ge prefix
+schenkten	schonken	Overgeneralisation
+geschenkt	geschonken	Overgeneralisation
+eschenkt	geschonken	Overgeneralisation
+schenkt	geschonken	Overgeneralisation
+geschenkte	geschonkene	Overgeneralisation+
+eschenkte	geschonkene	Overgeneralisation+Prefix ge without onset
+geschenken	geschonken	Wrong -en suffix
+eschenken	geschonken	Wrong -en suffix
+schenken	geschonken	Wrong -en suffix
+geschonkt	geschonken	Overgeneralisation
+eschonken	geschonken	Prefix ge without onset
+schonken	geschonken	Lacking ge prefix
+schepte	geschapene	Overgeneralisation+Lacking ge prefix
+schepten	schiepen	Overgeneralisation
+geschept	geschapen	Overgeneralisation
+eschept	geschapen	Overgeneralisation
+schept	geschapen	Overgeneralisation
+geschepte	geschapene	Overgeneralisation+
+eschepte	geschapene	Overgeneralisation+Prefix ge without onset
+gescheppen	geschapen	Wrong -en suffix
+escheppen	geschapen	Wrong -en suffix
+scheppen	geschapen	Wrong -en suffix
+geschaapt	geschapen	Overgeneralisation
+eschapen	geschapen	Prefix ge without onset
+schapen	geschapen	Lacking ge prefix
+gescheerd	geschoren	Overgeneralisation+
+escheerd	geschoren	Overgeneralisation+Prefix ge without onset
+scheerd	geschoren	Overgeneralisation+Lacking ge prefix
+gescheerde	geschorene	Overgeneralisation+
+escheerde	geschorene	Overgeneralisation+Prefix ge without onset
+scheerde	geschorene	Overgeneralisation+Lacking ge prefix
+gescheert	geschoren	Overgeneralisation
+escheert	geschoren	Overgeneralisation
+scheert	geschoren	Overgeneralisation
+gescheren	geschoren	Wrong -en suffix
+escheren	geschoren	Wrong -en suffix
+scheren	geschoren	Wrong -en suffix
+geschoort	geschoren	Overgeneralisation
+eschoren	geschoren	Prefix ge without onset
+schoren	geschoren	Lacking ge prefix
+schiette	schoot	Overgeneralisation
+schietten	schoten	Overgeneralisation
+geschiet	geschoten	Overgeneralisation
+eschiet	geschoten	Overgeneralisation
+schiet	geschoten	Overgeneralisation
+geschiete	geschotene	Overgeneralisation+
+eschiete	geschotene	Overgeneralisation+Prefix ge without onset
+schiete	geschotene	Overgeneralisation+Lacking ge prefix
+geschieten	geschoten	Wrong -en suffix
+eschieten	geschoten	Wrong -en suffix
+schieten	geschoten	Wrong -en suffix
+geschoot	geschoten	Overgeneralisation
+eschoten	geschoten	Prefix ge without onset
+schoten	geschoten	Lacking ge prefix
+schijnde	geschenene	Overgeneralisation+Lacking ge prefix
+schijnden	schenen	Overgeneralisation
+geschijnd	geschenen	Overgeneralisation+
+eschijnd	geschenen	Overgeneralisation+Prefix ge without onset
+schijnd	geschenen	Overgeneralisation+Lacking ge prefix
+geschijnde	geschenene	Overgeneralisation+
+eschijnde	geschenene	Overgeneralisation+Prefix ge without onset
+geschijnt	geschenen	Overgeneralisation
+eschijnt	geschenen	Overgeneralisation
+schijnt	geschenen	Overgeneralisation
+geschijnen	geschenen	Wrong -en suffix
+eschijnen	geschenen	Wrong -en suffix
+schijnen	geschenen	Wrong -en suffix
+gescheend	geschenen	Overgeneralisation
+gescheent	geschenen	Overgeneralisation
+eschenen	geschenen	Prefix ge without onset
+schenen	geschenen	Lacking ge prefix
+schijtte	scheet	Overgeneralisation
+schijtten	scheten	Overgeneralisation
+geschijt	gescheten	Overgeneralisation
+eschijt	gescheten	Overgeneralisation
+schijt	gescheten	Overgeneralisation
+geschijte	geschetene	Overgeneralisation+
+eschijte	geschetene	Overgeneralisation+Prefix ge without onset
+schijte	geschetene	Overgeneralisation+Lacking ge prefix
+geschijten	gescheten	Wrong -en suffix
+eschijten	gescheten	Wrong -en suffix
+schijten	gescheten	Wrong -en suffix
+gescheet	gescheten	Overgeneralisation
+escheten	gescheten	Prefix ge without onset
+scheten	gescheten	Lacking ge prefix
+schrijfde	geschrevene	Overgeneralisation+Lacking ge prefix
+schrijfden	schreven	Overgeneralisation
+geschrijfd	geschreven	Overgeneralisation+
+eschrijfd	geschreven	Overgeneralisation+Prefix ge without onset
+schrijfd	geschreven	Overgeneralisation+Lacking ge prefix
+geschrijfde	geschrevene	Overgeneralisation+
+eschrijfde	geschrevene	Overgeneralisation+Prefix ge without onset
+geschrijft	geschreven	Overgeneralisation
+eschrijft	geschreven	Overgeneralisation
+schrijft	geschreven	Overgeneralisation
+geschrijfen	geschreven	Wrong -en suffix
+eschrijfen	geschreven	Wrong -en suffix
+schrijfen	geschreven	Wrong -en suffix
+geschreefd	geschreven	Overgeneralisation
+geschreeft	geschreven	Overgeneralisation
+eschreven	geschreven	Prefix ge without onset
+schreven	geschreven	Lacking ge prefix
+schrikte	geschrokkene	Overgeneralisation+Lacking ge prefix
+schrikten	schrokken	Overgeneralisation
+geschrikt	geschrokken	Overgeneralisation
+eschrikt	geschrokken	Overgeneralisation
+schrikt	geschrokken	Overgeneralisation
+geschrikte	geschrokkene	Overgeneralisation+
+eschrikte	geschrokkene	Overgeneralisation+Prefix ge without onset
+geschrikken	geschrokken	Wrong -en suffix
+eschrikken	geschrokken	Wrong -en suffix
+schrikken	geschrokken	Wrong -en suffix
+geschrokt	geschrokken	Overgeneralisation
+eschrokken	geschrokken	Prefix ge without onset
+schrokken	geschrokken	Lacking ge prefix
+eschuild	geschuild	Prefix ge without onset
+schuild	geschuild	Lacking ge prefix
+eschuilde	geschuilde	Overgeneralisation+Prefix ge without onset
+schuilde	geschuilde	Overgeneralisation+Lacking ge prefix
+geschuilt	geschuild	Overgeneralisation
+eschuilt	geschuild	Overgeneralisation
+schuilt	geschuild	Overgeneralisation
+geschuilen	geschuild	Wrong -en suffix
+eschuilen	geschuild	Wrong -en suffix
+schuilen	geschuild	Wrong -en suffix
+schuifde	geschovene	Overgeneralisation+Lacking ge prefix
+schuifden	schoven	Overgeneralisation
+geschuifd	geschoven	Overgeneralisation+
+eschuifd	geschoven	Overgeneralisation+Prefix ge without onset
+schuifd	geschoven	Overgeneralisation+Lacking ge prefix
+geschuifde	geschovene	Overgeneralisation+
+eschuifde	geschovene	Overgeneralisation+Prefix ge without onset
+geschuift	geschoven	Overgeneralisation
+eschuift	geschoven	Overgeneralisation
+schuift	geschoven	Overgeneralisation
+geschuifen	geschoven	Wrong -en suffix
+eschuifen	geschoven	Wrong -en suffix
+schuifen	geschoven	Wrong -en suffix
+geschooft	geschoven	Overgeneralisation
+eschoven	geschoven	Prefix ge without onset
+schoven	geschoven	Lacking ge prefix
+slade	geslagene	Overgeneralisation+Lacking ge prefix
+sladen	sloegen	Overgeneralisation
+geslaad	geslagen	Overgeneralisation+
+eslaad	geslagen	Overgeneralisation+Prefix ge without onset
+slaad	geslagen	Overgeneralisation+Lacking ge prefix
+geslade	geslagene	Overgeneralisation+
+eslade	geslagene	Overgeneralisation+Prefix ge without onset
+geslaat	geslagen	Overgeneralisation
+eslaat	geslagen	Overgeneralisation
+slaat	geslagen	Overgeneralisation
+geslaan	geslagen	Wrong -en suffix
+eslaan	geslagen	Wrong -en suffix
+slaan	geslagen	Wrong -en suffix
+geslaagd	geslagen	Overgeneralisation
+geslaagt	geslagen	Overgeneralisation
+eslagen	geslagen	Prefix ge without onset
+slagen	geslagen	Lacking ge prefix
+slaapte	geslapene	Overgeneralisation+Lacking ge prefix
+slaapten	sliepen	Overgeneralisation
+geslaapt	geslapen	Overgeneralisation
+eslaapt	geslapen	Overgeneralisation
+slaapt	geslapen	Overgeneralisation
+geslaapte	geslapene	Overgeneralisation+
+eslaapte	geslapene	Overgeneralisation+Prefix ge without onset
+eslapen	geslapen	Prefix ge without onset
+slapen	geslapen	Lacking ge prefix
+slijpte	geslepene	Overgeneralisation+Lacking ge prefix
+slijpten	slepen	Overgeneralisation
+geslijpt	geslepen	Overgeneralisation
+eslijpt	geslepen	Overgeneralisation
+slijpt	geslepen	Overgeneralisation
+geslijpte	geslepene	Overgeneralisation+
+eslijpte	geslepene	Overgeneralisation+Prefix ge without onset
+geslijpen	geslepen	Wrong -en suffix
+eslijpen	geslepen	Wrong -en suffix
+slijpen	geslepen	Wrong -en suffix
+gesleept	geslepen	Overgeneralisation
+eslepen	geslepen	Prefix ge without onset
+slepen	geslepen	Lacking ge prefix
+slijtte	sleet	Overgeneralisation
+slijtten	sleten	Overgeneralisation
+geslijt	gesleten	Overgeneralisation
+eslijt	gesleten	Overgeneralisation
+slijt	gesleten	Overgeneralisation
+geslijte	gesletene	Overgeneralisation+
+eslijte	gesletene	Overgeneralisation+Prefix ge without onset
+slijte	gesletene	Overgeneralisation+Lacking ge prefix
+geslijten	gesleten	Wrong -en suffix
+eslijten	gesleten	Wrong -en suffix
+slijten	gesleten	Wrong -en suffix
+gesleet	gesleten	Overgeneralisation
+esleten	gesleten	Prefix ge without onset
+sleten	gesleten	Lacking ge prefix
+slinkte	Geslonkene	Overgeneralisation+Lacking ge prefix
+slinkten	slonken	Overgeneralisation
+geslinkt	Geslonken	Overgeneralisation
+eslinkt	Geslonken	Overgeneralisation
+slinkt	Geslonken	Overgeneralisation
+geslinkte	Geslonkene	Overgeneralisation+
+eslinkte	Geslonkene	Overgeneralisation+Prefix ge without onset
+geslinken	Geslonken	Wrong -en suffix
+eslinken	Geslonken	Wrong -en suffix
+slinken	Geslonken	Wrong -en suffix
+geGeslonkt	Geslonken	Overgeneralisation
+sluipte	geslopene	Overgeneralisation+Lacking ge prefix
+sluipten	slopen	Overgeneralisation
+gesluipt	geslopen	Overgeneralisation
+esluipt	geslopen	Overgeneralisation
+sluipt	geslopen	Overgeneralisation
+gesluipte	geslopene	Overgeneralisation+
+esluipte	geslopene	Overgeneralisation+Prefix ge without onset
+gesluipen	geslopen	Wrong -en suffix
+esluipen	geslopen	Wrong -en suffix
+sluipen	geslopen	Wrong -en suffix
+gesloopt	geslopen	Overgeneralisation
+eslopen	geslopen	Prefix ge without onset
+slopen	geslopen	Lacking ge prefix
+sluitte	sloot	Overgeneralisation
+sluitten	sloten	Overgeneralisation
+gesluit	gesloten	Overgeneralisation
+esluit	gesloten	Overgeneralisation
+sluit	gesloten	Overgeneralisation
+gesluite	geslotene	Overgeneralisation+
+esluite	geslotene	Overgeneralisation+Prefix ge without onset
+sluite	geslotene	Overgeneralisation+Lacking ge prefix
+gesluiten	gesloten	Wrong -en suffix
+esluiten	gesloten	Wrong -en suffix
+sluiten	gesloten	Wrong -en suffix
+gesloot	gesloten	Overgeneralisation
+esloten	gesloten	Prefix ge without onset
+sloten	gesloten	Lacking ge prefix
+smeltte	smolt	Overgeneralisation
+smeltten	smolten	Overgeneralisation
+gesmelt	gesmolten	Overgeneralisation
+esmelt	gesmolten	Overgeneralisation
+smelt	gesmolten	Overgeneralisation
+gesmelte	gesmoltene	Overgeneralisation+
+esmelte	gesmoltene	Overgeneralisation+Prefix ge without onset
+smelte	gesmoltene	Overgeneralisation+Lacking ge prefix
+gesmelten	gesmolten	Wrong -en suffix
+esmelten	gesmolten	Wrong -en suffix
+smelten	gesmolten	Wrong -en suffix
+gesmolt	gesmolten	Overgeneralisation
+esmolten	gesmolten	Prefix ge without onset
+smolten	gesmolten	Lacking ge prefix
+smijtte	smeet	Overgeneralisation
+smijtten	smeten	Overgeneralisation
+gesmijt	gesmeten	Overgeneralisation
+esmijt	gesmeten	Overgeneralisation
+smijt	gesmeten	Overgeneralisation
+gesmijte	gesmetene	Overgeneralisation+
+esmijte	gesmetene	Overgeneralisation+Prefix ge without onset
+smijte	gesmetene	Overgeneralisation+Lacking ge prefix
+gesmijten	gesmeten	Wrong -en suffix
+esmijten	gesmeten	Wrong -en suffix
+smijten	gesmeten	Wrong -en suffix
+gesmeet	gesmeten	Overgeneralisation
+esmeten	gesmeten	Prefix ge without onset
+smeten	gesmeten	Lacking ge prefix
+snijdde	sneed	Overgeneralisation
+snijdden	sneden	Overgeneralisation
+gesnijd	gesneden	Overgeneralisation
+esnijd	gesneden	Overgeneralisation
+snijd	gesneden	Overgeneralisation
+gesnijde	gesnedene	Overgeneralisation+
+esnijde	gesnedene	Overgeneralisation+Prefix ge without onset
+snijde	gesnedene	Overgeneralisation+Lacking ge prefix
+gesnijden	gesneden	Wrong -en suffix
+esnijden	gesneden	Wrong -en suffix
+snijden	gesneden	Wrong -en suffix
+gesneed	gesneden	Overgeneralisation
+esneden	gesneden	Prefix ge without onset
+sneden	gesneden	Lacking ge prefix
+snuitte	snoot	Overgeneralisation
+snuitten	snoten	Overgeneralisation
+gesnuit	gesnoten	Overgeneralisation
+esnuit	gesnoten	Overgeneralisation
+snuit	gesnoten	Overgeneralisation
+gesnuite	gesnotene	Overgeneralisation+
+esnuite	gesnotene	Overgeneralisation+Prefix ge without onset
+snuite	gesnotene	Overgeneralisation+Lacking ge prefix
+gesnuiten	gesnoten	Wrong -en suffix
+esnuiten	gesnoten	Wrong -en suffix
+snuiten	gesnoten	Wrong -en suffix
+gesnoot	gesnoten	Overgeneralisation
+esnoten	gesnoten	Prefix ge without onset
+snoten	gesnoten	Lacking ge prefix
+snuifde	gesnovene	Overgeneralisation+Lacking ge prefix
+snuifden	snoven	Overgeneralisation
+gesnuifd	gesnoven	Overgeneralisation+
+esnuifd	gesnoven	Overgeneralisation+Prefix ge without onset
+snuifd	gesnoven	Overgeneralisation+Lacking ge prefix
+gesnuifde	gesnovene	Overgeneralisation+
+esnuifde	gesnovene	Overgeneralisation+Prefix ge without onset
+gesnuift	gesnoven	Overgeneralisation
+esnuift	gesnoven	Overgeneralisation
+snuift	gesnoven	Overgeneralisation
+gesnuifen	gesnoven	Wrong -en suffix
+esnuifen	gesnoven	Wrong -en suffix
+snuifen	gesnoven	Wrong -en suffix
+gesnooft	gesnoven	Overgeneralisation
+esnoven	gesnoven	Prefix ge without onset
+snoven	gesnoven	Lacking ge prefix
+gespand	gespannen	Overgeneralisation
+espand	gespannen	Overgeneralisation+Prefix ge without onset
+spand	gespannen	Overgeneralisation+Lacking ge prefix
+gespande	gespannene	Overgeneralisation+
+espande	gespannene	Overgeneralisation+Prefix ge without onset
+spande	gespannene	Overgeneralisation+Lacking ge prefix
+gespant	gespannen	Overgeneralisation
+espant	gespannen	Overgeneralisation
+spant	gespannen	Overgeneralisation
+espannen	gespannen	Prefix ge without onset
+spannen	gespannen	Lacking ge prefix
+spijtte	speet	Overgeneralisation
+spijtten	speten	Overgeneralisation
+gespijt	gespeten	Overgeneralisation
+espijt	gespeten	Overgeneralisation
+spijt	gespeten	Overgeneralisation
+gespijte	gespetene	Overgeneralisation+
+espijte	gespetene	Overgeneralisation+Prefix ge without onset
+spijte	gespetene	Overgeneralisation+Lacking ge prefix
+gespijten	gespeten	Wrong -en suffix
+espijten	gespeten	Wrong -en suffix
+spijten	gespeten	Wrong -en suffix
+gespeet	gespeten	Overgeneralisation
+espeten	gespeten	Prefix ge without onset
+speten	gespeten	Lacking ge prefix
+spinde	gesponnene	Overgeneralisation+Lacking ge prefix
+spinden	sponnen	Overgeneralisation
+gespind	gesponnen	Overgeneralisation+
+espind	gesponnen	Overgeneralisation+Prefix ge without onset
+spind	gesponnen	Overgeneralisation+Lacking ge prefix
+gespinde	gesponnene	Overgeneralisation+
+espinde	gesponnene	Overgeneralisation+Prefix ge without onset
+gespint	gesponnen	Overgeneralisation
+espint	gesponnen	Overgeneralisation
+spint	gesponnen	Overgeneralisation
+gespinnen	gesponnen	Wrong -en suffix
+espinnen	gesponnen	Wrong -en suffix
+spinnen	gesponnen	Wrong -en suffix
+gespont	gesponnen	Overgeneralisation
+esponnen	gesponnen	Prefix ge without onset
+sponnen	gesponnen	Lacking ge prefix
+splijtte	spleet	Overgeneralisation
+splijtten	spleten	Overgeneralisation
+gesplijt	gespleten	Overgeneralisation
+esplijt	gespleten	Overgeneralisation
+splijt	gespleten	Overgeneralisation
+gesplijte	gespletene	Overgeneralisation+
+esplijte	gespletene	Overgeneralisation+Prefix ge without onset
+splijte	gespletene	Overgeneralisation+Lacking ge prefix
+gesplijten	gespleten	Wrong -en suffix
+esplijten	gespleten	Wrong -en suffix
+splijten	gespleten	Wrong -en suffix
+gespleet	gespleten	Overgeneralisation
+espleten	gespleten	Prefix ge without onset
+spleten	gespleten	Lacking ge prefix
+spreekte	gesprokene	Overgeneralisation+Lacking ge prefix
+spreekten	spraken	Overgeneralisation
+gespreekt	gesproken	Overgeneralisation
+espreekt	gesproken	Overgeneralisation
+spreekt	gesproken	Overgeneralisation
+gespreekte	gesprokene	Overgeneralisation+
+espreekte	gesprokene	Overgeneralisation+Prefix ge without onset
+gespreken	gesproken	Wrong -en suffix
+espreken	gesproken	Wrong -en suffix
+spreken	gesproken	Wrong -en suffix
+gesprookt	gesproken	Overgeneralisation
+esproken	gesproken	Prefix ge without onset
+sproken	gesproken	Lacking ge prefix
+springde	gesprongene	Overgeneralisation+Lacking ge prefix
+springden	sprongen	Overgeneralisation
+gespringd	gesprongen	Overgeneralisation+
+espringd	gesprongen	Overgeneralisation+Prefix ge without onset
+springd	gesprongen	Overgeneralisation+Lacking ge prefix
+gespringde	gesprongene	Overgeneralisation+
+espringde	gesprongene	Overgeneralisation+Prefix ge without onset
+gespringt	gesprongen	Overgeneralisation
+espringt	gesprongen	Overgeneralisation
+springt	gesprongen	Overgeneralisation
+gespringen	gesprongen	Wrong -en suffix
+espringen	gesprongen	Wrong -en suffix
+springen	gesprongen	Wrong -en suffix
+gesprongd	gesprongen	Overgeneralisation
+gesprongt	gesprongen	Overgeneralisation
+esprongen	gesprongen	Prefix ge without onset
+sprongen	gesprongen	Lacking ge prefix
+spruitte	sproot	Overgeneralisation
+spruitten	sproten	Overgeneralisation
+gespruit	gesproten	Overgeneralisation
+espruit	gesproten	Overgeneralisation
+spruit	gesproten	Overgeneralisation
+gespruite	gesprotene	Overgeneralisation+
+espruite	gesprotene	Overgeneralisation+Prefix ge without onset
+spruite	gesprotene	Overgeneralisation+Lacking ge prefix
+gespruiten	gesproten	Wrong -en suffix
+espruiten	gesproten	Wrong -en suffix
+spruiten	gesproten	Wrong -en suffix
+gesproot	gesproten	Overgeneralisation
+esproten	gesproten	Prefix ge without onset
+sproten	gesproten	Lacking ge prefix
+spuitte	spoot	Overgeneralisation
+spuitten	spoten	Overgeneralisation
+gespuit	gespoten	Overgeneralisation
+espuit	gespoten	Overgeneralisation
+spuit	gespoten	Overgeneralisation
+gespuite	gespotene	Overgeneralisation+
+espuite	gespotene	Overgeneralisation+Prefix ge without onset
+spuite	gespotene	Overgeneralisation+Lacking ge prefix
+gespuiten	gespoten	Wrong -en suffix
+espuiten	gespoten	Wrong -en suffix
+spuiten	gespoten	Wrong -en suffix
+gespoot	gespoten	Overgeneralisation
+espoten	gespoten	Prefix ge without onset
+spoten	gespoten	Lacking ge prefix
+state	stond	Overgeneralisation
+staten	stonden	Overgeneralisation
+gestat	gestaan	Overgeneralisation+
+estat	gestaan	Overgeneralisation+Prefix ge without onset
+stat	gestaan	Overgeneralisation+Lacking ge prefix
+gestatte	gestaane	Overgeneralisation+
+estatte	gestaane	Overgeneralisation+Prefix ge without onset
+statte	gestaane	Overgeneralisation+Lacking ge prefix
+gestaat	gestaan	Overgeneralisation
+estaat	gestaan	Overgeneralisation
+staat	gestaan	Overgeneralisation
+estaan	gestaan	Prefix ge without onset
+staan	gestaan	Lacking ge prefix
+steekte	gestokene	Overgeneralisation+Lacking ge prefix
+steekten	staken	Overgeneralisation
+gesteekt	gestoken	Overgeneralisation
+esteekt	gestoken	Overgeneralisation
+steekt	gestoken	Overgeneralisation
+gesteekte	gestokene	Overgeneralisation+
+esteekte	gestokene	Overgeneralisation+Prefix ge without onset
+gesteken	gestoken	Wrong -en suffix
+esteken	gestoken	Wrong -en suffix
+steken	gestoken	Wrong -en suffix
+gestookt	gestoken	Overgeneralisation
+estoken	gestoken	Prefix ge without onset
+stoken	gestoken	Lacking ge prefix
+steelde	gestolene	Overgeneralisation+Lacking ge prefix
+steelden	stalen	Overgeneralisation
+gesteeld	gestolen	Overgeneralisation+
+esteeld	gestolen	Overgeneralisation+Prefix ge without onset
+steeld	gestolen	Overgeneralisation+Lacking ge prefix
+gesteelde	gestolene	Overgeneralisation+
+esteelde	gestolene	Overgeneralisation+Prefix ge without onset
+gesteelt	gestolen	Overgeneralisation
+esteelt	gestolen	Overgeneralisation
+steelt	gestolen	Overgeneralisation
+gestelen	gestolen	Wrong -en suffix
+estelen	gestolen	Wrong -en suffix
+stelen	gestolen	Wrong -en suffix
+gestoolt	gestolen	Overgeneralisation
+estolen	gestolen	Prefix ge without onset
+stolen	gestolen	Lacking ge prefix
+sterfde	gestorvene	Overgeneralisation+Lacking ge prefix
+sterfden	stierven	Overgeneralisation
+gesterfd	gestorven	Overgeneralisation+
+esterfd	gestorven	Overgeneralisation+Prefix ge without onset
+sterfd	gestorven	Overgeneralisation+Lacking ge prefix
+gesterfde	gestorvene	Overgeneralisation+
+esterfde	gestorvene	Overgeneralisation+Prefix ge without onset
+gesterft	gestorven	Overgeneralisation
+esterft	gestorven	Overgeneralisation
+sterft	gestorven	Overgeneralisation
+gesterfen	gestorven	Wrong -en suffix
+esterfen	gestorven	Wrong -en suffix
+sterfen	gestorven	Wrong -en suffix
+gestorfd	gestorven	Overgeneralisation
+gestorft	gestorven	Overgeneralisation
+estorven	gestorven	Prefix ge without onset
+storven	gestorven	Lacking ge prefix
+stijgde	gestegene	Overgeneralisation+Lacking ge prefix
+stijgden	stegen	Overgeneralisation
+gestijgd	gestegen	Overgeneralisation+
+estijgd	gestegen	Overgeneralisation+Prefix ge without onset
+stijgd	gestegen	Overgeneralisation+Lacking ge prefix
+gestijgde	gestegene	Overgeneralisation+
+estijgde	gestegene	Overgeneralisation+Prefix ge without onset
+gestijgt	gestegen	Overgeneralisation
+estijgt	gestegen	Overgeneralisation
+stijgt	gestegen	Overgeneralisation
+gestijgen	gestegen	Wrong -en suffix
+estijgen	gestegen	Wrong -en suffix
+stijgen	gestegen	Wrong -en suffix
+gesteegd	gestegen	Overgeneralisation
+gesteegt	gestegen	Overgeneralisation
+estegen	gestegen	Prefix ge without onset
+stegen	gestegen	Lacking ge prefix
+stijfde	gestevene	Overgeneralisation+Lacking ge prefix
+stijfden	steven	Overgeneralisation
+gestijfd	gesteven	Overgeneralisation+
+estijfd	gesteven	Overgeneralisation+Prefix ge without onset
+stijfd	gesteven	Overgeneralisation+Lacking ge prefix
+gestijfde	gestevene	Overgeneralisation+
+estijfde	gestevene	Overgeneralisation+Prefix ge without onset
+gestijft	gesteven	Overgeneralisation
+estijft	gesteven	Overgeneralisation
+stijft	gesteven	Overgeneralisation
+gestijfen	gesteven	Wrong -en suffix
+estijfen	gesteven	Wrong -en suffix
+stijfen	gesteven	Wrong -en suffix
+gesteefd	gesteven	Overgeneralisation
+gesteeft	gesteven	Overgeneralisation
+esteven	gesteven	Prefix ge without onset
+steven	gesteven	Lacking ge prefix
+stinkte	gestonkene	Overgeneralisation+Lacking ge prefix
+stinkten	stonken	Overgeneralisation
+gestinkt	gestonken	Overgeneralisation
+estinkt	gestonken	Overgeneralisation
+stinkt	gestonken	Overgeneralisation
+gestinkte	gestonkene	Overgeneralisation+
+estinkte	gestonkene	Overgeneralisation+Prefix ge without onset
+gestinken	gestonken	Wrong -en suffix
+estinken	gestonken	Wrong -en suffix
+stinken	gestonken	Wrong -en suffix
+gestonkt	gestonken	Overgeneralisation
+estonken	gestonken	Prefix ge without onset
+stonken	gestonken	Lacking ge prefix
+gestoot	gestoten	Overgeneralisation
+estoot	gestoten	Overgeneralisation
+stoot	gestoten	Overgeneralisation
+gestote	gestotene	Overgeneralisation+
+estote	gestotene	Overgeneralisation+Prefix ge without onset
+stote	gestotene	Overgeneralisation+Lacking ge prefix
+estoten	gestoten	Prefix ge without onset
+stoten	gestoten	Lacking ge prefix
+strijdde	streed	Overgeneralisation
+strijdden	streden	Overgeneralisation
+gestrijd	gestreden	Overgeneralisation
+estrijd	gestreden	Overgeneralisation
+strijd	gestreden	Overgeneralisation
+gestrijde	gestredene	Overgeneralisation+
+estrijde	gestredene	Overgeneralisation+Prefix ge without onset
+strijde	gestredene	Overgeneralisation+Lacking ge prefix
+gestrijden	gestreden	Wrong -en suffix
+estrijden	gestreden	Wrong -en suffix
+strijden	gestreden	Wrong -en suffix
+gestreed	gestreden	Overgeneralisation
+estreden	gestreden	Prefix ge without onset
+streden	gestreden	Lacking ge prefix
+strijkte	gestrekene	Overgeneralisation+Lacking ge prefix
+strijkten	streken	Overgeneralisation
+gestrijkt	gestreken	Overgeneralisation
+estrijkt	gestreken	Overgeneralisation
+strijkt	gestreken	Overgeneralisation
+gestrijkte	gestrekene	Overgeneralisation+
+estrijkte	gestrekene	Overgeneralisation+Prefix ge without onset
+gestrijken	gestreken	Wrong -en suffix
+estrijken	gestreken	Wrong -en suffix
+strijken	gestreken	Wrong -en suffix
+gestreekt	gestreken	Overgeneralisation
+estreken	gestreken	Prefix ge without onset
+streken	gestreken	Lacking ge prefix
+stuifde	gestoventovene	Overgeneralisation+Lacking ge prefix
+stuifden	stoven	Overgeneralisation
+gestuifd	gestoventoven	Overgeneralisation+
+estuifd	gestoventoven	Overgeneralisation+Prefix ge without onset
+stuifd	gestoventoven	Overgeneralisation+Lacking ge prefix
+gestuifde	gestoventovene	Overgeneralisation+
+estuifde	gestoventovene	Overgeneralisation+Prefix ge without onset
+gestuift	gestoventoven	Overgeneralisation
+estuift	gestoventoven	Overgeneralisation
+stuift	gestoventoven	Overgeneralisation
+gestuifen	gestoventoven	Wrong -en suffix
+estuifen	gestoventoven	Wrong -en suffix
+stuifen	gestoventoven	Wrong -en suffix
+gestoventooft	gestoventoven	Overgeneralisation
+estoventoven	gestoventoven	Prefix ge without onset
+stoventoven	gestoventoven	Lacking ge prefix
+treedde	trad	Overgeneralisation
+treedden	traden	Overgeneralisation
+getreed	getreden	Overgeneralisation
+etreed	getreden	Overgeneralisation
+treed	getreden	Overgeneralisation
+getrede	getredene	Overgeneralisation+
+etrede	getredene	Overgeneralisation+Prefix ge without onset
+trede	getredene	Overgeneralisation+Lacking ge prefix
+etreden	getreden	Prefix ge without onset
+treden	getreden	Lacking ge prefix
+trefte	getroffene	Overgeneralisation+Lacking ge prefix
+treften	troffen	Overgeneralisation
+getreft	getroffen	Overgeneralisation
+etreft	getroffen	Overgeneralisation
+treft	getroffen	Overgeneralisation
+getrefte	getroffene	Overgeneralisation+
+etrefte	getroffene	Overgeneralisation+Prefix ge without onset
+getreffen	getroffen	Wrong -en suffix
+etreffen	getroffen	Wrong -en suffix
+treffen	getroffen	Wrong -en suffix
+getroft	getroffen	Overgeneralisation
+etroffen	getroffen	Prefix ge without onset
+troffen	getroffen	Lacking ge prefix
+trekte	getrokkene	Overgeneralisation+Lacking ge prefix
+trekten	trokken	Overgeneralisation
+getrekt	getrokken	Overgeneralisation
+etrekt	getrokken	Overgeneralisation
+trekt	getrokken	Overgeneralisation
+getrekte	getrokkene	Overgeneralisation+
+etrekte	getrokkene	Overgeneralisation+Prefix ge without onset
+getrekken	getrokken	Wrong -en suffix
+etrekken	getrokken	Wrong -en suffix
+trekken	getrokken	Wrong -en suffix
+getrokt	getrokken	Overgeneralisation
+etrokken	getrokken	Prefix ge without onset
+trokken	getrokken	Lacking ge prefix
+valde	gevallene	Overgeneralisation+Lacking ge prefix
+valden	vielen	Overgeneralisation
+gevald	gevallen	Overgeneralisation
+evald	gevallen	Overgeneralisation+Prefix ge without onset
+vald	gevallen	Overgeneralisation+Lacking ge prefix
+gevalde	gevallene	Overgeneralisation+
+evalde	gevallene	Overgeneralisation+Prefix ge without onset
+gevalt	gevallen	Overgeneralisation
+evalt	gevallen	Overgeneralisation
+valt	gevallen	Overgeneralisation
+evallen	gevallen	Prefix ge without onset
+vallen	gevallen	Lacking ge prefix
+vangde	gevangene	Overgeneralisation+Lacking ge prefix
+vangden	vingen	Overgeneralisation
+gevangd	gevangen	Overgeneralisation
+evangd	gevangen	Overgeneralisation+Prefix ge without onset
+vangd	gevangen	Overgeneralisation+Lacking ge prefix
+gevangde	gevangene	Overgeneralisation+
+evangde	gevangene	Overgeneralisation+Prefix ge without onset
+gevangt	gevangen	Overgeneralisation
+evangt	gevangen	Overgeneralisation
+vangt	gevangen	Overgeneralisation
+evangen	gevangen	Prefix ge without onset
+vangen	gevangen	Lacking ge prefix
+vaarde	gevarene	Overgeneralisation+Lacking ge prefix
+vaarden	voeren	Overgeneralisation
+gevaard	gevaren	Overgeneralisation
+evaard	gevaren	Overgeneralisation+Prefix ge without onset
+vaard	gevaren	Overgeneralisation+Lacking ge prefix
+gevaarde	gevarene	Overgeneralisation+
+evaarde	gevarene	Overgeneralisation+Prefix ge without onset
+gevaart	gevaren	Overgeneralisation
+evaart	gevaren	Overgeneralisation
+vaart	gevaren	Overgeneralisation
+evaren	gevaren	Prefix ge without onset
+varen	gevaren	Lacking ge prefix
+vechtte	vocht	Overgeneralisation
+vechtten	vochten	Overgeneralisation
+gevecht	gevochten	Overgeneralisation
+evecht	gevochten	Overgeneralisation
+vecht	gevochten	Overgeneralisation
+gevechte	gevochtene	Overgeneralisation+
+evechte	gevochtene	Overgeneralisation+Prefix ge without onset
+vechte	gevochtene	Overgeneralisation+Lacking ge prefix
+gevechten	gevochten	Wrong -en suffix
+evechten	gevochten	Wrong -en suffix
+vechten	gevochten	Wrong -en suffix
+gevocht	gevochten	Overgeneralisation
+evochten	gevochten	Prefix ge without onset
+vochten	gevochten	Lacking ge prefix
+verdriette	verdroot	Overgeneralisation
+verdrietten	verdroten	Overgeneralisation
+verdriet	verdroten	Overgeneralisation
+verdriete	verdrotene	Overgeneralisation
+verdrieten	verdroten	Wrong -en suffix
+verdroot	verdroten	Overgeneralisation
+verdwijnde	verdwenene	Overgeneralisation
+verdwijnden	verdwenen	Overgeneralisation
+verdwijnd	verdwenen	Overgeneralisation
+verdwijnt	verdwenen	Overgeneralisation
+verdwijnen	verdwenen	Wrong -en suffix
+verdweend	verdwenen	Overgeneralisation
+verdweent	verdwenen	Overgeneralisation
+vergeette	vergat	Overgeneralisation
+vergeetten	vergaten	Overgeneralisation
+vergeet	vergeten	Overgeneralisation
+vergete	vergetene	Overgeneralisation
+verliesde	verlorene	Overgeneralisation
+verliesden	verloren	Overgeneralisation
+verliesd	verloren	Overgeneralisation
+verliest	verloren	Overgeneralisation
+verliesen	verloren	Wrong -en suffix
+verloort	verloren	Overgeneralisation
+vindde	vond	Overgeneralisation
+vindden	vonden	Overgeneralisation
+gevind	gevonden	Overgeneralisation
+evind	gevonden	Overgeneralisation
+vind	gevonden	Overgeneralisation
+gevinde	gevondene	Overgeneralisation+
+evinde	gevondene	Overgeneralisation+Prefix ge without onset
+vinde	gevondene	Overgeneralisation+Lacking ge prefix
+gevinden	gevonden	Wrong -en suffix
+evinden	gevonden	Wrong -en suffix
+vinden	gevonden	Wrong -en suffix
+gevond	gevonden	Overgeneralisation
+evonden	gevonden	Prefix ge without onset
+vonden	gevonden	Lacking ge prefix
+vlechtte	vlocht	Overgeneralisation
+vlechtten	vlochten	Overgeneralisation
+gevlecht	gevlochten	Overgeneralisation
+evlecht	gevlochten	Overgeneralisation
+vlecht	gevlochten	Overgeneralisation
+gevlechte	gevlochtene	Overgeneralisation+
+evlechte	gevlochtene	Overgeneralisation+Prefix ge without onset
+vlechte	gevlochtene	Overgeneralisation+Lacking ge prefix
+gevlechten	gevlochten	Wrong -en suffix
+evlechten	gevlochten	Wrong -en suffix
+vlechten	gevlochten	Wrong -en suffix
+gevlocht	gevlochten	Overgeneralisation
+evlochten	gevlochten	Prefix ge without onset
+vlochten	gevlochten	Lacking ge prefix
+vliegde	gevlogene	Overgeneralisation+Lacking ge prefix
+vliegden	vlogen	Overgeneralisation
+gevliegd	gevlogen	Overgeneralisation+
+evliegd	gevlogen	Overgeneralisation+Prefix ge without onset
+vliegd	gevlogen	Overgeneralisation+Lacking ge prefix
+gevliegde	gevlogene	Overgeneralisation+
+evliegde	gevlogene	Overgeneralisation+Prefix ge without onset
+gevliegt	gevlogen	Overgeneralisation
+evliegt	gevlogen	Overgeneralisation
+vliegt	gevlogen	Overgeneralisation
+gevliegen	gevlogen	Wrong -en suffix
+evliegen	gevlogen	Wrong -en suffix
+vliegen	gevlogen	Wrong -en suffix
+gevloogt	gevlogen	Overgeneralisation
+evlogen	gevlogen	Prefix ge without onset
+vlogen	gevlogen	Lacking ge prefix
+gevouwd	gevouwen	Overgeneralisation
+evouwd	gevouwen	Overgeneralisation+Prefix ge without onset
+vouwd	gevouwen	Overgeneralisation+Lacking ge prefix
+gevouwde	gevouwene	Overgeneralisation+
+evouwde	gevouwene	Overgeneralisation+Prefix ge without onset
+vouwde	gevouwene	Overgeneralisation+Lacking ge prefix
+gevouwt	gevouwen	Overgeneralisation
+evouwt	gevouwen	Overgeneralisation
+vouwt	gevouwen	Overgeneralisation
+evouwen	gevouwen	Prefix ge without onset
+vouwen	gevouwen	Lacking ge prefix
+vraagde	gevraagde	Overgeneralisation+Lacking ge prefix
+vraagden	vroegen	Overgeneralisation
+evraagd	gevraagd	Prefix ge without onset
+vraagd	gevraagd	Lacking ge prefix
+evraagde	gevraagde	Overgeneralisation+Prefix ge without onset
+gevraagt	gevraagd	Overgeneralisation
+evraagt	gevraagd	Overgeneralisation
+vraagt	gevraagd	Overgeneralisation
+gevragen	gevraagd	Wrong -en suffix
+evragen	gevraagd	Wrong -en suffix
+vragen	gevraagd	Wrong -en suffix
+vreette	vrat	Overgeneralisation
+vreetten	vraten	Overgeneralisation
+gevreet	gevreten	Overgeneralisation
+evreet	gevreten	Overgeneralisation
+vreet	gevreten	Overgeneralisation
+gevrete	gevretene	Overgeneralisation+
+evrete	gevretene	Overgeneralisation+Prefix ge without onset
+vrete	gevretene	Overgeneralisation+Lacking ge prefix
+evreten	gevreten	Prefix ge without onset
+vreten	gevreten	Lacking ge prefix
+vriesde	gevrorene	Overgeneralisation+Lacking ge prefix
+vriesden	vroren	Overgeneralisation
+gevriesd	gevroren	Overgeneralisation+
+evriesd	gevroren	Overgeneralisation+Prefix ge without onset
+vriesd	gevroren	Overgeneralisation+Lacking ge prefix
+gevriesde	gevrorene	Overgeneralisation+
+evriesde	gevrorene	Overgeneralisation+Prefix ge without onset
+gevriest	gevroren	Overgeneralisation
+evriest	gevroren	Overgeneralisation
+vriest	gevroren	Overgeneralisation
+gevriesen	gevroren	Wrong -en suffix
+evriesen	gevroren	Wrong -en suffix
+vriesen	gevroren	Wrong -en suffix
+gevroort	gevroren	Overgeneralisation
+evroren	gevroren	Prefix ge without onset
+vroren	gevroren	Lacking ge prefix
+vriijde	gevrijde	Overgeneralisation+Lacking ge prefix
+vriijden	vrijden	Overgeneralisation
+gevriijd	gevrijd	Overgeneralisation+
+evriijd	gevrijd	Overgeneralisation+Prefix ge without onset
+vriijd	gevrijd	Overgeneralisation+Lacking ge prefix
+gevriijde	gevrijde	Overgeneralisation+
+evriijde	gevrijde	Overgeneralisation+Prefix ge without onset
+gevriijt	gevrijd	Overgeneralisation
+evriijt	gevrijd	Overgeneralisation
+vriijt	gevrijd	Overgeneralisation
+gevrijen	gevrijd	Wrong -en suffix
+evrijen	gevrijd	Wrong -en suffix
+vrijen	gevrijd	Wrong -en suffix
+evrijd	gevrijd	Prefix ge without onset
+vrijd	gevrijd	Lacking ge prefix
+gewast	gewassen	Overgeneralisation
+ewast	gewassen	Overgeneralisation
+wast	gewassen	Overgeneralisation
+gewaste	gewassene	Overgeneralisation+
+ewaste	gewassene	Overgeneralisation+Prefix ge without onset
+waste	gewassene	Overgeneralisation+Lacking ge prefix
+ewassen	gewassen	Prefix ge without onset
+wassen	gewassen	Lacking ge prefix
+weegde	gewogene	Overgeneralisation+Lacking ge prefix
+weegden	wogen	Overgeneralisation
+geweegd	gewogen	Overgeneralisation+
+eweegd	gewogen	Overgeneralisation+Prefix ge without onset
+weegd	gewogen	Overgeneralisation+Lacking ge prefix
+geweegde	gewogene	Overgeneralisation+
+eweegde	gewogene	Overgeneralisation+Prefix ge without onset
+geweegt	gewogen	Overgeneralisation
+eweegt	gewogen	Overgeneralisation
+weegt	gewogen	Overgeneralisation
+gewegen	gewogen	Wrong -en suffix
+ewegen	gewogen	Wrong -en suffix
+wegen	gewogen	Wrong -en suffix
+gewoogt	gewogen	Overgeneralisation
+ewogen	gewogen	Prefix ge without onset
+wogen	gewogen	Lacking ge prefix
+werpte	geworpene	Overgeneralisation+Lacking ge prefix
+werpten	wierpen	Overgeneralisation
+gewerpt	geworpen	Overgeneralisation
+ewerpt	geworpen	Overgeneralisation
+werpt	geworpen	Overgeneralisation
+gewerpte	geworpene	Overgeneralisation+
+ewerpte	geworpene	Overgeneralisation+Prefix ge without onset
+gewerpen	geworpen	Wrong -en suffix
+ewerpen	geworpen	Wrong -en suffix
+werpen	geworpen	Wrong -en suffix
+geworpt	geworpen	Overgeneralisation
+eworpen	geworpen	Prefix ge without onset
+worpen	geworpen	Lacking ge prefix
+werfde	geworvene	Overgeneralisation+Lacking ge prefix
+werfden	wierven	Overgeneralisation
+gewerfd	geworven	Overgeneralisation+
+ewerfd	geworven	Overgeneralisation+Prefix ge without onset
+werfd	geworven	Overgeneralisation+Lacking ge prefix
+gewerfde	geworvene	Overgeneralisation+
+ewerfde	geworvene	Overgeneralisation+Prefix ge without onset
+gewerft	geworven	Overgeneralisation
+ewerft	geworven	Overgeneralisation
+werft	geworven	Overgeneralisation
+gewerfen	geworven	Wrong -en suffix
+ewerfen	geworven	Wrong -en suffix
+werfen	geworven	Wrong -en suffix
+geworfd	geworven	Overgeneralisation
+geworft	geworven	Overgeneralisation
+eworven	geworven	Prefix ge without onset
+worven	geworven	Lacking ge prefix
+weette	wist	Overgeneralisation
+weetten	wisten	Overgeneralisation
+geweet	geweten	Overgeneralisation
+eweet	geweten	Overgeneralisation
+weet	geweten	Overgeneralisation
+gewete	gewetene	Overgeneralisation+
+ewete	gewetene	Overgeneralisation+Prefix ge without onset
+wete	gewetene	Overgeneralisation+Lacking ge prefix
+eweten	geweten	Prefix ge without onset
+weten	geweten	Lacking ge prefix
+geweefd	geweven	Overgeneralisation
+eweefd	geweven	Overgeneralisation+Prefix ge without onset
+weefd	geweven	Overgeneralisation+Lacking ge prefix
+geweefde	gewevene	Overgeneralisation+
+eweefde	gewevene	Overgeneralisation+Prefix ge without onset
+weefde	gewevene	Overgeneralisation+Lacking ge prefix
+geweeft	geweven	Overgeneralisation
+eweeft	geweven	Overgeneralisation
+weeft	geweven	Overgeneralisation
+gewefen	geweven	Wrong -en suffix
+ewefen	geweven	Wrong -en suffix
+wefen	geweven	Wrong -en suffix
+eweven	geweven	Prefix ge without onset
+weven	geweven	Lacking ge prefix
+wijkte	gewekene	Overgeneralisation+Lacking ge prefix
+wijkten	weken	Overgeneralisation
+gewijkt	geweken	Overgeneralisation
+ewijkt	geweken	Overgeneralisation
+wijkt	geweken	Overgeneralisation
+gewijkte	gewekene	Overgeneralisation+
+ewijkte	gewekene	Overgeneralisation+Prefix ge without onset
+gewijken	geweken	Wrong -en suffix
+ewijken	geweken	Wrong -en suffix
+wijken	geweken	Wrong -en suffix
+geweekt	geweken	Overgeneralisation
+eweken	geweken	Prefix ge without onset
+weken	geweken	Lacking ge prefix
+wijtte	weet	Overgeneralisation
+wijtten	weten	Overgeneralisation
+gewijt	geweten	Overgeneralisation
+ewijt	geweten	Overgeneralisation
+wijt	geweten	Overgeneralisation
+gewijte	gewetene	Overgeneralisation+
+ewijte	gewetene	Overgeneralisation+Prefix ge without onset
+wijte	gewetene	Overgeneralisation+Lacking ge prefix
+gewijten	geweten	Wrong -en suffix
+ewijten	geweten	Wrong -en suffix
+wijten	geweten	Wrong -en suffix
+wijsde	gewezene	Overgeneralisation+Lacking ge prefix
+wijsden	wezen	Overgeneralisation
+gewijsd	gewezen	Overgeneralisation+
+ewijsd	gewezen	Overgeneralisation+Prefix ge without onset
+wijsd	gewezen	Overgeneralisation+Lacking ge prefix
+gewijsde	gewezene	Overgeneralisation+
+ewijsde	gewezene	Overgeneralisation+Prefix ge without onset
+gewijst	gewezen	Overgeneralisation
+ewijst	gewezen	Overgeneralisation
+wijst	gewezen	Overgeneralisation
+gewijsen	gewezen	Wrong -en suffix
+ewijsen	gewezen	Wrong -en suffix
+wijsen	gewezen	Wrong -en suffix
+geweesd	gewezen	Overgeneralisation
+geweest	gewezen	Overgeneralisation
+ewezen	gewezen	Prefix ge without onset
+wezen	gewezen	Lacking ge prefix
+windde	wond	Overgeneralisation
+windden	wonden	Overgeneralisation
+gewind	gewonnen	Overgeneralisation+
+ewind	gewonnen	Overgeneralisation+Prefix ge without onset
+wind	gewonnen	Overgeneralisation+Lacking ge prefix
+gewinde	gewonnene	Overgeneralisation+
+ewinde	gewonnene	Overgeneralisation+Prefix ge without onset
+winde	gewonnene	Overgeneralisation+Lacking ge prefix
+gewinden	gewonden	Wrong -en suffix
+ewinden	gewonden	Wrong -en suffix
+winden	wonnen	Overgeneralisation
+gewond	gewonden	Overgeneralisation
+ewonden	gewonden	Prefix ge without onset
+wonden	gewonden	Lacking ge prefix
+gewint	gewonnen	Overgeneralisation
+ewint	gewonnen	Overgeneralisation
+wint	gewonnen	Overgeneralisation
+gewinnen	gewonnen	Wrong -en suffix
+ewinnen	gewonnen	Wrong -en suffix
+winnen	gewonnen	Wrong -en suffix
+gewont	gewonnen	Overgeneralisation
+ewonnen	gewonnen	Prefix ge without onset
+wonnen	gewonnen	Lacking ge prefix
+wordde	werd	Overgeneralisation
+wordden	werden	Overgeneralisation
+geword	geworden	Overgeneralisation
+eword	geworden	Overgeneralisation
+word	geworden	Overgeneralisation
+geworde	gewordene	Overgeneralisation+
+eworde	gewordene	Overgeneralisation+Prefix ge without onset
+worde	gewordene	Overgeneralisation+Lacking ge prefix
+eworden	geworden	Prefix ge without onset
+worden	geworden	Lacking ge prefix
+wrijfde	gewrevene	Overgeneralisation+Lacking ge prefix
+wrijfden	wreven	Overgeneralisation
+gewrijfd	gewreven	Overgeneralisation+
+ewrijfd	gewreven	Overgeneralisation+Prefix ge without onset
+wrijfd	gewreven	Overgeneralisation+Lacking ge prefix
+gewrijfde	gewrevene	Overgeneralisation+
+ewrijfde	gewrevene	Overgeneralisation+Prefix ge without onset
+gewrijft	gewreven	Overgeneralisation
+ewrijft	gewreven	Overgeneralisation
+wrijft	gewreven	Overgeneralisation
+gewrijfen	gewreven	Wrong -en suffix
+ewrijfen	gewreven	Wrong -en suffix
+wrijfen	gewreven	Wrong -en suffix
+gewreefd	gewreven	Overgeneralisation
+gewreeft	gewreven	Overgeneralisation
+ewreven	gewreven	Prefix ge without onset
+wreven	gewreven	Lacking ge prefix
+wringde	gewrongene	Overgeneralisation+Lacking ge prefix
+wringden	wrongen	Overgeneralisation
+gewringd	gewrongen	Overgeneralisation+
+ewringd	gewrongen	Overgeneralisation+Prefix ge without onset
+wringd	gewrongen	Overgeneralisation+Lacking ge prefix
+gewringde	gewrongene	Overgeneralisation+
+ewringde	gewrongene	Overgeneralisation+Prefix ge without onset
+gewringt	gewrongen	Overgeneralisation
+ewringt	gewrongen	Overgeneralisation
+wringt	gewrongen	Overgeneralisation
+gewringen	gewrongen	Wrong -en suffix
+ewringen	gewrongen	Wrong -en suffix
+wringen	gewrongen	Wrong -en suffix
+gewrongd	gewrongen	Overgeneralisation
+gewrongt	gewrongen	Overgeneralisation
+ewrongen	gewrongen	Prefix ge without onset
+wrongen	gewrongen	Lacking ge prefix
+zegde	gezegde	Overgeneralisation+Lacking ge prefix
+zegden	zeiden	Overgeneralisation
+ezegd	gezegd	Prefix ge without onset
+zegd	gezegd	Lacking ge prefix
+ezegde	gezegde	Overgeneralisation+Prefix ge without onset
+gezegt	gezegd	Overgeneralisation
+ezegt	gezegd	Overgeneralisation
+zegt	gezegd	Overgeneralisation
+gezeggen	gezegd	Wrong -en suffix
+ezeggen	gezegd	Wrong -en suffix
+zeggen	gezegd	Wrong -en suffix
+zendde	zond	Overgeneralisation
+zendden	zonden	Overgeneralisation
+gezend	gezonden	Overgeneralisation
+ezend	gezonden	Overgeneralisation
+zend	gezonden	Overgeneralisation
+gezende	gezondene	Overgeneralisation+
+ezende	gezondene	Overgeneralisation+Prefix ge without onset
+zende	gezondene	Overgeneralisation+Lacking ge prefix
+gezenden	gezonden	Wrong -en suffix
+ezenden	gezonden	Wrong -en suffix
+zenden	gezonden	Wrong -en suffix
+gezond	gezonden	Overgeneralisation
+ezonden	gezonden	Prefix ge without onset
+zonden	gezonden	Lacking ge prefix
+zijgde	gezegene	Overgeneralisation+Lacking ge prefix
+zijgden	zegen	Overgeneralisation
+gezijgd	gezegen	Overgeneralisation+
+ezijgd	gezegen	Overgeneralisation+Prefix ge without onset
+zijgd	gezegen	Overgeneralisation+Lacking ge prefix
+gezijgde	gezegene	Overgeneralisation+
+ezijgde	gezegene	Overgeneralisation+Prefix ge without onset
+gezijgt	gezegen	Overgeneralisation
+ezijgt	gezegen	Overgeneralisation
+zijgt	gezegen	Overgeneralisation
+gezijgen	gezegen	Wrong -en suffix
+ezijgen	gezegen	Wrong -en suffix
+zijgen	gezegen	Wrong -en suffix
+gezeegd	gezegen	Overgeneralisation
+gezeegt	gezegen	Overgeneralisation
+ezegen	gezegen	Prefix ge without onset
+zegen	gezegen	Lacking ge prefix
+zijde	geweeste	Overgeneralisation+Lacking ge prefix
+zijden	waren	Overgeneralisation
+gezijd	geweest	Overgeneralisation+
+ezijd	geweest	Overgeneralisation+Prefix ge without onset
+zijd	geweest	Overgeneralisation+Lacking ge prefix
+gezijde	geweeste	Overgeneralisation+
+ezijde	geweeste	Overgeneralisation+Prefix ge without onset
+gezijt	geweest	Overgeneralisation
+ezijt	geweest	Overgeneralisation
+zijt	geweest	Overgeneralisation
+gezijjen	geweest	Wrong -en suffix
+ezijjen	geweest	Wrong -en suffix
+zijjen	geweest	Wrong -en suffix
+eweest	geweest	Prefix ge without onset
+weest	geweest	Lacking ge prefix
+zingde	gezongene	Overgeneralisation+Lacking ge prefix
+zingden	zongen	Overgeneralisation
+gezingd	gezongen	Overgeneralisation+
+ezingd	gezongen	Overgeneralisation+Prefix ge without onset
+zingd	gezongen	Overgeneralisation+Lacking ge prefix
+gezingde	gezongene	Overgeneralisation+
+ezingde	gezongene	Overgeneralisation+Prefix ge without onset
+gezingt	gezongen	Overgeneralisation
+ezingt	gezongen	Overgeneralisation
+zingt	gezongen	Overgeneralisation
+gezingen	gezongen	Wrong -en suffix
+ezingen	gezongen	Wrong -en suffix
+zingen	gezongen	Wrong -en suffix
+gezongd	gezongen	Overgeneralisation
+gezongt	gezongen	Overgeneralisation
+ezongen	gezongen	Prefix ge without onset
+zongen	gezongen	Lacking ge prefix
+zinkte	gezonkene	Overgeneralisation+Lacking ge prefix
+zinkten	zonken	Overgeneralisation
+gezinkt	gezonken	Overgeneralisation
+ezinkt	gezonken	Overgeneralisation
+zinkt	gezonken	Overgeneralisation
+gezinkte	gezonkene	Overgeneralisation+
+ezinkte	gezonkene	Overgeneralisation+Prefix ge without onset
+gezinken	gezonken	Wrong -en suffix
+ezinken	gezonken	Wrong -en suffix
+zinken	gezonken	Wrong -en suffix
+gezonkt	gezonken	Overgeneralisation
+ezonken	gezonken	Prefix ge without onset
+zonken	gezonken	Lacking ge prefix
+zinde	gezonnene	Overgeneralisation+Lacking ge prefix
+zinden	zonnen	Overgeneralisation
+gezind	gezonnen	Overgeneralisation+
+ezind	gezonnen	Overgeneralisation+Prefix ge without onset
+zind	gezonnen	Overgeneralisation+Lacking ge prefix
+gezinde	gezonnene	Overgeneralisation+
+ezinde	gezonnene	Overgeneralisation+Prefix ge without onset
+gezint	gezonnen	Overgeneralisation
+ezint	gezonnen	Overgeneralisation
+zint	gezonnen	Overgeneralisation
+gezinnen	gezonnen	Wrong -en suffix
+ezinnen	gezonnen	Wrong -en suffix
+zinnen	gezonnen	Wrong -en suffix
+gezont	gezonnen	Overgeneralisation
+ezonnen	gezonnen	Prefix ge without onset
+zonnen	gezonnen	Lacking ge prefix
+zitte	gezetene	Overgeneralisation+Lacking ge prefix
+zitten	gezeten	Wrong -en suffix
+gezit	gezeten	Overgeneralisation
+ezit	gezeten	Overgeneralisation
+zit	gezeten	Overgeneralisation
+gezitte	gezetene	Overgeneralisation+
+ezitte	gezetene	Overgeneralisation+Prefix ge without onset
+gezitten	gezeten	Wrong -en suffix
+ezitten	gezeten	Wrong -en suffix
+gezeet	gezeten	Overgeneralisation
+ezeten	gezeten	Prefix ge without onset
+zeten	gezeten	Lacking ge prefix
+zoekte	gezochte	Overgeneralisation+Lacking ge prefix
+zoekten	zochten	Overgeneralisation
+gezoekt	gezocht	Overgeneralisation
+ezoekt	gezocht	Overgeneralisation
+zoekt	gezocht	Overgeneralisation
+gezoekte	gezochte	Overgeneralisation+
+ezoekte	gezochte	Overgeneralisation+Prefix ge without onset
+gezoeken	gezocht	Wrong -en suffix
+ezoeken	gezocht	Wrong -en suffix
+zoeken	gezocht	Wrong -en suffix
+ezocht	gezocht	Prefix ge without onset
+zocht	gezocht	Lacking ge prefix
+zuigde	gezogene	Overgeneralisation+Lacking ge prefix
+zuigden	zogen	Overgeneralisation
+gezuigd	gezogen	Overgeneralisation+
+ezuigd	gezogen	Overgeneralisation+Prefix ge without onset
+zuigd	gezogen	Overgeneralisation+Lacking ge prefix
+gezuigde	gezogene	Overgeneralisation+
+ezuigde	gezogene	Overgeneralisation+Prefix ge without onset
+gezuigt	gezogen	Overgeneralisation
+ezuigt	gezogen	Overgeneralisation
+zuigt	gezogen	Overgeneralisation
+gezuigen	gezogen	Wrong -en suffix
+ezuigen	gezogen	Wrong -en suffix
+zuigen	gezogen	Wrong -en suffix
+gezoogt	gezogen	Overgeneralisation
+ezogen	gezogen	Prefix ge without onset
+zogen	gezogen	Lacking ge prefix
+zuipte	gezopene	Overgeneralisation+Lacking ge prefix
+zuipten	zopen	Overgeneralisation
+gezuipt	gezopen	Overgeneralisation
+ezuipt	gezopen	Overgeneralisation
+zuipt	gezopen	Overgeneralisation
+gezuipte	gezopene	Overgeneralisation+
+ezuipte	gezopene	Overgeneralisation+Prefix ge without onset
+gezuipen	gezopen	Wrong -en suffix
+ezuipen	gezopen	Wrong -en suffix
+zuipen	gezopen	Wrong -en suffix
+gezoopt	gezopen	Overgeneralisation
+ezopen	gezopen	Prefix ge without onset
+zopen	gezopen	Lacking ge prefix
+zwelgde	gezwolgene	Overgeneralisation+Lacking ge prefix
+zwelgden	zwolgen	Overgeneralisation
+gezwelgd	gezwolgen	Overgeneralisation+
+ezwelgd	gezwolgen	Overgeneralisation+Prefix ge without onset
+zwelgd	gezwolgen	Overgeneralisation+Lacking ge prefix
+gezwelgde	gezwolgene	Overgeneralisation+
+ezwelgde	gezwolgene	Overgeneralisation+Prefix ge without onset
+gezwelgt	gezwolgen	Overgeneralisation
+ezwelgt	gezwolgen	Overgeneralisation
+zwelgt	gezwolgen	Overgeneralisation
+gezwelgen	gezwolgen	Wrong -en suffix
+ezwelgen	gezwolgen	Wrong -en suffix
+zwelgen	gezwolgen	Wrong -en suffix
+gezwolgd	gezwolgen	Overgeneralisation
+gezwolgt	gezwolgen	Overgeneralisation
+ezwolgen	gezwolgen	Prefix ge without onset
+zwolgen	gezwolgen	Lacking ge prefix
+zwelde	gezwollene	Overgeneralisation+Lacking ge prefix
+zwelden	zwollen	Overgeneralisation
+gezweld	gezwollen	Overgeneralisation+
+ezweld	gezwollen	Overgeneralisation+Prefix ge without onset
+zweld	gezwollen	Overgeneralisation+Lacking ge prefix
+gezwelde	gezwollene	Overgeneralisation+
+ezwelde	gezwollene	Overgeneralisation+Prefix ge without onset
+gezwelt	gezwollen	Overgeneralisation
+ezwelt	gezwollen	Overgeneralisation
+zwelt	gezwollen	Overgeneralisation
+gezwellen	gezwollen	Wrong -en suffix
+ezwellen	gezwollen	Wrong -en suffix
+zwellen	gezwollen	Wrong -en suffix
+gezwolt	gezwollen	Overgeneralisation
+ezwollen	gezwollen	Prefix ge without onset
+zwollen	gezwollen	Lacking ge prefix
+zwemde	gezwommene	Overgeneralisation+Lacking ge prefix
+zwemden	zwommen	Overgeneralisation
+gezwemd	gezwommen	Overgeneralisation+
+ezwemd	gezwommen	Overgeneralisation+Prefix ge without onset
+zwemd	gezwommen	Overgeneralisation+Lacking ge prefix
+gezwemde	gezwommene	Overgeneralisation+
+ezwemde	gezwommene	Overgeneralisation+Prefix ge without onset
+gezwemt	gezwommen	Overgeneralisation
+ezwemt	gezwommen	Overgeneralisation
+zwemt	gezwommen	Overgeneralisation
+gezwemmen	gezwommen	Wrong -en suffix
+ezwemmen	gezwommen	Wrong -en suffix
+zwemmen	gezwommen	Wrong -en suffix
+gezwomt	gezwommen	Overgeneralisation
+ezwommen	gezwommen	Prefix ge without onset
+zwommen	gezwommen	Lacking ge prefix
+zweerde	gezworene	Overgeneralisation+Lacking ge prefix
+zweerden	zwoeren	Overgeneralisation
+gezweerd	gezworen	Overgeneralisation+
+ezweerd	gezworen	Overgeneralisation+Prefix ge without onset
+zweerd	gezworen	Overgeneralisation+Lacking ge prefix
+gezweerde	gezworene	Overgeneralisation+
+ezweerde	gezworene	Overgeneralisation+Prefix ge without onset
+gezweert	gezworen	Overgeneralisation
+ezweert	gezworen	Overgeneralisation
+zweert	gezworen	Overgeneralisation
+gezweren	gezworen	Wrong -en suffix
+ezweren	gezworen	Wrong -en suffix
+zweren	gezworen	Wrong -en suffix
+gezwoort	gezworen	Overgeneralisation
+ezworen	gezworen	Prefix ge without onset
+zworen	gezworen	Lacking ge prefix
+zwerfde	gezworvene	Overgeneralisation+Lacking ge prefix
+zwerfden	zwierven	Overgeneralisation
+gezwerfd	gezworven	Overgeneralisation+
+ezwerfd	gezworven	Overgeneralisation+Prefix ge without onset
+zwerfd	gezworven	Overgeneralisation+Lacking ge prefix
+gezwerfde	gezworvene	Overgeneralisation+
+ezwerfde	gezworvene	Overgeneralisation+Prefix ge without onset
+gezwerft	gezworven	Overgeneralisation
+ezwerft	gezworven	Overgeneralisation
+zwerft	gezworven	Overgeneralisation
+gezwerfen	gezworven	Wrong -en suffix
+ezwerfen	gezworven	Wrong -en suffix
+zwerfen	gezworven	Wrong -en suffix
+gezworfd	gezworven	Overgeneralisation
+gezworft	gezworven	Overgeneralisation
+ezworven	gezworven	Prefix ge without onset
+zworven	gezworven	Lacking ge prefix
+zwijgde	gezwegene	Overgeneralisation+Lacking ge prefix
+zwijgden	zwegen	Overgeneralisation
+gezwijgd	gezwegen	Overgeneralisation+
+ezwijgd	gezwegen	Overgeneralisation+Prefix ge without onset
+zwijgd	gezwegen	Overgeneralisation+Lacking ge prefix
+gezwijgde	gezwegene	Overgeneralisation+
+ezwijgde	gezwegene	Overgeneralisation+Prefix ge without onset
+gezwijgt	gezwegen	Overgeneralisation
+ezwijgt	gezwegen	Overgeneralisation
+zwijgt	gezwegen	Overgeneralisation
+gezwijgen	gezwegen	Wrong -en suffix
+ezwijgen	gezwegen	Wrong -en suffix
+zwijgen	gezwegen	Wrong -en suffix
+gezweegd	gezwegen	Overgeneralisation
+gezweegt	gezwegen	Overgeneralisation
+ezwegen	gezwegen	Prefix ge without onset
+zwegen	gezwegen	Lacking ge prefix
