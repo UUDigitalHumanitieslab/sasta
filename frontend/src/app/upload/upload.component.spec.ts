@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DropdownModule } from 'primeng/dropdown';
@@ -11,7 +11,7 @@ describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [UploadComponent],

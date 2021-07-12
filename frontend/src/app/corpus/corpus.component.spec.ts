@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { CorpusComponent } from './corpus.component';
@@ -11,7 +11,7 @@ describe('CorpusComponent', () => {
   let component: CorpusComponent;
   let fixture: ComponentFixture<CorpusComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [CorpusComponent],

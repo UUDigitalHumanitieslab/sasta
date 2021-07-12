@@ -1,14 +1,13 @@
 corpus2alpino>=0.3.3
 celery
 chamd>=0.5.4
-django>=3.0a1,<3.2
+django>=3.1.12,<3.2
 django_cron
 django_celery_results
 djangorestframework
 django-livereload-server
 django-rest-auth[with_social]
-#django-revproxy>=0.9.16 not yet on PyPi. Get from git directly:
-git+git://github.com/TracyWebTech/django-revproxy@master#egg=django-revproxy
+django-revproxy>=0.9.16
 pandas
 psycopg2 --no-binary psycopg2
 pytest
