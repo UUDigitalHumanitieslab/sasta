@@ -2,7 +2,7 @@ import logging
 from collections import Counter, defaultdict
 from typing import Dict, List, Set
 
-from analysis.models import (AssessmentMethod, AssessmentQuery, Transcript,
+from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
                              Utterance)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
 from sastadev.query import core_process, post_process
