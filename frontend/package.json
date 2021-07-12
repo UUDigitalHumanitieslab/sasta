@@ -14,7 +14,7 @@
     "serve:nl": "ng serve --liveReload=false --proxy-config ../proxy.conf.json --configuration=nl",
     "stop": "lsof -t -i tcp:4200 | xargs kill -9 || echo \"not running\"",
     "test-once": "ng test --watch=false",
-    "watch": "ng build --prod --watch"
+    "watch": "ng build --configuration production --watch"
   },
   "private": true,
   "dependencies": {
