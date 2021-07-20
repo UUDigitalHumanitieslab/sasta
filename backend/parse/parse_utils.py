@@ -82,6 +82,10 @@ def parse_transcript(transcript, output_dir, output_path):
         transcript.parsed_content.save(parsed_filename, reparsed_file)
         logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
 
+        # Save corrections
+        transcript.corrections = error_dict
+        transcript.save()
+
         return transcript
 
     except Exception:
