@@ -34,4 +34,4 @@ def parse(sentence):
     ''' Wrapper for use in sastadev'''
     alp = AlpinoSentenceParser()
     xml = alp.parse_sentence(sentence)
-    return etree.fromstring(xml)
+    return etree.fromstring(bytes(xml, encoding='utf-8'))
