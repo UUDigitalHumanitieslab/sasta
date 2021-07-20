@@ -14,7 +14,7 @@ from sastadev.treebankfunctions import (countav, find1, getattval,
                                         getsentid, getyield, myfind,
                                         showflatxml, simpleshow,
                                         transplant_node)
-from sastatok import sasta_tokenize
+from sastadev.sastatok import sasta_tokenize
 
 corr0, corr1, corrn = '0', '1', 'n'
 validcorroptions = [corr0, corr1, corrn]
