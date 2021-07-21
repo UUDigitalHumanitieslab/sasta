@@ -1,6 +1,8 @@
+import io
 import logging
 import os
 
+from analysis.models import Transcript, Utterance
 from bs4 import BeautifulSoup
 from corpus2alpino.annotators.alpino import AlpinoAnnotator
 from corpus2alpino.collectors.filesystem import FilesystemCollector
@@ -9,10 +11,11 @@ from corpus2alpino.log import Log, LogSingleton, LogTarget
 from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
-from django.core.files import File
 from django.conf import settings
-
-from analysis.models import Utterance, Transcript
+from django.core.files import File
+from lxml import etree
+from sastadev.correcttreebank import correcttreebank, corrn
+from sastadev.targets import get_targets
 
 logger = logging.getLogger('sasta')
 
@@ -41,8 +44,9 @@ def parse_transcript(transcript, output_dir, output_path):
     transcript.save()
 
     try:
-        logger.info(f'Parsing:\t{transcript.name}\n')
+        logger.info(f'Parsing:\t{transcript.name}...\n')
 
+        # Parser setup
         alpino = AlpinoAnnotator(
             settings.ALPINO_HOST,
             settings.ALPINO_PORT
@@ -54,17 +58,34 @@ def parse_transcript(transcript, output_dir, output_path):
             target=FilesystemTarget(output_dir),
             writer=LassyWriter(merge_treebanks=True),
         )
+
+        # Alpino parsing
         parses = converter.convert()
         for _parse in parses:
             logger.info(f'Succesfully parsed:\t{transcript.name}\n')
         transcript.status = Transcript.PARSED
         transcript.save()
+
+        # Saving parsed file
         parsed_file_content = open(output_path, 'rb')
         parsed_filename = os.path.basename(
             output_path).replace('.cha', '.xml')
         transcript.parsed_content.save(
             parsed_filename, File(parsed_file_content))
         os.remove(output_path)
+
+        # Correcting and reparsing
+        logger.info(f'Correcting:\t{transcript.name}...\n')
+        reparsed, error_dict, origandalts = correct_treebank(transcript)
+        reparsed_content = etree.tostring(reparsed, encoding='utf-8')
+        reparsed_file = File(io.BytesIO(reparsed_content))
+        transcript.parsed_content.save(parsed_filename, reparsed_file)
+        logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
+
+        # Save corrections
+        transcript.corrections = error_dict
+        transcript.save()
+
         return transcript
 
     except Exception:
@@ -117,3 +138,18 @@ def create_utterance_objects(transcript):
             logger.exception(
                 f'ERROR creating utterances for:\t{transcript.name}'
                 f'with message:\t"{e}"\n')
+
+
+def correct_treebank(transcript: Transcript):
+    try:
+        treebank = etree.parse(transcript.parsed_content).getroot()
+        targets = get_targets(treebank)
+        # method_name = transcript.method.category.name
+        method_name = 'tarsp'
+
+        corr, error_dict, origandalts = correcttreebank(treebank, targets, method_name, corrn)
+
+        return corr, error_dict, origandalts
+
+    except Exception as e:
+        logger.exception(e)

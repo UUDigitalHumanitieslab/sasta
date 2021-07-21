@@ -147,6 +147,8 @@ class Transcript(models.Model):
         max_length=500, blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
 
+    corrections = models.JSONField(blank=True, null=True)
+
     # objects = TranscriptManager()
     target_speakers = models.CharField(max_length=500, blank=True)
     target_ids = models.BooleanField(default=False)
