@@ -1,9 +1,11 @@
 import operator
 from collections import Counter
 from functools import reduce
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-from analysis.results.results import AllResults
+from analysis.query.xlsx_output import v1_to_xlsx
+from analysis.results.results import (AllResults, SastaAnnotations,
+                                      UtteranceWord)
 
 
 class SAFAnnotation:
@@ -20,6 +22,7 @@ class SAFDocument:
         self.method_name: str = method_name
         self.utterances: List[SAFUtterance] = []
         self.all_levels: Optional[List[str]] = all_levels
+        self.annotations: SastaAnnotations = {}
 
     @property
     def all_annotations(self):
@@ -57,6 +60,36 @@ class SAFDocument:
         )
 
         return allresults
+
+    def query_output(self):
+        '''Return excel sheet in query format.'''
+        allresults = self.to_allresults()
+        queries_with_funcs = list(set(ann.to_query_with_func() for ann in self.all_annotations))
+        wb = v1_to_xlsx(allresults, queries_with_funcs)
+        return wb
+
+    @property
+    def reformatted_annotations(self) -> Dict[int, List[UtteranceWord]]:
+        annotations = {}
+        for utt in self.utterances:
+            annotations[utt.utt_id] = []
+            for word in utt.words:
+                uw = UtteranceWord(
+                    word=word.text,
+                    begin=word.idx - 1,
+                    end=word.idx,
+                    zc_embedding=0,  # TODO: CHECK ZC EMBEDS
+                    hits=[]
+                )
+                for ann in word.annotations:
+                    hit = {
+                        'level': ann.level,
+                        'item': ann.label,
+                        'fase': ann.fase
+                    }
+                    uw.hits.append(hit)
+                annotations[utt.utt_id].append(uw)
+        return annotations
 
 
 class SAFUtterance:

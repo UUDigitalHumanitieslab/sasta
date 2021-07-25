@@ -40,6 +40,7 @@ def query_transcript(transcript: Transcript,
         latest_run = runs.latest()
         reader = SAFReader(latest_run.annotation_file.path, method)
         coreresults = reader.document.to_allresults().coreresults
+        annotations = reader.document.reformatted_annotations
 
     allresults = AllResults(transcript.name,
                             len(to_analyze_utterances),
@@ -110,4 +111,5 @@ def run_post_queries(allresults: SastaResults,
             if result is not None:
                 allresults.postresults[q.id] = result
         except Exception as e:
+            # logger.warning(f'Failed to execute {q.function}')
             logger.exception(e)
