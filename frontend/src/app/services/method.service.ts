@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Method } from '../models/method';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import { Observable } from 'rxjs';
+import { Method } from '../models/method';
 import { MethodCategory } from '../models/methodcategory';
 
 @Injectable({
@@ -31,4 +32,16 @@ export class MethodService {
     return this.httpClient.get<MethodCategory[]>('api/method_categories/');
   }
 
+  groupMethods(methods: Method[], categoryID: number) {
+    return _(methods)
+      .filter(m => m.category.id === categoryID)
+      .groupBy('category.name')
+      .map((groupedMethods, methodCat) =>
+      ({
+        label: methodCat, items: _.map(groupedMethods, (m: Method) =>
+          ({ label: m.name, value: m }))
+      })
+      )
+      .value();
+  }
 }

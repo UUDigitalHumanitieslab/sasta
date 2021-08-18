@@ -4,7 +4,7 @@ import { faArrowLeft, faFile, faFileCode, faTrash } from '@fortawesome/free-soli
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript, TranscriptStatus } from '../models/transcript';
@@ -55,19 +55,6 @@ export class TranscriptComponent implements OnInit {
     this.loadData();
   }
 
-  groupTams(tams) {
-    this.groupedTams = _(tams)
-      .filter(tam => tam.category.id === this.corpus.method_category)
-      .groupBy('category.name')
-      .map((methods, methodCat) =>
-      ({
-        label: methodCat, items: _.map(methods, (m: Method) =>
-          ({ label: m.name, value: m }))
-      })
-      )
-      .value();
-  }
-
   loadData() {
     this.transcriptService.get_by_id(this.id).pipe( // get transcript
       switchMap((t: Transcript) => {
@@ -85,7 +72,7 @@ export class TranscriptComponent implements OnInit {
     ).subscribe(
       (tams: Method[]) => {
         this.tams = tams;
-        this.groupTams(tams); // group methods
+        this.groupedTams = this.methodService.groupMethods(tams, this.corpus.method_category); // group methods
       }
     );
   }
