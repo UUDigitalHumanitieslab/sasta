@@ -22,7 +22,8 @@ from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
                      UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          TranscriptSerializer, UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptSerializer,
+                          UploadFileSerializer)
 
 # flake8: noqa: E501
 
@@ -222,4 +223,4 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
 
 class MethodCategoryViewSet(viewsets.ModelViewSet):
     queryset = MethodCategory.objects.all()
-    serializer_class = MethodCategory
+    serializer_class = MethodCategorySerializer

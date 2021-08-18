@@ -66,6 +66,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
 
   groupTams(tams) {
     this.groupedTams = _(tams)
+      .filter(tam => tam.category.id === this.corpus.method_category)
       .groupBy('category.name')
       .map((methods, methodCat) =>
         ({

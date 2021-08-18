@@ -17,6 +17,10 @@ export class CorpusService {
       .subscribe(res => this.corpora$.next(res));
   }
 
+  create(corpus: Corpus): Observable<any> {
+    return this.httpClient.post('/api/corpora/', corpus);
+  }
+
   list(): Observable<Corpus[]> {
     return this.httpClient.get<Corpus[]>('api/corpora/');
   }

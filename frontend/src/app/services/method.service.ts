@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Method } from '../models/method';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MethodCategory } from '../models/methodcategory';
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +26,9 @@ export class MethodService {
     const response = await this.httpClient.post<Method>('api/assessment_methods/', formData).toPromise();
     return response;
   }
+
+  listCategories(): Observable<MethodCategory[]> {
+    return this.httpClient.get<MethodCategory[]>('api/method_categories/');
+  }
+
 }

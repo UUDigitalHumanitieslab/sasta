@@ -4,7 +4,7 @@ import os
 import shutil
 
 from django.conf import settings
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 
 from .models import (AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
@@ -26,13 +26,13 @@ def save_compounds(sender, instance, **kwargs):
         Compound.objects.bulk_create(compounds)
 
 
-@ receiver(post_delete, sender=Corpus)
+@receiver(post_delete, sender=Corpus)
 def corpus_delete(sender, instance, **kwargs):
     corpus_dir = os.path.join(settings.MEDIA_ROOT, 'files', str(instance.uuid))
     shutil.rmtree(corpus_dir, ignore_errors=True)
 
 
-@ receiver(post_delete, sender=Transcript)
+@receiver(post_delete, sender=Transcript)
 def transcript_delete(sender, instance, **kwargs):
     instance.content.delete(False)
     instance.parsed_content.delete(False)
@@ -43,7 +43,7 @@ def transcript_delete(sender, instance, **kwargs):
             pass
 
 
-@ receiver(post_save, sender=UploadFile)
+@receiver(post_save, sender=UploadFile)
 def extract_upload_file(sender, instance, created, **kwargs):
     if created:
         try:
@@ -52,9 +52,9 @@ def extract_upload_file(sender, instance, created, **kwargs):
             logger.exception(error)
 
 
-@ receiver(post_delete, sender=UploadFile)
-@ receiver(post_delete, sender=AssessmentMethod)
-@ receiver(post_delete, sender=CompoundFile)
+@receiver(post_delete, sender=UploadFile)
+@receiver(post_delete, sender=AssessmentMethod)
+@receiver(post_delete, sender=CompoundFile)
 def file_delete(sender, instance, **kwargs):
     try:
         instance.content.delete(False)
@@ -62,7 +62,7 @@ def file_delete(sender, instance, **kwargs):
         pass
 
 
-@ receiver(post_save, sender=AssessmentMethod)
+@receiver(post_save, sender=AssessmentMethod)
 def read_tam_file(sender, instance, created, **kwargs):
     if not created:
         # on update: delete all queries related to this method
@@ -71,4 +71,19 @@ def read_tam_file(sender, instance, created, **kwargs):
         read_TAM(instance)
     except Exception as error:
         logger.exception(error)
-        print(f'error in read_tam_file:\t{error}')
+
+
+@receiver(post_save, sender=Corpus)
+def initial_default_method(sender, instance, created, **kwargs):
+    if created:
+        try:
+            instance.default_method = instance.method_category.definitions.latest()
+            instance.save()
+        except Exception as error:
+            logger.exception(error)
+
+
+
+
+
+
