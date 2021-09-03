@@ -1,0 +1,419 @@
+Tarsp_VCr1 = """node[(@rel="obj1" or @rel="pc" or @rel="predc" or @rel="ld") and not(%Tarsp_B%)] """
+
+
+b = """number(@begin)"""
+e = """number(@end)"""
+single_name = """( @ntype = 'eigen' or @postag='SPEC(deeleigen)'  )"""
+
+multi_name =  """( @cat='mwu' and node[@rel='mwp' and %single_name%] ) """
+
+name =        """( %single_name% or %multi_name% )"""
+
+name_phrase=  """( %name% or node[@rel="hd"  and %name%]  )"""
+
+booster = """(@lemma="allemachtig" or @lemma="beestachtig" or @lemma="bijzonder" or @lemma="bliksems" or @lemma="bloedig" or @lemma="bovenmate" or @lemma="buitengewoon" or @lemma="buitenmate" or @lemma="buitensporig" or @lemma="crimineel" or @lemma="deerlijk" or @lemma="deksels" or @lemma="donders" or @lemma="drommels" or @lemma="eindeloos" or @lemma="enorm" or @lemma="erbarmelijk" or @lemma="fantastisch" or @lemma="formidabel" or @lemma="geweldig" or @lemma="goddeloos" or @lemma="godsjammerlijk" or @lemma="grenzeloos" or @lemma="grotelijks" or @lemma="heel" or @lemma="ijselijk" or @lemma="ijzig" or @lemma="intens" or @lemma="krankzinnig" or @lemma="machtig" or @lemma="mirakels" or @lemma="monsterachtig" or @lemma="moorddadig" or @lemma="oneindig" or @lemma="onnoemelijk" or @lemma="ontiegelijk" or @lemma="ontstellend" or @lemma="ontzaglijk" or @lemma="ontzettend" or @lemma="onuitsprekelijk" or @lemma="onvoorstelbaar" or @lemma="onwezenlijk" or @lemma="onwijs" or @lemma="overweldigend" or @lemma="peilloos" or @lemma="reusachtig" or @lemma="reuze" or @lemma="schrikkelijk" or @lemma="sterk" or @lemma="uiterst" or @lemma="verdomd" or @lemma="verdraaid" or @lemma="verduiveld" or @lemma="verduveld" or @lemma="verrekt" or @lemma="verrot" or @lemma="verschrikkelijk" or @lemma="vervloekt" or @lemma="vreselijk" or @lemma="waanzinnig" or @lemma="zeer" or @lemma="zeldzaam" or @lemma="zwaar" )"""
+
+JO_v3 = """
+      count(.//node[@pt="ww"])>=3 and
+      (some $v1 in .//node[@pt="ww"],
+            $v2 in .//node[@pt="ww"],
+            $v3 in .//node[@pt="ww"]
+       satisfies ($v1/%PQ_e% < $v2/%PQ_e% and 
+                  $v2/%PQ_e% < $v3/%PQ_e% and
+                  $v1/%PQ_e% < $v3/%PQ_e%
+                 )
+       )"""
+
+JO_kijken_naar = """        parent::node[@cat="pp" and 
+               node[@lemma="naar" and @rel= "hd"] and 
+               parent::node[ node[@pt= "ww" and 
+                            @rel= "hd" and 
+                            @lemma= "kijken"
+                            ]
+                     ]
+              ]
+"""
+
+robusttopicdrop = """(@cat="sv1" and ../node[@lemma="."])"""
+
+Tarsp_hww = """
+ (@lemma="kunnen" or
+  @lemma = "moeten" or
+  @lemma= "hoeven" or
+  @lemma = "blijven" or
+  @lemma = "willen" or
+  @lemma = "zullen" or   
+  @lemma = "doen" or
+  @lemma = "gaan" or
+  @lemma = "horen" or
+  @lemma = "komen" or
+  @lemma = "laten" or
+  @lemma = "liggen" or
+  @lemma = "lopen" or
+  @lemma = "mogen" or
+  @lemma = "staan" or
+  @lemma = "zitten")
+ """
+ 
+Tarsp_vc_sibling = """parent::node[ node[@rel="vc"]]"""
+Tarsp_predc_sibling = """parent::node[ node[@rel="predc"]]"""
+Tarsp_obj1_sibling = """parent::node[ node[@rel="obj1"]]"""
+Tarsp_ld_sibling = """parent::node[ node[@rel="ld"]]"""
+
+Tarsp_HwwZ = """(@pt="ww" and @rel="hd" and @wvorm="pv" and 
+ ((
+   %Tarsp_hww% or
+   @lemma = "hebben" 
+   ) and 
+   not(%Tarsp_vc_sibling%)) or
+   (@lemma="zijn" and not(%Tarsp_vc_sibling%) and %Tarsp_ld_sibling%)
+ )
+"""
+
+vdhwws = """(@lemma="hebben" or @lemma="zijn" or @lemma="worden")
+"""
+
+Tarsp_Kop = """
+ (   @pt="ww" and @rel="hd" and not(%Tarsp_hww%) and
+
+    ((%Tarsp_predc_sibling% and not(%Tarsp_obj1_sibling%)) or
+
+     (@lemma="zijn" and not(%Tarsp_vc_sibling%) and not(%Tarsp_ld_sibling%))
+    )
+ )
+"""
+
+robusthwwi = """ (@cat="top" and 
+                  .//node[@pt="ww" and %Tarsp_hww% and @wvorm="pv" and (@rel="--" or @rel="dp")] and
+				  .//node[@pt="ww" and @wvorm="inf" and (@rel="--" or @rel="dp")]
+				  )
+				  
+"""
+
+robusthwwvd = """ (@cat="top" and 
+                  .//node[@pt="ww" and %vdhwws% and @wvorm="pv" and (@rel="--" or @rel="dp")] and
+				  .//node[@pt="ww" and @wvorm="vd" and (@rel="--" or @rel="dp")]
+				  )
+				  
+"""
+
+
+robustinversion = """(@cat="top" and 
+       .//node[@pt="ww"  and @wvorm="pv" and  @rel!="hd" and (not(@stype) or @stype!="imparative")] and 
+       .//node[@pt="vnw" and @naamval="nomin" and @rel!="su" and
+               @end>..//node[@pt="ww" and @wvorm="pv"]/@end])
+			   """
+
+locverb = """(@lemma="staan" or @lemma="zitten" or @lemma="rijden" or @lemma="vallen" or @lemma="doen" or @lemma="gaan" or @lemma="komen" or @lemma="zijn"  or %locmodalverb% )
+"""
+
+locmodalverb = """ (@lemma="kunnen" or @lemma="moeten" or @lemma="hoeven" or @lemma="willen" or @lemma="mogen")"""
+
+
+adjoradv = """(@pt="bw" or @pt="adj" or (@pt="vnw" and (@pos="adj" or @pos="adv")))"""
+
+adjadv = """
+(@pt='adj' and (@lemma='wel'))
+"""
+
+realnode = """(not(@pt) or (@pt!='let' and @pt!='tsw'))"""
+
+Rpronoun = """(@pt='vnw' and (@lemma='er' or @lemma='hier' or @lemma='daar' or @lemma='waar' or @lemma='ergens' or @lemma='nergens' or @lemma='overal'))
+"""
+
+pv = """(@pt="ww" and @wvorm="pv" )"""
+
+bxnp1 = """(@cat="np" and count(node)=2 and node[@rel="hd" and @pt="ww"] and node[@rel="mod" and @pt])"""
+bxnp2 = """(@cat="np" and count(node)=2 and node[@rel="hd"] and node[@rel="mod" and %singlewordbw%])"""
+
+Tarsp_B = """(
+       ((((@rel="mod" or @rel="ld" or @rel="predm") and
+          (not(@cat) or @cat!="conj") and
+		  (not(@pt) or @pt!="tsw")
+         )or 
+         (%predcB%
+         )
+         ) and 
+         (../node[@pt="ww" and @rel="hd"])
+        ) or
+        ((@pt="vz" or @pt="bw" or %Rpronoun%) and (@rel="dp" or @rel="--" or @rel="nucl" or @rel="body")) or
+        (@cat="pp" and (@rel="--" or @rel="dp")) or
+		(@rel="pc" and ../node[@rel="hd" and %locverb%]) or
+        (@rel="cnj" and parent::node[@rel="mod" or @rel="ld" or @rel="predm"]) or
+        (@rel="mod" and @pt="bw" and parent::node[@cat="np"] ) 
+		)
+     
+"""
+
+complement = """((@rel="obj1" or @rel="obj2") or 
+                 (@rel="predc" and not(%predcB%)) or
+		         (@rel="pobj1" and not(%pobj1B%) ) or
+				 %verbalcomplement%
+                )"""
+				
+verbalcomplement = """(@rel="vc" and (@cat="cp" or @cat="whq" or @cat="whsub"))"""
+		 
+predcB = """(@rel="predc" and 
+           (@pt="adj" or @pt="bw" or @cat="ap" or @cat="advp") and
+           ../node[@rel="obj1"]
+         )"""
+		 
+pobj1B = """(@rel="pc" and ../node[@rel="hd" and %locverb%])"""
+ 
+Tarsp_OndWBVC = """
+(@cat="smain" or @cat="ssub") and node[@rel="su"] and node[@rel="hd" and @pt="ww"] and 
+        ((count(node[@rel!="svp"]) = 4  and node[%Tarsp_B%] and %Tarsp_VCr1% ) or
+         (count(node) = 3 and node[node[%Tarsp_B%] and  %Tarsp_VCr1%   ])
+        )
+"""
+
+Tarsp_OndWBB = """
+(@cat="smain" or @cat="ssub" or %robusttopicdrop%) and node[@rel="su"] and node[@rel="hd" and @pt="ww"] and 
+        ((count(node[@rel!="svp"]) = 4  and count(node[%Tarsp_B%]) = 2 ) or
+         (count(node) = 3 and node[@rel="vc" and (@cat="inf" or @cat="ppart") and count(node[%Tarsp_B%]) =2  ])
+        )
+"""
+
+singlewordbw = """ (@pt="bw" or %Rpronoun% or %adjadv%)
+"""
+
+corephrase = """(@cat="np" or @cat="pp" or @cat="advp" or @cat="ap")"""
+
+coreBX = """(node[@cat="du" and node[%singlewordbw% and @lemma!="niet" ] and node[(%corephrase% or (@pt and not(%pv%))) and @begin!=../node[%singlewordbw% and @lemma!=niet]/@begin ]])"""
+
+
+ASTA_pred =  """(@rel="predc" or @rel="predm" or (@rel="hd" and parent::node[@rel="predc" or @rel="predm"]))"""
+
+ASTA_attr =  """((@rel="mod" and parent::node[node[@rel="hd" and (@pt="n" or @pt="vnw")]] )  or
+       (@rel="hd" and parent::node[@rel="mod" and parent::node[node[@rel="hd" and (@pt="n" or @pt="vnw")]]]))"""
+
+
+ASTA_adverbial = """  
+      ((@rel="mod" and parent::node[node[@rel="hd" and not(@pt="n" or @pt="vnw")]] )  or
+       (@rel="hd" and parent::node[@rel="mod" and parent::node[node[@rel="hd" and not(@pt="n" or @pt="vnw")]]]))
+     """
+
+ 
+ASTA_modalww = """  (@lemma="zullen" or @lemma="willen" or @lemma="moeten" or @lemma="mogen" or @lemma="kunnen" or @lemma="hoeven") """
+
+ASTA_kopww = """ ( %ASTA_basickopww% or %ASTA_geboren_kopww% )"""
+
+ASTA_basickopww = """ (@pt="ww" and @rel="hd" and @lemma!="uit_zien" and @lemma!="heten" and @lemma!="gaan" and @lemma!="zitten" and (contains(@frame, "copula") or not(@stype="topic_drop")) and parent::node[node[@rel="predc"] and not(node[@rel="obj1"]) ] )""" 
+
+ASTA_geboren_kopww = """
+
+(@rel="hd" and @pt="ww" and (@lemma="zijn" or @lemma="worden") and
+         (../node[@cat="ppart" and @rel="vc" and node[ @word="geboren" and @rel="hd"]] or
+		  ../node[@rel="vc" and @word="geboren"]
+		 )
+)
+	"""
+
+ASTA_wantmaarbijzin = """
+       ((@word="want" or @word="maar") and @rel="crd" and @pt="vg" and
+        ../node[((@cat="smain" or (@cat="du" and node[@cat="smain" and @rel="nucl"]))) and 
+	    @begin  >=../node[(@word="want" or @word="maar")]/@end]
+	   )
+"""
+
+ASTA_wantmaarbijzinzin = """
+       ( (@cat="smain" or (@cat="du" and node[@cat="smain" and @rel="nucl"])) and
+	     ../node[(@word="want" or @word="maar") and @rel="crd" and @pt="vg"] and 
+		 @begin  >=../node[(@word="want" or @word="maar")]/@end
+	   )
+"""
+
+
+ASTA_dusbijzin = """
+(@lemma="dus" and parent::node[@cat="smain"] and  @begin=parent::node/@begin and @pt="bw" and @rel="mod")
+"""
+
+ASTA_dusbijzinzin = """
+(@cat="smain"and node[@lemma="dus"  and  @begin=parent::node/@begin and @pt="bw" and @rel="mod"])
+"""
+
+
+ 
+ASTA_detadjs = """
+ (@pt="vnw" and (@rel="mod" or @rel="det") and @vwtype="onbep" and parent::node[@cat="np"] and
+(@lemma="al" or @lemma="beide" or @lemma="elk" or @lemma="enig" or @lemma="enkel" or @lemma="geen" or @lemma="ieder" or
+ @lemma="meer" or @lemma="meerdere" or @lemma="meest" or @lemma="menig" or @lemma="minder" or 
+ @lemma="minst" or @lemma="sommige" or @lemma="veel" or @lemma="weinig"))
+
+"""
+
+Tarsp_kijkeens = """
+(@cat="sv1" and @rel != "--" and
+    node[@pt="ww" and @lemma="kijken" and @rel="hd"  and @pvagr="ev" and @pvtijd="tgw" ] and
+    node[@lemma="eens" and @rel="mod" and @pt="bw"] and count(node)=2) 
+"""
+
+ASTA_numeral = """
+(@lemma="twee" or @lemma="drie" or @lemma="vier" or @lemma="vijf" or @lemma="zes" or @lemma="zeven" or @lemma="acht" or @lemma="negen" or @lemma="tien" or @lemma="elf" or @lemma="twaalf" or @lemma="dertien" or @lemma="veertien" or @lemma="vijftien" or @lemma="zestien" or @lemma="zeventien" or @lemma="achttien" or @lemma="negentien" or @lemma="twintig" or @lemma="eentje" or  @lemma="tweetjes" or @lemma="drietjes" or @lemma="viertjes" or @lemma="vijfjes" or @lemma="zesjes") 
+""" 
+
+ASTA_filled_pause = """
+(@lemma= "uh" or @lemma ="Uh" or @lemma="Uhm" or @lemma= "uhm" or  @lemma = "euh" or @lemma = "eh" or @lemma = "goh" or @word="xxx" or @word="XXX" or @lemma="gg" or 
+  @lemma="buh" or @lemma="sss" or @lemma="pf" or @lemma='tablaa' )
+"""
+
+ASTA_geboren = """ (@word="geboren") """
+
+BvZn = """ (count(node)=2 and
+            (  (%headn% and (%coreadjmod% or %corevnwmod% or %corebwmod%)) 
+
+		    )
+		   )	
+"""
+
+qbwlemma = """ (@lemma="nog" ) """
+
+
+ietsadjs = """(node[@rel="hd" and @pt="vnw"] and node[@rel="mod" and %adjs%])
+"""
+
+adjs = """ (@pt="adj" and @buiging="met-s") """
+
+aps = """ (@cat="ap" and node[@rel="hd" and %adjs%]) """
+
+headn = """ ( node[@rel="hd" and @pt="n"] )"""
+
+coreadjmod = """ (node[@rel="mod" and ( @pt="adj" or @pt="tw")] and not(node[@rel="det"])) """
+
+corevnwmod = """ (node[@rel="det" and (@pt="tw" or (@pt="vnw" and @vwtype="onbep" and @naamval!="gen" and @lemma!="geen"))] )"""
+
+
+corebwmod = """ (node[@rel="mod" and @pt="bw" and %qbwlemma%]) """
+
+
+spec_proper_name = """ (@pt="spec" and 
+                        (@pos="name" or starts-with(@frame,"proper_name")) and
+                        (contains("ABCDEFGHIJKLMNOPQRSTUVWXYZ", substring(@word,1,1)))
+                       ) """	
+
+spec_noun = """ (@pt="spec" and (@pos="name" or starts-with(@frame,"proper_name")) )"""					   
+ 
+ 
+ ASTA_LEX = """ (
+       not(%ASTA_geboren%) and
+       @pt="ww" and @rel="hd" and 
+       not(%ASTA_kopww%)   and 
+	   not(%ASTA_modalww%) and 
+	   not(@lemma="zijn") and 
+	   not(contains(@lemma, "_zijn")) and 
+	   not(@positie="nom") and
+	   (not(@lemma="hebben") or ../node[@rel="obj1"] ) and
+       not(  ( @lemma="hebben" or @lemma="zijn" or @lemma="worden"  ) and parent::node[node[@rel="vc"]] )
+      )
+ 
+ """
+ 
+ asta_noun = """ ((@pt="n" and not(%ASTA_filled_pause%) and not(%ASTA_numeral%)) or (@pt="ww" and @positie="nom"))
+ """
+
+
+asta_adj = """
+    (%ASTA_geboren% or
+     %attributive_adj% or
+     %attributive_adjinadjp% or
+     %rangtw% or
+     %substantivisedadj% or
+     %substantivisedrangtw% or
+	 %attributive_pastp% or
+	 %simplepredicative_adj% or
+	 %simplepredicative_adjinadjp% or
+	 %indefdet%
+	)
+"""
+
+attributive_adj = """ 
+    (@pt="adj" and 
+     (@rel="mod" and 
+      parent::node[@cat="np"] and 
+      ../node[@rel="hd" and (@pt="n" or @pt="vnw" or @cat="mwu")] and
+	  (not(@begin < ../node[@rel="det" and (@pt="lid" or @pt="vnw")]/@begin) or @lemma='heel' or @lemma='geheel')
+	 )
+	)
+"""
+
+attributive_adjinadjp = """
+   (@pt="adj" and
+    (@rel="hd" and
+     parent::node[@cat="ap" and parent::node[@cat="np"] and 
+     ../node[@rel="hd" and (@pt="n" or @pt="vnw" or @cat="mwu")]]
+	 )
+	)
+"""
+
+rangtw = """
+   (@pt="tw" and @numtype="rang")
+"""
+
+substantivisedadj = """ 
+   (@pt="adj" and @rel="hd" and parent::node[@cat="np"])
+"""
+
+substantivisedrangtw = """
+    (%rangtw% and @positie = "nom" )
+"""
+
+attributive_pastp = """
+   (@pt="ww" and @wvorm="vd" and @rel="mod" and parent::node[@cat="np"])
+"""
+
+predicative = """ (@rel="predc" or @rel="predm" ) """
+
+simplepredicative = """ (%predicative% and ../node[%ASTA_basickopww%])
+"""
+
+simplepredicative_adj = """
+     (@pt="adj" and %simplepredicative%)
+"""
+	 
+simplepredicative_adjinadjp = """
+     (@pt="adj" and @rel="hd" and parent::node[@cat="ap" and %simplepredicative%])
+"""
+
+indefdet = """ (@rel="det" and @pt="vnw" and @vwtype="onbep")
+"""
+
+
+ASTA_CBijzin = """
+         (%ASTA_wantmaarbijzin% or
+		  %ASTA_dusbijzin%)
+"""
+
+ASTA_CBijzinzin = """
+( %ASTA_wantmaarbijzinzin% or
+  %ASTA_dusbijzinzin%
+)
+"""
+
+ASTA_oldBijzin = """
+  ((node[@cat="ssub"] or (@cat="sv1" and @rel="mod" )) or 
+         %ASTA_wantmaarbijzin% or
+		 %ASTA_dusbijzin%
+  )
+	
+"""
+
+
+ASTA_Bijzin = """
+ (       (ancestor::node[@cat="top" and 
+                         count(.//node[@cat="smain" or @cat="sv1" or 
+						              (@cat="ssub" and @rel="cnj") or 
+									  @cat="whrel" or 
+									  @cat="rel" or 
+									  @cat="whsub" or 
+									  @cat="cp"]) > 1 ]) and 
+         ((@cat="ssub" and @rel="cnj") or
+          (@cat="whrel" or @cat="rel" or @cat="whsub") or
+          (@cat="cp" and node[@cat="ssub"])	or	  
+		  (@cat="sv1" and (@rel="mod" or @rel="cnj") ) or 
+		  (@cat="smain" and (@rel="cnj" or @rel="body") and not(%ASTA_CBijzinzin%)) or
+		  (@cat="oti") or
+		   %ASTA_CBijzin% 
+		  )
+ 
+ )
+"""

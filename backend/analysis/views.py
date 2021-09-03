@@ -22,7 +22,8 @@ from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
                      UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          TranscriptSerializer, UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptSerializer,
+                          UploadFileSerializer)
 
 # flake8: noqa: E501
 
@@ -115,7 +116,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             transcript, method, False, zc_embed, False
         )
 
-        form = form_func(allresults, None)
+        form = form_func(allresults, None, in_memory=True)
         form.seek(0)
         response = HttpResponse(
             form,
@@ -222,4 +223,4 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
 
 class MethodCategoryViewSet(viewsets.ModelViewSet):
     queryset = MethodCategory.objects.all()
-    serializer_class = MethodCategory
+    serializer_class = MethodCategorySerializer

@@ -1,25 +1,17 @@
-from typing import Dict, List, Union, Callable
-
-from lxml import etree as ET
-
-from analysis.macros.functions import expandmacros, get_macros_dict
-from analysis.models import AssessmentQuery, AssessmentMethod
-from analysis.query.external_functions import str2functionmap, form_map
-from analysis.results.results import UtteranceWord
-
-from bs4 import BeautifulSoup as Soup
-
-from django.db.models import Q
-
-from operator import attrgetter
-
-from analysis.score.zc_embedding import get_zc_embeddings
-
 import logging
-logger = logging.getLogger('sasta')
+from operator import attrgetter
+from typing import Callable, Dict, List, Union
 
-core_process_str, post_process_str = 'core', 'post'
-core_process, post_process = 0, 1
+from analysis.models import AssessmentMethod, AssessmentQuery
+from analysis.results.results import UtteranceWord
+from analysis.score.zc_embedding import get_zc_embeddings
+from bs4 import BeautifulSoup as Soup
+from django.db.models import Q
+from lxml import etree as ET
+from sastadev.external_functions import form_map, str2functionmap
+from sastadev.macros import expandmacros, macrodict
+
+logger = logging.getLogger('sasta')
 
 
 class QueryWithFunction:
@@ -83,7 +75,7 @@ class Query:
 
 def compile_queries(queries: List[AssessmentQuery]) -> List[QueryWithFunction]:
     results = []
-    macrodict = get_macros_dict()
+    # macrodict = get_macros_dict()
 
     for query_model in queries:
         query = Query.from_model(query_model)
@@ -98,7 +90,7 @@ def compile_xpath_or_func(query: str,
     try:
         if query in str2functionmap:
             return str2functionmap[query]
-        expanded_query = expandmacros(query, macrodict)
+        expanded_query = expandmacros(query)
         return ET.XPath(expanded_query)
     except Exception as error:
         logger.warning(f'cannot compile {query.strip()}:\t{error}')

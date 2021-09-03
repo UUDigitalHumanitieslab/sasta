@@ -5,13 +5,12 @@ from io import BytesIO
 from itertools import chain
 from uuid import uuid4
 
-from analysis.query.external_functions import form_map
+from sastadev.external_functions import form_map
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from lxml import etree as ET
 
-from .managers import TranscriptManager
 from .utils import get_items_list
 
 logger = logging.getLogger('sasta')
@@ -70,6 +69,7 @@ class AssessmentMethod(models.Model):
 
     class Meta:
         unique_together = (('category', 'name'))
+        get_latest_by = ('date_added', )
 
     def get_item_mapping(self, sep):
         queries = self.queries.all()
@@ -89,6 +89,7 @@ class Corpus(models.Model):
     date_modified = models.DateField(auto_now=True)
     default_method = models.ForeignKey(AssessmentMethod,
                                        on_delete=models.SET_NULL, related_name='corpora', blank=True, null=True)
+    method_category = models.ForeignKey(MethodCategory, on_delete=models.SET_DEFAULT, default=1, related_name='corpora')
 
     def __str__(self):
         return self.name
@@ -147,6 +148,8 @@ class Transcript(models.Model):
         max_length=500, blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
 
+    corrections = models.JSONField(blank=True, null=True)
+
     # objects = TranscriptManager()
     target_speakers = models.CharField(max_length=500, blank=True)
     target_ids = models.BooleanField(default=False)
@@ -187,7 +190,6 @@ class Utterance(models.Model):
                 return self.xsid is not None
             return True
         return self.xsid is not None
-
 
     def __str__(self):
         return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'

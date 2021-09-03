@@ -1,18 +1,17 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faCogs, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
-import { MessageService } from 'primeng/api';
+import * as _ from 'lodash';
+import { MessageService, SelectItemGroup } from 'primeng/api';
+import { interval, Observable, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript } from '../models/transcript';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
 import { TranscriptService } from '../services/transcript.service';
-import { SelectItemGroup } from 'primeng/api';
-import * as _ from 'lodash';
-import { interval, Observable, Subscription } from 'rxjs';
-import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'sas-corpus',
@@ -49,14 +48,14 @@ export class CorpusComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription$ = this.interval$
       .pipe(startWith(0))
-      .subscribe(() => this.get_corpus());
+      .subscribe(() => this.getCorpus());
 
 
     this.methodService
       .list()
       .subscribe(res => {
         this.tams = res;
-        this.groupTams(res);
+        this.groupedTams = this.methodService.groupMethods(res, this.corpus.method_category);
       });
   }
 
@@ -64,19 +63,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
     this.subscription$.unsubscribe();
   }
 
-  groupTams(tams) {
-    this.groupedTams = _(tams)
-      .groupBy('category.name')
-      .map((methods, methodCat) =>
-        ({
-          label: methodCat, items: _.map(methods, (m) =>
-            ({ label: m.name, value: m }))
-        })
-      )
-      .value();
-  }
-
-  get_corpus() {
+  getCorpus() {
     this.corpusService
       .get_by_id(this.id)
       .subscribe(res => {
@@ -100,7 +87,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
       .delete(transcript.id)
       .subscribe(
         () => {
-          this.get_corpus();
+          this.getCorpus();
           this.messageService.add({ severity: 'success', summary: 'Removed transcript', detail: '' });
         },
         err => {
@@ -113,12 +100,12 @@ export class CorpusComponent implements OnInit, OnDestroy {
     this.corpusService
       .set_default_method(this.corpus.id, this.defaultTam ? this.defaultTam.id : null)
       .subscribe(
-        reponse => {},
+        () => { },
         err => {
           console.log(err);
-          this.messageService.add({severity: 'error', summary: 'Error changing default method', detail: err.message, sticky: true })
+          this.messageService.add({ severity: 'error', summary: 'Error changing default method', detail: err.message, sticky: true });
         }
-      )
+    );
   }
 
   downloadZip() {
@@ -130,7 +117,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
           this.messageService.add({ severity: 'success', summary: 'Downloaded corpus', detail: '' });
         },
         err => {
-          console.log(err);
+          console.error(err);
           this.messageService.add({ severity: 'error', summary: 'Error downloading', detail: err.message, sticky: true });
         });
   }

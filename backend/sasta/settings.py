@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'authentication',
     'parse',
     'convert',
+    'sastadev'
 ]
 
 MIDDLEWARE = [
