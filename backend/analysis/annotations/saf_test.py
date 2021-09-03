@@ -2,10 +2,10 @@ import os
 
 import pytest
 from analysis.models import AssessmentMethod, Corpus, Transcript
-from analysis.parse.parse import parse_and_create
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from django.core.files import File
+from parse.parse_utils import parse_and_create
 
 from .safreader import SAFReader
 from .utils import clean_item
@@ -18,7 +18,7 @@ def create_annotation(filename, cha_path, xlsx_path, method, corpus):
     with open(cha_path, 'rb') as cha_content:
         transcript = Transcript(
             name=filename,
-            status='converted',
+            status=Transcript.CONVERTED,
             corpus=corpus,
             extracted_filename=filename + '.cha'
         )
