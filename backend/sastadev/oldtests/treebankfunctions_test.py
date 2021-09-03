@@ -1,4 +1,4 @@
-from analysis.query.external.treebankfunctions import lastmainclauseof, getmarkedutt
+from sastadev.treebankfunctions import lastmainclauseof, getmarkedutt
 from lxml import etree
 
 streestrings = {}
