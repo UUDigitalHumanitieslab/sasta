@@ -144,8 +144,7 @@ def correct_treebank(transcript: Transcript):
     try:
         treebank = etree.parse(transcript.parsed_content).getroot()
         targets = get_targets(treebank)
-        # method_name = transcript.method.category.name
-        method_name = 'tarsp'
+        method_name = transcript.corpus.method_category.name.lower()
 
         corr, error_dict, origandalts = correcttreebank(treebank, targets, method_name, corrn)
 
