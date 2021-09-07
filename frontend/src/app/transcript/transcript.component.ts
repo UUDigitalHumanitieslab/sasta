@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faFile, faFileCode, faTrash, faArrowLeft, faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDownload, faFile, faFileCode, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
-import { MessageService } from 'primeng/api';
-import { Transcript, TranscriptStatus } from '../models/transcript';
+import * as _ from 'lodash';
+import { MessageService, SelectItemGroup } from 'primeng/api';
+import { switchMap } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
-import { TranscriptService } from '../services/transcript.service';
+import { Transcript, TranscriptStatus } from '../models/transcript';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
-import { SelectItemGroup } from 'primeng/api';
-import * as _ from 'lodash';
+import { TranscriptService } from '../services/transcript.service';
 
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const TXT_MIME = 'text/plain';
@@ -53,16 +53,6 @@ export class TranscriptComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
-   }
-
-  ngOnInit() {
-    this.get_transcript();
-    this.methodService
-    .list()
-    .subscribe(res => {
-      this.tams = res;
-      this.groupTams(res);
-    });
   }
 
   allowCorrectionUpload() {
@@ -73,41 +63,30 @@ export class TranscriptComponent implements OnInit {
     return this.transcript.latest_run;
   }
 
-  groupTams(tams) {
-    this.groupedTams = _(tams)
-      .groupBy('category.name')
-      .map((methods, methodCat) =>
-        ({
-          label: methodCat, items: _.map(methods, (m) =>
-            ({ label: m.name, value: m }))
-        })
-      )
-      .value();
+  ngOnInit() {
+    this.loadData();
   }
 
-  get_transcript() {
-    this.transcriptService
-      .get_by_id(this.id)
-      .subscribe(res => {
-        this.transcript = res;
-        this.get_corpus(res.corpus);
-      });
-  }
-
-  get_corpus(corpus_id) {
-    this.corpusService
-      .get_by_id(corpus_id)
-      .subscribe(res => {
-        this.corpus = res;
-        // retrieve default method
-        if (res.default_method) {
-          this.methodService
-            .get_by_id(res.default_method)
-            .subscribe(res => {
-              this.currentTam = res
-            });
-          }
-      });
+  loadData() {
+    this.transcriptService.get_by_id(this.id).pipe( // get transcript
+      switchMap((t: Transcript) => {
+        this.transcript = t;
+        return this.corpusService.get_by_id(t.corpus); // get corpus
+      }),
+      switchMap((c: Corpus) => {
+        this.corpus = c;
+        return this.methodService.get_by_id(c.default_method); // get default method
+      }),
+      switchMap((m: Method) => {
+        this.currentTam = m;
+        return this.methodService.list(); // get all methods
+      }),
+    ).subscribe(
+      (tams: Method[]) => {
+        this.tams = tams;
+        this.groupedTams = this.methodService.groupMethods(tams, this.corpus.method_category); // group methods
+      }
+    );
   }
 
   downloadFile(data: any, filename: string, mimetype: string) {
@@ -128,7 +107,7 @@ export class TranscriptComponent implements OnInit {
   resetAnnotations() {
     this.transcriptService
       .reset_annotations(this.id)
-      .subscribe(() => this.get_transcript());
+      .subscribe(() => this.loadData());
   }
 
   annotateTranscript(outputFormat: 'xlsx' | 'cha') {
@@ -149,7 +128,7 @@ export class TranscriptComponent implements OnInit {
           }
           this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
           this.querying = false;
-          this.get_transcript();
+          this.loadData();
         },
         err => {
           console.log(err);
@@ -194,12 +173,12 @@ export class TranscriptComponent implements OnInit {
   }
 
   deleteTranscript() {
-    var corpus_id = this.corpus.id;
+    const corpusId = this.corpus.id;
     this.transcriptService
       .delete(this.id)
       .subscribe(
         () => {
-          this.router.navigate([`/corpora/${corpus_id}`])
+          this.router.navigate([`/corpora/${corpusId}`]);
           this.messageService.add({ severity: 'success', summary: 'Removed transcript', detail: '' });
         },
         err => {

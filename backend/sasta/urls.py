@@ -34,6 +34,7 @@ api_router.register(r'transcripts', analysis_views.TranscriptViewSet)
 api_router.register(r'corpora', analysis_views.CorpusViewSet)
 api_router.register(r'assessment_methods',
                     analysis_views.AssessmentMethodViewSet)
+api_router.register(r'method_categories', analysis_views.MethodCategoryViewSet)
 
 if settings.PROXY_FRONTEND:
     spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)

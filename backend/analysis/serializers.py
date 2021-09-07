@@ -5,27 +5,9 @@ from .models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Corpus,
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
-    corpus = serializers.CharField(source='corpus.name', required=False)
-    corpus_id = serializers.CharField(source='corpus.id', required=False)
-
     class Meta:
         model = UploadFile
-        corpus = serializers.SerializerMethodField()
-        fields = ['name', 'content', 'status', 'corpus', 'corpus_id']
-
-    # work around circular dependency
-    def get_corpus(self, obj):
-        return CorpusSerializer(obj.corpus).data
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        corpus_data = validated_data.pop('corpus')
-        corpus_instance, _created = Corpus.objects.get_or_create(
-            name=corpus_data['name'],
-            user=user,
-            defaults={'status': 'created'})
-        return UploadFile.objects.create(**validated_data,
-                                         corpus=corpus_instance)
+        fields = ['name', 'content', 'status', 'corpus']
 
 
 class AnalysisRunSerializer(serializers.ModelSerializer):
@@ -60,7 +42,7 @@ class CorpusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Corpus
-        fields = ('id', 'name', 'status', 'default_method', 'date_added', 'date_modified', 'files', 'transcripts')
+        fields = ('id', 'name', 'status', 'default_method', 'method_category', 'date_added', 'date_modified', 'files', 'transcripts')
 
 
 class AssessmentQuerySerializer(serializers.ModelSerializer):

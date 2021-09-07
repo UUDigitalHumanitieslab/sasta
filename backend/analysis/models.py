@@ -70,6 +70,7 @@ class AssessmentMethod(models.Model):
 
     class Meta:
         unique_together = (('category', 'name'))
+        get_latest_by = ('date_added', )
 
     def get_item_mapping(self, sep):
         queries = self.queries.all()
@@ -89,6 +90,7 @@ class Corpus(models.Model):
     date_modified = models.DateField(auto_now=True)
     default_method = models.ForeignKey(AssessmentMethod,
                                        on_delete=models.SET_NULL, related_name='corpora', blank=True, null=True)
+    method_category = models.ForeignKey(MethodCategory, on_delete=models.SET_DEFAULT, default=1, related_name='corpora')
 
     def __str__(self):
         return self.name

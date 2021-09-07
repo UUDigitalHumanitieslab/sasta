@@ -7,8 +7,8 @@ from django.conf import settings
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from .models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
-                     Corpus, Transcript, UploadFile)
+from .models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Compound,
+                     CompoundFile, Corpus, Transcript, UploadFile)
 from .utils import extract, read_TAM
 
 logger = logging.getLogger('sasta')
@@ -83,7 +83,11 @@ def delete_annotation_files(sender, instance, **kwargs):
         pass
 
 
-
-
-
-
+@receiver(post_save, sender=Corpus)
+def initial_default_method(sender, instance, created, **kwargs):
+    if created:
+        try:
+            instance.default_method = instance.method_category.definitions.latest()
+            instance.save()
+        except Exception as error:
+            logger.exception(error)

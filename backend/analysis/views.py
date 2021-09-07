@@ -23,8 +23,10 @@ from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          TranscriptSerializer, UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptSerializer,
+                          UploadFileSerializer)
 from .utils import StreamFile
+
 
 # flake8: noqa: E501
 SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -63,7 +65,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         run.save()
         return run
 
-    @action(detail=True, methods=['POST'], name='Score transcript')
+    @ action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_id = request.data.get('method')
@@ -287,4 +289,4 @@ class AssessmentMethodViewSet(viewsets.ModelViewSet):
 
 class MethodCategoryViewSet(viewsets.ModelViewSet):
     queryset = MethodCategory.objects.all()
-    serializer_class = MethodCategory
+    serializer_class = MethodCategorySerializer
