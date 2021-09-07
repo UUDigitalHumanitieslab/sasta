@@ -1,11 +1,9 @@
-from typing import List, Optional
-from collections import Counter
 import operator
+from collections import Counter
 from functools import reduce
+from typing import List, Optional
 
 from analysis.results.results import AllResults
-from analysis.query.xlsx_output import v1_to_xlsx
-from analysis.query.functions import Query, QueryWithFunction
 
 
 class SAFAnnotation:
@@ -14,22 +12,6 @@ class SAFAnnotation:
         self.label: str = label
         self.fase: str = fase
         self.query_id: Optional[str] = query_id
-
-    def to_query_with_func(self):
-        def func(x):
-            return None
-
-        query = Query(
-            id=self.query_id,
-            cat=None, subcat=None,
-            level=self.level,
-            item=self.label,
-            altitems=None, implies=None, original=None, pages=None,
-            fase=self.fase,
-            query=None, inform=None, screening=None, process=None,
-            special1=None, special2=None, comments=None
-        )
-        return QueryWithFunction(query, func)
 
 
 class SAFDocument:
@@ -55,15 +37,6 @@ class SAFDocument:
     def item_counts(self):
         return {u.utt_id: u.item_counts for u in self.utterances}
 
-    @property
-    def results(self):
-        return {
-            'transcript': self.name,
-            'method': self.method_name,
-            'levels': self.all_levels,
-            'results': self.item_counts
-        }
-
     def to_allresults(self):
         '''Convert to AllResults object (for query and scoring).'''
         filename = self.name
@@ -84,13 +57,6 @@ class SAFDocument:
         )
 
         return allresults
-
-    def query_output(self):
-        '''Return excel sheet in query format.'''
-        allresults = self.to_allresults()
-        queries_with_funcs = list(set(ann.to_query_with_func() for ann in self.all_annotations))
-        wb = v1_to_xlsx(allresults, queries_with_funcs)
-        return wb
 
 
 class SAFUtterance:

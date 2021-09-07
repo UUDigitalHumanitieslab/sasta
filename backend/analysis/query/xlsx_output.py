@@ -76,7 +76,7 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
 
         levels = method.category.levels
         if zc_embeddings:
-            levels = [lv for lv in levels if lv != 'Zc']
+            levels = [lv for lv in levels if lv.lower() != 'Zc'.lower()]
         lower_levels = [lv.lower() for lv in levels]
 
         for utt_id, words in items:

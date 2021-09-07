@@ -1,14 +1,14 @@
 import logging
 import os
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import pandas as pd
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .config import LABELSEP, PREFIX, UTTLEVEL
-from .utils import (clean_cell, enrich, getlabels, item2queryid, mkpatterns,
-                    standardize_header_name, clean_item)
+from .constants import LABELSEP, PREFIX, UTTLEVEL
+from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
+                    mkpatterns, standardize_header_name)
 
 logger = logging.getLogger('sasta')
 

@@ -71,7 +71,7 @@ def run_core_queries(utterances: List[Utterance],
         for q in core_queries:
             matches = single_query_single_utt(q.function, utt.syntree)
             inform = (q.query.inform if only_include_inform else True)
-            inform = inform and q.query.original
+            # inform = inform and q.query.original
 
             if matches:
                 if q.id in results:
@@ -83,7 +83,6 @@ def run_core_queries(utterances: List[Utterance],
                 for m in matches:
                     levels.add(q.query.level)
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
-
                     if annotate and inform:
                         begin = int(m.get('begin'))
                         hit = {
@@ -96,7 +95,7 @@ def run_core_queries(utterances: List[Utterance],
                 if annotate:
                     annotations[utt.utt_id] = utt_res
 
-    return results, allmatches, levels, annotations or None
+    return (results, allmatches, levels, annotations or None)
 
 
 def run_post_queries(allresults: SastaResults,
