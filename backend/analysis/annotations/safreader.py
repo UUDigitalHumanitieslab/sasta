@@ -22,7 +22,7 @@ class SAFReader:
         self.method = method
         self.item_mapping, self.patterns = self.make_mappings()
         self.document = SAFDocument(os.path.basename(
-            filepath), method.name, self.levels)
+            filepath), method, self.levels)
         self.errors: List[Tuple] = []
         self.get_annotations(self.data)
 

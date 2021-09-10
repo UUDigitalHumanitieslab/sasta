@@ -236,10 +236,10 @@ class AssessmentQuery(models.Model):
     def __str__(self):
         return self.query_id
 
-    def get_altitems_list(self, sep):
+    def get_altitems_list(self, sep=',', lower=True):
         if not self.altitems:
             return []
-        return get_items_list(self.altitems, sep)
+        return get_items_list(self.altitems, sep, lower)
 
     def get_implies_list(self, sep):
         if not self.implies:

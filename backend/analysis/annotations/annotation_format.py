@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 from analysis.query.xlsx_output import v1_to_xlsx
 from analysis.results.results import (AllResults, SastaAnnotations,
                                       UtteranceWord)
+from analysis.models import AssessmentMethod, AssessmentQuery
 
 
 class SAFAnnotation:
@@ -17,9 +18,9 @@ class SAFAnnotation:
 
 
 class SAFDocument:
-    def __init__(self, name, method_name='', all_levels=None):
+    def __init__(self, name, method, all_levels=None):
         self.name: str = name
-        self.method_name: str = method_name
+        self.method: AssessmentMethod = method
         self.utterances: List[SAFUtterance] = []
         self.all_levels: Optional[List[str]] = all_levels
         self.annotations: SastaAnnotations = {}
@@ -82,14 +83,20 @@ class SAFDocument:
                     hits=[]
                 )
                 for ann in word.annotations:
-                    hit = {
-                        'level': ann.level,
-                        'item': ann.label,
-                        'fase': ann.fase
-                    }
+                    hit = self.hit_from_annotation(ann)
                     uw.hits.append(hit)
                 annotations[utt.utt_id].append(uw)
         return annotations
+
+    def hit_from_annotation(self, ann) -> Dict:
+        q = self.method.queries.get(query_id=ann.query_id)
+        # Try to match the actual alt item
+        item_matches = [ai for ai in q.get_altitems_list(lower=False) if ai.lower() == ann.label.lower()]
+        return {
+            'level': q.level,
+            'item': item_matches[0] if item_matches else q.item,
+            'fase': q.fase
+        }
 
 
 class SAFUtterance:

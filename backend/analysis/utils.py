@@ -24,9 +24,12 @@ ROMAN_NUMS = [None, 'I', 'II', 'III',
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 
 
-def get_items_list(str, sep):
+def get_items_list(str, sep, lower=True):
     rawresult = str.split(sep)
-    cleanresult = [w.strip().lower() for w in rawresult]
+    if lower:
+        cleanresult = [w.strip().lower() for w in rawresult]
+    else:
+        cleanresult = [w.strip() for w in rawresult]
     if cleanresult == ['']:
         return []
     return cleanresult
