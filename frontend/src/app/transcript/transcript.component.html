@@ -1,6 +1,6 @@
 <ng-container *ngIf="transcript && corpus">
     <div class="buttons" style="display:flex; justify-content: space-between;">
-        <button class="button is-link" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
+        <button class="button is-primary" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
             <span class="icon is-small" style="margin-right: 0;">
                 <fa-icon [icon]="faArrowLeft"></fa-icon>
             </span>
@@ -78,7 +78,7 @@
     </div>
 
     <div class="block">
-        <p-panel header="Download files">
+        <p-panel header="Files">
             <div class="buttons">
                 <button class="button is-primary" pTooltip="view CHAT" [disabled]="!chatFileAvailable(transcript)"
                     (click)="showChat()">
