@@ -39,7 +39,6 @@ export class TranscriptComponent implements OnInit {
   faDownload = faDownload;
   faUpload = faUpload;
 
-  onlyInform = true;
   querying = false;
 
   displayCorrUpload = false;
@@ -113,7 +112,7 @@ export class TranscriptComponent implements OnInit {
   annotateTranscript(outputFormat: 'xlsx' | 'cha') {
     this.querying = true;
     this.corpusService
-      .annotate_transcript(this.id, this.currentTam.id, this.onlyInform, outputFormat)
+      .annotate_transcript(this.id, this.currentTam.id, outputFormat)
       .subscribe(
         response => {
           switch (outputFormat) {

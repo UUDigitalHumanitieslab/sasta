@@ -108,7 +108,10 @@ def filter_queries(method: AssessmentMethod,
     try:
         form_queries = [f.__name__ for f in form_map.values()]
         all_queries = AssessmentQuery.objects.all().filter(
-            Q(method=method) & Q(query__isnull=False) & ~Q(query__in=form_queries)
+            Q(method=method)
+            & Q(query__isnull=False)
+            & ~Q(query__in=form_queries)
+            & Q(inform=True)
         )
         if phase:
             phase_filter = Q(fase=phase) if phase_exact else Q(

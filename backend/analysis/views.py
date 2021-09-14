@@ -87,12 +87,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         transcript = self.get_object()
         method_id = request.data.get('method')
 
-        only_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.get(pk=method_id)
         zc_embed = method.category.zc_embeddings
 
         allresults, queries_with_funcs = query_transcript(
-            transcript, method, True, zc_embed, only_inform
+            transcript, method, True, zc_embed
         )
 
         spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)

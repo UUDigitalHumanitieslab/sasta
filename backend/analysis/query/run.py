@@ -16,8 +16,7 @@ logger = logging.getLogger('sasta')
 def query_transcript(transcript: Transcript,
                      method: AssessmentMethod,
                      annotate: bool = False,
-                     zc_embed: bool = False,
-                     only_inform: bool = False):
+                     zc_embed: bool = False):
     # TODO: LOGGING
 
     queries: List[AssessmentQuery] = filter_queries(method)
@@ -31,7 +30,6 @@ def query_transcript(transcript: Transcript,
     coreresults, allmatches, corelevels, annotations = run_core_queries(
         to_analyze_utterances,
         queries_with_funcs,
-        only_inform,
         zc_embed,
         annotate)
 
@@ -55,7 +53,6 @@ def query_transcript(transcript: Transcript,
 
 def run_core_queries(utterances: List[Utterance],
                      queries: List[QueryWithFunction],
-                     only_include_inform: bool,
                      zc_embed: bool,
                      annotate: bool):
     levels: Set[str] = set([])
@@ -71,8 +68,6 @@ def run_core_queries(utterances: List[Utterance],
             utt_res = utt_from_tree(utt.parse_tree, zc_embed)
         for q in core_queries:
             matches = single_query_single_utt(q.function, utt.syntree)
-            inform = (q.query.inform if only_include_inform else True)
-            # inform = inform and q.query.original
 
             if matches:
                 if q.id in results:
@@ -84,7 +79,7 @@ def run_core_queries(utterances: List[Utterance],
                 for m in matches:
                     levels.add(q.query.level)
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
-                    if annotate and inform:
+                    if annotate:
                         begin = int(m.get('begin'))
                         hit = {
                             'level': q.query.level,
