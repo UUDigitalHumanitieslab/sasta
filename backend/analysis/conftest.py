@@ -19,7 +19,8 @@ def cha_testfiles_dir():
 @pytest.fixture()
 def tarsp_category():
     obj = MethodCategory.objects.create(name='TARSP', zc_embeddings=True, levels=['Sz', 'Zc', 'Wg', 'VVW'])
-    return obj
+    yield obj
+    obj.delete()
 
 
 @pytest.mark.django_db
@@ -31,7 +32,8 @@ def tarsp_method(tarsp_category):
         wrapped_file = File(f)
         instance = AssessmentMethod(name='tarsp_test_method', category=tarsp_category)
         instance.content.save(op.basename(file), wrapped_file)
-    return instance
+    yield instance
+    instance.delete()
 
 
 @pytest.mark.django_db
@@ -44,7 +46,8 @@ def tarsp_corpus(admin_user, tarsp_method, tarsp_category):
         default_method=tarsp_method,
         method_category=tarsp_category
     )
-    return obj
+    yield obj
+    obj.delete()
 
 
 @pytest.mark.django_db
@@ -61,4 +64,5 @@ def tarsp_transcript(tarsp_corpus, cha_testfiles_dir):
     # TODO: mock this, don't actually parse when testing
     convert(obj)
     parse_and_create(obj)
-    return obj
+    yield obj
+    obj.delete()
