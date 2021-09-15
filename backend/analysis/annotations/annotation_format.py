@@ -62,13 +62,6 @@ class SAFDocument:
 
         return allresults
 
-    def query_output(self):
-        '''Return excel sheet in query format.'''
-        allresults = self.to_allresults()
-        queries_with_funcs = list(set(ann.to_query_with_func() for ann in self.all_annotations))
-        wb = v1_to_xlsx(allresults, queries_with_funcs)
-        return wb
-
     @property
     def reformatted_annotations(self) -> Dict[int, List[UtteranceWord]]:
         annotations = {}
