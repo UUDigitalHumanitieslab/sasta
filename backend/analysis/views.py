@@ -178,7 +178,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             raise ParseError(detail='No form definition for this method.')
 
         allresults, _ = query_transcript(
-            transcript, method, False, zc_embed, False
+            transcript, method, annotate=False, zc_embed=zc_embed,
         )
 
         form = form_func(allresults, None, in_memory=True)
