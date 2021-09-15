@@ -1,4 +1,4 @@
-from typing import Counter, Dict, Tuple, Optional
+from typing import Counter, Dict, Optional, Tuple
 
 # Type annotations
 TupleStrDict = Dict[Tuple[Optional[str], Optional[str]], str]

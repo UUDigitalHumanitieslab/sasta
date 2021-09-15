@@ -2,11 +2,11 @@ import logging
 from collections import Counter, defaultdict
 from typing import Dict, List, Set
 
-from analysis.models import (AssessmentMethod, AssessmentQuery, Transcript,
+from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
                              Utterance)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
 from sastadev.query import core_process, post_process
-
+from analysis.annotations.safreader import SAFReader
 from .functions import (Query, QueryWithFunction, compile_queries,
                         filter_queries, single_query_single_utt, utt_from_tree)
 
@@ -16,8 +16,7 @@ logger = logging.getLogger('sasta')
 def query_transcript(transcript: Transcript,
                      method: AssessmentMethod,
                      annotate: bool = False,
-                     zc_embed: bool = False,
-                     only_inform: bool = False):
+                     zc_embed: bool = False):
     # TODO: LOGGING
 
     queries: List[AssessmentQuery] = filter_queries(method)
@@ -31,9 +30,15 @@ def query_transcript(transcript: Transcript,
     coreresults, allmatches, corelevels, annotations = run_core_queries(
         to_analyze_utterances,
         queries_with_funcs,
-        only_inform,
         zc_embed,
         annotate)
+
+    runs = AnalysisRun.objects.filter(transcript=transcript)
+    if runs:  # An annotations file exists, base further results on this
+        latest_run = runs.latest()
+        reader = SAFReader(latest_run.annotation_file.path, method)
+        coreresults = reader.document.to_allresults().coreresults
+        annotations = reader.document.reformatted_annotations
 
     allresults = AllResults(transcript.name,
                             len(to_analyze_utterances),
@@ -48,7 +53,6 @@ def query_transcript(transcript: Transcript,
 
 def run_core_queries(utterances: List[Utterance],
                      queries: List[QueryWithFunction],
-                     only_include_inform: bool,
                      zc_embed: bool,
                      annotate: bool):
     levels: Set[str] = set([])
@@ -64,8 +68,6 @@ def run_core_queries(utterances: List[Utterance],
             utt_res = utt_from_tree(utt.parse_tree, zc_embed)
         for q in core_queries:
             matches = single_query_single_utt(q.function, utt.syntree)
-            inform = (q.query.inform if only_include_inform else True)
-            inform = inform and q.query.original
 
             if matches:
                 if q.id in results:
@@ -77,8 +79,7 @@ def run_core_queries(utterances: List[Utterance],
                 for m in matches:
                     levels.add(q.query.level)
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
-
-                    if annotate and inform:
+                    if annotate:
                         begin = int(m.get('begin'))
                         hit = {
                             'level': q.query.level,
@@ -90,7 +91,7 @@ def run_core_queries(utterances: List[Utterance],
                 if annotate:
                     annotations[utt.utt_id] = utt_res
 
-    return results, allmatches, levels, annotations or None
+    return (results, allmatches, levels, annotations or None)
 
 
 def run_post_queries(allresults: SastaResults,
@@ -105,4 +106,5 @@ def run_post_queries(allresults: SastaResults,
             if result is not None:
                 allresults.postresults[q.id] = result
         except Exception as e:
+            # logger.warning(f'Failed to execute {q.function}')
             logger.exception(e)

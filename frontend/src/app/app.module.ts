@@ -33,6 +33,7 @@ import { TranscriptProgressCellComponent } from './process/transcript-progress-c
 import { TranscriptProgressComponent } from './process/transcript-progress.component';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadComponent } from './upload/upload.component';
+import { UploadSafComponent } from './transcript/upload-saf.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
@@ -51,6 +52,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         RegisterComponent,
         VerifyComponent,
         TranscriptComponent,
+        UploadSafComponent,
         TranscriptProgressComponent,
         TranscriptProgressCellComponent,
     ],

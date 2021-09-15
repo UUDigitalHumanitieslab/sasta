@@ -2,13 +2,12 @@ import traceback
 from collections import Counter
 from typing import List
 
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill
-from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
-from openpyxl.utils import get_column_letter
-
 from analysis.query.functions import QueryWithFunction
 from analysis.results.results import AllResults
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 ROMAN_NUMS = [None, 'I', 'II', 'III',
@@ -32,7 +31,13 @@ def v1_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
         for q in queries
         if q.query.id in all_data
     }
-    sorted_queries = sorted(query_mapping.items(), key=lambda item: item[1][0])
+    sorted_queries = sorted(
+        sorted(
+            query_mapping.items(),
+            key=lambda item: item[0]
+        ),
+        key=lambda item: item[1][0]
+    )
 
     for qid, (fase, item) in sorted_queries:
         fase = fase if fase else 'nvt'
@@ -71,7 +76,7 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
 
         levels = method.category.levels
         if zc_embeddings:
-            levels = [lv for lv in levels if lv != 'Zc']
+            levels = [lv for lv in levels if lv.lower() != 'Zc'.lower()]
         lower_levels = [lv.lower() for lv in levels]
 
         for utt_id, words in items:

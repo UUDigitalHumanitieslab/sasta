@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faArrowLeft, faFile, faFileCode, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDownload, faFile, faFileCode, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
@@ -36,9 +36,12 @@ export class TranscriptComponent implements OnInit {
   faFile = faFile;
   faFileCode = faFileCode;
   faArrowLeft = faArrowLeft;
+  faDownload = faDownload;
+  faUpload = faUpload;
 
-  onlyInform = true;
   querying = false;
+
+  displayCorrUpload = false;
 
   constructor(
     private transcriptService: TranscriptService,
@@ -49,6 +52,14 @@ export class TranscriptComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
+  }
+
+  allowCorrectionUpload() {
+    return this.transcript.status === TranscriptStatus.PARSED && this.transcript.latest_run;
+  }
+
+  allowCorrectionReset() {
+    return this.transcript.latest_run;
   }
 
   ngOnInit() {
@@ -82,10 +93,26 @@ export class TranscriptComponent implements OnInit {
     saveAs(blob, filename);
   }
 
+  downloadLatestAnnotations() {
+    this.transcriptService
+      .latest_annotations(this.id)
+      .subscribe(
+        res => {
+          this.downloadFile(res.body, `${this.transcript.name}_latest_SAF.xlsx`, XLSX_MIME);
+        }
+      );
+  }
+
+  resetAnnotations() {
+    this.transcriptService
+      .reset_annotations(this.id)
+      .subscribe(() => this.loadData());
+  }
+
   annotateTranscript(outputFormat: 'xlsx' | 'cha') {
     this.querying = true;
     this.corpusService
-      .annotate_transcript(this.id, this.currentTam.id, this.onlyInform, outputFormat)
+      .annotate_transcript(this.id, this.currentTam.id, outputFormat)
       .subscribe(
         response => {
           switch (outputFormat) {
@@ -100,6 +127,7 @@ export class TranscriptComponent implements OnInit {
           }
           this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
           this.querying = false;
+          this.loadData();
         },
         err => {
           console.log(err);
@@ -173,6 +201,15 @@ export class TranscriptComponent implements OnInit {
   showLassy() {
     window.open(this.transcript.parsed_content, '_blank');
   }
+
+  showCorrectionsUpload() {
+    this.displayCorrUpload = true;
+  }
+
+  onCorrectionsUploadClose(event) {
+    this.displayCorrUpload = event;
+  }
+
 
 
 }

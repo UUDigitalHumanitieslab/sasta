@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from io import StringIO
+import datetime
+from io import BytesIO, StringIO
 
+from analysis.annotations.safreader import SAFReader
 from analysis.query.enrich_chat import enrich_chat
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
@@ -15,17 +17,19 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from .convert.convert import convert
-from .models import (AssessmentMethod, Corpus, MethodCategory, Transcript,
-                     UploadFile)
+from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
+                     Transcript, UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
+from .utils import StreamFile
+
 
 # flake8: noqa: E501
+SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 
 class UploadFileViewSet(viewsets.ModelViewSet):
@@ -45,14 +49,30 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(corpus__user=self.request.user)
 
-    @action(detail=True, methods=['POST'], name='Score transcript')
+    def create_analysis_run(self, transcript, method, saf, is_manual=False):
+        if not isinstance(saf, BytesIO):
+            stream = BytesIO()
+            saf.save(stream)
+        else:
+            stream = saf
+        run = AnalysisRun(transcript=transcript, method=method, is_manual_correction=is_manual)
+
+        now = datetime.datetime.now()
+        stamp = now.strftime('%Y%m%d_%H%M')
+
+        filename = f'{transcript.name}_{stamp}_saf.xlsx'
+        run.annotation_file.save(filename, StreamFile(stream))
+        run.save()
+        return run
+
+    @ action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_id = request.data.get('method')
         method = AssessmentMethod.objects.get(pk=method_id)
 
         response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
         allresults, queries_with_funcs = query_transcript(transcript, method)
@@ -67,15 +87,18 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         transcript = self.get_object()
         method_id = request.data.get('method')
 
-        only_inform = request.data.get('only_inform') == 'true'
         method = AssessmentMethod.objects.get(pk=method_id)
         zc_embed = method.category.zc_embeddings
 
         allresults, queries_with_funcs = query_transcript(
-            transcript, method, True, zc_embed, only_inform
+            transcript, method, True, zc_embed
         )
 
+        spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
+        self.create_analysis_run(transcript, method, spreadsheet)
+
         format = request.data.get('format', 'xlsx')
+
         if format == 'xlsx':
             spreadsheet = v2_to_xlsx(
                 allresults, method, zc_embeddings=zc_embed)
@@ -100,6 +123,48 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
             return response
 
+    @action(detail=True, methods=['GET'], name='Download latest annotation', url_path='annotations/latest')
+    def latest_annotations(self, request, *args, **kwargs):
+        obj = self.get_object()
+        run = AnalysisRun.objects.filter(transcript=obj).latest()
+
+        filename = run.annotation_file.name.split('/')[-1]
+        response = HttpResponse(run.annotation_file, content_type=SPREADSHEET_MIMETYPE)
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response
+
+    @action(detail=True, methods=['GET'], name='Reset annotations', url_path='annotations/reset')
+    def reset_annotations(self, request, *args, **kwargs):
+        obj = self.get_object()
+        all_runs = AnalysisRun.objects.filter(transcript=obj)
+        all_runs.delete()
+        return Response('Success', status.HTTP_200_OK)
+
+    @action(detail=True, methods=['POST'], name='Upload annotations', url_path='annotations/upload')
+    def upload_annotations(self, request, *args, **kwargs):
+        obj = self.get_object()
+        try:
+            latest_run = AnalysisRun.objects.filter(transcript=obj).latest()
+        except AnalysisRun.DoesNotExist:
+            return Response('No previous annotations found for this transcript. Run regular annotating at least once before providing corrected input.',
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['content'].file
+
+        new_run = self.create_analysis_run(obj, latest_run.method, file, is_manual=True)
+
+        try:
+            reader = SAFReader(new_run.annotation_file.path, latest_run.method)
+        except Exception as e:
+            new_run.delete()
+            return Response(str(e), status.HTTP_400_BAD_REQUEST)
+
+        if reader.errors:
+            new_run.delete()
+            return Response(reader.formatted_errors(), status.HTTP_400_BAD_REQUEST)
+
+        return Response('Success', status.HTTP_200_OK)
+
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):
         transcript = self.get_object()
@@ -113,14 +178,14 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             raise ParseError(detail='No form definition for this method.')
 
         allresults, _ = query_transcript(
-            transcript, method, False, zc_embed, False
+            transcript, method, annotate=False, zc_embed=zc_embed,
         )
 
         form = form_func(allresults, None, in_memory=True)
         form.seek(0)
         response = HttpResponse(
             form,
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = f"attachment; filename={transcript.name}_{method.category.name}_form.xlsx"
 
         return response

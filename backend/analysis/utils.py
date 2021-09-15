@@ -2,7 +2,6 @@ import errno
 import logging
 import os
 from shutil import copyfile
-from typing import Any, Dict
 from zipfile import ZipFile
 
 import docx.document
@@ -12,12 +11,9 @@ import docx.table
 import docx.text.paragraph
 import pandas as pd
 from django.core.files import File
+from django.core.files.base import ContentFile
 from django.db.utils import IntegrityError
 from docx import Document
-
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill
-
 from sastadev.query import getprocess
 
 logger = logging.getLogger('sasta')
@@ -28,9 +24,12 @@ ROMAN_NUMS = [None, 'I', 'II', 'III',
 LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 
 
-def get_items_list(str, sep):
+def get_items_list(str, sep, lower=True):
     rawresult = str.split(sep)
-    cleanresult = [w.strip().lower() for w in rawresult]
+    if lower:
+        cleanresult = [w.strip().lower() for w in rawresult]
+    else:
+        cleanresult = [w.strip() for w in rawresult]
     if cleanresult == ['']:
         return []
     return cleanresult
@@ -67,7 +66,7 @@ def extract(file):
         file.save()
         return created_transcripts
 
-    except:
+    except Exception:
         file.status = 'extraction-failed'
         file.save()
         raise
@@ -170,3 +169,15 @@ def create_query_from_series(series: pd.Series, method) -> None:
         instance.save()
     except IntegrityError as error:
         logger.exception(error)
+
+
+class StreamFile(ContentFile):
+    """
+    Django doesn't provide a File wrapper suitable
+    for file-like objects (eg StringIO)
+    """
+
+    def __init__(self, stream):
+        super(ContentFile, self).__init__(stream)
+        stream.seek(0, 2)
+        self.size = stream.tell()

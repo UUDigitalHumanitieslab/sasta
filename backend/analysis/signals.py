@@ -4,11 +4,11 @@ import os
 import shutil
 
 from django.conf import settings
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from .models import (AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
-                     Corpus, Transcript, UploadFile)
+from .models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Compound,
+                     CompoundFile, Corpus, Transcript, UploadFile)
 from .utils import extract, read_TAM
 
 logger = logging.getLogger('sasta')
@@ -71,6 +71,16 @@ def read_tam_file(sender, instance, created, **kwargs):
         read_TAM(instance)
     except Exception as error:
         logger.exception(error)
+        print(f'error in read_tam_file:\t{error}')
+
+
+@receiver(post_delete, sender=AnalysisRun)
+def delete_annotation_files(sender, instance, **kwargs):
+    try:
+        instance.annotation_file.delete(False)
+        instance.query_file.delete(False)
+    except FileNotFoundError:
+        pass
 
 
 @receiver(post_save, sender=Corpus)
@@ -81,9 +91,3 @@ def initial_default_method(sender, instance, created, **kwargs):
             instance.save()
         except Exception as error:
             logger.exception(error)
-
-
-
-
-
-

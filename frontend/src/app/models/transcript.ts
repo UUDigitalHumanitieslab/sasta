@@ -1,4 +1,10 @@
-import { Corpus } from './corpus';
+interface AnalysisRun {
+    id: number;
+    created: Date;
+    annotation_file: string;
+    method: number;
+    is_manual_correction: boolean;
+}
 
 export enum TranscriptStatus {
     UNKNOWN, CREATED,
@@ -16,5 +22,6 @@ export interface Transcript {
     date_added?: Date;
     corpus: number;
     utterances?: any[];
+    latest_run?: AnalysisRun;
 }
 

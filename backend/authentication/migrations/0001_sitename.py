@@ -5,7 +5,7 @@ from django.conf import settings
 
 
 def update_site_domain(apps, schema_editor):
-    Site = apps.get_model("sites",  "Site")
+    Site = apps.get_model("sites", "Site")
     s, _ = Site.objects.get_or_create(pk=settings.SITE_ID)
     s.domain = settings.HOST
     s.name = settings.SITE_NAME

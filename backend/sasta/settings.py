@@ -215,7 +215,7 @@ LOGGING = {
         'sasta_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR,'sasta.log'),
+            'filename': os.path.join(BASE_DIR, 'sasta.log'),
             'formatter': 'standard'
         },
         'console': {
@@ -235,17 +235,17 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['django_file', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'django.server': {
             'handlers': ['django_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False
         },
         'sasta': {
             'handlers': ['sasta_file', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True
         }
     },

@@ -2,7 +2,7 @@ import logging
 import re
 from typing import List, Pattern, Tuple
 
-from .config import HEADER_VARIANTS, ITEMSEPPATTERN, LABELSEP, TupleStrDict
+from .constants import HEADER_VARIANTS, ITEMSEPPATTERN, LABELSEP, TupleStrDict
 
 logger = logging.getLogger('sasta')
 
@@ -57,7 +57,7 @@ def enrich(labelstr: str, lcprefix: str) -> str:
         newlabels = []
         for label in labels:
             if label != "" and lcprefix != "":
-                newlabels.append(lcprefix+":" + label)
+                newlabels.append(lcprefix + ":" + label)
             else:
                 newlabels.append(label)
         result = LABELSEP.join(newlabels)
@@ -80,6 +80,12 @@ def getlabels(labelstr, patterns):
         logger.warning('Cannot interpret %s; found items: %s',
                        labelstr, logstr)
     return results
+
+
+def clean_item(item: str):
+    clean_item = item.lower().strip()
+    clean_item = re.sub(pattern=r' +', repl=' ', string=clean_item)
+    return clean_item
 
 
 def item2queryid(item: str, level: str,
