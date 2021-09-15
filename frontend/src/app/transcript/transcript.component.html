@@ -1,6 +1,6 @@
 <ng-container *ngIf="transcript && corpus">
     <div class="buttons" style="display:flex; justify-content: space-between;">
-        <button class="button is-link" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
+        <button class="button is-primary" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
             <span class="icon is-small" style="margin-right: 0;">
                 <fa-icon [icon]="faArrowLeft"></fa-icon>
             </span>
@@ -42,16 +42,15 @@
                     <div class="field">
                         <div class="control">
                             <button class="button is-primary" [disabled]="!currentTam"
-                                (click)="annotateTranscript('xlsx')"
-                                [ngClass]="{'is-loading': querying}">Annotate (xlsx)</button>
+                                (click)="annotateTranscript('xlsx')" [ngClass]="{'is-loading': querying}">Annotate
+                                (xlsx)</button>
                         </div>
                     </div>
                     <div class="divider is-vertical">or</div>
                     <div class="field">
                         <div class="control">
                             <button class="button is-primary" [disabled]="!currentTam"
-                                (click)="annotateTranscript('cha')"
-                                [ngClass]="{'is-loading': querying}">Annotate
+                                (click)="annotateTranscript('cha')" [ngClass]="{'is-loading': querying}">Annotate
                                 (CHAT)</button>
                         </div>
                     </div>
@@ -74,16 +73,14 @@
             </p>
             <div class="buttons">
                 <button class="button is-primary" pTooltip="Download the latest generated annotations file"
-                    [disabled]="!(transcript.latest_run)"
-                    (click)="downloadLatestAnnotations()">
+                    [disabled]="!(transcript.latest_run)" (click)="downloadLatestAnnotations()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faDownload"></fa-icon>
                     </span>
                     <span>Download annotations</span>
                 </button>
                 <button class="button is-primary" pTooltip="Provide a manually corrected annotations file"
-                    [disabled]="!allowCorrectionUpload()"
-                    (click)="showCorrectionsUpload()">
+                    [disabled]="!allowCorrectionUpload()" (click)="showCorrectionsUpload()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faUpload"></fa-icon>
                     </span>
@@ -101,7 +98,7 @@
     </div>
 
     <div class="block">
-        <p-panel header="Download files">
+        <p-panel header="Files">
             <div class="buttons">
                 <button class="button is-primary" pTooltip="view CHAT" [disabled]="!chatFileAvailable(transcript)"
                     (click)="showChat()">
@@ -120,9 +117,8 @@
             </div>
         </p-panel>
     </div>
-<sas-upload-saf *ngIf="displayCorrUpload" [display]="displayCorrUpload"
-    (displayChange)="onCorrectionsUploadClose($event)"
-    [transcript]="transcript">
-</sas-upload-saf>
+    <sas-upload-saf *ngIf="displayCorrUpload" [display]="displayCorrUpload"
+        (displayChange)="onCorrectionsUploadClose($event)" [transcript]="transcript">
+    </sas-upload-saf>
 
 </ng-container>

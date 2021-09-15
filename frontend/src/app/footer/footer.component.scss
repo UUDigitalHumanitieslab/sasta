@@ -1,19 +1,25 @@
 @import '../../variables';
 
-.university-logo,
-.lab-logo {
+.logo {
     display: inline-block;
-    height: 50px;
+    height: 30px;
+    max-width: 120px;
+    margin-right: 5px;
 }
 
-.university-logo {
-    padding-right: 10px;
-    width: 200px;
+img {
+    max-height: 100%;
 }
 
 .lab-logo {
-    // add padding to give it the same size as the university logo (LAB logo is 10px lower)
     background: $lab-color;
-    padding: 5px;
-    width: 210px;
+    padding: 2px;
+    }
+
+    .section {
+        padding: 1em 1em;
+    }
+
+    .footer {
+        padding: 0 0;
 }
