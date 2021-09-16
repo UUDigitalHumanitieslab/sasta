@@ -67,32 +67,39 @@
     </div>
 
     <div class="block">
-        <p-panel header="Annotation">
-            <p *ngIf="transcript.latest_run">Latest Annotation:
-                <span>{{transcript.latest_run.created | date: 'dd/MM/yyyy, HH:mm'}}</span>
-            </p>
-            <div class="buttons">
-                <button class="button is-primary" pTooltip="Download the latest generated annotations file"
-                    [disabled]="!(transcript.latest_run)" (click)="downloadLatestAnnotations()">
-                    <span class="icon is-small">
-                        <fa-icon [icon]="faDownload"></fa-icon>
-                    </span>
-                    <span>Download annotations</span>
-                </button>
-                <button class="button is-primary" pTooltip="Provide a manually corrected annotations file"
-                    [disabled]="!allowCorrectionUpload()" (click)="showCorrectionsUpload()">
-                    <span class="icon is-small">
-                        <fa-icon [icon]="faUpload"></fa-icon>
-                    </span>
-                    <span>Upload (corrected) annotations</span>
-                </button>
-                <button class="button is-danger" pTooltip="Reset annotations by querying the original transcript"
-                    [disabled]="!allowCorrectionReset()" (click)="resetAnnotations()">
-                    <span class="icon is-small">
-                        <fa-icon [icon]="faTrash"></fa-icon>
-                    </span>
-                    <span>Reset corrections</span>
-                </button>
+        <p-panel header="Annotations">
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-primary" pTooltip="Download the latest generated annotations file"
+                        [disabled]="!(transcript.latest_run)" (click)="downloadLatestAnnotations()">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faDownload"></fa-icon>
+                        </span>
+                        <span>Download annotations</span>
+                    </button>
+                    <p class="help" *ngIf="transcript.latest_run">Latest annotations:
+                        <span>{{transcript.latest_run.created | date: 'dd/MM/yyyy, HH:mm'}}</span></p>
+                    </div>
+                    <div class="control">
+                    <button class="button is-primary" pTooltip="Provide a manually corrected annotations file"
+                        [disabled]="!allowCorrectionUpload()" (click)="showCorrectionsUpload()">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faUpload"></fa-icon>
+                        </span>
+                        <span>Upload (corrected) annotations</span>
+                    </button>
+                    <p class="help" *ngIf="transcript.latest_corrections">Latest corrections:
+                        <span>{{transcript.latest_corrections.created | date: 'dd/MM/yyyy, HH:mm'}}</span></p>
+                    </div>
+                    <div class="control">
+                    <button class="button is-danger" pTooltip="Reset annotations by querying the original transcript"
+                        [disabled]="!allowCorrectionReset()" (click)="resetAnnotations()">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </span>
+                        <span>Reset corrections</span>
+                    </button>
+                </div>
             </div>
         </p-panel>
     </div>

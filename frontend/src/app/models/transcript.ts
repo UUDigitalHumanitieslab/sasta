@@ -23,5 +23,6 @@ export interface Transcript {
     corpus: number;
     utterances?: any[];
     latest_run?: AnalysisRun;
+    latest_corrections?: AnalysisRun;
 }
 

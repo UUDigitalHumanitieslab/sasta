@@ -24,7 +24,15 @@ class TranscriptSerializer(serializers.ModelSerializer):
         except AnalysisRun.DoesNotExist:
             return None
 
+    def get_latest_corrections(self, obj):
+        try:
+            latest = obj.analysisruns.filter(is_manual_correction=True).latest()
+            return AnalysisRunSerializer(latest).data
+        except AnalysisRun.DoesNotExist:
+            return None
+
     latest_run = serializers.SerializerMethodField()
+    latest_corrections = serializers.SerializerMethodField()
     status = serializers.ChoiceField(choices=Transcript.STATUS_CHOICES)
     status_name = serializers.CharField(source='get_status_display')
 
@@ -32,7 +40,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
         model = Transcript
         fields = ('id', 'name', 'content',
                   'parsed_content', 'status', 'status_name', 'date_added', 
-                  'corpus', 'utterances', 'latest_run')
+                  'corpus', 'utterances', 'latest_run', 'latest_corrections')
 
 
 class CorpusSerializer(serializers.ModelSerializer):
