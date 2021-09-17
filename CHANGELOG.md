@@ -7,15 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - 2021-09-10
 ### Added
 - CHAT format input.
-- Asynchronous parsing. 
+- Asynchronous parsing; the parse process continues in the background. 
 - Updates to query definitions and related SASTADEV functions.
 - Automatic corrections on input files to improve parses of irregular language (implemented in SASTADEV).
 - Logos for participating organisations.
 ### Changed
+- Give corpora a method category, can only query and annotate using methods within this category.
 - Updated look.
 ### Removed
-- Users can no longer toggle 'Inform only', the option is forcibly set to true.
+- Remove 'Inform only' choice, the option is forcibly set to true.
 ### Fixed
 - Asynchronous parsing ensures the application does not lock all users for the duration.
 ### Security
-- Fix vulnerabilities in both frontend and backend.
+- Fix multiple vulnerabilities in both frontend and backend.
