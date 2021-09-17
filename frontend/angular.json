@@ -36,7 +36,6 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "assets": [
-                            "src/favicon.ico",
                             "src/assets"
                         ],
                         "styles": [
@@ -73,8 +72,8 @@
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "150kb"
                                 }
                             ],
                             "outputPath": "dist"
@@ -104,8 +103,8 @@
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "150kb"
                                 }
                             ],
                             "outputPath": "dist",
@@ -136,8 +135,8 @@
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "150kb"
                                 }
                             ],
                             "outputPath": "dist",

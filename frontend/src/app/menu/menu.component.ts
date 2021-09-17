@@ -6,6 +6,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
+import { faFolder, faListAlt, faFileUpload } from '@fortawesome/free-solid-svg-icons'
+
 @Component({
     animations,
     selector: 'sas-menu',
@@ -19,6 +21,9 @@ export class MenuComponent implements OnInit {
     public isAuthenticated$ = this.authService.isAuthenticated$;
 
     faUser = faUser;
+    faFolder = faFolder;
+    faListAlt = faListAlt;
+    faFileUpload = faFileUpload;
     version = environment.appVersion;
 
     constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) {

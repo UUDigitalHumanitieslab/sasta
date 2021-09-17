@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 80 80"
+   version="1.1"
+   sodipodi:docname="favicon.svg"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   width="80"
+   height="80"
+   inkscape:export-filename="/Users/julian/surfdrive/Shared/DigitalHumanitiesLabatUU/PR/LogoLab/favicon16x16.png"
+   inkscape:export-xdpi="19.200001"
+   inkscape:export-ydpi="19.200001">
+  <metadata
+     id="metadata4825">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Artboard 1 copy</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2560"
+     inkscape:window-height="1315"
+     id="namedview4823"
+     showgrid="false"
+     inkscape:zoom="4.735"
+     inkscape:cx="192.68583"
+     inkscape:cy="34.656553"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1"
+     inkscape:object-nodes="false"
+     inkscape:object-paths="false"
+     inkscape:snap-bbox="true"
+     inkscape:snap-nodes="false"
+     showguides="true"
+     inkscape:bbox-paths="false"
+     inkscape:snap-page="true" />
+  <defs
+     id="defs4768">
+    <style
+       id="style4763">
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #303030;
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath
+       id="clip-path">
+      <rect
+         class="cls-1"
+         width="400"
+         height="80"
+         id="rect4765"
+         x="0"
+         y="0"
+         style="fill:none" />
+    </clipPath>
+  </defs>
+  <title
+     id="title4770">Artboard 1 copy</title>
+  <rect
+     style="fill:#303030;stroke-width:0.99999994"
+     y="0"
+     x="0"
+     id="rect4772"
+     height="80"
+     width="80.042236"
+     class="cls-3" />
+  <path
+     class="cls-4"
+     d="M 0.23072318,0.08 H 13.120722 q 6.57,0 10.19,4.73 a 17.68,17.68 0 0 1 3.23,10.94 22.15,22.15 0 0 1 -1.91,9.32 q -3.4,7.35 -11.55,7.35 H 0.23072318 Z M 12.230722,28.68 a 11.45,11.45 0 0 0 3.56,-0.47 7.86,7.86 0 0 0 4.08,-3.3 13.75,13.75 0 0 0 1.83,-5 20.11,20.11 0 0 0 0.32,-3.39 q 0,-6 -2.33,-9.33 -2.33,-3.33 -7.46,-3.35 H 4.6407232 v 24.84 z"
+     id="path4774"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff" />
+  <path
+     class="cls-4"
+     d="M 0.13358405,41.52 H 4.7287541 V 57.6 H 21.960674 V 41.52 h 4.59518 v 38.9 h -4.59518 V 62.23 H 4.8144941 V 80.42 H 0.13358405 Z"
+     id="path4790"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;stroke-width:1" />
+  <g
+     id="g4818"
+     transform="matrix(0.92360467,0,0,1,-155.13588,0)"
+     style="stroke-width:1.04053557">
+    <path
+       style="fill:#ffffff;stroke-width:1.04053557"
+       inkscape:connector-curvature="0"
+       id="path4812"
+       d="m 203,-0.19 h 10.92 V 71 h 40.46 v 9.63 H 203 Z"
+       class="cls-4" />
+  </g>
+</svg>

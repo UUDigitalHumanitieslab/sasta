@@ -208,6 +208,7 @@ export class TranscriptComponent implements OnInit {
 
   onCorrectionsUploadClose(event) {
     this.displayCorrUpload = event;
+    this.loadData();
   }
 
 
