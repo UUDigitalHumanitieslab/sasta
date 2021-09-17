@@ -14,12 +14,17 @@
         </button>
     </div>
 
-    <h1 class="title">{{transcript.name}}</h1>
+    <h3 class="title is-3">{{transcript.name}}</h3>
 
     <div class="block">
-        <p><strong>Status:</strong> {{transcript.status}}</p>
-        <p><strong>Number of utterances:</strong> {{transcript.utterances ? transcript.utterances.length : 0}}</p>
-        <p><strong>Created on:</strong> {{transcript.date_added | date: 'dd/MM/yyyy' }}</p>
+        <div class="level-left">
+            <p class="level-item"><strong>Status: </strong> {{transcript.status_name}}</p>
+            <p class="level-item"><strong>Number of utterances: </strong>
+                {{transcript.utterances ? transcript.utterances.length : 0}}</p>
+            <p class="level-item"><strong>Analysing: </strong>
+                {{transcript.target_speakers ? transcript.target_speakers : 'XSIDs'}}</p>
+            <p class="level-item"><strong>Created on: </strong> {{transcript.date_added | date: 'dd/MM/yyyy' }}</p>
+        </div>
     </div>
 
     <div class="block">

@@ -40,7 +40,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
         model = Transcript
         fields = ('id', 'name', 'content',
                   'parsed_content', 'status', 'status_name', 'date_added', 
-                  'corpus', 'utterances', 'latest_run', 'latest_corrections')
+                  'corpus', 'utterances', 'latest_run', 'latest_corrections', 'target_speakers')
 
 
 class CorpusSerializer(serializers.ModelSerializer):
