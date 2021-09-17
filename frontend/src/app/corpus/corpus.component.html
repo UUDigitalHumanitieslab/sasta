@@ -1,51 +1,51 @@
 <ng-container *ngIf="corpus">
-    <h1 class="title">{{corpus.name}}</h1>
-    <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
-        <span class="icon is-small">
-            <fa-icon [icon]="faDownload"></fa-icon>
-        </span>
-        <span>Download</span>
-    </button>
+    <h3 class="title is-4">{{corpus.name}}</h3>
+    <div class="buttons">
+        <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
+            <span class="icon is-small">
+                <fa-icon [icon]="faDownload"></fa-icon>
+            </span>
+            <span>download</span>
+            </button>
+            <button class="button is-primary" pTooltip="(re)process the corpus" [routerLink]="['/process/', corpus.id]">
+                <span class="icon is-small">
+                    <fa-icon [icon]="faCogs"></fa-icon>
+                </span>
+                <span>(re)process</span>
+        </button>
+    </div>
+    <div class="field">
+        <label class="label">
+            Default method
+        </label>
+        <div class="control">
+            <p-dropdown [options]="groupedTams" [(ngModel)]="defaultTam" placeholder="No default"
+                name="default-tam-dropdown" [group]="true" showClear="true" appendTo="body"
+                (onChange) = "changeDefaultMethod()"
+                [disabled]="!(groupedTams?.length > 0)">
+            </p-dropdown>
+        </div>
+    </div>
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
                 <th>Transcript</th>
                 <th>Status</th>
                 <th>Utterances (#)</th>
-                <th>Files</th>
+                <th>Created on</th>
                 <th class="has-text-right">Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let transcript of corpus.transcripts">
-                <td>{{transcript.name}}</td>
-                <td>{{transcript.status}}</td>
-                <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
-                <td>
-                    <div class="buttons">
-                        <button class="button is-primary" pTooltip="view CHAT"
-                            [disabled]="!(transcript.status=='converted' || transcript.status=='parsed')"
-                            (click)="showChat(transcript)">
-                            <span class="icon is-small">
-                                <fa-icon [icon]="faFile"></fa-icon>
-                            </span>
-                        </button>
-                        <button class="button is-primary" pTooltip="view alpino parse"
-                            [disabled]="!(transcript.status=='parsed')" (click)="showLassy(transcript)">
-                            <span class="icon is-small">
-                                <fa-icon [icon]="faFileCode"></fa-icon>
-                            </span>
-                        </button>
-                    </div>
+                <td class="transcript-name" [routerLink]="['/transcript/', transcript.id]">
+                    <a>{{transcript.name}}</a>
                 </td>
+                <td>{{transcript.status_name}}</td>
+                <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
+                <td>{{transcript.date_added | date: 'dd/MM/yyyy' }}</td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
-                        <button class="button is-primary" pTooltip="query transcript"
-                            [disabled]="!(transcript.status=='parsed')" (click)="showDialog(transcript)">
-                            <span class="icon is-small">
-                                <fa-icon [icon]="faCalculator"></fa-icon>
-                            </span>
-                        </button>
                         <button class="button is-primary" pTooltip="delete transcript"
                             (click)="deleteTranscript(transcript)">
                             <span class="icon is-small">
@@ -58,41 +58,3 @@
         </tbody>
     </table>
 </ng-container>
-
-<p-dialog header="{{currentTranscript?.name}}" [(visible)]="displayScore" (onHide)="closeDialog()"
-    [dismissableMask]="true" [modal]="true">
-    <ng-container *ngIf="currentTranscript">
-        <form (submit)="performQuerying(currentTranscript, currentTam)">
-            <div class="field">
-                <div class="control">
-                    <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
-                        name="tam-dropdown" [group]="true" showClear="true" appendTo="body"
-                        [disabled]="!(groupedTams?.length > 0)">
-                    </p-dropdown>
-                </div>
-            </div>
-            <div class="field is-grouped">
-                <div class="control">
-                    <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='query'"
-                        [ngClass]="{'is-loading': querying}">Query</button>
-                </div>
-                <div class="divider is-vertical">or</div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryAction='annotate'"
-                            [ngClass]="{'is-loading': querying}">Annotate</button>
-                    </div>
-                    <div class="control">
-                        <p-checkbox [(ngModel)]="onlyInform" binary="true" label="Only inform queries" name="inform">
-                        </p-checkbox>
-                    </div>
-                </div>
-                <div class="divider is-vertical">or</div>
-                <div class="control">
-                    <button class="button is-primary" [disabled]="!currentTam || !currentTam?.category.has_form"
-                        (click)="queryAction='generateForm'" [ngClass]="{'is-loading': querying}">Generate form</button>
-                </div>
-            </div>
-        </form>
-    </ng-container>
-</p-dialog>

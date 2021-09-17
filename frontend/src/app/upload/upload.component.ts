@@ -1,22 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { Store, select } from '@ngrx/store';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-
-import { storeStructure } from '../store';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
-import { Subscription } from 'rxjs';
-import { CorpusService } from '../services/corpus.service';
+import { MethodCategory } from '../models/methodcategory';
 import { UploadFile } from '../models/upload-file';
+import { CorpusService } from '../services/corpus.service';
+import { MethodService } from '../services/method.service';
 import { UploadFileService } from '../services/upload-file.service';
+
 
 @Component({
     selector: 'sas-upload',
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnDestroy, OnInit {
+export class UploadComponent implements OnInit {
     content: File;
     newCorpusName: string;
 
@@ -24,35 +25,26 @@ export class UploadComponent implements OnDestroy, OnInit {
     faUpload = faUpload;
 
     uploading: boolean;
-    subscriptions: Subscription[];
 
     corpora: Corpus[];
     selectedCorpus: Corpus;
 
-    constructor(private store: Store<storeStructure>,
-        private router: Router,
-        private corpusService: CorpusService,
-        private uploadFileService: UploadFileService) {
-        this.subscriptions = [
-            this.store.pipe(select('uploadFiles')).subscribe((uploadFiles: UploadFile[]) => {
-                // information about the file is available
-                if (this.uploading) {
-                    const file = uploadFiles.find(x => x.content.name === this.content.name);
-                    if (file.status === 'uploaded') {
-                        router.navigate(['/corpora']);
-                    }
-                }
-            })
-        ];
-    }
+    categories: MethodCategory[];
+    selectedCategory: MethodCategory;
+
+    _: any = _;
+
+    constructor(
+        private router: Router, private corpusService: CorpusService,
+        private uploadFileService: UploadFileService, private methodService: MethodService) { }
 
     ngOnInit() {
         this.corpusService.list()
-            .then(response => { this.corpora = response; });
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+            .subscribe(res => this.corpora = res);
+        this.methodService.listCategories()
+            .subscribe(res => {
+                this.categories = res;
+            });
     }
 
     fileChange(fileInput: HTMLInputElement) {
@@ -60,24 +52,65 @@ export class UploadComponent implements OnDestroy, OnInit {
         this.fileName = this.content.name;
     }
 
-    upload() {
-        this.uploading = true;
-        this.uploadFileService.upload_obs({
+    fullyFilled() {
+        return (this.newCorpusName || this.selectedCorpus) && this.content && this.selectedCategory && !this.corpusNameInUse();
+    }
+
+    onSelectCorpus() {
+        if (this.selectedCorpus) {
+            this.selectedCategory = this.categories.find(c => c.id === this.selectedCorpus.method_category);
+            this.newCorpusName = undefined;
+        } else {
+            this.selectedCategory = undefined;
+        }
+
+    }
+
+    corpusNameInUse() {
+        return _.some(this.corpora, ['name', this.newCorpusName]);
+    }
+
+    createCorpus$() {
+        const newCorpus: Corpus = {
+            name: this.newCorpusName,
+            status: 'created',
+            method_category: this.selectedCategory.id
+        };
+        return this.corpusService.create(newCorpus);
+    }
+
+    upload$(toCorpus: Corpus) {
+        const newUploadFile: UploadFile = {
             name: this.fileName,
             content: this.content,
             status: 'uploading',
-            corpus: this.selectedCorpus || { name: this.newCorpusName, status: 'created' }
-        })
-            .subscribe(
-                response => {
-                    this.uploading = false;
-                    this.router.navigate([`/process/${response.corpus_id}`]);
-                },
-                error => {
-                    this.uploading = false;
-                    console.log(error);
-                }
-            );
+            corpus: toCorpus
+        };
+        return this.uploadFileService.upload(newUploadFile);
+    }
 
+    startUpload() {
+        this.uploading = true;
+        let uploadSteps$: Observable<any>;
+
+        // If a new corpus is defined, first create it
+        if (!this.selectedCorpus) {
+            uploadSteps$ = this.createCorpus$()
+                .pipe(
+                    concatMap(corpus => this.upload$(corpus)));
+        } else {
+            uploadSteps$ = this.upload$(this.selectedCorpus);
+        }
+
+        uploadSteps$.subscribe(
+            response => {
+                this.uploading = false;
+                this.router.navigate([`/process/${response.corpus}`]);
+            },
+            error => {
+                console.error(error);
+                this.uploading = false;
+            }
+        );
     }
 }

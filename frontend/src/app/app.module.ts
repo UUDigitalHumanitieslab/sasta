@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccordionModule } from 'primeng/accordion';
 import { MessageService } from 'primeng/api';
@@ -14,6 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
+import { PanelModule } from 'primeng/panel';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
@@ -30,8 +29,12 @@ import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
-import { effects, reducers } from './store';
+import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
+import { TranscriptProgressComponent } from './process/transcript-progress.component';
+import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadComponent } from './upload/upload.component';
+import { UploadSafComponent } from './transcript/upload-saf.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     declarations: [
@@ -48,6 +51,10 @@ import { UploadComponent } from './upload/upload.component';
         ProcessComponent,
         RegisterComponent,
         VerifyComponent,
+        TranscriptComponent,
+        UploadSafComponent,
+        TranscriptProgressComponent,
+        TranscriptProgressCellComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -60,8 +67,6 @@ import { UploadComponent } from './upload/upload.component';
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken'
         }),
-        EffectsModule.forRoot(effects),
-        StoreModule.forRoot(reducers),
         NgxJsonViewerModule,
         // PrimeNG
         AccordionModule,
@@ -72,7 +77,9 @@ import { UploadComponent } from './upload/upload.component';
         MessagesModule,
         ToastModule,
         TooltipModule,
+        PanelModule,
         StepsModule,
+        ProgressSpinnerModule,
     ],
     providers: [MessageService],
     bootstrap: [AppComponent]

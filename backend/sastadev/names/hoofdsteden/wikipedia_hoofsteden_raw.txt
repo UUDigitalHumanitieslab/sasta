@@ -1,0 +1,280 @@
+Landen in Afrika
+
+    Algerije - Algiers
+    Angola - Luanda
+    Benin - Porto-Novo
+    Botswana - Gaborone
+    Burkina Faso - Ouagadougou
+    Burundi - Gitega
+    Centraal-Afrikaanse Republiek - Bangui
+    Comoren - Moroni
+    Congo-Brazzaville - Brazzaville
+    Congo-Kinshasa - Kinshasa
+    Djibouti - Djibouti
+    Egypte - Caïro
+    Equatoriaal-Guinea - Malabo
+    Eritrea - Asmara
+    Ethiopië - Addis Abeba
+    Gabon - Libreville
+    Gambia - Banjul
+    Ghana - Accra
+    Guinee - Conakry
+    Guinee-Bissau - Bissau
+    Ivoorkust - Yamoussoukro
+    Kaapverdië - Praia
+    Kameroen - Yaoundé
+    Kenia - Nairobi
+    Lesotho - Maseru
+    Liberia - Monrovia
+    Libië - Tripoli
+    Madagaskar - Antananarivo
+    Malawi - Lilongwe
+    Mali - Bamako
+    Marokko - Rabat
+    Mauritanië - Nouakchott
+    Mauritius - Port Louis
+    Mozambique - Maputo
+    Namibië - Windhoek
+    Niger - Niamey
+    Nigeria - Abuja
+    Oeganda - Kampala
+    Rwanda - Kigali
+    Sao Tomé en Principe - Sao Tomé
+    Senegal - Dakar
+    Seychellen - Victoria
+    Sierra Leone - Freetown
+    Soedan - Khartoem
+    Somalië - Mogadishu
+    Swaziland - Lobamba, Mbabane
+    Tanzania - Dodoma
+    Togo - Lomé
+    Tsjaad - Ndjamena
+    Tunesië - Tunis
+    Zambia - Lusaka
+    Zimbabwe - Harare
+    Zuid-Afrika - Pretoria, Bloemfontein, Kaapstad
+    Zuid-Soedan - Djoeba
+
+Landen in Azië
+
+    Afghanistan - Kabul
+    Armenië - Jerevan
+    Azerbeidzjan - Bakoe
+    Bahrein - Manama
+    Bangladesh - Dhaka
+    Bhutan - Thimphu
+    Brunei - Bandar Seri Begawan
+    Cambodja - Phnom Penh
+    China - Peking
+    Filipijnen - Manilla
+    Georgië - Tbilisi
+    India - New Delhi
+    Indonesië - Jakarta
+    Irak - Bagdad
+    Iran - Teheran
+    Israël - Jeruzalem
+    Japan - Tokio
+    Jemen - Sanaa
+    Jordanië - Amman
+    Kazachstan - Nur-Sultan
+    Kirgizië - Bisjkek
+    Koeweit - Koeweit
+    Laos - Vientiane
+    Libanon - Beiroet
+    Maldiven - Malé
+    Maleisië - Kuala Lumpur
+    Mongolië - Ulaanbaatar
+    Myanmar (Birma) - Naypyidaw
+    Nepal - Kathmandu
+    Noord-Korea - Pyongyang
+    Oezbekistan - Tasjkent
+    Oman - Masqat
+    Oost-Timor - Dili
+    Pakistan - Islamabad
+    Palestina - Ramallah (de facto)
+    Oost-Jeruzalem (geclaimd)
+    Qatar - Doha
+    Saoedi-Arabië - Riyad
+    Singapore - Singapore
+    Sri Lanka - Sri Jayewardenapura Kotte
+    Syrië - Damascus
+    Tadzjikistan - Doesjanbe
+    Taiwan - Taipei (de facto)
+    Nanjing (geclaimd)
+    Thailand - Bangkok
+    Turkije - Ankara
+    Turkmenistan - Asjchabad
+    Verenigde Arabische Emiraten - Abu Dhabi
+    Vietnam - Hanoi
+    Zuid-Korea - Seoel
+
+Landen in Europa
+
+    Albanië - Tirana
+    Andorra - Andorra la Vella
+    België - Brussel
+    Bosnië en Herzegovina - Sarajevo
+    Bulgarije - Sofia
+    Cyprus - Nicosia
+    Denemarken - Kopenhagen
+    Duitsland - Berlijn
+    Estland - Tallinn
+    Finland - Helsinki
+    Frankrijk - Parijs
+    Griekenland - Athene
+    Hongarije - Boedapest
+    Ierland - Dublin
+    IJsland - Reykjavik
+    Italië - Rome
+    Kosovo - Pristina
+    Kroatië - Zagreb
+    Letland - Riga
+    Liechtenstein - Vaduz
+    Litouwen - Vilnius
+    Luxemburg - Luxemburg
+    Malta - Valletta
+    Moldavië - Chisinau
+    Monaco - Monaco (Stadstaat)
+    Montenegro - Podgorica
+    Nederland - Amsterdam
+    Noord-Macedonië - Skopje
+    Noorwegen - Oslo
+    Oekraïne - Kiev
+    Oostenrijk - Wenen
+    Polen - Warschau
+    Portugal - Lissabon
+    Roemenië - Boekarest
+    Rusland - Moskou
+    San Marino - San Marino
+    Servië - Belgrado
+    Slovenië - Ljubljana
+    Slowakije - Bratislava
+    Spanje - Madrid
+    Tsjechië - Praag
+    Turkije - Ankara
+    Vaticaanstad - Vaticaanstad (Stadstaat)
+    Verenigd Koninkrijk - Londen
+    Wit-Rusland - Minsk
+    Zweden - Stockholm
+    Zwitserland - Bern (eigenlijk geen hoofdstad maar bondsstad)
+
+Landen in Noord-Amerika
+
+    Antigua en Barbuda - Saint John's
+    Bahama's - Nassau
+    Barbados - Bridgetown
+    Belize - Belmopan
+    Canada - Ottawa
+    Costa Rica - San José
+    Cuba - Havana
+    Dominica - Roseau
+    Dominicaanse Republiek - Santo Domingo
+    El Salvador - San Salvador
+    Grenada - Saint George's
+    Guatemala - Guatemala-Stad
+    Haïti - Port-au-Prince
+    Honduras - Distrito Central
+    Jamaica - Kingston
+    Mexico - Mexico-Stad
+    Nicaragua - Managua
+    Panama - Panama-Stad
+    Saint Kitts en Nevis - Basseterre
+    Saint Lucia - Castries
+    Saint Vincent en de Grenadines - Kingstown
+    Trinidad en Tobago - Port of Spain
+    Verenigde Staten - Washington D.C.
+
+Landen in Oceanië
+
+    Australië - Canberra
+    Fiji - Suva
+    Kiribati - Zuid-Tarawa
+    Marshalleilanden - Majuro
+    Micronesia - Palikir
+    Nauru - heeft geen hoofdstad
+    Nieuw-Zeeland - Wellington
+    Palau - Ngerulmud
+    Papoea-Nieuw-Guinea - Port Moresby
+    Salomonseilanden - Honiara
+    Samoa - Apia
+    Tonga - Nuku'alofa
+    Tuvalu - Funafuti
+    Vanuatu - Port Vila
+
+Landen in Zuid-Amerika
+
+    Argentinië - Buenos Aires
+    Bolivia - La Paz, Sucre
+    Brazilië - Brasilia
+    Chili - Santiago
+    Colombia - Bogota
+    Ecuador - Quito
+    Guyana - Georgetown
+    Paraguay - Asuncion
+    Peru - Lima
+    Suriname - Paramaribo
+    Uruguay - Montevideo
+    Venezuela - Caracas
+
+Landen zonder hoofdstad
+
+Alleen Nauru en Zwitserland hebben geen officiële hoofdstad, de 193 andere landen wel. De regeringsgebouwen van deze staten bevinden zich respectievelijk in Yaren en Bern. Bern kreeg de benaming "bondsstad".
+Hoofdsteden van territoria en afhankelijke gebieden
+
+    Akrotiri en Dhekelia - Episkopi Cantonment
+    Åland - Mariehamn
+    Amerikaanse Maagdeneilanden - Charlotte Amalie
+    Amerikaans-Samoa - Pago Pago
+    Anguilla - The Valley
+    Aruba - Oranjestad
+    Bermuda - Hamilton
+    Britse Maagdeneilanden - Road Town
+    Brits Indische Oceaanterritorium - Diego Garcia
+    Christmaseiland - Flying Fish Cove
+    Cocoseilanden - West Island
+    Cookeilanden - Avarua
+    Curaçao - Willemstad
+    Engeland - Londen
+    Faeröer - Tórshavn
+    Falklandeilanden - Stanley
+    Franse Zuidelijke en Antarctische Gebieden - Port-aux-Français
+    Frans-Guyana - Cayenne
+    Frans-Polynesië - Papeete
+    Gibraltar - Gibraltar
+    Groenland - Nuuk
+    Guam - Hagåtña
+    Guernsey - Saint Peter Port
+    Jersey - Saint Helier
+    Kaaimaneilanden - George Town
+    Man - Douglas
+    Montserrat - Plymouth
+    Nieuw-Caledonië - Nouméa
+    Niue - Alofi
+    Noordelijke Marianen - Saipan
+    Noord-Ierland - Belfast
+    Norfolk - Kingston
+    Pitcairneilanden - Adamstown
+    Puerto Rico - San Juan
+    Saint-Barthélemy - Gustavia
+    Saint-Pierre en Miquelon - Saint-Pierre
+    Schotland - Edinburgh
+    Sint-Helena, Ascension en Tristan da Cunha - Jamestown
+    Sint Maarten - Philipsburg
+    Sint-Maarten - Marigot
+    Spitsbergen en Jan Mayen - Longyearbyen
+    Turks- en Caicoseilanden - Cockburn Town
+    Wales - Cardiff
+    Wallis en Futuna - Matâ'utu
+    Zuid-Georgia en de Zuidelijke Sandwicheilanden - King Edward Point
+
+Territoria en afhankelijke gebieden zonder eigen hoofdstad
+
+    Bewoonde gebieden: Hongkong (stadstaat), Johnston (geen plaatselijk bestuur), Macau (stadstaat), Midway (geen plaatselijk bestuur), de Tokelau-eilanden (bestuurlijke hoofdplaats wisselt naargelang roterend premierschap) en Wake (geen plaatselijk bestuur)
+    Onbewoonde gebieden: de Ashmore- en Cartiereilanden, Baker, Bouveteiland, Clipperton, Heard en McDonaldeilanden, Howland, Jarvis, Kingman, de Koraalzee-eilanden en Navassa
+
+Huidige en voormalige niet-erkende staten
+
+    Islamitische Staat in Irak en de Levant - Raqqa
+    Puntland - Garoowe
+    Somaliland - Hargeisa
+    Vrijstaat Flessenhals - Lorch

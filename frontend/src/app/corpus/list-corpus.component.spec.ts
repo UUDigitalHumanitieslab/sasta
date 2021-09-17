@@ -1,4 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ListCorpusComponent } from './list-corpus.component';
 
@@ -6,9 +8,10 @@ describe('ListCorpusComponent', () => {
   let component: ListCorpusComponent;
   let fixture: ComponentFixture<ListCorpusComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListCorpusComponent ]
+      declarations: [ListCorpusComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule]
     })
     .compileComponents();
   }));

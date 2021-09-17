@@ -1,25 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faCalculator, faCogs, faDownload, faFile, faFileCode, faFileExport, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
-import { MessageService } from 'primeng/api';
-import { Dialog } from 'primeng/dialog';
+import * as _ from 'lodash';
+import { MessageService, SelectItemGroup } from 'primeng/api';
+import { interval, Observable, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript } from '../models/transcript';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
 import { TranscriptService } from '../services/transcript.service';
-import { SelectItemGroup } from 'primeng/api';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'sas-corpus',
   templateUrl: './corpus.component.html',
   styleUrls: ['./corpus.component.scss'],
 })
-export class CorpusComponent implements OnInit {
-  @ViewChild(Dialog, { static: false }) dialog;
+export class CorpusComponent implements OnInit, OnDestroy {
 
   _: any = _; // Lodash
 
@@ -27,23 +26,15 @@ export class CorpusComponent implements OnInit {
   corpus: Corpus;
 
   tams: Method[];
-  currentTam: Method;
+  defaultTam: Method;
   groupedTams: SelectItemGroup[];
 
-  faFile = faFile;
-  faFileCode = faFileCode;
-  faFileExport = faFileExport;
-  faCogs = faCogs;
-  faCalculator = faCalculator;
   faDownload = faDownload;
   faTrash = faTrash;
+  faCogs = faCogs;
 
-
-  displayScore = false;
-  currentTranscript: Transcript;
-  queryAction: 'annotate' | 'query' | 'generateForm';
-  onlyInform = true;
-  querying = false;
+  interval$: Observable<number> = interval(5000);
+  private subscription$: Subscription;
 
   constructor(
     private corpusService: CorpusService,
@@ -55,122 +46,40 @@ export class CorpusComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.get_corpus();
+    this.subscription$ = this.interval$
+      .pipe(startWith(0))
+      .subscribe(() => this.getCorpus());
+
+
     this.methodService
       .list()
       .subscribe(res => {
         this.tams = res;
-        this.groupTams(res);
+        this.groupedTams = this.methodService.groupMethods(res, this.corpus.method_category);
       });
   }
 
-  groupTams(tams) {
-    this.groupedTams = _(tams)
-      .groupBy('category.name')
-      .map((methods, methodCat) =>
-        ({
-          label: methodCat, items: _.map(methods, (m) =>
-            ({ label: m.name, value: m }))
-        })
-      )
-      .value();
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 
-  get_corpus() {
+  getCorpus() {
     this.corpusService
       .get_by_id(this.id)
-      .subscribe(res => this.corpus = res);
-  }
-
-  showChat(transcript: Transcript) {
-    window.open(transcript.content, '_blank');
-  }
-
-  showLassy(transcript: Transcript) {
-    window.open(transcript.parsed_content, '_blank');
-  }
-
-  showDialog(transcript: Transcript) {
-    this.currentTranscript = transcript;
-    this.displayScore = true;
-  }
-
-  closeDialog() {
-    this.currentTranscript = null;
-  }
-
-  downloadFile(data: any, filename: string) {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    saveAs(blob, filename);
-  }
-
-  performQuerying(transcript: Transcript, method: Method) {
-    switch (this.queryAction) {
-      case 'annotate':
-        this.annotateTranscript(transcript, method);
-        break;
-      case 'query':
-        this.queryTranscript(transcript, method);
-        break;
-      case 'generateForm':
-        this.generateFormTranscript(transcript, method);
-        break;
-      default:
-        break;
-    }
-
-  }
-
-  annotateTranscript(transcript: Transcript, method: Method) {
-    this.querying = true;
-    this.corpusService
-      .annotate_transcript(transcript.id, method.id, this.onlyInform)
-      .subscribe(
-        response => {
-          this.downloadFile(response.body, `${transcript.name}_SAF.xlsx`);
-          this.messageService.add({ severity: 'success', summary: 'Annotation success', detail: '' });
-          this.querying = false;
-        },
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Error querying', detail: err.message, sticky: true });
-          this.querying = false;
+      .subscribe(res => {
+        this.corpus = res;
+        // retrieve default method
+        if (res.default_method) {
+          this.methodService
+            .get_by_id(res.default_method)
+            .subscribe(tam => this.defaultTam = tam);
         }
-      );
+      });
   }
 
-  queryTranscript(transcript: Transcript, method: Method) {
-    this.querying = true;
-    this.corpusService
-      .query_transcript(transcript.id, method.id)
-      .subscribe(
-        response => {
-          this.downloadFile(response.body, `${transcript.name}_matches.xlsx`);
-          this.messageService.add({ severity: 'success', summary: 'Querying success', detail: '' });
-          this.querying = false;
-        },
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Error querying', detail: err.message, sticky: true });
-          this.querying = false;
-        });
-  }
-
-  generateFormTranscript(transcript: Transcript, method: Method) {
-    this.querying = true;
-    this.corpusService
-      .generate_form_transcript(transcript.id, method.id)
-      .subscribe(
-        response => {
-          this.downloadFile(response.body, `${transcript.name}_${method.category.name}_form.xlsx`);
-          this.messageService.add({ severity: 'success', summary: 'Generated form', detail: '' });
-          this.querying = false;
-        },
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Error generating form', detail: err.message, sticky: true });
-          this.querying = false;
-        });
+  downloadFile(data: any, filename: string, mimetype: string) {
+    const blob = new Blob([data], { type: mimetype });
+    saveAs(blob, filename);
   }
 
   deleteTranscript(transcript: Transcript) {
@@ -178,7 +87,7 @@ export class CorpusComponent implements OnInit {
       .delete(transcript.id)
       .subscribe(
         () => {
-          this.get_corpus();
+          this.getCorpus();
           this.messageService.add({ severity: 'success', summary: 'Removed transcript', detail: '' });
         },
         err => {
@@ -187,16 +96,28 @@ export class CorpusComponent implements OnInit {
         });
   }
 
+  changeDefaultMethod() {
+    this.corpusService
+      .set_default_method(this.corpus.id, this.defaultTam ? this.defaultTam.id : null)
+      .subscribe(
+        () => { },
+        err => {
+          console.log(err);
+          this.messageService.add({ severity: 'error', summary: 'Error changing default method', detail: err.message, sticky: true });
+        }
+    );
+  }
+
   downloadZip() {
     this.corpusService
       .download_zip(this.corpus.id)
       .subscribe(
         response => {
-          this.downloadFile(response.body, `${this.corpus.name}.zip`);
+          this.downloadFile(response.body, `${this.corpus.name}.zip`, 'application/zip');
           this.messageService.add({ severity: 'success', summary: 'Downloaded corpus', detail: '' });
         },
         err => {
-          console.log(err);
+          console.error(err);
           this.messageService.add({ severity: 'error', summary: 'Error downloading', detail: err.message, sticky: true });
         });
   }

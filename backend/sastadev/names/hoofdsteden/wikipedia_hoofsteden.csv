@@ -1,0 +1,252 @@
+Continent; Land; Hoofdstad
+Afrika;    Algerije ; Algiers
+Afrika;    Angola ; Luanda
+Afrika;    Benin ; Porto-Novo
+Afrika;    Botswana ; Gaborone
+Afrika;    Burkina Faso ; Ouagadougou
+Afrika;    Burundi ; Gitega
+Afrika;    Centraal;Afrikaanse Republiek - Bangui
+Afrika;    Comoren ; Moroni
+Afrika;    Congo-Brazzaville ; Brazzaville
+Afrika;    Congo-Kinshasa ; Kinshasa
+Afrika;    Djibouti ; Djibouti
+Afrika;    Egypte ; Caïro
+Afrika;    Equatoriaal;Guinea - Malabo
+Afrika;    Eritrea ; Asmara
+Afrika;    Ethiopië ; Addis Abeba
+Afrika;    Gabon ; Libreville
+Afrika;    Gambia ; Banjul
+Afrika;    Ghana ; Accra
+Afrika;    Guinee ; Conakry
+Afrika;    Guinee;Bissau - Bissau
+Afrika;    Ivoorkust ; Yamoussoukro
+Afrika;    Kaapverdië ; Praia
+Afrika;    Kameroen ; Yaoundé
+Afrika;    Kenia ; Nairobi
+Afrika;    Lesotho ; Maseru
+Afrika;    Liberia ; Monrovia
+Afrika;    Libië ; Tripoli
+Afrika;    Madagaskar ; Antananarivo
+Afrika;    Malawi ; Lilongwe
+Afrika;    Mali ; Bamako
+Afrika;    Marokko ; Rabat
+Afrika;    Mauritanië ; Nouakchott
+Afrika;    Mauritius ; Port Louis
+Afrika;    Mozambique ; Maputo
+Afrika;    Namibië ; Windhoek
+Afrika;    Niger ; Niamey
+Afrika;    Nigeria ; Abuja
+Afrika;    Oeganda ; Kampala
+Afrika;    Rwanda ; Kigali
+Afrika;    Sao Tomé en Principe ; Sao Tomé
+Afrika;    Senegal ; Dakar
+Afrika;    Seychellen ; Victoria
+Afrika;    Sierra Leone ; Freetown
+Afrika;    Soedan ; Khartoem
+Afrika;    Somalië ; Mogadishu
+Afrika;    Swaziland ; Lobamba, Mbabane
+Afrika;    Tanzania ; Dodoma
+Afrika;    Togo ; Lomé
+Afrika;    Tsjaad ; Ndjamena
+Afrika;    Tunesië ; Tunis
+Afrika;    Zambia ; Lusaka
+Afrika;    Zimbabwe ; Harare
+Afrika;    Zuid-Afrika ; Pretoria
+Afrika;    Zuid-Afrika ; Bloemfontein
+Afrika;    Zuid-Afrika ; Kaapstad
+Afrika;    Zuid-Soedan ; Djoeba
+Azië;    Afghanistan;Kabul
+Azië;    Armenië;Jerevan
+Azië;    Azerbeidzjan;Bakoe
+Azië;    Bahrein;Manama
+Azië;    Bangladesh;Dhaka
+Azië;    Bhutan;Thimphu
+Azië;    Brunei;Bandar Seri Begawan
+Azië;    Cambodja;Phnom Penh
+Azië;    China;Peking
+Azië;    Filipijnen;Manilla
+Azië;    Georgië;Tbilisi
+Azië;    India;New Delhi
+Azië;    Indonesië;Jakarta
+Azië;    Irak;Bagdad
+Azië;    Iran;Teheran
+Azië;    Israël;Jeruzalem
+Azië;    Japan;Tokio
+Azië;    Jemen;Sanaa
+Azië;    Jordanië;Amman
+Azië;    Kazachstan;Nur-Sultan
+Azië;    Kirgizië;Bisjkek
+Azië;    Koeweit;Koeweit
+Azië;    Laos;Vientiane
+Azië;    Libanon;Beiroet
+Azië;    Maldiven;Malé
+Azië;    Maleisië;Kuala Lumpur
+Azië;    Mongolië;Ulaanbaatar
+Azië;    Myanmar (Birma);Naypyidaw
+Azië;    Nepal;Kathmandu
+Azië;    Noord-Korea;Pyongyang
+Azië;    Oezbekistan;Tasjkent
+Azië;    Oman;Masqat
+Azië;    Oost-Timor;Dili
+Azië;    Pakistan;Islamabad
+Azië;    Palestina;Ramallah
+Azië;    Palestina;    Oost-Jeruzalem 
+Azië;    Qatar;Doha
+Azië;    Saoedi-Arabië;Riyad
+Azië;    Singapore;Singapore
+Azië;    Sri Lanka;Sri Jayewardenapura Kotte
+Azië;    Syrië;Damascus
+Azië;    Tadzjikistan;Doesjanbe
+Azië;    Taiwan;Taipei
+Azië;    Taiwan;Nanjing
+Azië;    Thailand;Bangkok
+Azië;    Turkije;Ankara
+Azië;    Turkmenistan;Asjchabad
+Azië;    Verenigde Arabische Emiraten;Abu Dhabi
+Azië;    Vietnam;Hanoi
+Azië;    Zuid-Korea;Seoel
+Europa;    Albanië;Tirana
+Europa;    Andorra;Andorra la Vella
+Europa;    België;Brussel
+Europa;    Bosnië en Herzegovina;Sarajevo
+Europa;    Bulgarije;Sofia
+Europa;    Cyprus;Nicosia
+Europa;    Denemarken;Kopenhagen
+Europa;    Duitsland;Berlijn
+Europa;    Estland;Tallinn
+Europa;    Finland;Helsinki
+Europa;    Frankrijk;Parijs
+Europa;    Griekenland;Athene
+Europa;    Hongarije;Boedapest
+Europa;    Ierland;Dublin
+Europa;    IJsland;Reykjavik
+Europa;    Italië;Rome
+Europa;    Kosovo;Pristina
+Europa;    Kroatië;Zagreb
+Europa;    Letland;Riga
+Europa;    Liechtenstein;Vaduz
+Europa;    Litouwen;Vilnius
+Europa;    Luxemburg;Luxemburg
+Europa;    Malta;Valletta
+Europa;    Moldavië;Chisinau
+Europa;    Monaco;Monaco (Stadstaat)
+Europa;    Montenegro;Podgorica
+Europa;    Nederland;Amsterdam
+Europa;    Noord-Macedonië;Skopje
+Europa;    Noorwegen;Oslo
+Europa;    Oekraïne;Kiev
+Europa;    Oostenrijk;Wenen
+Europa;    Polen;Warschau
+Europa;    Portugal;Lissabon
+Europa;    Roemenië;Boekarest
+Europa;    Rusland;Moskou
+Europa;    San Marino;San Marino
+Europa;    Servië;Belgrado
+Europa;    Slovenië;Ljubljana
+Europa;    Slowakije;Bratislava
+Europa;    Spanje;Madrid
+Europa;    Tsjechië;Praag
+Europa;    Turkije;Ankara
+Europa;    Vaticaanstad;Vaticaanstad
+Europa;    Verenigd Koninkrijk;Londen
+Europa;    Wit-Rusland;Minsk
+Europa;    Zweden;Stockholm
+Europa;    Zwitserland;Bern
+Noord-Amerika;    Antigua en Barbuda;Saint John's
+Noord-Amerika;    Bahama's;Nassau
+Noord-Amerika;    Barbados;Bridgetown
+Noord-Amerika;    Belize;Belmopan
+Noord-Amerika;    Canada;Ottawa
+Noord-Amerika;    Costa Rica;San José
+Noord-Amerika;    Cuba;Havana
+Noord-Amerika;    Dominica;Roseau
+Noord-Amerika;    Dominicaanse Republiek;Santo Domingo
+Noord-Amerika;    El Salvador;San Salvador
+Noord-Amerika;    Grenada;Saint George's
+Noord-Amerika;    Guatemala;Guatemala-Stad
+Noord-Amerika;    Haïti;Port-au-Prince
+Noord-Amerika;    Honduras;Distrito Central
+Noord-Amerika;    Jamaica;Kingston
+Noord-Amerika;    Mexico;Mexico-Stad
+Noord-Amerika;    Nicaragua;Managua
+Noord-Amerika;    Panama;Panama-Stad
+Noord-Amerika;    Saint Kitts en Nevis;Basseterre
+Noord-Amerika;    Saint Lucia;Castries
+Noord-Amerika;    Saint Vincent en de Grenadines;Kingstown
+Noord-Amerika;    Trinidad en Tobago;Port of Spain
+Noord-Amerika;    Verenigde Staten;Washington D.C.
+Oceanië;    Australië;Canberra
+Oceanië;    Fiji;Suva
+Oceanië;    Kiribati;Zuid-Tarawa
+Oceanië;    Marshalleilanden;Majuro
+Oceanië;    Micronesia;Palikir
+Oceanië;    Nauru;heeft geen hoofdstad
+Oceanië;    Nieuw-Zeeland;Wellington
+Oceanië;    Palau;Ngerulmud
+Oceanië;    Papoea-Nieuw-Guinea;Port Moresby
+Oceanië;    Salomonseilanden;Honiara
+Oceanië;    Samoa;Apia
+Oceanië;    Tonga;Nuku'alofa
+Oceanië;    Tuvalu;Funafuti
+Oceanië;    Vanuatu;Port Vila
+Zuid-Amerika;    Argentinië;Buenos Aires
+Zuid-Amerika;    Bolivia;La Paz, Sucre
+Zuid-Amerika;    Brazilië;Brasilia
+Zuid-Amerika;    Chili;Santiago
+Zuid-Amerika;    Colombia;Bogota
+Zuid-Amerika;    Ecuador;Quito
+Zuid-Amerika;    Guyana;Georgetown
+Zuid-Amerika;    Paraguay;Asuncion
+Zuid-Amerika;    Peru;Lima
+Zuid-Amerika;    Suriname;Paramaribo
+Zuid-Amerika;    Uruguay;Montevideo
+Zuid-Amerika;    Venezuela;Caracas
+Territoria;    Akrotiri en Dhekelia;Episkopi Cantonment
+Territoria;    Åland;Mariehamn
+Territoria;    Amerikaanse Maagdeneilanden;Charlotte Amalie
+Territoria;    Amerikaans-Samoa;Pago Pago
+Territoria;    Anguilla;The Valley
+Territoria;    Aruba;Oranjestad
+Territoria;    Bermuda;Hamilton
+Territoria;    Britse Maagdeneilanden;Road Town
+Territoria;    Brits Indische Oceaanterritorium;Diego Garcia
+Territoria;    Christmaseiland;Flying Fish Cove
+Territoria;    Cocoseilanden;West Island
+Territoria;    Cookeilanden;Avarua
+Territoria;    Curaçao;Willemstad
+Territoria;    Engeland;Londen
+Territoria;    Faeröer;Tórshavn
+Territoria;    Falklandeilanden;Stanley
+Territoria;    Franse Zuidelijke en Antarctische Gebieden;Port-aux-Français
+Territoria;    Frans-Guyana;Cayenne
+Territoria;    Frans-Polynesië;Papeete
+Territoria;    Gibraltar;Gibraltar
+Territoria;    Groenland;Nuuk
+Territoria;    Guam;Hagåtña
+Territoria;    Guernsey;Saint Peter Port
+Territoria;    Jersey;Saint Helier
+Territoria;    Kaaimaneilanden;George Town
+Territoria;    Man;Douglas
+Territoria;    Montserrat;Plymouth
+Territoria;    Nieuw-Caledonië;Nouméa
+Territoria;    Niue;Alofi
+Territoria;    Noordelijke Marianen;Saipan
+Territoria;    Noord-Ierland;Belfast
+Territoria;    Norfolk;Kingston
+Territoria;    Pitcairneilanden;Adamstown
+Territoria;    Puerto Rico;San Juan
+Territoria;    Saint-Barthélemy;Gustavia
+Territoria;    Saint-Pierre en Miquelon;Saint-Pierre
+Territoria;    Schotland;Edinburgh
+Territoria;    Sint-Helena, Ascension en Tristan da Cunha;Jamestown
+Territoria;    Sint Maarten;Philipsburg
+Territoria;    Sint-Maarten;Marigot
+Territoria;    Spitsbergen en Jan Mayen;Longyearbyen
+Territoria;    Turks- en Caicoseilanden;Cockburn Town
+Territoria;    Wales;Cardiff
+Territoria;    Wallis en Futuna;Matâ'utu
+Territoria;    Zuid-Georgia en de Zuidelijke Sandwicheilanden;King Edward Point
+Niet-erkende Staten;    Islamitische Staat in Irak en de Levant;Raqqa
+Niet-erkende Staten;    Puntland;Garoowe
+Niet-erkende Staten;    Somaliland;Hargeisa
+Niet-erkende Staten;Vrijstaat Flessenhals;Lorch

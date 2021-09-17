@@ -1,20 +1,25 @@
-import { TestBed, async } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
 
 describe('AppComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 AppComponent,
                 MenuComponent,
                 FooterComponent
             ],
-            imports: [NoopAnimationsModule, RouterTestingModule]
+            imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule],
+            providers: [MessageService],
+            schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
     }));
 
@@ -34,6 +39,6 @@ describe('AppComponent', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
         const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('.navbar-brand .navbar-item').textContent).toContain('Sasta');
+        expect(compiled.querySelector('.navbar-brand .navbar-item').textContent).toContain('SASTA');
     });
 });

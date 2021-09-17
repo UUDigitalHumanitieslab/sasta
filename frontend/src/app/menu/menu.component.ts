@@ -4,7 +4,9 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../models/user';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-import { version } from '../../../../package.json';
+import { environment } from '../../environments/environment';
+
+import { faFolder, faListAlt, faFileUpload } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
     animations,
@@ -19,9 +21,13 @@ export class MenuComponent implements OnInit {
     public isAuthenticated$ = this.authService.isAuthenticated$;
 
     faUser = faUser;
-    version = version;
+    faFolder = faFolder;
+    faListAlt = faListAlt;
+    faFileUpload = faFileUpload;
+    version = environment.appVersion;
 
-    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) { }
+    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) {
+    }
 
     ngOnInit() {
         this.isAuthenticated$.subscribe(authenticated => {
@@ -48,6 +54,7 @@ export class MenuComponent implements OnInit {
                 res => {
                     this.router.navigate(['/login']);
                     this.authService.isAuthenticated$.next(false);
+                    this.activeUser = null;
                 },
                 err => console.log('Http Error', err));
     }

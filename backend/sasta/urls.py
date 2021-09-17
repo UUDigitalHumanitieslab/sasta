@@ -15,6 +15,7 @@ Including another URLconf
 """
 from analysis import urls as analysis_urls
 from analysis import views as analysis_views
+from parse import urls as parse_urls
 from authentication.views import redirect_confirm
 from django.conf import settings
 from django.conf.urls.static import static
@@ -33,6 +34,7 @@ api_router.register(r'transcripts', analysis_views.TranscriptViewSet)
 api_router.register(r'corpora', analysis_views.CorpusViewSet)
 api_router.register(r'assessment_methods',
                     analysis_views.AssessmentMethodViewSet)
+api_router.register(r'method_categories', analysis_views.MethodCategoryViewSet)
 
 if settings.PROXY_FRONTEND:
     spa_url = re_path(r'^(?P<path>.*)$', proxy_frontend)
@@ -46,6 +48,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_router.urls)),
     path('api/analysis/', include(analysis_urls)),
+    path('api/parse/', include(parse_urls)),
     path('api-auth/', include(
         'rest_framework.urls',
         namespace='rest_framework',

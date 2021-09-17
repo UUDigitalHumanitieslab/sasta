@@ -1,14 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { CorpusComponent } from './corpus.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from 'primeng/api';
 
 describe('CorpusComponent', () => {
   let component: CorpusComponent;
   let fixture: ComponentFixture<CorpusComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CorpusComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [CorpusComponent],
+      imports: [FontAwesomeModule, HttpClientTestingModule, RouterTestingModule],
+      providers: [MessageService]
     })
     .compileComponents();
   }));

@@ -9,6 +9,7 @@
 
 *CHI:	dees Maria. 
 %xsid:	1
+%xano:	5|NAAM|Maria
 %com:	KIND wijst op moeders eerste vinger waarbij ze een andere naam noemde.
 *MOT:	nee dat was &uh Ryder. 
 *MOT:	dan heb je ze.
@@ -68,7 +69,9 @@
 %xsid:	5
 *MOT:	die doet vliegen.
 *MOT:	Maria.
+%xano:	0|BROER|Maria
 *CHI:	Maria.
+%xano:	0|NAAM|Maria
 *CHI:	die doe &uh net doen [/] &uhm doen. 
 %xsid:	6
 *CHI:	en hee(l) ha(r)d plaatu.  
@@ -78,6 +81,7 @@
 *MOT:	hard praten.
 *INV:	&oh.
 *MOT:	maar wat is Maria? 
+%xano:	12|BROER|Maria
 *CHI:	en hij (s)tuk is van een dier.  
 %xsid:	8
 *CHI:	toen kan de rest thuis blijven.  
@@ -92,8 +96,9 @@
 %xsid:	13
 *CHI:	ik noem som(s) Tony Too.
 %xsid:	14
-*CHI:	nee dat is nu weer KIND.
+*CHI:	nee dat is nu weer Maria.
 %xsid:	15
+%xano:	19|KIND|Maria
 *CHI:	en dan moesten we precies.
 %xsid:	16
 *CHI:	die is witte [: wit].
@@ -229,14 +234,17 @@
 *CHI:	ik kijk som(s) op de teefee. 
 %xsid:	38
 *INV:	&oh ja.
-*CHI:	Paw Putols <tan [: kan] fan die> [//] tan [: kan] soe [: zo] alles	stuk maken. 
+*CHI:	Paw Putols <tan [: kan] fan die> [//] tan [: kan] soe [: zo] alles stuk maken. 
 %xsid:	39
-*CHI:	en <Maria> [//] tan [: kan] dan niet ieduleen heew [: heel] ha	[: hard] lennen [: rennen]. 
+*CHI:	en <Maria> [//] tan [: kan] dan niet ieduleen heew [: heel] ha [: hard] lennen [: rennen]. 
 %xsid:	40
+%xano:	4|NAAM|Maria
 *CHI:	leen [: alleen] Maria. 
 %xsid:	41
+%xano:	16|NAAM|Maria
 *INV:	&oh?
 *INV:	Maria.
+%xano:	0|BROER|Maria
 %com:	KIND knikt.
 *INV:	ja oke wat leuk.
 *CHI:	dan is Misjie [: Marshall] Pot [: Porter] fan Paws Patrol.
@@ -253,7 +261,8 @@
 *INV:	jij vindt dat echt leuk.
 %com:	KIND knikt.
 *INV:	de avonturen.
-*INV:	&hee maar ik heb je pas nog gezien KIND.
+*INV:	&hee maar ik heb je pas nog gezien Maria.
+%xano:	35|KIND|Maria
 *INV:	ik zag jou met mama samen.
 *INV:	maar jij zag mij niet.
 %com:	KIND schudt nee.
@@ -294,14 +303,20 @@
 *INV:	ging je met mama samen?
 *CHI:	i(k) sas [: zag] lew [: wel] Maria. 
 %xsid:	47
+%xano:	29|NAAM|Maria
 *CHI:	Maria sas [: zag] ik ook. 
 %xsid:	48
+%xano:	0|NAAM|Maria
 *INV:	Maria was er ook ja.
+%xano:	0|NAAM|Maria
 *INV:	oke en verder?
 *INV:	ging Maria ook meelopen?
+%xano:	5|NAAM|Maria
 *INV:	of ging Maria alleen kijken?
+%xano:	8|NAAM|Maria
 *CHI:	Maria slin [: ging] ook meelopen. 
 %xsid:	49
+%xano:	0|NAAM|Maria
 *INV:	die ging ook meelopen ja.
 %com:	KIND knikt.
 *INV:	net als jij ja.

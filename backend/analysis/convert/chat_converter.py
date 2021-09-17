@@ -2,7 +2,10 @@ import errno
 import logging
 import os
 import re
-from typing import List, Optional, Pattern, Union
+from typing import Dict, List, Optional, Pattern, Union
+
+from .replacements import (correct_punctuation, fill_name,
+                           replace_quotation_marks)
 
 logger = logging.getLogger('sasta')
 
@@ -14,12 +17,11 @@ TITLE_FIELD_NAMES = ['samplename', 'title', 'titel']
 MALE_CODES = ['jongen', 'man', 'boy', 'man']
 FEMALE_CODES = ['meisje', 'vrouw', 'girl', 'woman']
 
-COMMON_PLACE_NAMES = ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
-COMMON_PERSON_NAMES = ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
-
-PLACE_CODES = ['PLAATSNAAM', 'PLAATS']
-# NOUN_PLACE = MAIL STUREN
-PERSON_CODES = ['NAAM', 'BROER', 'ZUS']
+REPLACEMENTS = [
+    {'code': 'ano', 'function': fill_name, 'allow_skip': True},
+    {'code': 'pct', 'function': correct_punctuation, 'allow_skip': False},
+    {'code': 'quot', 'function': replace_quotation_marks, 'allow_skip': True}
+]
 
 
 def match_pattern(pattern: Pattern, line: str):
@@ -29,41 +31,6 @@ def match_pattern(pattern: Pattern, line: str):
     if match and match.groups():
         return match.groups()
     return match
-
-
-def fill_places_persons(string):
-    try:
-        nr_place = fr'\b\w*.*(?:{"|".join(PLACE_CODES)})(\d+).*\b'
-        place = fr'\b\w*(?:{"|".join(PLACE_CODES)})\b'
-
-        nr_pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\w*(\d+)\b'
-        pers = fr'\b\w*(?:{"|".join(PERSON_CODES)})\b'
-
-        def replace_place(match):
-            try:
-                index = int(match.group(1))
-            except IndexError:
-                index = 0
-            return COMMON_PLACE_NAMES[index]
-
-        def replace_person(match):
-            try:
-                index = int(match.group(1))
-            except IndexError:
-                index = 0
-            return COMMON_PERSON_NAMES[index]
-
-        string = re.sub(nr_place, replace_place, string)
-        string = re.sub(place, replace_place, string)
-        string = re.sub(nr_pers, replace_person, string)
-        string = re.sub(pers, replace_person, string)
-
-        return string
-
-    except Exception as e:
-        logger.exception(e)
-        print('error in fill_places_persons:\t', string, e)
-        return string
 
 
 class Participant:
@@ -109,10 +76,55 @@ class Utterance:
         self.speaker_code = speaker_code
         self.utt_id = utt_id
         self.text = text
+        self.tiers = []
+        self.replacements()
 
     def __str__(self):
         return f'*{self.speaker_code}:\t{self.text}' + \
-            ('\n' + str(Tier('xsid', self.utt_id)) if self.utt_id else '')
+            ('\n' + str(Tier('xsid', self.utt_id)) if self.utt_id else '') + \
+            ('\n' + '\n'.join([str(tier)
+                               for tier in self.tiers]) if self.tiers else '')
+
+    def add_tier(self, tier):
+        self.tiers.append(tier)
+
+    def replacements(self):
+        # perform all replacements
+        for rep in REPLACEMENTS:
+            code = rep['code']
+            func = rep['function']
+            allow_skip = rep['allow_skip']
+
+            all_comments = []
+            done = False
+            while not done:
+                try:
+                    # apply replacement function
+                    new_text, comment = func(self.text)
+                except Exception as e:
+                    if allow_skip:
+                        # if replacement category is skippable: log and move on
+                        logger.warn(e)
+                        print('error in {} for utterance "{}": {}'.format(
+                            func.__name__, self.text, e))
+                        new_text, comment = self.text, None
+                    else:
+                        # else, raise an error
+                        logger.warn(e.args[0])
+                        raise e
+
+                if comment:
+                    # if there was a comment, apply replacement
+                    self.text = new_text
+                    all_comments.append(comment)
+                else:
+                    # no comment means we are done
+                    # add all comments as a tier
+                    if len(all_comments) > 0:
+                        tier_code = 'x' + code
+                        value = ', '.join(all_comments)
+                        self.add_tier(Tier(tier_code, value))
+                    done = True
 
 
 class Tier:
@@ -146,11 +158,22 @@ class SifDocument:
                  participants: List[Participant],
                  content: List[Union[Utterance, Tier]],
                  meta_comments: List[MetaComment],
-                 title: Optional[str]):
+                 title: Optional[str],
+                 target_uttids: bool):
         self.participants = participants
         self.content = content
         self.meta_comments = meta_comments
         self.title = title
+        self.target_uttids = target_uttids
+
+    @property
+    def target_speaker_codes(self):
+        targetted = [
+            pp.code for pp in self.participants if pp.target_speaker
+        ]
+        if not targetted:
+            return [pp.code for pp in self.participants]
+        return targetted
 
     def write_chat(self, out_file_path: str):
         output_dir = os.path.dirname(out_file_path)
@@ -194,13 +217,16 @@ class SifReader:
 
         self.target_utt_ids: bool = False
 
+        self.replace_mapping: Dict = {}
+
         self.read()
         self.parse_metadata()
 
     @property
     def document(self):
         return SifDocument(self.participants, self.content,
-                           self.meta_comments, self.title)
+                           self.meta_comments, self.title,
+                           self.target_utt_ids)
 
     @property
     def patterns(self):
@@ -238,7 +264,7 @@ class SifReader:
         return [c for c in self.content if isinstance(c, Utterance)]
 
     def any_pattern_match(self, string: str) -> bool:
-        for ptn, _ in self.patterns.values():
+        for ptn, _func in self.patterns.values():
             if re.match(ptn, string):
                 return True
         return False
@@ -288,9 +314,9 @@ class SifReader:
         logger.info(
             f'CHAT-Converter:\treading {os.path.basename(self.file_path)}')
         with open(self.file_path, 'r') as f:
-            filled_lines = [fill_places_persons(li) for li in f.readlines()]
+            lstripped_lines = [li.lstrip() for li in f.readlines()]
             concatenated_lines = self.concatenate_multiline_utterances(
-                filled_lines)
+                lstripped_lines)
             for line in concatenated_lines:
                 self.line_handler(line)
 
@@ -307,7 +333,7 @@ class SifReader:
                             k = i + j + 1  # real index of nextline
                             skiplines.add(k)
                             results[-1] = results[-1].replace(
-                                '\n', '') + nextline
+                                '\n', ' ') + nextline
                         else:
                             break
                 else:
@@ -342,7 +368,11 @@ class SifReader:
 
     def handle_tier(self, match):
         tier = match.groups()
-        self.content.append(Tier(*tier))
+        try:
+            self.utterances[-1].add_tier(Tier(*tier))
+        except IndexError as e:
+            logger.exception(e)
+            print('error in handle_tier: tier occurred before first utterance')
 
     def handle_target_speaker(self, match):
         self.participants.append(

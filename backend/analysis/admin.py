@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from .models import (AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
+from .models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Compound, CompoundFile,
                      Corpus, MethodCategory, Transcript, UploadFile, Utterance)
 
 
@@ -31,7 +31,8 @@ class UtteranceInline(admin.TabularInline):
 @admin.register(Transcript)
 class TranscriptAdmin(admin.ModelAdmin):
     inlines = (UtteranceInline, )
-    list_display = ('__str__', 'status')
+    list_display = ('__str__', 'corpus', 'status')
+    list_filter = ('status',)
     model = Transcript
 
 
@@ -70,3 +71,9 @@ class CompoundAdmin(admin.ModelAdmin):
 @admin.register(MethodCategory)
 class MethodCategoryAdmin(admin.ModelAdmin):
     model = MethodCategory
+
+
+@admin.register(AnalysisRun)
+class AnalysisRunAdmin(admin.ModelAdmin):
+    model = AnalysisRun
+    list_display = ('__str__', 'created', 'method', 'is_manual_correction')

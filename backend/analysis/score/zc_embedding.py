@@ -17,12 +17,12 @@ def is_clausal(node):
 
 
 def is_direct_clausal(node):
-    return node.attrib['cat'] in CLAUSALS
+    return node.attrib.get('cat') in CLAUSALS
 
 
 def is_child_clausal(node):
-    return node.attrib['cat'] in ['cp'] and \
-        any(n.attrib['cat'] in ['ssub', 'ti'] for n in list(node))
+    return node.attrib.get('cat') in ['cp'] and \
+        any(n.attrib.get('cat') in ['ssub', 'ti'] for n in list(node))
 
 
 def solve(node, embed, results):
@@ -38,7 +38,7 @@ def solve(node, embed, results):
 def get_zc_embeddings(syntree) -> Dict[str, int]:
     try:
         root = syntree.getroot()
-    except:
+    except Exception:
         root = syntree
     top_node = root.find('node')
     results = solve(top_node, 0, {})

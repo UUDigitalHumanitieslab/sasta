@@ -1,9 +1,26 @@
-from typing import Any, Counter, Dict, List, Match, Tuple, Union, Optional
+import logging
+from typing import Counter, Dict, List, Match, Optional, Tuple, Union
 
 from lxml import etree as ET
-import logging
 
 logger = logging.getLogger('sasta')
+
+
+class UtteranceWord:
+    def __init__(self, word, begin, end,
+                 hits, zc_embedding=None):
+        self.word: str = word
+        self.begin: int = int(begin)
+        self.end: int = int(end)
+        self.hits: List[Dict] = hits
+        self.zc_embedding: Optional[int] = zc_embedding
+
+    def __str__(self):
+        return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'
+
+    def __repr__(self):
+        return self.__str__()
+
 
 QueryTuple = Tuple[str, str]
 SynTree = Union[ET._Element, str]
@@ -12,7 +29,7 @@ SastaMatch = Tuple[Match, SynTree]
 SastaMatchList = List[SastaMatch]
 SastaMatches = Dict[QueryTuple, SastaMatchList]
 SastaResults = Dict[str, Counter[str]]
-SastaAnnotations = Dict[str, List[Any]]
+SastaAnnotations = Dict[str, List[UtteranceWord]]
 
 
 class AllResults:
@@ -44,19 +61,3 @@ def scores2counts(scores):
         countval = len(scores[el])
         counts[el] = countval
     return counts
-
-
-class UtteranceWord:
-    def __init__(self, word, begin, end,
-                 hits, zc_embedding=None):
-        self.word: str = word
-        self.begin: int = int(begin)
-        self.end: int = int(end)
-        self.hits: List[Dict] = hits
-        self.zc_embedding: Optional[int] = zc_embedding
-
-    def __str__(self):
-        return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'
-
-    def __repr__(self):
-        return self.__str__()

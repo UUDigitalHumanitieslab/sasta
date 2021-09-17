@@ -5,7 +5,7 @@ import { routes } from './routes';
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes),
+        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
         RouterModule
     ],
     exports: [RouterModule],

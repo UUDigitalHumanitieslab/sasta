@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   username: string;
   emailAddress: string;
-  password1: string = '';
+  password1 = '';
   password2: string;
 
   processing = false;
@@ -32,6 +32,14 @@ export class RegisterComponent implements OnInit {
 
   passwordMinLength() {
     return this.password1.length >= 8;
+  }
+
+  containsSpace(str: string) {
+    return str.indexOf(' ') >= 0;
+  }
+
+  usernameValid() {
+    return !this.containsSpace(this.username);
   }
 
   onError(err) {

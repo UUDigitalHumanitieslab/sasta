@@ -1,4 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MessageService } from 'primeng/api';
 
 import { VerifyComponent } from './verify.component';
 
@@ -6,9 +9,11 @@ describe('VerifyComponent', () => {
   let component: VerifyComponent;
   let fixture: ComponentFixture<VerifyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerifyComponent ]
+      declarations: [VerifyComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      providers: [MessageService]
     })
     .compileComponents();
   }));
