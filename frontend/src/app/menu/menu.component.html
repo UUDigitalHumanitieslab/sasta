@@ -1,9 +1,10 @@
 <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">
-            <strong class="navbar-item">
-                SASTA
-            </strong>
+            <div class="navbar-item">
+                <h4 class="title is-4">SASTA</h4>
+
+            </div>
 
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
                 data-target="navbarBasicExample" (click)="toggleBurger()" [ngClass]="{'is-active': burgerActive}">
@@ -18,15 +19,30 @@
             <div class="navbar-start">
                 <a *ngIf="isAuthenticated()" [routerLink]="['/corpora']" routerLinkActive="is-active"
                     class="navbar-item">
-                    Corpora
+                    <span class="icon-text">
+                        <span class="icon">
+                            <fa-icon [icon]="faFolder"></fa-icon>
+                        </span>
+                        <span>Corpora</span>
+                    </span>
                 </a>
                 <a *ngIf="isAuthenticated()" [routerLink]="['/methods']" routerLinkActive="is-active"
                     class="navbar-item">
-                    Methods
+                    <span class="icon-text">
+                        <span class="icon">
+                            <fa-icon [icon]="faListAlt"></fa-icon>
+                        </span>
+                        <span>Methods</span>
+                    </span>
                 </a>
                 <a *ngIf="isAuthenticated()" [routerLink]="['/upload']" routerLinkActive="is-active"
                     class="navbar-item">
-                    Upload
+                    <span class="icon-text">
+                        <span class="icon">
+                            <fa-icon [icon]="faFileUpload"></fa-icon>
+                        </span>
+                        <span>Upload</span>
+                    </span>
                 </a>
             </div>
         </div>
