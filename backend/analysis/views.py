@@ -47,6 +47,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     permission_classes = (IsCorpusChildOwner,)
 
     def get_queryset(self):
+        if self.request.user.is_superuser:
+            return self.queryset.all()
         return self.queryset.filter(corpus__user=self.request.user)
 
     def create_analysis_run(self, transcript, method, saf, is_manual=False):
@@ -222,8 +224,9 @@ class CorpusViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        user_queryset = self.queryset.filter(user=self.request.user)
-        return user_queryset
+        if self.request.user.is_superuser:
+            return self.queryset.all()
+        return self.queryset.filter(user=self.request.user)
 
     @action(detail=True, methods=['GET'], name='convert_all')
     def convert_all(self, request, *args, **kwargs):
