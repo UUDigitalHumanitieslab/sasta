@@ -237,9 +237,9 @@ class SifReader:
         # groups:   1) tier code    2) value
         tier_pattern = r'^(%\w{3,4}):\s*(.*)$'
         # groups:   1) speaker code
-        single_speaker_pattern = r'^##TARGET\sSPEAKER(?:S)?\s=\s([A-Z]{3})$'
+        single_speaker_pattern = r'^##TARGET\sSPEAKER(?:S)?\s=\s([A-Z]{3})\s*$'
         # no groups
-        target_uttids_pattern = r'^##TARGET\sUTTIDS$'
+        target_uttids_pattern = r'^##TARGET\sUTTIDS\s*$'
         # no groups
         comment_pattern = r'^%(?!\w{3,4}:).*$'
         # no groups
