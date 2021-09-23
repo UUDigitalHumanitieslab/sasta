@@ -5,7 +5,7 @@ from typing import Dict, List, Set
 from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
                              Utterance)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
-from sastadev.query import core_process, post_process
+from sastadev.query import core_process, post_process, pre_process
 from analysis.annotations.safreader import SAFReader
 from .functions import (Query, QueryWithFunction, compile_queries,
                         filter_queries, single_query_single_utt, utt_from_tree)
@@ -60,15 +60,15 @@ def run_core_queries(utterances: List[Utterance],
     results: SastaResults = {}
     annotations = {}
 
-    core_queries: List[QueryWithFunction] = [
-        q for q in queries if q.query.process == core_process]
+    core_queries: List[QueryWithFunction] = sorted(
+        [q for q in queries if q.query.process in [pre_process, core_process]],
+        key=lambda x: (x.query.process, x.query.id))
 
     for utt in utterances:
         if annotate:
             utt_res = utt_from_tree(utt.parse_tree, zc_embed)
         for q in core_queries:
             matches = single_query_single_utt(q.function, utt.syntree)
-
             if matches:
                 if q.id in results:
                     results[q.id].update(
