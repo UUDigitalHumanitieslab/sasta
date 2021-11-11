@@ -1,10 +1,12 @@
+import logging
 import os
 import os.path as op
-import logging
 
 from analysis.models import Transcript
-from .chat_converter import SifReader
 from convert.chat_reader import ChatDocument
+from convert.chat_writer import ChatWriter
+
+from .chat_converter import SifReader
 
 logger = logging.getLogger('sasta')
 
@@ -39,6 +41,14 @@ def convert(transcript: Transcript):
             transcript.target_speakers = ','.join(doc.target_speakers)
             transcript.name = op.splitext(
                 op.basename(transcript.content.name))[0]
+
+            # overwrite with processed chat
+            filename = transcript.content.name
+            filepath = transcript.content.path
+            transcript.content.delete(False)
+            writer = ChatWriter(doc, filename=filepath)
+            writer.write()
+            transcript.content = filename
 
         else:
             raise ValueError('Invalid file extension.')
