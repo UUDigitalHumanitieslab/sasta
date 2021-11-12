@@ -7,7 +7,7 @@ class ChatWriter:
     def __init__(self, document, target=None, filename=None):
         self.document: ChatDocument = document
         self.filename: Optional[str] = filename
-        self.target: TextIO = target or open(filename)
+        self.target: TextIO = target or open(filename, 'w')
         self.all_entries = sorted(
             self.document.lines + self.document.headers,
             key=lambda x: self._get_lineno(x))
@@ -28,6 +28,8 @@ class ChatWriter:
             elif isinstance(e, ChatHeader):
                 self.write_header(e)
         self.target.write('@End')
+        if self.filename:
+            self.target.close()
 
     def write_header(self, header):
         self.target.write(header.line+'\n')

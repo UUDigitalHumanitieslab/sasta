@@ -1,14 +1,14 @@
+import logging
 from typing import Dict, List, Optional, Set
 
 from chamd.chat_reader import ChatFile, ChatHeader, ChatLine
 from chamd.chat_reader import ChatReader as ChatParser
-from chamd.chat_reader import MetaValue
-
-import logging
+from chamd.chat_reader import ChatTier, MetaValue
 
 logger = logging.getLogger('sasta')
 
 TARGET_ROLES = ['Target_Child', 'Target_Adult', 'Participant']
+XSID_POSTCODES = ['[+ G]', '[+ VU]']
 
 
 class ChatDocument:
@@ -21,6 +21,7 @@ class ChatDocument:
         # SASTA specific attributes
         self.target_speakers: Set[str] = self.find_target_speakers()
         self.target_uttids: bool = self.has_xsids
+        self.process_postcodes()
 
     @classmethod
     def from_chatfile(cls, filepath: str):
@@ -41,6 +42,13 @@ class ChatDocument:
         results |= self.find_target_roles(ids)
         return results
 
+    def process_postcodes(self):
+        current_xsid = 1
+        for line in self.lines:
+            if any(postcode in line.original for postcode in XSID_POSTCODES):
+                line.tiers['xsid'] = ChatTier('xsid', str(current_xsid))
+                current_xsid += 1
+
     @staticmethod
     def find_target_roles(header: Optional[Dict]) -> Set[str]:
         if not header:
@@ -57,8 +65,8 @@ class ChatDocument:
 
     def __eq__(self, other):
         safe_headers = ('session',)
-        if ([h.__dict__ for h in self.headers] !=
-                [h.__dict__ for h in other.headers]):
+        if ([h.__dict__ for h in self.headers]
+                != [h.__dict__ for h in other.headers]):
             return False
 
         if self.header_metadata.keys() != other.header_metadata.keys():
