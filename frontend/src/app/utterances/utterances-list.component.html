@@ -1,49 +1,23 @@
 <table class="table">
     <thead>
-        <tr>Sentence</tr>
-        <tr>For analysis</tr>
+        <tr>
+            <th>speaker</th>
+            <th>sentence</th>
+            <th>for analysis</th>
+        </tr>
     </thead>
     <tbody>
         <tr *ngFor="let utt of transcript.utterances">
-            <td>{{utt}}</td>
+            <td>{{ utt.speaker }}</td>
+            <td>{{ utt.sentence }}</td>
+            <td>
+                <span class="icon">
+                    <fa-icon
+                        [icon]="analysisIcon(utt)"
+                        [class.has-text-success]="utt.for_analysis"
+                    ></fa-icon>
+                </span>
+            </td>
         </tr>
     </tbody>
 </table>
-
-
-
-<!-- <table class="table is-fullwidth is-hoverable">
-    <thead>
-        <tr>
-            <th>Transcript</th>
-            <th>Status</th>
-            <th>Utterances (#)</th>
-            <th>Created on</th>
-            <th class="has-text-right">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let transcript of corpus.transcripts">
-            <td class="transcript-name" [routerLink]="['/transcript/', transcript.id]">
-                <a>{{ transcript.name }}</a>
-            </td>
-            <td>{{ transcript.status_name }}</td>
-            <td>
-                {{
-                transcript.utterances ? transcript.utterances.length : 0
-                }}
-            </td>
-            <td>{{ transcript.date_added | date: "dd/MM/yyyy" }}</td>
-            <td class="has-text-right">
-                <div class="buttons is-right">
-                    <button class="button is-primary" pTooltip="delete transcript"
-                        (click)="deleteTranscript(transcript)">
-                        <span class="icon is-small">
-                            <fa-icon [icon]="faTrash"></fa-icon>
-                        </span>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table> -->

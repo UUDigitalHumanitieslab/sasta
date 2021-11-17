@@ -11,6 +11,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
@@ -78,6 +79,7 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         ConfirmDialogModule,
         DialogModule,
         DropdownModule,
+        FieldsetModule,
         FileUploadModule,
         MessageModule,
         MessagesModule,
