@@ -2,11 +2,12 @@ import logging
 from collections import Counter, defaultdict
 from typing import Dict, List, Set
 
-from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
-                             Utterance)
+from analysis.annotations.safreader import SAFReader
+from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery,
+                             Transcript, Utterance)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
 from sastadev.query import core_process, post_process, pre_process
-from analysis.annotations.safreader import SAFReader
+
 from .functions import (Query, QueryWithFunction, compile_queries,
                         filter_queries, single_query_single_utt, utt_from_tree)
 
