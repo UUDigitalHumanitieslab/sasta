@@ -98,7 +98,7 @@ isodate==0.6.0
     # via rdflib
 kombu==5.1.0
     # via celery
-lxml==4.6.3
+lxml==4.6.5
     # via
     #   pynlpl
     #   python-docx
