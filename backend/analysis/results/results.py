@@ -39,13 +39,15 @@ class AllResults:
                  coreresults=None,
                  postresults=None,
                  allmatches=None,
-                 annotations=None):
+                 annotations=None,
+                 analysedtrees=None):
         self.filename: str = filename
         self.uttcount: int = uttcount
         self.coreresults: SastaResults = coreresults or {}
         self.postresults: SastaResults = postresults or {}
         self.allmatches: SastaMatches = allmatches or tuple()
         self.annotations: SastaAnnotations = annotations or {}
+        self.analysedtrees: List[SynTree] = analysedtrees or []
 
     def __repr__(self):
         return f'name: {self.filename}, core: {len(self.coreresults)}, post: {len(self.postresults)}, matches: {len(self.allmatches)}'  # noqa: E501

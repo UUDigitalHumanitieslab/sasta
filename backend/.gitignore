@@ -36,5 +36,6 @@ venv.bak/
 
 # Application
 logs/
+sastadev/
 # *.xlsx
 # *.docx
