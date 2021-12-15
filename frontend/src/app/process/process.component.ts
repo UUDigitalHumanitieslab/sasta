@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faArrowRight, faCogs } from '@fortawesome/free-solid-svg-icons';
 import { MenuItem } from 'primeng/api';
-import { interval, Observable, Subscription } from 'rxjs';
-import { concat, startWith } from 'rxjs/operators';
+import { interval, Observable, of, Subscription } from 'rxjs';
+import { catchError, concat, startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { CorpusService } from '../services/corpus.service';
 
@@ -61,7 +61,8 @@ export class ProcessComponent implements OnInit, OnDestroy {
       .pipe(
         // tslint:disable-next-line: deprecation
         // concat(this.corpusService.parse_all(this.corpus.id)))
-        concat(this.corpusService.parse_all_async(this.corpus.id)))
+          concat(this.corpusService.parse_all_async(this.corpus.id)),
+          catchError(err => of('error', err)))
       .subscribe(
         res => {
           console.log(res);
