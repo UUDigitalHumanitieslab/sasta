@@ -38,6 +38,7 @@ class MethodCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
     zc_embeddings = models.BooleanField()
     levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
+    marking_postcodes = ArrayField(base_field=models.CharField(max_length=20, blank=True), default=list)
 
     def __str__(self):
         return self.name

@@ -15,7 +15,7 @@ def find_doc_line(lines: List[ChatLine], uttid):
 def enrich_chat(transcript: Transcript,
                 allresults: AllResults,
                 method: AssessmentMethod) -> ChatDocument:
-    doc = ChatDocument.from_chatfile(transcript.content.path)
+    doc = ChatDocument.from_chatfile(transcript.content.path, transcript.corpus.method_category)
 
     items = sorted(allresults.annotations.items())
     for utt_id, words in items:

@@ -5,6 +5,8 @@ from chamd.chat_reader import ChatFile, ChatHeader, ChatLine
 from chamd.chat_reader import ChatReader as ChatParser
 from chamd.chat_reader import ChatTier, MetaValue
 
+from analysis.models import MethodCategory
+
 logger = logging.getLogger('sasta')
 
 TARGET_ROLES = ['Target_Child', 'Target_Adult', 'Participant']
@@ -12,7 +14,8 @@ XSID_POSTCODES = ['[+ G]', '[+ VU]']
 
 
 class ChatDocument:
-    def __init__(self, inputdoc: ChatFile):
+    def __init__(self, inputdoc: ChatFile, method_category: MethodCategory):
+        self.method_category = method_category
         self.headers: List[ChatHeader] = inputdoc.headers or []
         self.header_metadata: Dict = inputdoc.header_metadata or {}
         self.file_metadata: Dict[str, MetaValue] = inputdoc.metadata or {}
@@ -24,7 +27,7 @@ class ChatDocument:
         self.target_uttids: bool = self.has_xsids
 
     @classmethod
-    def from_chatfile(cls, filepath: str):
+    def from_chatfile(cls, filepath: str, method_category: MethodCategory):
         reader = ChatParser()
         doc = reader.read_file(filepath)
         # TODO: probably want to let this condition go if it
@@ -32,7 +35,7 @@ class ChatDocument:
         # assert not reader.errors
         for err in reader.errors:
             logger.debug(err)
-        return cls(doc)
+        return cls(doc, method_category)
 
     def find_target_speakers(self) -> Set[str]:
         results = set([])
@@ -45,7 +48,7 @@ class ChatDocument:
     def process_postcodes(self) -> None:
         current_xsid = 1
         for line in self.lines:
-            if any(postcode in line.original for postcode in XSID_POSTCODES):
+            if any(postcode in line.original for postcode in self.method_category.marking_postcodes):
                 line.tiers['xsid'] = ChatTier('xsid', str(current_xsid))
                 current_xsid += 1
 
@@ -65,23 +68,22 @@ class ChatDocument:
 
     def __eq__(self, other) -> bool:
         safe_headers = ('session',)
-        if ([h.__dict__ for h in self.headers]
-                != [h.__dict__ for h in other.headers]):
-            return False
 
-        if not self._eq_header_metadata(other, safe_headers):
-            return False
+        if all((self.charmap == other.charmap,
+                self._eq_headers(other),
+                self._eq_header_metadata(other, safe_headers),
+                self._eq_file_metadata(other, safe_headers),
+                self._eq_lines(other)
+                )):
+            return True
+        return False
 
-        if not self._eq_file_metadata(other, safe_headers):
-            return False
-
-        if self.charmap != other.charmap:
-            return False
-
-        if not self._eq_lines(other):
-            return False
-
-        return True
+    def _eq_headers(self, other) -> bool:
+        # Compare headers, ignoring linestartno to allow rewriting multiline headers to a single line
+        ignore_keys = ('linestartno',)
+        filtered_self = [{k: v for (k, v) in d.items() if k not in ignore_keys} for d in [h.__dict__ for h in self.headers]]
+        filtered_other = [{k: v for (k, v) in d.items() if k not in ignore_keys} for d in [h.__dict__ for h in other.headers]]
+        return filtered_self == filtered_other
 
     def _eq_header_metadata(self, other, safe_headers: Tuple[str]) -> bool:
         if self.header_metadata.keys() != other.header_metadata.keys():

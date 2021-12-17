@@ -19,7 +19,7 @@ def set_default_uttno(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('analysis', '0027_analysisrun'),
+        ('analysis', '0028_methodcategory_marking_postcodes'),
     ]
 
     operations = [

@@ -4,7 +4,8 @@
         "fields": {
             "name": "TARSP",
             "zc_embeddings": true,
-            "levels": ["Sz", "Zc", "Wg", "VVW"]
+            "levels": ["Sz", "Zc", "Wg", "VVW"],
+            "marking_postcodes": ["[+ G]"]
         }
     },
     {
@@ -13,7 +14,8 @@
         "fields": {
             "name": "ASTA",
             "zc_embeddings": false,
-            "levels": ["SampleGrootte", "MLU", "Taalmaat", "Lemma", "Grammaticale fout", "QA"]
+            "levels": ["SampleGrootte", "MLU", "Taalmaat", "Lemma", "Grammaticale fout", "QA"],
+            "marking_postcodes": ["[+ G]"]
         }
     },
     {
@@ -22,7 +24,8 @@
         "fields": {
             "name": "STAP",
             "zc_embeddings": false,
-            "levels": ["Complexiteit", "Grammaticale fout"]
+            "levels": ["Complexiteit", "Grammaticale fout"],
+            "marking_postcodes": ["[+ G]", "[+ VU]"]
         }
     }
 ]
