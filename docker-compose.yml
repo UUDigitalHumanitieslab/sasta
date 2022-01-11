@@ -6,7 +6,7 @@ services:
     command: Alpino -notk -veryfast user_max=600000 server_kind=parse server_port=7001 assume_input_is_tokenized=off end_hook=xml -init_dict_p batch_command=alpino_server
     ports:
       - 7001:7001
-  
+
   db:
     image: postgres
     environment:
@@ -30,7 +30,7 @@ services:
     env_file: &envfile
       - ./.env.dev
     command: python manage.py runserver 0.0.0.0:8000
-  
+
   frontend:
     build:
       context: ./frontend
@@ -51,7 +51,7 @@ services:
     ports:
       - 80:80
       - 443:443
-  
+
   worker:
     build:
       context: ./backend
@@ -59,7 +59,7 @@ services:
     restart: "no"
     env_file: *envfile
     command: ["celery", "--app=sasta.celery.app", "worker", "--concurrency=1", "--hostname=worker@%h", "--loglevel=INFO"]
-    volumes: 
+    volumes:
       - type: bind
         source: ./backend
         target: /app
@@ -74,15 +74,7 @@ services:
       - "5672:5672"
     restart: on-failure
 
-  flower:
-    image: mher/flower
-    command: ["flower", "--logging=DEBUG"] 
-    env_file: *envfile 
-    depends_on:
-      - rabbitmq
-    ports:
-      - 5555:5555
 
 volumes:
   postgres_data:
-  static_data: 
+  static_data:
