@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from corpus2alpino.annotators.alpino import AlpinoAnnotator
 from corpus2alpino.collectors.filesystem import FilesystemCollector
 from corpus2alpino.converter import Converter
-from corpus2alpino.log import Log, LogSingleton, LogTarget
 from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
@@ -21,11 +20,6 @@ logger = logging.getLogger('sasta')
 
 
 def parse_and_create(transcript):
-    log_target = LogTarget(target=FilesystemTarget(
-        settings.CORPUS2ALPINO_LOG_DIR))
-    log_target.document = Document(CollectedFile(
-        '', 'parse.log', 'text/plain', ''), [])
-    LogSingleton.set(Log(log_target, strict=False))
 
     try:
         output_path = transcript.content.path.replace(
@@ -76,16 +70,19 @@ def parse_transcript(transcript, output_dir, output_path):
 
         # Correcting and reparsing
         logger.info(f'Correcting:\t{transcript.name}...\n')
-        reparsed, error_dict, origandalts = correct_treebank(transcript)
-        reparsed_content = etree.tostring(reparsed, encoding='utf-8')
-        reparsed_file = File(io.BytesIO(reparsed_content))
-        transcript.parsed_content.save(parsed_filename, reparsed_file)
-        logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
+        try:
+            reparsed, error_dict, origandalts = correct_treebank(transcript)
+            reparsed_content = etree.tostring(reparsed, encoding='utf-8')
+            reparsed_file = File(io.BytesIO(reparsed_content))
+            transcript.parsed_content.save(parsed_filename, reparsed_file)
+            logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
+            # Save corrections
+            transcript.corrections = error_dict
 
-        # Save corrections
-        transcript.corrections = error_dict
+        except Exception:
+            logger.warning(f'Correction failed for transcript:\t {transcript.name}')
+
         transcript.save()
-
         return transcript
 
     except Exception:
@@ -152,3 +149,4 @@ def correct_treebank(transcript: Transcript):
 
     except Exception as e:
         logger.exception(e)
+        raise
