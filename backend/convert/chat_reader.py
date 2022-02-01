@@ -69,28 +69,43 @@ class ChatDocument:
                 != [h.__dict__ for h in other.headers]):
             return False
 
+        if not self._eq_header_metadata(other, safe_headers):
+            return False
+
+        if not self._eq_file_metadata(other, safe_headers):
+            return False
+
+        if self.charmap != other.charmap:
+            return False
+
+        if not self._eq_lines(other):
+            return False
+
+        return True
+
+    def _eq_header_metadata(self, other, safe_headers):
         if self.header_metadata.keys() != other.header_metadata.keys():
             return False
         for k, v in self.header_metadata.items():
             if other.header_metadata[k] != v:
                 if k not in safe_headers:
                     return False
+        return True
 
+    def _eq_file_metadata(self, other, safe_headers):
         if self.file_metadata.keys() != other.file_metadata.keys():
             return False
         for k, v in self.file_metadata.items():
             if str(v) != str(other.file_metadata[k]):
                 if k not in safe_headers:
                     return False
+        return True
 
-        if self.charmap != other.charmap:
-            return False
-
+    def _eq_lines(self, other):
         for i, ln in enumerate(self.lines):
             otherln = other.lines[i]
             if ln.original != otherln.original:
                 return False
             if [str(t) for t in ln.tiers] != [str(t) for t in otherln.tiers]:
                 return False
-
         return True

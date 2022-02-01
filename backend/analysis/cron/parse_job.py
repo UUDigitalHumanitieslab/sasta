@@ -2,15 +2,8 @@ from ..parse.parse import create_utterance_objects, parse_transcript
 from ..models import Transcript
 from django_cron import CronJobBase, Schedule
 from django.db.models import Q
-from corpus2alpino.targets.filesystem import FilesystemTarget
-from corpus2alpino.models import CollectedFile, Document
 import logging
 import os
-
-<< << << < HEAD
-== == == =
->>>>>> > develop
-
 
 logger = logging.getLogger('sasta')
 

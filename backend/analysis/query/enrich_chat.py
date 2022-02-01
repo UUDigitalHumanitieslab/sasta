@@ -1,10 +1,10 @@
+import itertools
 from typing import List
+
 from analysis.models import AssessmentMethod, Transcript
 from analysis.results.results import AllResults
+from chamd.chat_reader import ChatLine, ChatTier
 from convert.chat_reader import ChatDocument
-from chamd.chat_reader import ChatHeader, ChatTier, ChatLine
-import itertools
-from operator import attrgetter
 
 
 def find_doc_line(lines: List[ChatLine], uttid):
