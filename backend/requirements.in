@@ -1,4 +1,4 @@
-corpus2alpino>=0.3.3
+corpus2alpino
 celery
 chamd>=0.5.4
 django>=3.1.12,<3.2
@@ -14,7 +14,6 @@ pytest
 pytest-django
 pytest-xdist
 python-docx
-python-ucto==0.4.7
 openpyxl
 xlrd>=1.2,<2
 xlsxwriter

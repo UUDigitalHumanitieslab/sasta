@@ -1,13 +1,16 @@
+from ..parse.parse import create_utterance_objects, parse_transcript
+from ..models import Transcript
+from django_cron import CronJobBase, Schedule
+from django.db.models import Q
+from corpus2alpino.targets.filesystem import FilesystemTarget
+from corpus2alpino.models import CollectedFile, Document
 import logging
 import os
 
-from corpus2alpino.models import CollectedFile, Document
-from corpus2alpino.targets.filesystem import FilesystemTarget
-from django.db.models import Q
-from django_cron import CronJobBase, Schedule
+<< << << < HEAD
+== == == =
+>>>>>> > develop
 
-from ..models import Transcript
-from ..parse.parse import create_utterance_objects, parse_transcript
 
 logger = logging.getLogger('sasta')
 
@@ -19,8 +22,8 @@ class ParseJob(CronJobBase):
     code = 'sasta.parse_job'  # a unique code
 
     def do(self):
-
-        for transcript in Transcript.objects.filter(Q(status='converted') | Q(status='parsing-failed')):  # noqa: E501
+        for transcript in Transcript.objects.filter(
+                Q(status='converted') | Q(status='parsing-failed')):
             try:
                 output_path = transcript.content.path.replace(
                     '/transcripts', '/parsed')

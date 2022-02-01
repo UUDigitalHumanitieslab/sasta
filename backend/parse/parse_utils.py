@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from corpus2alpino.annotators.alpino import AlpinoAnnotator
 from corpus2alpino.collectors.filesystem import FilesystemCollector
 from corpus2alpino.converter import Converter
-from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
 from django.conf import settings
@@ -20,7 +19,6 @@ logger = logging.getLogger('sasta')
 
 
 def parse_and_create(transcript):
-
     try:
         output_path = transcript.content.path.replace(
             '/transcripts', '/parsed')
