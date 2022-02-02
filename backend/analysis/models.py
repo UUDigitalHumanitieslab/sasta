@@ -166,6 +166,7 @@ class Transcript(models.Model):
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
+    uttno = models.IntegerField()
     utt_id = models.IntegerField(blank=True, null=True)
     xsid = models.IntegerField(blank=True, null=True)
     parse_tree = models.TextField(blank=True)
