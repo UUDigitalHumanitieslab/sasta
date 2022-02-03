@@ -93,36 +93,48 @@ def parse_transcript(transcript, output_dir, output_path):
 def create_utterance_objects(transcript):
     with open(transcript.parsed_content.path, 'rb') as f:
         try:
+            marked_utt_counter = 1
             doc = BeautifulSoup(f.read(), 'xml')
             utts = doc.find_all('alpino_ds')
             num_created = 0
             for utt in utts:
-                xsid = utt.metadata.find(
-                    'meta', {'name': 'xsid'})
-                uttid_el = utt.metadata.find(
+                uttno_el = utt.metadata.find(
                     'meta', {'name': 'uttno'}
                 )
-                if xsid:
-                    xsid = xsid['value']
-
-                uttid = uttid_el['value']
+                uttno = int(uttno_el['value'])
 
                 # replace existing utterances
-                # existing = Utterance.objects.filter(
-                #     transcript=transcript, utt_id=uttid)
-                # if existing:
-                #     existing.delete()
+                existing = Utterance.objects.filter(
+                    transcript=transcript, uttno=uttno)
+                if existing:
+                    existing.delete()
+                    logger.info(f'Deleting existing utterance {uttno}')
+
                 sent = utt.sentence.text
                 speaker = utt.metadata.find(
                     'meta', {'name': 'speaker'})['value']
+
+                xsid_el = utt.metadata.find(
+                    'meta', {'name': 'xsid'})
+
+                # fields that should always be present
                 instance = Utterance(
                     transcript=transcript,
-                    utt_id=uttid,
-                    xsid=xsid,
+                    uttno=uttno,
+                    xsid=int(xsid_el['value']) if xsid_el is not None else None,
                     speaker=speaker,
                     sentence=sent,
                     parse_tree=str(utt)
                 )
+
+                if instance.for_analysis:
+                    # setting utt_id according to targets
+                    if transcript.target_ids:
+                        # check if xsids are unique and consecutive
+                        assert instance.xsid == marked_utt_counter
+                    instance.utt_id = marked_utt_counter
+                    marked_utt_counter += 1
+
                 instance.save()
                 num_created += 1
             logger.info(

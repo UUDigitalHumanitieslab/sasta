@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 from chamd.chat_reader import ChatFile, ChatHeader, ChatLine
 from chamd.chat_reader import ChatReader as ChatParser
@@ -20,8 +20,8 @@ class ChatDocument:
         self.lines: List[ChatLine] = inputdoc.lines or []
         # SASTA specific attributes
         self.target_speakers: Set[str] = self.find_target_speakers()
-        self.target_uttids: bool = self.has_xsids
         self.process_postcodes()
+        self.target_uttids: bool = self.has_xsids
 
     @classmethod
     def from_chatfile(cls, filepath: str):
@@ -34,7 +34,7 @@ class ChatDocument:
             logger.debug(err)
         return cls(doc)
 
-    def find_target_speakers(self):
+    def find_target_speakers(self) -> Set[str]:
         results = set([])
         participants = self.header_metadata.get('participants')
         results |= self.find_target_roles(participants)
@@ -42,7 +42,7 @@ class ChatDocument:
         results |= self.find_target_roles(ids)
         return results
 
-    def process_postcodes(self):
+    def process_postcodes(self) -> None:
         current_xsid = 1
         for line in self.lines:
             if any(postcode in line.original for postcode in XSID_POSTCODES):
@@ -63,7 +63,7 @@ class ChatDocument:
         tiers = [ln.tiers for ln in self.lines]
         return any(t.get('xsid') for t in tiers)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         safe_headers = ('session',)
         if ([h.__dict__ for h in self.headers]
                 != [h.__dict__ for h in other.headers]):
@@ -83,7 +83,7 @@ class ChatDocument:
 
         return True
 
-    def _eq_header_metadata(self, other, safe_headers):
+    def _eq_header_metadata(self, other, safe_headers: Tuple[str]) -> bool:
         if self.header_metadata.keys() != other.header_metadata.keys():
             return False
         for k, v in self.header_metadata.items():
@@ -92,7 +92,7 @@ class ChatDocument:
                     return False
         return True
 
-    def _eq_file_metadata(self, other, safe_headers):
+    def _eq_file_metadata(self, other, safe_headers: Tuple[str]) -> bool:
         if self.file_metadata.keys() != other.file_metadata.keys():
             return False
         for k, v in self.file_metadata.items():

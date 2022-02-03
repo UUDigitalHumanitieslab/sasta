@@ -194,7 +194,7 @@ class Utterance(models.Model):
         return self.xsid is not None
 
     def __str__(self):
-        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
+        return f'{self.uttno}\t|\t{self.speaker}:\t{self.sentence}'
 
 
 class UploadFile(models.Model):
