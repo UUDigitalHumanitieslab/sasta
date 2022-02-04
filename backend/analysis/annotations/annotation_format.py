@@ -3,10 +3,9 @@ from collections import Counter
 from functools import reduce
 from typing import Dict, List, Optional
 
-from analysis.query.xlsx_output import v1_to_xlsx
+from analysis.models import AssessmentMethod
 from analysis.results.results import (AllResults, SastaAnnotations,
                                       UtteranceWord)
-from analysis.models import AssessmentMethod, AssessmentQuery
 
 
 class SAFAnnotation:

@@ -38,6 +38,7 @@ class MethodCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
     zc_embeddings = models.BooleanField()
     levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
+    marking_postcodes = ArrayField(base_field=models.CharField(max_length=20, blank=True), default=list)
 
     def __str__(self):
         return self.name
@@ -166,6 +167,7 @@ class Transcript(models.Model):
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)
     speaker = models.CharField(max_length=50)
+    uttno = models.IntegerField()
     utt_id = models.IntegerField(blank=True, null=True)
     xsid = models.IntegerField(blank=True, null=True)
     parse_tree = models.TextField(blank=True)
@@ -193,7 +195,7 @@ class Utterance(models.Model):
         return self.xsid is not None
 
     def __str__(self):
-        return f'{self.utt_id}\t|\t{self.speaker}:\t{self.sentence}'
+        return f'{self.uttno}\t|\t{self.speaker}:\t{self.sentence}'
 
 
 class UploadFile(models.Model):

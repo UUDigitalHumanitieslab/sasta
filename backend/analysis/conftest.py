@@ -18,7 +18,15 @@ def cha_testfiles_dir():
 @pytest.mark.django_db
 @pytest.fixture()
 def tarsp_category():
-    obj = MethodCategory.objects.create(name='TARSP', zc_embeddings=True, levels=['Sz', 'Zc', 'Wg', 'VVW'])
+    obj = MethodCategory.objects.create(name='TARSP', zc_embeddings=True, levels=['Sz', 'Zc', 'Wg', 'VVW'], marking_postcodes=['[+ G]'])
+    yield obj
+    obj.delete()
+
+
+@pytest.mark.django_db
+@pytest.fixture()
+def stap_category():
+    obj = MethodCategory.objects.create(name='STAP', zc_embeddings=False, levels=['Complexiteit', 'Grammaticale fout'], marking_postcodes=['[+ G]', '[+ VU]'])
     yield obj
     obj.delete()
 

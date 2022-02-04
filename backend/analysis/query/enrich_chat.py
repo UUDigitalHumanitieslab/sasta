@@ -1,10 +1,10 @@
+import itertools
 from typing import List
+
 from analysis.models import AssessmentMethod, Transcript
 from analysis.results.results import AllResults
+from chamd.chat_reader import ChatLine, ChatTier
 from convert.chat_reader import ChatDocument
-from chamd.chat_reader import ChatHeader, ChatTier, ChatLine
-import itertools
-from operator import attrgetter
 
 
 def find_doc_line(lines: List[ChatLine], uttid):
@@ -15,7 +15,7 @@ def find_doc_line(lines: List[ChatLine], uttid):
 def enrich_chat(transcript: Transcript,
                 allresults: AllResults,
                 method: AssessmentMethod) -> ChatDocument:
-    doc = ChatDocument.from_chatfile(transcript.content.path)
+    doc = ChatDocument.from_chatfile(transcript.content.path, transcript.corpus.method_category)
 
     items = sorted(allresults.annotations.items())
     for utt_id, words in items:
