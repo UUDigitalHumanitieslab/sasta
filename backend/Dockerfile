@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.7
 
 # git to be able to install requirements from git
 RUN apt-get update && apt-get install git && rm -rf /var/lib/apt/lists/*
