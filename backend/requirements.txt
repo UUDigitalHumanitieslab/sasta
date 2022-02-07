@@ -58,7 +58,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-corpus2alpino==0.3.7
+corpus2alpino==0.3.8
     # via -r requirements.in
 cryptography==36.0.1
     # via pyjwt
@@ -251,8 +251,6 @@ typer==0.4.0
     # via
     #   pathy
     #   spacy
-typing==3.7.4.3
-    # via corpus2alpino
 typing-extensions==3.10.0.2
     # via
     #   asgiref
