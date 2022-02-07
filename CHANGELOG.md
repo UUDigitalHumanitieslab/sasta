@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Implement latest method defintions.
 - Upgrade to Python 3.7.x
+- Concurrent parsing: up to 8 transcripts can be parsed in parallel.
 ### Changed
 - All marked utterances are given utterance IDs, no longer use utterance numbers. Analysis now numbers utterance 1-N, where N is number of marked utterances.
 - Phase out `python-ucto`, and by proxy `ucto` (through changes in `corpus2alpino`). Severly reduces dependency complexity.

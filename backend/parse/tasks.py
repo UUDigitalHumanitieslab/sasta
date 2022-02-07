@@ -6,6 +6,15 @@ from .parse_utils import parse_and_create
 
 
 @shared_task
+def parse_transcript_task(transcript_id: int):
+    transcript = Transcript.objects.get(pk=transcript_id)
+    parsed = parse_and_create(transcript)
+    if not parsed:
+        return 'Transcript {transcript.name} parse failed'
+    return 'Transcript {transcript.name} parsed'
+
+
+@shared_task
 def parse_corpus(corpus_id: int):
     # with connection.cursor as cursor:
     corpus = Corpus.objects.get(pk=corpus_id)
