@@ -10,8 +10,8 @@ def parse_transcript_task(transcript_id: int):
     transcript = Transcript.objects.get(pk=transcript_id)
     parsed = parse_and_create(transcript)
     if not parsed:
-        return 'Transcript {transcript.name} parse failed'
-    return 'Transcript {transcript.name} parsed'
+        return f'Transcript {transcript.name} parse failed'
+    return f'Transcript {transcript.name} parsed'
 
 
 @shared_task
