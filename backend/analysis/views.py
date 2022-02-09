@@ -12,7 +12,7 @@ from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
 from parse.parse_utils import parse_and_create
-from parse.tasks import parse_corpus
+from parse.tasks import parse_transcript_task
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
@@ -26,6 +26,7 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
 from .utils import StreamFile
+from celery import group
 
 
 # flake8: noqa: E501
@@ -256,7 +257,11 @@ class CorpusViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], name='parse_all_async')
     def parse_all_async(self, request, *args, **kwargs):
         corpus = self.get_object()
-        task = parse_corpus.delay(corpus.id)
+        transcripts = Transcript.objects.filter(
+            Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED)
+        )
+        task = group(parse_transcript_task.s(t.id) for t in transcripts).delay()
+
         if not task:
             return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
         return Response(task.id)

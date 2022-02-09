@@ -36,7 +36,7 @@ def convert(transcript: Transcript):
             transcript.content = cha_name
 
         elif transcript.content.name.endswith('.cha'):
-            doc = ChatDocument.from_chatfile(transcript.content.path)
+            doc = ChatDocument.from_chatfile(transcript.content.path, transcript.corpus.method_category)
             transcript.target_ids = doc.target_uttids
             transcript.target_speakers = ','.join(doc.target_speakers)
             transcript.name = op.splitext(

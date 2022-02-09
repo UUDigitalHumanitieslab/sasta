@@ -2,11 +2,12 @@ import logging
 from collections import Counter, defaultdict
 from typing import Dict, List, Set
 
-from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery, Transcript,
-                             Utterance)
+from analysis.annotations.safreader import SAFReader
+from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery,
+                             Transcript, Utterance)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
 from sastadev.query import core_process, post_process, pre_process
-from analysis.annotations.safreader import SAFReader
+
 from .functions import (Query, QueryWithFunction, compile_queries,
                         filter_queries, single_query_single_utt, utt_from_tree)
 
@@ -24,6 +25,7 @@ def query_transcript(transcript: Transcript,
     utterances: List[Utterance] = Utterance.objects.filter(
         transcript=transcript)
     to_analyze_utterances = [x for x in utterances if x.for_analysis]
+    utterance_syntrees = [x.syntree for x in to_analyze_utterances]
     logger.info(
         f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')
 
@@ -45,7 +47,8 @@ def query_transcript(transcript: Transcript,
                             coreresults,
                             None,
                             allmatches,
-                            annotations)
+                            annotations,
+                            utterance_syntrees)
 
     run_post_queries(allresults, queries_with_funcs)
     return allresults, queries_with_funcs

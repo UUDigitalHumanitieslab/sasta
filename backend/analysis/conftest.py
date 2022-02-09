@@ -18,7 +18,15 @@ def cha_testfiles_dir():
 @pytest.mark.django_db
 @pytest.fixture()
 def tarsp_category():
-    obj = MethodCategory.objects.create(name='TARSP', zc_embeddings=True, levels=['Sz', 'Zc', 'Wg', 'VVW'])
+    obj = MethodCategory.objects.create(name='TARSP', zc_embeddings=True, levels=['Sz', 'Zc', 'Wg', 'VVW'], marking_postcodes=['[+ G]'])
+    yield obj
+    obj.delete()
+
+
+@pytest.mark.django_db
+@pytest.fixture()
+def stap_category():
+    obj = MethodCategory.objects.create(name='STAP', zc_embeddings=False, levels=['Complexiteit', 'Grammaticale fout'], marking_postcodes=['[+ G]', '[+ VU]'])
     yield obj
     obj.delete()
 
@@ -27,7 +35,7 @@ def tarsp_category():
 @pytest.fixture
 def tarsp_method(tarsp_category):
     method_dir = op.join(settings.BASE_DIR, 'sastadev', 'methods')
-    file = glob.glob(f'{method_dir}/*TARSP*.xlsx')[0]
+    file = glob.glob(f'{method_dir}/TARSP Index Current.xlsx')[0]
     with open(file, 'rb') as f:
         wrapped_file = File(f)
         instance = AssessmentMethod(name='tarsp_test_method', category=tarsp_category)

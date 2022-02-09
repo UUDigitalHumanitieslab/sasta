@@ -1,6 +1,6 @@
 {
     "name": "sasta",
-    "version": "0.2.5",
+    "version": "0.3.0",
     "description": "Annotate and analyze transcripts",
     "author": "UU Digital Humanities Lab",
     "license": "BSD-3-Clause",
@@ -28,7 +28,7 @@
         "watch-test-front": "yarn front yarn test",
         "watch-test-back": "yarn test-back --looponfail",
         "watch-back": "yarn livereload-back & yarn watch-test-back",
-        "start": "yarn start-front & yarn start-back & yarn watch-back",
+        "start": "yarn start-front & yarn start-back & yarn start-celery",
         "build": "yarn front yarn build",
         "build-p": "yarn front yarn build --configuration production",
         "collectstatic-p": "cd backend && python manage.py collectstatic --noinput -v 0 --settings collect --pythonpath ..",

@@ -38,7 +38,7 @@ export class CorpusService {
   annotate_transcript(transcriptID, methodID, outputFormat): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('method', methodID);
-    formData.append('format', outputFormat)
+    formData.append("format", outputFormat);
     return this.httpClient.post(`api/transcripts/${transcriptID}/annotate/`, formData, { observe: 'response', responseType: 'blob' });
   }
 

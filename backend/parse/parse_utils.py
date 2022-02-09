@@ -7,8 +7,6 @@ from bs4 import BeautifulSoup
 from corpus2alpino.annotators.alpino import AlpinoAnnotator
 from corpus2alpino.collectors.filesystem import FilesystemCollector
 from corpus2alpino.converter import Converter
-from corpus2alpino.log import Log, LogSingleton, LogTarget
-from corpus2alpino.models import CollectedFile, Document
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
 from django.conf import settings
@@ -21,12 +19,6 @@ logger = logging.getLogger('sasta')
 
 
 def parse_and_create(transcript):
-    log_target = LogTarget(target=FilesystemTarget(
-        settings.CORPUS2ALPINO_LOG_DIR))
-    log_target.document = Document(CollectedFile(
-        '', 'parse.log', 'text/plain', ''), [])
-    LogSingleton.set(Log(log_target, strict=False))
-
     try:
         output_path = transcript.content.path.replace(
             '/transcripts', '/parsed')
@@ -76,16 +68,19 @@ def parse_transcript(transcript, output_dir, output_path):
 
         # Correcting and reparsing
         logger.info(f'Correcting:\t{transcript.name}...\n')
-        reparsed, error_dict, origandalts = correct_treebank(transcript)
-        reparsed_content = etree.tostring(reparsed, encoding='utf-8')
-        reparsed_file = File(io.BytesIO(reparsed_content))
-        transcript.parsed_content.save(parsed_filename, reparsed_file)
-        logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
+        try:
+            reparsed, error_dict, origandalts = correct_treebank(transcript)
+            reparsed_content = etree.tostring(reparsed, encoding='utf-8')
+            reparsed_file = File(io.BytesIO(reparsed_content))
+            transcript.parsed_content.save(parsed_filename, reparsed_file)
+            logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
+            # Save corrections
+            transcript.corrections = error_dict
 
-        # Save corrections
-        transcript.corrections = error_dict
+        except Exception:
+            logger.warning(f'Correction failed for transcript:\t {transcript.name}')
+
         transcript.save()
-
         return transcript
 
     except Exception:
@@ -98,36 +93,48 @@ def parse_transcript(transcript, output_dir, output_path):
 def create_utterance_objects(transcript):
     with open(transcript.parsed_content.path, 'rb') as f:
         try:
+            marked_utt_counter = 1
             doc = BeautifulSoup(f.read(), 'xml')
             utts = doc.find_all('alpino_ds')
             num_created = 0
             for utt in utts:
-                xsid = utt.metadata.find(
-                    'meta', {'name': 'xsid'})
-                uttid_el = utt.metadata.find(
+                uttno_el = utt.metadata.find(
                     'meta', {'name': 'uttno'}
                 )
-                if xsid:
-                    xsid = xsid['value']
-
-                uttid = uttid_el['value']
+                uttno = int(uttno_el['value'])
 
                 # replace existing utterances
-                # existing = Utterance.objects.filter(
-                #     transcript=transcript, utt_id=uttid)
-                # if existing:
-                #     existing.delete()
+                existing = Utterance.objects.filter(
+                    transcript=transcript, uttno=uttno)
+                if existing:
+                    existing.delete()
+                    logger.info(f'Deleting existing utterance {uttno}')
+
                 sent = utt.sentence.text
                 speaker = utt.metadata.find(
                     'meta', {'name': 'speaker'})['value']
+
+                xsid_el = utt.metadata.find(
+                    'meta', {'name': 'xsid'})
+
+                # fields that should always be present
                 instance = Utterance(
                     transcript=transcript,
-                    utt_id=uttid,
-                    xsid=xsid,
+                    uttno=uttno,
+                    xsid=int(xsid_el['value']) if xsid_el is not None else None,
                     speaker=speaker,
                     sentence=sent,
                     parse_tree=str(utt)
                 )
+
+                if instance.for_analysis:
+                    # setting utt_id according to targets
+                    if transcript.target_ids:
+                        # check if xsids are unique and consecutive
+                        assert instance.xsid == marked_utt_counter
+                    instance.utt_id = marked_utt_counter
+                    marked_utt_counter += 1
+
                 instance.save()
                 num_created += 1
             logger.info(
@@ -152,3 +159,4 @@ def correct_treebank(transcript: Transcript):
 
     except Exception as e:
         logger.exception(e)
+        raise
