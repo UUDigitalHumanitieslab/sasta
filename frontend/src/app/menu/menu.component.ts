@@ -6,7 +6,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-import { faFolder, faListAlt, faFileUpload } from '@fortawesome/free-solid-svg-icons'
+import {
+    faFolder,
+    faListAlt,
+    faFileUpload,
+} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     animations,
