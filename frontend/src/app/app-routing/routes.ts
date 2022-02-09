@@ -4,8 +4,7 @@ import { RegisterComponent } from '../auth/register.component';
 import { VerifyComponent } from '../auth/verify.component';
 import { CorpusComponent } from '../corpus/corpus.component';
 import { ListCorpusComponent } from '../corpus/list-corpus.component';
-import { TranscriptComponent } from '../transcript/transcript.component'
-import { HomeComponent } from '../home/home.component';
+import { TranscriptComponent } from "../transcript/transcript.component";
 import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
 import { ProcessComponent } from '../process/process.component';
