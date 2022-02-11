@@ -10,9 +10,11 @@ import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PanelModule } from 'primeng/panel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
@@ -32,56 +34,56 @@ import { ProcessComponent } from './process/process.component';
 import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
 import { TranscriptProgressComponent } from './process/transcript-progress.component';
 import { TranscriptComponent } from './transcript/transcript.component';
-import { UploadComponent } from './upload/upload.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        FooterComponent,
-        MenuComponent,
-        HomeComponent,
-        UploadComponent,
-        ListCorpusComponent,
-        CorpusComponent,
-        ListMethodComponent,
-        MethodComponent,
-        LoginComponent,
-        ProcessComponent,
-        RegisterComponent,
-        VerifyComponent,
-        TranscriptComponent,
-        UploadSafComponent,
-        TranscriptProgressComponent,
-        TranscriptProgressCellComponent,
-    ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        FontAwesomeModule,
-        FormsModule,
-        HttpClientModule,
-        HttpClientXsrfModule.withOptions({
-            cookieName: 'csrftoken',
-            headerName: 'X-CSRFToken'
-        }),
-        NgxJsonViewerModule,
-        // PrimeNG
-        AccordionModule,
-        CheckboxModule,
-        DialogModule,
-        DropdownModule,
-        MessageModule,
-        MessagesModule,
-        ToastModule,
-        TooltipModule,
-        PanelModule,
-        StepsModule,
-        ProgressSpinnerModule,
-    ],
-    providers: [MessageService],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    FooterComponent,
+    MenuComponent,
+    HomeComponent,
+    UploadComponent,
+    ListCorpusComponent,
+    CorpusComponent,
+    ListMethodComponent,
+    MethodComponent,
+    LoginComponent,
+    ProcessComponent,
+    RegisterComponent,
+    VerifyComponent,
+    TranscriptComponent,
+    UploadSafComponent,
+    TranscriptProgressComponent,
+    TranscriptProgressCellComponent,
+  ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+    FormsModule,
+    HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken',
+    }),
+    NgxJsonViewerModule,
+    // PrimeNG
+    AccordionModule,
+    CheckboxModule,
+    DialogModule,
+    DropdownModule,
+    FileUploadModule,
+    MessageModule,
+    MessagesModule,
+    ToastModule,
+    TooltipModule,
+    PanelModule,
+    StepsModule,
+    ProgressSpinnerModule,
+  ],
+  providers: [MessageService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

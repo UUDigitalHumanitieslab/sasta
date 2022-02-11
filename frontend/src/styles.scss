@@ -26,3 +26,11 @@
         }
     }
 }
+
+.p-button {
+    @extend .button, .is-primary;
+}
+
+.p-button:disabled {
+    @extend .button
+}
