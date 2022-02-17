@@ -6,7 +6,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-import { faFolder, faListAlt, faFileUpload } from '@fortawesome/free-solid-svg-icons'
+import { faFolder, faListAlt, faFileUpload, faUserShield } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     animations,
@@ -14,16 +14,19 @@ import { faFolder, faListAlt, faFileUpload } from '@fortawesome/free-solid-svg-i
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss']
 })
+
 export class MenuComponent implements OnInit {
     burgerShow: showState;
     burgerActive = false;
     public activeUser: User;
     public isAuthenticated$ = this.authService.isAuthenticated$;
+    public isAdmin: boolean;
 
     faUser = faUser;
     faFolder = faFolder;
     faListAlt = faListAlt;
     faFileUpload = faFileUpload;
+    faUserShield = faUserShield;
     version = environment.appVersion;
 
     constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) {
@@ -35,7 +38,10 @@ export class MenuComponent implements OnInit {
                 this.authService
                     .getUser()
                     .subscribe(
-                        res => this.activeUser = res,
+                        async res => {
+                            this.activeUser = res
+                            this.isAdmin = await this.authService.isAdmin();
+                        },
                         err => console.log('Http Error', err));
             } else {
                 this.activeUser = null;
