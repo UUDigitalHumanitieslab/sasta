@@ -99,7 +99,7 @@ class Corpus(models.Model):
     def download_as_zip(self):
         stream = BytesIO()
         transcripts = self.transcripts.all()
-        files = [(t.content.path, t.parsed_content.path) for t in transcripts]
+        files = [(t.content.path, t.parsed_content.path, t.corrected_content.path) for t in transcripts]
         files = list(chain.from_iterable(files))
         zipf = zipfile.ZipFile(stream, "w")
         for f in files:
@@ -145,6 +145,8 @@ class Transcript(models.Model):
         Corpus, related_name='transcripts', on_delete=models.CASCADE)
     content = models.FileField(upload_to=upload_path, blank=True, null=True)
     parsed_content = models.FileField(
+        upload_to=upload_path_parsed, blank=True, null=True)
+    corrected_content = models.FileField(
         upload_to=upload_path_parsed, blank=True, null=True)
     extracted_filename = models.CharField(
         max_length=500, blank=True, null=True)

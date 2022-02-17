@@ -199,7 +199,7 @@ export class TranscriptComponent implements OnInit {
   }
 
   showLassy() {
-    window.open(this.transcript.parsed_content, '_blank');
+    window.open(this.transcript.corrected_content, '_blank');
   }
 
   showCorrectionsUpload() {

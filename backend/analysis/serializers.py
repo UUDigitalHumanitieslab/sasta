@@ -39,7 +39,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcript
         fields = ('id', 'name', 'content',
-                  'parsed_content', 'status', 'status_name', 'date_added',
+                  'parsed_content', 'corrected_content', 'status', 'status_name', 'date_added',
                   'corpus', 'utterances', 'latest_run', 'latest_corrections', 'target_speakers')
 
 
