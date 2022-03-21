@@ -4,6 +4,10 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2022-03-21
+### Fixed
+- Resolved an issue where CHAT annotations were added to the wrong utterances.
+
 ## [0.3.0] - 2022-02-07
 ### Added
 - Implement latest method defintions.
