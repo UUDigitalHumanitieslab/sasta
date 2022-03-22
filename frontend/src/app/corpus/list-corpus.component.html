@@ -5,23 +5,31 @@
                 <th>Name</th>
                 <th>uploads (#)</th>
                 <th>transcripts (#)</th>
-                <th class="has-text-right">Status</th>
+                <th class="has-text-right">Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let corpus of corpora" [routerLink]="['/corpora/', corpus.id]">
-                <td>{{corpus.name}}</td>
-                <td>{{corpus?.files?.length || '0'}}</td>
-                <td>{{corpus?.transcripts?.length || '0'}}</td>
-                <td class="has-text-right">{{corpus.status}}</td>
+                <td>{{ corpus.name }}</td>
+                <td>{{ corpus?.files?.length || "0" }}</td>
+                <td>{{ corpus?.transcripts?.length || "0" }}</td>
+                <td class="has-text-right">
+                    <button class="button is-primary" pTooltip="delete transcript"
+                        (click)="confirmDeleteCorpus($event, corpus)">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </span>
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <h1 *ngIf="corpora.length ==0" class="title is-2">
+    <h1 *ngIf="corpora.length == 0" class="title is-2">
         No corpora yet!
-        <a [routerLink]="['/upload']" routerLinkActive="is-active">
-            Upload
-        </a>
+        <a [routerLink]="['/upload']" routerLinkActive="is-active"> Upload </a>
     </h1>
+
+    <p-confirmDialog [dismissableMask]="true"></p-confirmDialog>
 </ng-container>
+
