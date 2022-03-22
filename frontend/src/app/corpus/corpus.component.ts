@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faCogs, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faDownload, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
@@ -31,6 +31,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
     faDownload = faDownload;
     faTrash = faTrash;
     faCogs = faCogs;
+    faPlus = faPlus;
 
     interval$: Observable<number> = interval(5000);
 
