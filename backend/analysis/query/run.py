@@ -89,7 +89,11 @@ def run_core_queries(utterances: List[Utterance],
                             'item': q.query.item,
                             'fase': q.query.fase
                         }
-                        utt_res[begin].hits.append(hit)
+                        matched_word = next((w for w in utt_res if w.begin == begin), None)
+                        if matched_word:
+                            matched_word.hits.append(hit)
+                        else:
+                            logger.warning(f'Found hit ({q.query.level}, {q.query.item}, {q.query.fase}) for non-exising begin attr "{begin}"')
 
                 if annotate:
                     annotations[utt.utt_id] = utt_res
