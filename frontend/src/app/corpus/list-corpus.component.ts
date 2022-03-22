@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription, interval, Observable } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
     interval$: Observable<number> = interval(UPDATE_INTERVAL);
     corpora: Corpus[];
     faTrash = faTrash;
+    faPlus = faPlus;
 
     constructor(
         private corpusService: CorpusService,

@@ -9,17 +9,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let corpus of corpora" [routerLink]="['/corpora/', corpus.id]">
-                <td>{{ corpus.name }}</td>
-                <td>{{ corpus?.files?.length || "0" }}</td>
-                <td>{{ corpus?.transcripts?.length || "0" }}</td>
+            <tr *ngFor="let corp of corpora" [routerLink]="['/corpora/', corp.id]">
+                <td>{{ corp.name }}</td>
+                <td>{{ corp?.files?.length || "0" }}</td>
+                <td>{{ corp?.transcripts?.length || "0" }}</td>
                 <td class="has-text-right">
-                    <button class="button is-primary" pTooltip="delete transcript"
-                        (click)="confirmDeleteCorpus($event, corpus)">
-                        <span class="icon is-small">
-                            <fa-icon [icon]="faTrash"></fa-icon>
-                        </span>
-                    </button>
+                    <div class="buttons is-right">
+                        <button class="button is-success" pTooltip="add transcripts" (click)="$event.stopPropagation()"
+                            [routerLink]="['/upload']" [queryParams]="{ corpus: corp.id }">
+                            <span class="icon is-small">
+                                <fa-icon [icon]="faPlus"></fa-icon>
+                            </span>
+                        </button>
+                        <button class="button is-danger" pTooltip="delete corpus"
+                            (click)="confirmDeleteCorpus($event, corp)">
+                            <span class="icon is-small">
+                                <fa-icon [icon]="faTrash"></fa-icon>
+                            </span>
+                        </button>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -32,4 +40,3 @@
 
     <p-confirmDialog [dismissableMask]="true"></p-confirmDialog>
 </ng-container>
-
