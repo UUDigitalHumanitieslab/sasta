@@ -40,7 +40,7 @@ class SAFReader:
         self.word_cols = [c for c in data.columns if c.startswith('word')]
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
-            data.level.unique()) if lv.lower() != UTTLEVEL]
+            data.level.dropna().unique()) if lv.lower() != UTTLEVEL]
         data = data[relevant_cols].applymap(clean_cell)
         return data
 
