@@ -37,6 +37,7 @@ import { TranscriptProgressComponent } from './process/transcript-progress.compo
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
 import { UploadComponent } from './upload/upload.component';
+import { UtterancesListComponent } from './utterances/utterances-list.component';
 
 @NgModule({
     declarations: [
@@ -57,6 +58,7 @@ import { UploadComponent } from './upload/upload.component';
         UploadSafComponent,
         TranscriptProgressComponent,
         TranscriptProgressCellComponent,
+        UtterancesListComponent,
     ],
     imports: [
         AppRoutingModule,

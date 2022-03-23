@@ -129,6 +129,11 @@
             </div>
         </p-panel>
     </div>
+
+    <div class="block">
+        <sas-utterances-list [transcript]="transcript"></sas-utterances-list>
+    </div>
+
     <sas-upload-saf *ngIf="displayCorrUpload" [display]="displayCorrUpload"
         (displayChange)="onCorrectionsUploadClose($event)" [transcript]="transcript">
     </sas-upload-saf>
