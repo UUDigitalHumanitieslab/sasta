@@ -1,17 +1,24 @@
+from functools import reduce
 import logging
 import os
 from typing import List, Tuple
+from numpy import ndarray
 
 import pandas as pd
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import LABELSEP, PREFIX, UTTLEVEL
+from .constants import LABELSEP, PREFIX, UTTLEVEL, SAF_COMMENT_LEVEL
 from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
 
 logger = logging.getLogger('sasta')
 
+
+def get_word_levels(data: pd.DataFrame):
+    levels = data.level
+    filtered_levels = levels[~levels.isin([SAF_COMMENT_LEVEL.lower(), UTTLEVEL.lower()])]
+    return list(filtered_levels.unique())
 
 class SAFReader:
     def __init__(self, filepath, method):
@@ -71,10 +78,13 @@ class SAFReader:
         data = word_data.dropna()
         if data.empty:
             return None
-        text = data.loc[data.level == UTTLEVEL, colname].iloc[0]
+        utt_data = data.loc[data.level == UTTLEVEL, colname]
+        if utt_data.empty:
+            return None
+        text = utt_data.iloc[0]
         instance = SAFWord(word_id, text)
 
-        word_levels = [lv for lv in data.level.unique() if lv != UTTLEVEL]
+        word_levels = get_word_levels(data)
         for level in word_levels:
             label = clean_item(data.loc[data.level == level, colname].iloc[0])
             enriched_label = enrich(label, PREFIX.lower())
@@ -93,4 +103,10 @@ class SAFReader:
                     logger.warning(
                         'Cannot resolve query_id for (%s, %s)', level, label)
                     self.errors.append((utt_id, word_id, text, level, label))
+
+        # read comments
+        comment_data = data.loc[data.level == SAF_COMMENT_LEVEL.lower()]
+        if not comment_data.empty:
+            instance.comment = str(comment_data[colname].iloc[0])
+
         return instance

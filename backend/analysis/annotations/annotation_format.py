@@ -106,10 +106,11 @@ class SAFUtterance:
 
 
 class SAFWord:
-    def __init__(self, idx, text):
+    def __init__(self, idx, text, comment=None):
         self.idx: int = idx
         self.text: str = text
         self.annotations: List[SAFAnnotation] = []
+        self.comment: str = comment or ''
 
     @property
     def item_counts(self):

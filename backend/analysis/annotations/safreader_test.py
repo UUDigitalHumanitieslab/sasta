@@ -1,9 +1,11 @@
 from operator import itemgetter
+from pandas import DataFrame, Series
 import pytest
 import os.path as op
 
 from analysis.query.run import query_transcript
 from analysis.annotations.safreader import SAFReader
+from analysis.annotations.safreader import get_word_levels
 
 
 @pytest.mark.django_db
@@ -27,3 +29,21 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
             hits = sorted(word.hits, key=itemgetter('level', 'item'))
             true_hits = sorted(true_word.hits, key=itemgetter('level', 'item'))
             assert hits == true_hits
+
+
+def test_wordlevels():
+    data = {'level': map(str.lower, ['Utt', 'QA', 'SZ', 'Grammaticale Fout', 'Commentaar']),
+            'word1': [1, None, 'X', 'V, BvBB', 'Hier staat wat commentaar']}
+    df_in = DataFrame.from_dict(data)
+
+    word_levels = get_word_levels(df_in)
+    assert word_levels == ['qa', 'sz', 'grammaticale fout']
+
+
+@pytest.mark.django_db
+def test_read_saf_comments(tarsp_method, cha_testfiles_dir):
+    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_1_SAF_with_comments.xlsx'), tarsp_method)
+    sent = reader.document.utterances[0]
+    assert sent.words[0].comment == 'Ik vind hier iets van.'
+    assert sent.words[1].comment == '1'
+    assert sent.words[2].comment == 'En hier misschien ook wel iets van'
