@@ -8,8 +8,9 @@ from analysis.annotations.safreader import SAFReader
 
 def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
     true_results, _ = query_transcript(tarsp_transcript, tarsp_method, annotate=True, zc_embed=tarsp_method.category.zc_embeddings)
-    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF.xlsx'), tarsp_method)
+    assert not true_results.annotationinput
 
+    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF.xlsx'), tarsp_method)
     read_results = reader.document.to_allresults()
 
     # are the coreresults the same?
@@ -30,6 +31,7 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
 
 def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_testfiles_dir):
     true_results, _ = query_transcript(asta_transcript, asta_method, annotate=True, zc_embed=False)
+    assert true_results.annotationinput
 
     assert true_results.annotations.get(3)[6].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': None}]
 

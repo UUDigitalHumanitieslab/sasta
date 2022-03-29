@@ -35,20 +35,26 @@ def query_transcript(transcript: Transcript,
         zc_embed,
         annotate)
 
+    annotationinput = False
     runs = AnalysisRun.objects.filter(transcript=transcript)
     if runs:  # An annotations file exists, base further results on this
         latest_run = runs.latest()
         reader = SAFReader(latest_run.annotation_file.path, method)
+        # TODO: overwrite exact_results when reading SAF
         coreresults = reader.document.to_allresults().coreresults
         annotations = reader.document.reformatted_annotations
+        annotationinput = True
 
-    allresults = AllResults(transcript.name,
-                            len(to_analyze_utterances),
-                            coreresults,
-                            None,
-                            allmatches,
-                            annotations,
-                            utterance_syntrees)
+    allresults = AllResults(filename=transcript.name,
+                            uttcount=len(to_analyze_utterances),
+                            coreresults=coreresults,
+                            exactresults=exact_results,
+                            postresults=None,
+                            allmatches=allmatches,
+                            annotations=annotations,
+                            analysedtrees=utterance_syntrees,
+                            annotationinput=annotationinput
+                            )
 
     run_post_queries(allresults, queries_with_funcs)
     return allresults, queries_with_funcs
