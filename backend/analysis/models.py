@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List, Optional, Tuple
 import zipfile
 from io import BytesIO
 from itertools import chain
@@ -193,6 +194,15 @@ class Utterance(models.Model):
                 return self.xsid is not None
             return True
         return self.xsid is not None
+
+    @property
+    def word_position_mapping(self) -> List[Tuple[Optional[int], Optional[int]]]:
+        ''' Returns a list of dictionaries (begin, end) for each word in the utterance
+            starts with { begin:None, end:None } to represent unaligned
+        '''
+        words = self.syntree.findall('.//node[@word]')
+        return [{'begin': None, 'end': None}] + [{'begin': int(w.get('begin')), 'end': int(w.get('end'))}
+                                                 for w in words]
 
     def __str__(self):
         return f'{self.uttno}\t|\t{self.speaker}:\t{self.sentence}'

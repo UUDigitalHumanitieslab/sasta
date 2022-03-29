@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import pandas as pd
 
@@ -10,16 +10,19 @@ from .constants import LABELSEP, PREFIX, UTTLEVEL
 from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
 
+from analysis.models import Transcript
+
 logger = logging.getLogger('sasta')
 
 
 class SAFReader:
-    def __init__(self, filepath, method):
+    def __init__(self, filepath, method, transcript: Transcript = None):
         self.filepath = filepath
         self.word_cols = []
         self.levels: List[str] = []
         self.data = self.loaddata(filepath)
         self.method = method
+        self.transcript: Optional[Transcript] = transcript or None
         self.item_mapping, self.patterns = self.make_mappings()
         self.document = SAFDocument(os.path.basename(
             filepath), method, self.levels)

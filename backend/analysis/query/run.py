@@ -39,7 +39,7 @@ def query_transcript(transcript: Transcript,
     runs = AnalysisRun.objects.filter(transcript=transcript)
     if runs:  # An annotations file exists, base further results on this
         latest_run = runs.latest()
-        reader = SAFReader(latest_run.annotation_file.path, method)
+        reader = SAFReader(annotation_file=latest_run.annotation_file.path, method=method, transcript=transcript)
         # TODO: overwrite exact_results when reading SAF
         coreresults = reader.document.to_allresults().coreresults
         annotations = reader.document.reformatted_annotations
