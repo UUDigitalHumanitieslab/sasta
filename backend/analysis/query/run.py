@@ -29,7 +29,7 @@ def query_transcript(transcript: Transcript,
     logger.info(
         f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')
 
-    coreresults, allmatches, corelevels, annotations = run_core_queries(
+    coreresults, allmatches, exact_results, corelevels, annotations = run_core_queries(
         to_analyze_utterances,
         queries_with_funcs,
         zc_embed,
@@ -62,6 +62,7 @@ def run_core_queries(utterances: List[Utterance],
     allmatches: SastaMatches = defaultdict(list)
     results: SastaResults = {}
     annotations = {}
+    exact_results = {q.id: [] for q in queries}
 
     core_queries: List[QueryWithFunction] = sorted(
         [q for q in queries if q.query.process in [pre_process, core_process]],
@@ -81,7 +82,11 @@ def run_core_queries(utterances: List[Utterance],
                         {utt.utt_id: len(matches)})
                 for m in matches:
                     levels.add(q.query.level)
+                    # Record the match including the syntree
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
+                    # Record the exact word where the query was matched
+                    exact_results[q.id] = (utt.utt_id, int(m.get('begin')) + 1)
+
                     if annotate:
                         begin = int(m.get('begin'))
                         hit = {
@@ -97,7 +102,7 @@ def run_core_queries(utterances: List[Utterance],
                 if annotate:
                     annotations[utt.utt_id] = utt_res
 
-    return (results, allmatches, levels, annotations or None)
+    return (results, allmatches, exact_results, levels, annotations or None)
 
 
 def run_post_queries(allresults: SastaResults,

@@ -24,12 +24,13 @@ class UtteranceWord:
 
 QueryTuple = Tuple[str, str]
 SynTree = Union[ET._Element, str]
-# TODO: Match type
 SastaMatch = Tuple[Match, SynTree]
 SastaMatchList = List[SastaMatch]
 SastaMatches = Dict[QueryTuple, SastaMatchList]
 SastaResults = Dict[str, Counter[str]]
 SastaAnnotations = Dict[str, List[UtteranceWord]]
+# Exact results: {query_id: [(utt_id, match_word_begin+1), (utt_id, match_word_begin+1)]}
+SastaExactResults = Dict[str, List[Tuple[Union[str, int], int]]]
 
 
 class AllResults:
@@ -37,6 +38,7 @@ class AllResults:
                  filename,
                  uttcount,
                  coreresults=None,
+                 exactresults=None,
                  postresults=None,
                  allmatches=None,
                  annotations=None,
@@ -46,6 +48,7 @@ class AllResults:
         self.filename: str = filename
         self.uttcount: int = uttcount
         self.coreresults: SastaResults = coreresults or {}
+        self.exactresults: SastaExactResults = exactresults or {}
         self.postresults: SastaResults = postresults or {}
         self.allmatches: SastaMatches = allmatches or tuple()
         self.annotations: SastaAnnotations = annotations or {}
