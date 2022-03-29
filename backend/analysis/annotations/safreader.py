@@ -3,14 +3,13 @@ import os
 from typing import List, Optional, Tuple
 
 import pandas as pd
+from analysis.models import Transcript
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
 from .constants import LABELSEP, PREFIX, UTTLEVEL
 from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
-
-from analysis.models import Transcript
 
 logger = logging.getLogger('sasta')
 
@@ -61,21 +60,23 @@ class SAFReader:
 
     def parse_utterance(self, utt_id, utt_data):
         instance = SAFUtterance(utt_id)
+        utt_object = self.transcript.get_utterance_by_id(utt_id)
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
             word = self.parse_word(utt_id, idx + 1,
-                                   wcol, utt_data[relevant_cols])
+                                   wcol, utt_data[relevant_cols], utt_object.word_position_mapping)
             if word:
                 instance.words.append(word)
 
         return instance
 
-    def parse_word(self, utt_id, word_id, colname, word_data):
+    def parse_word(self, utt_id, word_id, colname, word_data, wordposmap):
         data = word_data.dropna()
         if data.empty:
             return None
         text = data.loc[data.level == UTTLEVEL, colname].iloc[0]
-        instance = SAFWord(word_id, text)
+        (begin, end) = wordposmap[word_id]['begin'], wordposmap[word_id]['end']
+        instance = SAFWord(word_id, text, begin, end)
 
         word_levels = [lv for lv in data.level.unique() if lv != UTTLEVEL]
         for level in word_levels:
@@ -92,6 +93,8 @@ class SAFReader:
                     query_id, fase = mapped
                     instance.annotations.append(SAFAnnotation(
                         level, label, fase, query_id))
+                    self.document.exactresults[query_id].append((utt_id, begin + 1))
+
                 else:
                     logger.warning(
                         'Cannot resolve query_id for (%s, %s)', level, label)

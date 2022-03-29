@@ -1,9 +1,11 @@
+import functools
 import logging
 import os
-from typing import List, Optional, Tuple
 import zipfile
 from io import BytesIO
 from itertools import chain
+from operator import itemgetter
+from typing import List, Optional, Tuple
 from uuid import uuid4
 
 from sastadev.external_functions import form_map
@@ -164,6 +166,12 @@ class Transcript(models.Model):
     def target_speakers_list(self):
         return self.target_speakers.split(',')
 
+    def get_utterance_by_id(self, utt_id: int):
+        try:
+            return self.utterances.get(utt_id=utt_id)
+        except Exception:
+            raise
+
 
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)
@@ -196,13 +204,15 @@ class Utterance(models.Model):
         return self.xsid is not None
 
     @property
+    @functools.lru_cache(maxsize=128)
     def word_position_mapping(self) -> List[Tuple[Optional[int], Optional[int]]]:
         ''' Returns a list of dictionaries (begin, end) for each word in the utterance
             starts with { begin:None, end:None } to represent unaligned
         '''
         words = self.syntree.findall('.//node[@word]')
-        return [{'begin': None, 'end': None}] + [{'begin': int(w.get('begin')), 'end': int(w.get('end'))}
-                                                 for w in words]
+        mapping = [{'begin': int(w.attrib.get('begin')), 'end': int(w.attrib.get('end'))}
+                   for w in words]
+        return [{'begin': None, 'end': None}] + sorted(mapping, key=itemgetter('begin', 'end'))
 
     def __str__(self):
         return f'{self.uttno}\t|\t{self.speaker}:\t{self.sentence}'

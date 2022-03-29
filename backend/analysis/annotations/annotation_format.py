@@ -1,10 +1,10 @@
 import operator
-from collections import Counter
+from collections import Counter, defaultdict
 from functools import reduce
 from typing import Dict, List, Optional
 
 from analysis.models import AssessmentMethod
-from analysis.results.results import (AllResults, SastaAnnotations,
+from analysis.results.results import (AllResults, SastaAnnotations, SastaExactResults,
                                       UtteranceWord)
 
 
@@ -23,6 +23,7 @@ class SAFDocument:
         self.utterances: List[SAFUtterance] = []
         self.all_levels: Optional[List[str]] = all_levels
         self.annotations: SastaAnnotations = {}
+        self.exactresults: SastaExactResults = defaultdict(list)
 
     @property
     def all_annotations(self):
@@ -56,7 +57,8 @@ class SAFDocument:
         allresults = AllResults(
             filename,
             uttcount,
-            coreresults=results
+            coreresults=results,
+            exactresults=self.exactresults
         )
 
         return allresults
@@ -106,8 +108,10 @@ class SAFUtterance:
 
 
 class SAFWord:
-    def __init__(self, idx, text):
+    def __init__(self, idx, text, begin, end):
         self.idx: int = idx
+        self.begin: int = begin
+        self.end: int = end
         self.text: str = text
         self.annotations: List[SAFAnnotation] = []
 

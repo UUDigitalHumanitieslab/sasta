@@ -39,7 +39,7 @@ def query_transcript(transcript: Transcript,
     runs = AnalysisRun.objects.filter(transcript=transcript)
     if runs:  # An annotations file exists, base further results on this
         latest_run = runs.latest()
-        reader = SAFReader(annotation_file=latest_run.annotation_file.path, method=method, transcript=transcript)
+        reader = SAFReader(filepath=latest_run.annotation_file.path, method=method, transcript=transcript)
         # TODO: overwrite exact_results when reading SAF
         coreresults = reader.document.to_allresults().coreresults
         annotations = reader.document.reformatted_annotations
@@ -68,7 +68,7 @@ def run_core_queries(utterances: List[Utterance],
     allmatches: SastaMatches = defaultdict(list)
     results: SastaResults = {}
     annotations = {}
-    exact_results = {q.id: [] for q in queries}
+    exact_results = defaultdict(list)
 
     core_queries: List[QueryWithFunction] = sorted(
         [q for q in queries if q.query.process in [pre_process, core_process]],
@@ -91,7 +91,7 @@ def run_core_queries(utterances: List[Utterance],
                     # Record the match including the syntree
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
                     # Record the exact word where the query was matched
-                    exact_results[q.id] = (utt.utt_id, int(m.get('begin')) + 1)
+                    exact_results[q.id].append((utt.utt_id, int(m.get('begin')) + 1))
 
                     if annotate:
                         begin = int(m.get('begin'))

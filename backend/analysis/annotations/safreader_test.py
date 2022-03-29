@@ -10,7 +10,7 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
     true_results, _ = query_transcript(tarsp_transcript, tarsp_method, annotate=True, zc_embed=tarsp_method.category.zc_embeddings)
     assert not true_results.annotationinput
 
-    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF.xlsx'), tarsp_method)
+    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF.xlsx'), tarsp_method, tarsp_transcript)
     read_results = reader.document.to_allresults()
 
     # are the coreresults the same?
@@ -27,6 +27,12 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
             hits = sorted(word.hits, key=itemgetter('level', 'item'))
             true_hits = sorted(true_word.hits, key=itemgetter('level', 'item'))
             assert hits == true_hits
+
+    # assert true_results.exactresults.keys() == reader.document.exactresults.keys()
+    true_exact = {k: sorted(v) for (k, v) in true_results.exactresults.items() if v != []}
+    read_exact = {k: sorted(v) for (k, v) in reader.document.exactresults.items() if v != []}
+
+    assert true_exact == read_exact
 
 
 def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_testfiles_dir):
