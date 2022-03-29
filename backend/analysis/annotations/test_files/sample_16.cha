@@ -106,7 +106,9 @@
 %xsid:	41
 *PMA:	ja uh net gekoppeld
 %xsid:	42
-*INV:	ja 43 PMA: ik weet
+*INV:	ja
+*PMA:	ik weet
+%xsid:	43
 *PMA:	dus maar ben ik veel geweest maar ook als ik hier uh
 %xsid:	44
 *INV:	ja oke kunt u mij wat vertellen over uw hobbies
