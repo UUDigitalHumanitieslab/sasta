@@ -26,3 +26,11 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
             hits = sorted(word.hits, key=itemgetter('level', 'item'))
             true_hits = sorted(true_word.hits, key=itemgetter('level', 'item'))
             assert hits == true_hits
+
+
+def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_testfiles_dir):
+    true_results, _ = query_transcript(asta_transcript, asta_method, annotate=True, zc_embed=False)
+
+    assert true_results.annotations.get(3)[6].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': None}]
+
+    assert True
