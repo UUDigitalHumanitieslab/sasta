@@ -28,11 +28,14 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
             true_hits = sorted(true_word.hits, key=itemgetter('level', 'item'))
             assert hits == true_hits
 
-    # assert true_results.exactresults.keys() == reader.document.exactresults.keys()
+    # are the exactresults the same?
     true_exact = {k: sorted(v) for (k, v) in true_results.exactresults.items() if v != []}
-    read_exact = {k: sorted(v) for (k, v) in reader.document.exactresults.items() if v != []}
-
+    read_exact = {k: sorted(v) for (k, v) in read_results.exactresults.items() if v != []}
     assert true_exact == read_exact
+
+    # are the allutts the same?
+    assert true_results.allutts == read_results.allutts
+
 
 
 def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_testfiles_dir):

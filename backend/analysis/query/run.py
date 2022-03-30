@@ -26,6 +26,7 @@ def query_transcript(transcript: Transcript,
         transcript=transcript)
     to_analyze_utterances = [x for x in utterances if x.for_analysis]
     utterance_syntrees = [x.syntree for x in to_analyze_utterances]
+    allutts = {str(utt.utt_id): utt.word_list for utt in utterances}
     logger.info(
         f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')
 
@@ -53,7 +54,8 @@ def query_transcript(transcript: Transcript,
                             allmatches=allmatches,
                             annotations=annotations,
                             analysedtrees=utterance_syntrees,
-                            annotationinput=annotationinput
+                            annotationinput=annotationinput,
+                            allutts=allutts
                             )
 
     run_post_queries(allresults, queries_with_funcs)

@@ -61,6 +61,7 @@ class SAFReader:
     def parse_utterance(self, utt_id, utt_data):
         instance = SAFUtterance(utt_id)
         utt_object = self.transcript.get_utterance_by_id(utt_id)
+        self.document.allutts[str(utt_object.utt_id)] = utt_object.word_list
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
             word = self.parse_word(utt_id, idx + 1,

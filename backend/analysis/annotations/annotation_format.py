@@ -4,7 +4,7 @@ from functools import reduce
 from typing import Dict, List, Optional
 
 from analysis.models import AssessmentMethod
-from analysis.results.results import (AllResults, SastaAnnotations, SastaExactResults,
+from analysis.results.results import (AllResults, SastaAllUtts, SastaAnnotations, SastaExactResults,
                                       UtteranceWord)
 
 
@@ -24,6 +24,7 @@ class SAFDocument:
         self.all_levels: Optional[List[str]] = all_levels
         self.annotations: SastaAnnotations = {}
         self.exactresults: SastaExactResults = defaultdict(list)
+        self.allutts: SastaAllUtts = defaultdict(list)
 
     @property
     def all_annotations(self):
@@ -41,7 +42,7 @@ class SAFDocument:
     def item_counts(self):
         return {u.utt_id: u.item_counts for u in self.utterances}
 
-    def to_allresults(self):
+    def to_allresults(self) -> AllResults:
         '''Convert to AllResults object (for query and scoring).'''
         filename = self.name
         uttcount = len(self.utterances)
@@ -58,7 +59,8 @@ class SAFDocument:
             filename,
             uttcount,
             coreresults=results,
-            exactresults=self.exactresults
+            exactresults=self.exactresults,
+            allutts=self.allutts
         )
 
         return allresults

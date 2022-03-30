@@ -4,17 +4,16 @@ import os
 import zipfile
 from io import BytesIO
 from itertools import chain
-from operator import itemgetter
 from typing import List, Optional, Tuple
 from uuid import uuid4
 
-from sastadev.external_functions import form_map
+from analysis.annotations.utils import clean_item
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from lxml import etree as ET
+from sastadev.external_functions import form_map
 
-from analysis.annotations.utils import clean_item
 from .utils import get_items_list
 
 logger = logging.getLogger('sasta')
@@ -205,14 +204,26 @@ class Utterance(models.Model):
 
     @property
     @functools.lru_cache(maxsize=128)
+    def word_elements(self) -> List[ET._Element]:
+        '''List of word elements, sorted by word (begin, end)'''
+        word_elements = self.syntree.findall('.//node[@word]')
+        return sorted(word_elements, key=lambda x: (int(x.attrib.get('begin')), int(x.attrib.get('end'))))
+
+    @property
+    @functools.lru_cache(maxsize=128)
     def word_position_mapping(self) -> List[Tuple[Optional[int], Optional[int]]]:
-        ''' Returns a list of dictionaries (begin, end) for each word in the utterance
+        ''' List of dictionaries (begin, end) for each word in the utterance
             starts with { begin:None, end:None } to represent unaligned
         '''
-        words = self.syntree.findall('.//node[@word]')
-        mapping = [{'begin': int(w.attrib.get('begin')), 'end': int(w.attrib.get('end'))}
-                   for w in words]
-        return [{'begin': None, 'end': None}] + sorted(mapping, key=itemgetter('begin', 'end'))
+        mapping = [{'begin': int(el.attrib.get('begin')), 'end': int(el.attrib.get('end'))}
+                   for el in self.word_elements]
+        return [{'begin': None, 'end': None}] + mapping
+
+    @property
+    @functools.lru_cache(maxsize=128)
+    def word_list(self) -> List[str]:
+        '''List of words in the utterance'''
+        return [el.attrib.get('word') for el in self.word_elements]
 
     def __str__(self):
         return f'{self.uttno}\t|\t{self.speaker}:\t{self.sentence}'
