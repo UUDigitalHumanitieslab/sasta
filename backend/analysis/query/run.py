@@ -26,7 +26,7 @@ def query_transcript(transcript: Transcript,
         transcript=transcript)
     to_analyze_utterances = [x for x in utterances if x.for_analysis]
     utterance_syntrees = [x.syntree for x in to_analyze_utterances]
-    allutts = {str(utt.utt_id): utt.word_list for utt in utterances}
+    allutts = {utt.utt_id: utt.word_list for utt in to_analyze_utterances}
     logger.info(
         f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')
 
@@ -41,9 +41,9 @@ def query_transcript(transcript: Transcript,
     if runs:  # An annotations file exists, base further results on this
         latest_run = runs.latest()
         reader = SAFReader(filepath=latest_run.annotation_file.path, method=method, transcript=transcript)
-        # TODO: overwrite exact_results when reading SAF
         coreresults = reader.document.to_allresults().coreresults
         annotations = reader.document.reformatted_annotations
+        exact_results = reader.document.exactresults
         annotationinput = True
 
     allresults = AllResults(filename=transcript.name,
@@ -93,7 +93,10 @@ def run_core_queries(utterances: List[Utterance],
                     # Record the match including the syntree
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
                     # Record the exact word where the query was matched
-                    exact_results[q.id].append((utt.utt_id, int(m.get('begin')) + 1))
+
+                    word_index = next((i for i, item in enumerate(utt.word_position_mapping) if item["begin"] == int(m.get('begin'))), None)
+                    # exact_results[q.id].append((utt.utt_id, int(m.get('begin')) + 1))
+                    exact_results[q.id].append((utt.utt_id, word_index))
 
                     if annotate:
                         begin = int(m.get('begin'))

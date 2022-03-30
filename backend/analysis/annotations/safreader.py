@@ -61,7 +61,7 @@ class SAFReader:
     def parse_utterance(self, utt_id, utt_data):
         instance = SAFUtterance(utt_id)
         utt_object = self.transcript.get_utterance_by_id(utt_id)
-        self.document.allutts[str(utt_object.utt_id)] = utt_object.word_list
+        self.document.allutts[utt_object.utt_id] = utt_object.word_list
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
             word = self.parse_word(utt_id, idx + 1,
@@ -94,7 +94,7 @@ class SAFReader:
                     query_id, fase = mapped
                     instance.annotations.append(SAFAnnotation(
                         level, label, fase, query_id))
-                    self.document.exactresults[query_id].append((utt_id, begin + 1))
+                    self.document.exactresults[query_id].append((utt_id, word_id))
 
                 else:
                     logger.warning(
