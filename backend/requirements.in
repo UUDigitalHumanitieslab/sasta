@@ -12,6 +12,7 @@ pandas
 psycopg2 --no-binary psycopg2
 pytest
 pytest-django
+pytest-lazy-fixture
 pytest-xdist
 python-docx
 openpyxl

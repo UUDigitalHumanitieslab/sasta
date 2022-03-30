@@ -4,13 +4,19 @@ import os.path as op
 
 from analysis.query.run import query_transcript
 from analysis.annotations.safreader import SAFReader
+from pytest_lazyfixture import lazy_fixture
 
 
-def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
-    true_results, _ = query_transcript(tarsp_transcript, tarsp_method, annotate=True, zc_embed=tarsp_method.category.zc_embeddings)
+@pytest.mark.parametrize("method, transcript, filedir, samplenum", [
+    (lazy_fixture("tarsp_method"), lazy_fixture("tarsp_transcript"), lazy_fixture("cha_testfiles_dir"), 5),
+    (lazy_fixture("asta_method"), lazy_fixture("asta_transcript"), lazy_fixture("cha_testfiles_dir"), 16)
+]
+)
+def test_read_saf(method, transcript, filedir, samplenum):
+    true_results, _ = query_transcript(transcript, method, annotate=True, zc_embed=method.category.zc_embeddings)
     assert not true_results.annotationinput
 
-    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF.xlsx'), tarsp_method, tarsp_transcript)
+    reader = SAFReader(op.join(filedir, f'sample_{samplenum}_SAF.xlsx'), method, transcript)
     read_results = reader.document.to_allresults()
 
     # are the coreresults the same?
@@ -35,7 +41,6 @@ def test_read_saf(tarsp_method, tarsp_transcript, cha_testfiles_dir):
 
     # are the allutts the same?
     assert true_results.allutts == read_results.allutts
-
 
 
 def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_testfiles_dir):
