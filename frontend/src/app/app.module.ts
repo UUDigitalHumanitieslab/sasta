@@ -6,10 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccordionModule } from 'primeng/accordion';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
@@ -36,54 +38,58 @@ import { TranscriptProgressComponent } from './process/transcript-progress.compo
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
 import { UploadComponent } from './upload/upload.component';
+import { UtterancesListComponent } from './utterances/utterances-list.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FooterComponent,
-    MenuComponent,
-    HomeComponent,
-    UploadComponent,
-    ListCorpusComponent,
-    CorpusComponent,
-    ListMethodComponent,
-    MethodComponent,
-    LoginComponent,
-    ProcessComponent,
-    RegisterComponent,
-    VerifyComponent,
-    TranscriptComponent,
-    UploadSafComponent,
-    TranscriptProgressComponent,
-    TranscriptProgressCellComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FontAwesomeModule,
-    FormsModule,
-    HttpClientModule,
-    HttpClientXsrfModule.withOptions({
-      cookieName: 'csrftoken',
-      headerName: 'X-CSRFToken',
-    }),
-    NgxJsonViewerModule,
-    // PrimeNG
-    AccordionModule,
-    CheckboxModule,
-    DialogModule,
-    DropdownModule,
-    FileUploadModule,
-    MessageModule,
-    MessagesModule,
-    ToastModule,
-    TooltipModule,
-    PanelModule,
-    StepsModule,
-    ProgressSpinnerModule,
-  ],
-  providers: [MessageService],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        FooterComponent,
+        MenuComponent,
+        HomeComponent,
+        UploadComponent,
+        ListCorpusComponent,
+        CorpusComponent,
+        ListMethodComponent,
+        MethodComponent,
+        LoginComponent,
+        ProcessComponent,
+        RegisterComponent,
+        VerifyComponent,
+        TranscriptComponent,
+        UploadSafComponent,
+        TranscriptProgressComponent,
+        TranscriptProgressCellComponent,
+        UtterancesListComponent,
+    ],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        FontAwesomeModule,
+        FormsModule,
+        HttpClientModule,
+        HttpClientXsrfModule.withOptions({
+            cookieName: 'csrftoken',
+            headerName: 'X-CSRFToken',
+        }),
+        NgxJsonViewerModule,
+        // PrimeNG
+        AccordionModule,
+        CheckboxModule,
+        ConfirmDialogModule,
+        DialogModule,
+        DropdownModule,
+        FieldsetModule,
+        FileUploadModule,
+        MessageModule,
+        MessagesModule,
+        ToastModule,
+        TooltipModule,
+        PanelModule,
+        ProgressSpinnerModule,
+        StepsModule,
+    ],
+    providers: [ConfirmationService, MessageService],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
