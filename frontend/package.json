@@ -34,7 +34,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@types/file-saver": "^2.0.1",
     "bulma": ">0.9.0",
-    "css-what": "^5.0.1",
     "file-saver": "^2.0.2",
     "ngx-json-viewer": "^2.4.0",
     "primeicons": "^2.0.0",
