@@ -4,13 +4,26 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## NEXT RELEASE
+## Next release
+- Preprocess CHAT (anonymization, interpunction)
+
+## [0.4.0] - 2022-04-05
+### Fixed
+- Resolved an issue where default methods were prevented from being set.
+- Some forms were not correctly updated after supplying manual corrections, e.g. ASTA WW and N. This is fixed by implementing aligned results functionality.
+
+### Added
+- New SASTADEV method definitions.
+
 ### Changed
+- Extra corpus information and control:
+  - Overview of number of targeted utterances and targeting flags.
+  - Overview of all utterances.
+  - Shortcut to upload additional transcripts to the corpus.
+- Upload multiple files without zipping them.
 - In SASTA Output Format, lock all cells except annotation cells. This is implemented to avoid errors in manual correction files.
 - ASTA corrects Nouns and Verbs
 - use exactresults
-- Preprocess CHAT (anonymization, interpunction)
-
 
 ## [0.3.2] - 2022-03-22
 ### Fixed
