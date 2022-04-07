@@ -1,0 +1,23 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>speaker</th>
+            <th>sentence</th>
+            <th>for analysis</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let utt of transcript.utterances">
+            <td>{{ utt.speaker }}</td>
+            <td>{{ utt.sentence }}</td>
+            <td>
+                <span class="icon">
+                    <fa-icon
+                        [icon]="analysisIcon(utt)"
+                        [class.has-text-success]="utt.for_analysis"
+                    ></fa-icon>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>

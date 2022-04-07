@@ -6,13 +6,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccordionModule } from 'primeng/accordion';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FieldsetModule } from 'primeng/fieldset';
+import { FileUploadModule } from 'primeng/fileupload';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PanelModule } from 'primeng/panel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
@@ -32,9 +36,9 @@ import { ProcessComponent } from './process/process.component';
 import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
 import { TranscriptProgressComponent } from './process/transcript-progress.component';
 import { TranscriptComponent } from './transcript/transcript.component';
-import { UploadComponent } from './upload/upload.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UploadComponent } from './upload/upload.component';
+import { UtterancesListComponent } from './utterances/utterances-list.component';
 
 @NgModule({
     declarations: [
@@ -55,6 +59,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         UploadSafComponent,
         TranscriptProgressComponent,
         TranscriptProgressCellComponent,
+        UtterancesListComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -65,23 +70,26 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         HttpClientModule,
         HttpClientXsrfModule.withOptions({
             cookieName: 'csrftoken',
-            headerName: 'X-CSRFToken'
+            headerName: 'X-CSRFToken',
         }),
         NgxJsonViewerModule,
         // PrimeNG
         AccordionModule,
         CheckboxModule,
+        ConfirmDialogModule,
         DialogModule,
         DropdownModule,
+        FieldsetModule,
+        FileUploadModule,
         MessageModule,
         MessagesModule,
         ToastModule,
         TooltipModule,
         PanelModule,
-        StepsModule,
         ProgressSpinnerModule,
+        StepsModule,
     ],
-    providers: [MessageService],
-    bootstrap: [AppComponent]
+    providers: [ConfirmationService, MessageService],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -6,6 +6,7 @@ from analysis.query.functions import QueryWithFunction
 from analysis.results.results import AllResults
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
+from openpyxl.styles.protection import Protection
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 
@@ -143,19 +144,29 @@ def v2_to_xlsx(allresults, method, zc_embeddings=False):
                     worksheet.append(row)
 
         # Formatting
+
+        # start by locking the entire sheet
+        worksheet.protection.sheet = True
+        unlocked = Protection(locked=False)
+
         header = worksheet["1:1"]
         for cell in header:
             # bold headers
             cell.font = Font(bold=True)
 
         # yelow background for each utterance row
-        for row in worksheet.rows:
+        for row in list(worksheet.rows)[1:]:
             if row[1].value == 'Utt':
                 for cell in row:
                     cell.fill = PatternFill(
                         start_color="ffff00",
                         end_color="ffff00",
                         fill_type="solid")
+            else:
+                # unlock non-utterance rows
+                # skip the first two columns (utt number and level)
+                for cell in row[2:]:
+                    cell.protection = unlocked
 
         # column widths
         worksheet = autosize_columns(worksheet)
