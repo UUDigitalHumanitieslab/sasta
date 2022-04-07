@@ -51,8 +51,10 @@ export class AuthService {
   }
 
   async isAdmin() {
-    const admin_object = await this.httpClient.get(`${this.authAPI}/has_admin_access/`).toPromise();
-    return admin_object["has_admin_access"] as boolean;
+    const adminObject = await this.httpClient
+        .get(`${this.authAPI}/has_admin_access/`)
+        .toPromise();
+    return adminObject["has_admin_access"] as boolean;
 
   }
 
