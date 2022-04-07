@@ -32,7 +32,7 @@ class ChatWriter:
             self.target.close()
 
     def write_header(self, header):
-        self.target.write(header.line+'\n')
+        self.target.write(header.line + '\n')
 
     def write_line(self, line):
         spkr_code = line.metadata['speaker'].text

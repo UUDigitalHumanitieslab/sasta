@@ -1,20 +1,21 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { animations, showState } from '../animations';
-import { AuthService } from '../services/auth.service';
-import { User } from '../models/user';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+    faFileUpload, faFolder,
+    faListAlt, faUser, faUserShield
+} from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../environments/environment';
+import { animations, showState } from '../animations';
+import { User } from '../models/user';
+import { AuthService } from '../services/auth.service';
 
-import { faFolder, faListAlt, faFileUpload, faUserShield } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     animations,
     selector: 'sas-menu',
     templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss']
+    styleUrls: ['./menu.component.scss'],
 })
-
 export class MenuComponent implements OnInit {
     burgerShow: showState;
     burgerActive = false;
@@ -29,20 +30,22 @@ export class MenuComponent implements OnInit {
     faUserShield = faUserShield;
     version = environment.appVersion;
 
-    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) {
-    }
+    constructor(
+        private ngZone: NgZone,
+        private authService: AuthService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
-        this.isAuthenticated$.subscribe(authenticated => {
+        this.isAuthenticated$.subscribe((authenticated) => {
             if (authenticated) {
-                this.authService
-                    .getUser()
-                    .subscribe(
-                        async res => {
-                            this.activeUser = res
-                            this.isAdmin = await this.authService.isAdmin();
-                        },
-                        err => console.log('Http Error', err));
+                this.authService.getUser().subscribe(
+                    async (res) => {
+                        this.activeUser = res;
+                        this.isAdmin = await this.authService.isAdmin();
+                    },
+                    (err) => console.log('Http Error', err)
+                );
             } else {
                 this.activeUser = null;
             }
@@ -54,15 +57,14 @@ export class MenuComponent implements OnInit {
     }
 
     logout() {
-        this.authService
-            .logout()
-            .subscribe(
-                res => {
-                    this.router.navigate(['/login']);
-                    this.authService.isAuthenticated$.next(false);
-                    this.activeUser = null;
-                },
-                err => console.log('Http Error', err));
+        this.authService.logout().subscribe(
+            (res) => {
+                this.router.navigate(['/login']);
+                this.authService.isAuthenticated$.next(false);
+                this.activeUser = null;
+            },
+            (err) => console.log('Http Error', err)
+        );
     }
 
     toggleBurger() {

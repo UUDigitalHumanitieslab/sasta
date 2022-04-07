@@ -147,7 +147,7 @@ def read_TAM(method) -> None:
                               true_values=['yes'], false_values=['no', 'ignore'])
     dataframe.columns = [c.lower() for c in dataframe.columns]
     dataframe.rename(columns={'id': 'query_id'}, inplace=True)
-    dataframe = dataframe.where(dataframe.notnull(), None)
+    dataframe = dataframe.astype(object).where(pd.notnull(dataframe), None)
     dataframe = dataframe.loc[:, ~dataframe.columns.str.contains('^unnamed')]
 
     for _i, series in dataframe.iterrows():
