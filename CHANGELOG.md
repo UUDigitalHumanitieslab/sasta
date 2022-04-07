@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In SASTA Output Format, lock all cells except annotation cells. This is implemented to avoid errors in manual correction files.
 - ASTA corrects Nouns and Verbs
 - use exactresults
+- Preprocess CHAT (anonymization, interpunction)
 
 
 ## [0.3.2] - 2022-03-22
