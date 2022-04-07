@@ -1,16 +1,56 @@
 import logging
 from typing import Dict, List, Optional, Set, Tuple
 
+from analysis.convert.chat_converter import REPLACEMENTS
+from analysis.models import MethodCategory
 from chamd.chat_reader import ChatFile, ChatHeader, ChatLine
 from chamd.chat_reader import ChatReader as ChatParser
 from chamd.chat_reader import ChatTier, MetaValue
-
-from analysis.models import MethodCategory
 
 logger = logging.getLogger('sasta')
 
 TARGET_ROLES = ['Target_Child', 'Target_Adult', 'Participant']
 XSID_POSTCODES = ['[+ G]', '[+ VU]']
+
+
+def apply_replacements(line: ChatLine) -> ChatLine:
+    # perform all replacements
+    for rep in REPLACEMENTS:
+        code = rep['code']
+        func = rep['function']
+        allow_skip = rep['allow_skip']
+
+        all_comments = []
+        done = False
+        while not done:
+            try:
+                # apply replacement function
+                new_text, comment = func(line.text)
+            except Exception as e:
+                if allow_skip:
+                    # if replacement category is skippable: log and move on
+                    logger.warn(e)
+                    print('error in {} for utterance "{}": {}'.format(
+                        func.__name__, line.text, e))
+                    new_text, comment = line.text, None
+                else:
+                    # else, raise an error
+                    logger.warn(e.args[0])
+                    raise e
+
+            if comment:
+                # if there was a comment, apply replacement
+                line.text = new_text
+                all_comments.append(comment)
+            else:
+                # no comment means we are done
+                # add all comments as a tier
+                if len(all_comments) > 0:
+                    tier_code = f'x{code}'
+                    tier = ChatTier(tier_code, ','.join(all_comments))
+                    line.tiers[tier_code] = tier
+                done = True
+    return line
 
 
 class ChatDocument:
@@ -20,7 +60,8 @@ class ChatDocument:
         self.header_metadata: Dict = inputdoc.header_metadata or {}
         self.file_metadata: Dict[str, MetaValue] = inputdoc.metadata or {}
         self.charmap: Dict[str, str] = inputdoc.charmap or {}
-        self.lines: List[ChatLine] = inputdoc.lines or []
+        read_lines = inputdoc.lines or []
+        self.lines: List[ChatLine] = [*map(apply_replacements, read_lines)]
         # SASTA specific attributes
         self.target_speakers: Set[str] = self.find_target_speakers()
         self.process_postcodes()
@@ -36,6 +77,48 @@ class ChatDocument:
         for err in reader.errors:
             logger.debug(err)
         return cls(doc, method_category)
+
+    def replacements(self, line: ChatLine):
+        # perform all replacements
+        for rep in REPLACEMENTS:
+            code = rep['code']
+            func = rep['function']
+            allow_skip = rep['allow_skip']
+
+            all_comments = []
+            done = False
+            while not done:
+                try:
+                    # apply replacement function
+                    new_text, comment = func(line.text)
+                except Exception as e:
+                    if allow_skip:
+                        # if replacement category is skippable: log and move on
+                        logger.warn(e)
+                        print('error in {} for utterance "{}": {}'.format(
+                            func.__name__, line.text, e))
+                        new_text, comment = line.text, None
+                    else:
+                        # else, raise an error
+                        logger.warn(e.args[0])
+                        raise e
+
+                if comment:
+                    # if there was a comment, apply replacement
+                    self.text = new_text
+                    all_comments.append(comment)
+                else:
+                    # no comment means we are done
+                    # add all comments as a tier
+                    if len(all_comments) > 0:
+                        tier_code = f'x{code}'
+                        tier = ChatTier(tier_code, ','.join(all_comments))
+                        line.tiers[tier_code] = tier
+                    done = True
+
+    def apply_replacements(self):
+        for line in self.lines:
+            self.replacements
 
     def find_target_speakers(self) -> Set[str]:
         results = set([])

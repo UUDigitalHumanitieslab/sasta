@@ -5,7 +5,7 @@ import datetime
 from io import BytesIO, StringIO
 
 from analysis.annotations.safreader import SAFReader
-from analysis.query.enrich_chat import enrich_chat
+from analysis.annotations.enrich_chat import enrich_chat
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
 from convert.chat_writer import ChatWriter
@@ -157,7 +157,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         new_run = self.create_analysis_run(obj, latest_run.method, file, is_manual=True)
 
         try:
-            reader = SAFReader(new_run.annotation_file.path, latest_run.method)
+            reader = SAFReader(new_run.annotation_file.path, latest_run.method, obj)
         except Exception as e:
             new_run.delete()
             return Response(str(e), status.HTTP_400_BAD_REQUEST)

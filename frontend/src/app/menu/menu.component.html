@@ -44,6 +44,15 @@
                         <span>Upload</span>
                     </span>
                 </a>
+                <a *ngIf="isAdmin" href="/admin" routerLinkActive="is-active" class="navbar-item">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <fa-icon [icon]="faUserShield"></fa-icon>
+                        </span>
+                        <span>Admin</span>
+                    </span>
+                </a>
+
             </div>
         </div>
 
