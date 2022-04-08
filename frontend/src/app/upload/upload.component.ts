@@ -22,7 +22,7 @@ export class UploadComponent implements OnInit {
 
     files: File[];
     fileAccept =
-        '.cha,.txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip';
+        '.cha,.txt,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip';
 
     newCorpusName: string;
 
