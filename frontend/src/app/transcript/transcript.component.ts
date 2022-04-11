@@ -211,6 +211,12 @@ export class TranscriptComponent implements OnInit {
     this.loadData();
   }
 
+  numUtterancesAnalysed() {
+    // Count the number of utterances that will be analysed
+    // Uses reduce to effeiciently find the number
+    return this.transcript.utterances.reduce((total, utt) => utt.for_analysis ? ++total : total, 0);
+  }
+
 
 
 }

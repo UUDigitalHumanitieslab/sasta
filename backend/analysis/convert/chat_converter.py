@@ -233,7 +233,7 @@ class SifReader:
         # groups:   1) type     2) field    3) value
         meta_pattern = r'^##META\s+(\w+)\s+(\w+)\s=\s(.*)$'
         # groups:   1) optional utterance_id    2) speaker code   3) utterance
-        utterance_pattern = r'^(?:(\S+)\s*\|.*?)?\*?([A-Z*]{3}):(?:\s*)(.*)$'
+        utterance_pattern = r'^(?:(\d+)\s*\|?.*?)?\*?([A-Z*]{3}):(?:\s*)(.*)$'
         # groups:   1) tier code    2) value
         tier_pattern = r'^(%\w{3,4}):\s*(.*)$'
         # groups:   1) speaker code

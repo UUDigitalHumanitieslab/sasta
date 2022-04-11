@@ -1,14 +1,13 @@
-from functools import reduce
 import logging
 import os
-from typing import List, Tuple
-from numpy import ndarray
+from typing import List, Optional, Tuple
 
 import pandas as pd
+from analysis.models import Transcript
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import LABELSEP, PREFIX, UTTLEVEL, SAF_COMMENT_LEVEL
+from .constants import LABELSEP, PREFIX, SAF_COMMENT_LEVEL, UTTLEVEL
 from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
 
@@ -20,13 +19,15 @@ def get_word_levels(data: pd.DataFrame):
     filtered_levels = levels[~levels.isin([SAF_COMMENT_LEVEL.lower(), UTTLEVEL.lower()])]
     return list(filtered_levels.unique())
 
+
 class SAFReader:
-    def __init__(self, filepath, method):
+    def __init__(self, filepath, method, transcript: Transcript = None):
         self.filepath = filepath
         self.word_cols = []
         self.levels: List[str] = []
         self.data = self.loaddata(filepath)
         self.method = method
+        self.transcript: Optional[Transcript] = transcript or None
         self.item_mapping, self.patterns = self.make_mappings()
         self.document = SAFDocument(os.path.basename(
             filepath), method, self.levels)
@@ -65,16 +66,18 @@ class SAFReader:
 
     def parse_utterance(self, utt_id, utt_data):
         instance = SAFUtterance(utt_id)
+        utt_object = self.transcript.get_utterance_by_id(utt_id)
+        self.document.allutts[utt_object.utt_id] = utt_object.word_list
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
             word = self.parse_word(utt_id, idx + 1,
-                                   wcol, utt_data[relevant_cols])
+                                   wcol, utt_data[relevant_cols], utt_object.word_position_mapping)
             if word:
                 instance.words.append(word)
 
         return instance
 
-    def parse_word(self, utt_id, word_id, colname, word_data):
+    def parse_word(self, utt_id, word_id, colname, word_data, wordposmap):
         data = word_data.dropna()
         if data.empty:
             return None
@@ -82,7 +85,9 @@ class SAFReader:
         if utt_data.empty:
             return None
         text = utt_data.iloc[0]
-        instance = SAFWord(word_id, text)
+        text = data.loc[data.level == UTTLEVEL, colname].iloc[0]
+        (begin, end) = wordposmap[word_id]['begin'], wordposmap[word_id]['end']
+        instance = SAFWord(word_id, text, begin, end)
 
         word_levels = get_word_levels(data)
         for level in word_levels:
@@ -99,6 +104,8 @@ class SAFReader:
                     query_id, fase = mapped
                     instance.annotations.append(SAFAnnotation(
                         level, label, fase, query_id))
+                    self.document.exactresults[query_id].append((utt_id, word_id))
+
                 else:
                     logger.warning(
                         'Cannot resolve query_id for (%s, %s)', level, label)
