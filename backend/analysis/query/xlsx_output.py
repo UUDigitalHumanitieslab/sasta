@@ -11,9 +11,11 @@ from openpyxl.styles.protection import Protection
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 
-LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
 ROMAN_NUMS = [None, 'I', 'II', 'III',
               'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
+
+BEFORE_WORDS_HEADERS = ['ID', 'Level', 'Unaligned']
+AFTER_WORDS_HEADERS = ['Dummy', 'Fases', 'Commentaar']
 
 
 def querycounts_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
@@ -79,7 +81,7 @@ def annotations_to_xlsx(allresults, method):
 
         for utt_id, words in items:
             # Utt row, containing the word tokens
-            words_row = [utt_id, 'Utt'] + [w.word for w in words]
+            words_row = [utt_id, 'Utt', None] + [w.word for w in words]
 
             # a cell for each word, and one to record phases
             level_rows = make_levels_rows(max_words, levels, utt_id)
@@ -116,17 +118,21 @@ def process_word(zc_embeddings, lower_levels, level_rows, zc_rows, i_word, word)
             process_hit(zc_rows, i_word, hit, i_level)
         else:
             i_level = lower_levels.index(hit['level'].lower())
-            process_hit(level_rows, i_word, i_level)
+            process_hit(level_rows, i_word, hit, i_level)
 
 
 def process_hit(rows, i_word: int, hit, i_level: int) -> None:
     '''Add the hit to the right place in the rows, and append the fase as roman numeral'''
-    rows[i_level][i_word + 2].add(hit['item'])
+    rows[i_level][get_word_column(i_word)].add(hit['item'])
     try:
         rows[i_level][-1].append(
             ROMAN_NUMS[int(hit['fase'])])
     except Exception:
         pass
+
+
+def get_word_column(word_index: int) -> int:
+    return word_index + len(BEFORE_WORDS_HEADERS)
 
 
 def append_utterance_rows(worksheet, words_row, levels_rows, zc_rows) -> None:
@@ -153,11 +159,14 @@ def append_level_rows(rows, worksheet) -> None:
 
 
 def make_levels_rows(max_words: int, levels: List[str], utt_id: int):
-    level_rows = [[utt_id, level]
-                  + [set([]) for _ in range(max_words + 1)]
-                  + [None]
-                  + [[]]
-                  for level in levels]
+    level_rows = [
+        [utt_id, level]
+        + [set([])]  # unaligned
+        + [set([]) for _ in range(max_words + 1)]
+        + [[]]  # fases
+        # Everything after fases is undefined so fases are easy to find with -1
+        for level in levels
+    ]
     return level_rows
 
 
@@ -172,8 +181,7 @@ def make_zc_rows(max_words: int, utt_id: int, words):
 
 def get_headers(max_words: int) -> List[str]:
     word_headers = [f'Word{i}' for i in range(1, max_words + 1)]
-    headers = ['ID', 'Level'] + word_headers + \
-        ['Dummy', 'Unaligned', 'Fases', 'Commentaar']
+    headers = BEFORE_WORDS_HEADERS + word_headers + AFTER_WORDS_HEADERS
 
     return headers
 
