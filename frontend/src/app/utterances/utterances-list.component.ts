@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { Transcript, Utterance } from '../models/transcript';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'sas-utterances-list',
@@ -8,10 +9,15 @@ import { Transcript, Utterance } from '../models/transcript';
     styleUrls: ['./utterances-list.component.scss'],
 })
 export class UtterancesListComponent implements OnInit {
-    @Input() transcript: Transcript;
-
+    @Input()
+    set transcript(transcript: Transcript) {
+        this.sortedUtterances = _.sortBy(transcript.utterances, (t) => t.uttno);
+    }
     faCheck = faCheck;
     faMinus = faMinus;
+
+    _: any = _; // Lodash
+    sortedUtterances: Utterance[];
 
     constructor() {}
 

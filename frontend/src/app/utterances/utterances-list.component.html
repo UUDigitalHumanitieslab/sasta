@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let utt of transcript.utterances">
+        <tr *ngFor="let utt of sortedUtterances">
             <td>{{ utt.speaker }}</td>
             <td>{{ utt.sentence }}</td>
             <td>
