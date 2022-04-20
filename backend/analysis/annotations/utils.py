@@ -2,7 +2,10 @@ import logging
 import re
 from typing import List, Pattern, Tuple
 
-from .constants import HEADER_VARIANTS, ITEMSEPPATTERN, LABELSEP, TupleStrDict
+import pandas
+
+from .constants import (HEADER_VARIANTS, ITEMSEPPATTERN, LABELSEP,
+                        NO_CLEAN_LEVELS, TupleStrDict)
 
 logger = logging.getLogger('sasta')
 
@@ -14,6 +17,13 @@ def standardize_header_name(header: str) -> str:
         if header in val:
             return key
     return header
+
+
+def clean_row(row: pandas.Series) -> pandas.Series:
+    if row.level.lower() in NO_CLEAN_LEVELS:
+        row.level = row.level.lower()
+        return row
+    return row.apply(clean_cell)
 
 
 def clean_cell(cell):

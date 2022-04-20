@@ -8,8 +8,8 @@ from analysis.models import Transcript
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
 from .constants import LABELSEP, PREFIX, SAF_COMMENT_LEVEL, UTTLEVEL
-from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
-                    mkpatterns, standardize_header_name)
+from .utils import (clean_item, clean_row, enrich, getlabels,
+                    item2queryid, mkpatterns, standardize_header_name)
 
 logger = logging.getLogger('sasta')
 
@@ -54,7 +54,9 @@ class SAFReader:
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
             data.level.dropna().unique()) if lv.lower() != UTTLEVEL]
-        data = data[relevant_cols].applymap(clean_cell)
+
+        data = data[relevant_cols].apply(clean_row, axis='columns')
+
         return data
 
     def make_mappings(self):
