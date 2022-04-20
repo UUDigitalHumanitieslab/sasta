@@ -20,6 +20,10 @@ def get_word_levels(data: pd.DataFrame):
     return list(filtered_levels.unique())
 
 
+def is_word_column(column_name: str) -> bool:
+    return column_name.lower().startswith('word') or column_name.lower() == 'unaligned'
+
+
 class SAFReader:
     def __init__(self, filepath, method, transcript: Transcript = None):
         self.filepath = filepath
@@ -45,7 +49,8 @@ class SAFReader:
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
         data.dropna(how='all', axis=1, inplace=True)
-        self.word_cols = [c for c in data.columns if c.startswith('word')]
+        self.word_cols = list(filter(is_word_column, data.columns))
+
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
             data.level.dropna().unique()) if lv.lower() != UTTLEVEL]
@@ -70,7 +75,7 @@ class SAFReader:
         self.document.allutts[utt_object.utt_id] = utt_object.word_list
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
-            word = self.parse_word(utt_id, idx + 1,
+            word = self.parse_word(utt_id, idx,
                                    wcol, utt_data[relevant_cols], utt_object.word_position_mapping)
             if word:
                 instance.words.append(word)
