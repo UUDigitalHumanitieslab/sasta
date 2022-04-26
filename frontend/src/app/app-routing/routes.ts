@@ -4,13 +4,12 @@ import { RegisterComponent } from '../auth/register.component';
 import { VerifyComponent } from '../auth/verify.component';
 import { CorpusComponent } from '../corpus/corpus.component';
 import { ListCorpusComponent } from '../corpus/list-corpus.component';
-import { TranscriptComponent } from "../transcript/transcript.component";
+import { TranscriptComponent } from '../transcript/transcript.component';
 import { ListMethodComponent } from '../method/list-method.component';
 import { MethodComponent } from '../method/method.component';
 import { ProcessComponent } from '../process/process.component';
 import { UploadComponent } from '../upload/upload.component';
 import { AuthGuard } from './auth.guard';
-
 
 const routes: Routes = [
     {
@@ -50,21 +49,21 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
     },
     {
         path: 'register',
-        component: RegisterComponent
+        component: RegisterComponent,
     },
     {
         path: 'confirm-email/:key',
-        component: VerifyComponent
+        component: VerifyComponent,
     },
     {
         path: '',
         redirectTo: '/corpora',
-        pathMatch: 'full'
-    }
+        pathMatch: 'full',
+    },
 ];
 
 export { routes };
