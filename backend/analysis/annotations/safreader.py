@@ -14,6 +14,19 @@ from .utils import (clean_item, clean_row, enrich, getlabels,
 logger = logging.getLogger('sasta')
 
 
+class NoWordDataException(Exception):
+    '''Raised when:
+    - There are no annotations for the word/level combination OR
+    - There is no word
+    '''
+    pass
+
+
+class UnalignedWord(Exception):
+    '''Raised when word is unaligned'''
+    pass
+
+
 def get_word_levels(data: pd.DataFrame):
     levels = data.level
     filtered_levels = levels[~levels.isin([SAF_COMMENT_LEVEL.lower(), UTTLEVEL.lower()])]
@@ -21,7 +34,20 @@ def get_word_levels(data: pd.DataFrame):
 
 
 def is_word_column(column_name: str) -> bool:
-    return column_name.lower().startswith('word') or column_name.lower() == 'unaligned'
+    return column_name.lower().startswith('word')
+
+
+def word_level_data(word_data: pd.DataFrame, colname: str):
+    '''returns combination word/level
+    '''
+    if word_data.empty:
+        raise NoWordDataException
+    utt_data = word_data.loc[word_data.level == UTTLEVEL, colname]
+    # if utt_data.empty:
+    #     raise NoWordDataException
+    if colname.lower() == 'unaligned':
+        raise UnalignedWord
+    return utt_data
 
 
 class SAFReader:
@@ -49,7 +75,7 @@ class SAFReader:
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
         data.dropna(how='all', axis=1, inplace=True)
-        self.word_cols = list(filter(is_word_column, data.columns))
+        self.word_cols = ['unaligned'] + list(filter(is_word_column, data.columns))
 
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
@@ -86,13 +112,15 @@ class SAFReader:
 
     def parse_word(self, utt_id, word_id, colname, word_data, wordposmap):
         data = word_data.dropna()
-        if data.empty:
+        try:
+            utt_data = word_level_data(data, colname)
+            text = utt_data.iloc[0]
+
+        except NoWordDataException:
             return None
-        utt_data = data.loc[data.level == UTTLEVEL, colname]
-        if utt_data.empty:
-            return None
-        text = utt_data.iloc[0]
-        text = data.loc[data.level == UTTLEVEL, colname].iloc[0]
+        except UnalignedWord:
+            text = ''
+
         (begin, end) = wordposmap[word_id]['begin'], wordposmap[word_id]['end']
         instance = SAFWord(word_id, text, begin, end)
 
