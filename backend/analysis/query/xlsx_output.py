@@ -91,7 +91,7 @@ def annotations_to_xlsx(allresults, method):
             else:
                 zc_rows = None
 
-            comment_row = make_levels_rows(max_words, ['Commentaar'], utt_id)
+            comment_rows = make_levels_rows(max_words, ['Commentaar'], utt_id)
 
             for i_word, word in enumerate(words):
                 process_word(zc_embeddings, lower_levels, level_rows, zc_rows, i_word, word)
@@ -101,7 +101,7 @@ def annotations_to_xlsx(allresults, method):
                 words_row,
                 level_rows,
                 zc_rows,
-                comment_row
+                comment_rows
             )
 
         format_worksheet(worksheet)
@@ -138,7 +138,7 @@ def get_word_column(word_index: int) -> int:
     return word_index + len(BEFORE_WORDS_HEADERS)
 
 
-def append_utterance_rows(worksheet, words_row, levels_rows, zc_rows, comment_row) -> None:
+def append_utterance_rows(worksheet, words_row, levels_rows, zc_rows, comment_rows) -> None:
     '''Append all rows for an utterance:
         words
         levels
@@ -147,7 +147,7 @@ def append_utterance_rows(worksheet, words_row, levels_rows, zc_rows, comment_ro
     worksheet.append(words_row)
     append_level_rows(levels_rows, worksheet)
     append_level_rows(zc_rows, worksheet)
-    worksheet.append(comment_row)
+    append_level_rows(comment_rows, worksheet)
 
 
 def append_level_rows(rows, worksheet) -> None:
