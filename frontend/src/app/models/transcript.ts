@@ -6,6 +6,16 @@ interface AnalysisRun {
     is_manual_correction: boolean;
 }
 
+export interface Utterance {
+    id: number;
+    sentence: string;
+    speaker: string;
+    utt_id?: number;
+    uttno: number;
+    xsid?: number;
+    for_analysis: boolean;
+}
+
 export enum TranscriptStatus {
     UNKNOWN, CREATED,
     CONVERTING, CONVERTED, CONVERSION_FAILED,
@@ -22,7 +32,7 @@ export interface Transcript {
     status_name: 'unknown' | 'created' | 'converting' | 'converted' | 'conversion-failed' | 'parsing' | 'parsed' | 'parsing-failed';
     date_added?: Date;
     corpus: number;
-    utterances?: any[];
+    utterances?: Utterance[];
     latest_run?: AnalysisRun;
     latest_corrections?: AnalysisRun;
     target_speakers?: string;

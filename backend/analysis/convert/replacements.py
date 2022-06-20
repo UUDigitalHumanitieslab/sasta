@@ -1,4 +1,5 @@
 import re
+from string import ascii_lowercase
 
 # anonymisation codes
 # these are provided in the order they should be checked.
@@ -22,6 +23,17 @@ ANONYMIZATIONS = [
 ]
 
 
+class NoAlphabetLetter(ValueError):
+    pass
+
+
+def letter_index(letter: str) -> int:
+    '''Return alphabet position for letter (0 if not found)'''
+    try:
+        return list(ascii_lowercase).index(letter.lower()) + 1
+    except Exception:
+        return 0
+
 def fill_name(string):
     for specs in ANONYMIZATIONS:
         codes = '|'.join(sorted(specs['codes'], key=len, reverse=True))
@@ -30,10 +42,8 @@ def fill_name(string):
         match = re.search(pat, string)
 
         def repl(match):
-            try:
-                index = int(match.group(3))
-            except (IndexError, ValueError):
-                index = 0
+            raw_index = match.group(3) or '0'
+            index = int(raw_index) if raw_index.isnumeric() else letter_index(raw_index)
             repl = specs['common'][index]
             return match.group(1) + repl + match.group(4)
 

@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import * as _ from 'lodash';
 import { FileUpload } from 'primeng/fileupload';
 import { forkJoin, Observable } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { concatMap, switchMap } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { MethodCategory } from '../models/methodcategory';
 import { UploadFile } from '../models/upload-file';
@@ -22,7 +22,7 @@ export class UploadComponent implements OnInit {
 
     files: File[];
     fileAccept =
-        '.cha,.txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip';
+        '.cha,.txt,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip';
 
     newCorpusName: string;
 
@@ -42,11 +42,31 @@ export class UploadComponent implements OnInit {
         private router: Router,
         private corpusService: CorpusService,
         private uploadFileService: UploadFileService,
-        private methodService: MethodService
+        private methodService: MethodService,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit() {
-        this.corpusService.list().subscribe((res) => (this.corpora = res));
+        this.corpusService.list().subscribe((res) => {
+            this.corpora = res;
+        });
+
+        this.corpusService
+            .list()
+            .pipe(
+                switchMap((response: Corpus[]) => {
+                    this.corpora = response;
+                    return this.route.queryParams;
+                })
+            )
+            .subscribe((params: Params) => {
+                if (params.corpus) {
+                    this.selectedCorpus = this.corpora.find(
+                        (c) => c.id === +params.corpus
+                    );
+                    this.onSelectCorpus();
+                }
+            });
         this.methodService.listCategories().subscribe((res) => {
             this.categories = res;
         });

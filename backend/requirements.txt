@@ -39,7 +39,7 @@ certifi==2021.10.8
     # via requests
 cffi==1.15.0
     # via cryptography
-chamd==0.5.6
+chamd==0.5.8
     # via
     #   -r requirements.in
     #   corpus2alpino
@@ -183,11 +183,14 @@ pytest==7.0.0
     #   -r requirements.in
     #   pytest-django
     #   pytest-forked
+    #   pytest-lazy-fixture
     #   pytest-xdist
 pytest-django==4.5.2
     # via -r requirements.in
 pytest-forked==1.4.0
     # via pytest-xdist
+pytest-lazy-fixture==0.6.3
+    # via -r requirements.in
 pytest-xdist==2.5.0
     # via -r requirements.in
 python-dateutil==2.8.2

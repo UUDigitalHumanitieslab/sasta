@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   isAuthenticated$ = new BehaviorSubject<boolean>(false);
   authAPI = 'rest-auth';
+  isAdmin$ = new BehaviorSubject<boolean>(false);
 
   constructor(private httpClient: HttpClient) {
     this.checkAuthenticated();
@@ -47,6 +48,14 @@ export class AuthService {
 
   getUser(): Observable<User> {
     return this.httpClient.get<User>(`${this.authAPI}/user/`);
+  }
+
+  async isAdmin() {
+    const adminObject = await this.httpClient
+        .get(`${this.authAPI}/has_admin_access/`)
+        .toPromise();
+    return adminObject[`has_admin_access`] as boolean;
+
   }
 
   infoFromConfirmKey(key: string): Observable<any> {

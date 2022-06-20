@@ -1,28 +1,32 @@
 <ng-container *ngIf="corpus">
-    <h3 class="title is-4">{{corpus.name}}</h3>
+    <h3 class="title is-4">{{ corpus.name }}</h3>
     <div class="buttons">
+        <button class="button is-primary" [routerLink]="['/upload']" [queryParams]="{ corpus: corpus?.id }">
+            <span class="icon is-small">
+                <fa-icon [icon]="faPlus"></fa-icon>
+            </span>
+            <span>add transcript(s)</span>
+        </button>
         <button class="button is-primary" pTooltip="download corpus files as zip" (click)="downloadZip()">
             <span class="icon is-small">
                 <fa-icon [icon]="faDownload"></fa-icon>
             </span>
             <span>download</span>
-            </button>
-            <button class="button is-primary" pTooltip="(re)process the corpus" [routerLink]="['/process/', corpus.id]">
-                <span class="icon is-small">
-                    <fa-icon [icon]="faCogs"></fa-icon>
-                </span>
-                <span>(re)process</span>
+        </button>
+        <button class="button is-primary" [routerLink]="['/process/', corpus.id]">
+            <span class="icon is-small">
+                <fa-icon [icon]="faCogs"></fa-icon>
+            </span>
+            <span>(re)process</span>
         </button>
     </div>
+    
     <div class="field">
-        <label class="label">
-            Default method
-        </label>
+        <label class="label"> Default method </label>
         <div class="control">
             <p-dropdown [options]="groupedTams" [(ngModel)]="defaultTam" placeholder="No default"
                 name="default-tam-dropdown" [group]="true" showClear="true" appendTo="body"
-                (onChange) = "changeDefaultMethod()"
-                [disabled]="!(groupedTams?.length > 0)">
+                (onChange)="changeDefaultMethod()" [disabled]="!(groupedTams?.length > 0)">
             </p-dropdown>
         </div>
     </div>
@@ -39,11 +43,15 @@
         <tbody>
             <tr *ngFor="let transcript of corpus.transcripts">
                 <td class="transcript-name" [routerLink]="['/transcript/', transcript.id]">
-                    <a>{{transcript.name}}</a>
+                    <a>{{ transcript.name }}</a>
                 </td>
-                <td>{{transcript.status_name}}</td>
-                <td>{{transcript.utterances ? transcript.utterances.length : 0}}</td>
-                <td>{{transcript.date_added | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ transcript.status_name }}</td>
+                <td>
+                    {{
+                    transcript.utterances ? transcript.utterances.length : 0
+                    }}
+                </td>
+                <td>{{ transcript.date_added | date: "dd/MM/yyyy" }}</td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
                         <button class="button is-primary" pTooltip="delete transcript"
