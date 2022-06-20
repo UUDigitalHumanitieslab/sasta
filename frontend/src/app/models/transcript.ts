@@ -10,7 +10,8 @@ export interface Utterance {
     id: number;
     sentence: string;
     speaker: string;
-    utt_id: number;
+    utt_id?: number;
+    uttno: number;
     xsid?: number;
     for_analysis: boolean;
 }
