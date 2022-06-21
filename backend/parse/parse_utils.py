@@ -93,7 +93,7 @@ def parse_transcript(transcript, output_dir, output_path):
 
 
 def create_utterance_objects(transcript):
-    parse_file = transcript.corrected_content or transcript.parsed_content
+    parse_file = transcript.best_available_treebank
 
     with open(parse_file.path, 'rb') as f:
         try:

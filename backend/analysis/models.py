@@ -173,6 +173,12 @@ class Transcript(models.Model):
         except Exception:
             raise
 
+    @property
+    def best_available_treebank(self):
+        if (not self.corrected_content) or ('error' not in self.corrections.keys()):
+            return self.parsed_content
+        return self.corrected_content
+
 
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)
