@@ -10,8 +10,8 @@ from django.db import migrations, models
 def existing_corrected_files(apps, schema_editor):
     Transcript = apps.get_model('analysis', 'Transcript')
     for transcript in Transcript.objects.all():
-        if transcript.parsed_content:
-            if (not transcript.corrected_content) or ('error' not in transcript.corrections.keys()):
+        if transcript.parsed_content and not transcript.corrected_content:
+            if (transcript.corrections) and ('error' not in transcript.corrections.keys()):
                 corrected_filename = os.path.basename(transcript.parsed_content.name).replace('.xml', '_corrected.xml')
                 with open(transcript.parsed_content.path, 'rb') as parsed_file_content:
                     transcript.corrected_content.save(corrected_filename, File(parsed_file_content))
