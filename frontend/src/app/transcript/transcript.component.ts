@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faArrowLeft, faDownload, faFile, faFileCode, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowLeft,
+    faDownload,
+    faFile,
+    faFileCode,
+    faTrash,
+    faUpload,
+} from '@fortawesome/free-solid-svg-icons';
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
@@ -8,11 +15,13 @@ import { switchMap } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript, TranscriptStatus } from '../models/transcript';
+import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
 import { TranscriptService } from '../services/transcript.service';
 
-const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const XLSX_MIME =
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const TXT_MIME = 'text/plain';
 
 @Component({
@@ -48,7 +57,8 @@ export class TranscriptComponent implements OnInit {
         private methodService: MethodService,
         private router: Router,
         private route: ActivatedRoute,
-        private messageService: MessageService
+        private messageService: MessageService,
+        public authService: AuthService
     ) {
         this.route.paramMap.subscribe(
             (params) => (this.id = +params.get('id'))

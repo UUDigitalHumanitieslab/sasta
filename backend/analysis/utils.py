@@ -171,6 +171,16 @@ def create_query_from_series(series: pd.Series, method) -> None:
         logger.exception(error)
 
 
+def compare_methods(old_method_path, new_method_path: str):
+    old_df = pd.read_excel(old_method_path)
+    new_df = pd.read_excel(new_method_path)
+
+    diff = old_df.compare(new_df)
+    diff.dropna(inplace=True)
+
+    return diff
+
+
 class StreamFile(ContentFile):
     """
     Django doesn't provide a File wrapper suitable
