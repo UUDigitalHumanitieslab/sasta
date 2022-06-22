@@ -1,10 +1,6 @@
 <ng-container *ngIf="transcript && corpus">
     <div class="buttons" style="display: flex; justify-content: space-between">
-        <button
-            class="button is-primary"
-            pTooltip="return to corpus"
-            [routerLink]="['/corpora/', corpus.id]"
-        >
+        <button class="button is-primary" pTooltip="return to corpus" [routerLink]="['/corpora/', corpus.id]">
             <span class="icon is-small" style="margin-right: 0">
                 <fa-icon [icon]="faArrowLeft"></fa-icon>
             </span>
@@ -30,8 +26,11 @@
                 {{ transcript.utterances.length }}) utterances
             </p>
             <p *ngIf="transcript.target_speakers" class="level-item">
-                <strong>Analysing speakers: </strong
-                >{{ transcript.target_speakers }}
+                <strong>Analysing speakers: </strong>{{ transcript.target_speakers }}
+            </p>
+            <p class="level-item" *ngIf="!(authService.currentUser$ | async).isAdmin">
+                <strong>Method: </strong>
+                {{ currentTam.name}}
             </p>
             <p class="level-item">
                 <strong>Created on: </strong>
@@ -44,40 +43,26 @@
         <p-panel header="Scoring">
             <form>
                 <div class="field">
-                    <div class="control">
-                        <p-dropdown
-                            [options]="groupedTams"
-                            [(ngModel)]="currentTam"
-                            placeholder="Select a method"
-                            name="tam-dropdown"
-                            [group]="true"
-                            showClear="true"
-                            appendTo="body"
-                            [disabled]="!(groupedTams?.length > 0)"
-                        >
+                    <div class="control" *ngIf="(authService.currentUser$ | async).isAdmin">
+                        <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
+                            name="tam-dropdown" [group]="true" showClear="true" appendTo="body"
+                            [disabled]="!(groupedTams?.length > 0)">
                         </p-dropdown>
                     </div>
                 </div>
+
                 <div class="field is-grouped">
                     <div class="control">
-                        <button
-                            class="button is-primary"
-                            [disabled]="!currentTam"
-                            (click)="queryTranscript()"
-                            [ngClass]="{ 'is-loading': querying }"
-                        >
+                        <button class="button is-primary" [disabled]="!currentTam" (click)="queryTranscript()"
+                            [ngClass]="{ 'is-loading': querying }">
                             Query
                         </button>
                     </div>
                     <div class="divider is-vertical">or</div>
                     <div class="field">
                         <div class="control">
-                            <button
-                                class="button is-primary"
-                                [disabled]="!currentTam"
-                                (click)="annotateTranscript('xlsx')"
-                                [ngClass]="{ 'is-loading': querying }"
-                            >
+                            <button class="button is-primary" [disabled]="!currentTam"
+                                (click)="annotateTranscript('xlsx')" [ngClass]="{ 'is-loading': querying }">
                                 Annotate (xlsx)
                             </button>
                         </div>
@@ -85,26 +70,17 @@
                     <div class="divider is-vertical">or</div>
                     <div class="field">
                         <div class="control">
-                            <button
-                                class="button is-primary"
-                                [disabled]="!currentTam"
-                                (click)="annotateTranscript('cha')"
-                                [ngClass]="{ 'is-loading': querying }"
-                            >
+                            <button class="button is-primary" [disabled]="!currentTam"
+                                (click)="annotateTranscript('cha')" [ngClass]="{ 'is-loading': querying }">
                                 Annotate (CHAT)
                             </button>
                         </div>
                     </div>
                     <div class="divider is-vertical">or</div>
                     <div class="control">
-                        <button
-                            class="button is-primary"
-                            [disabled]="
+                        <button class="button is-primary" [disabled]="
                                 !currentTam || !currentTam?.category.has_form
-                            "
-                            (click)="generateForm()"
-                            [ngClass]="{ 'is-loading': querying }"
-                        >
+                            " (click)="generateForm()" [ngClass]="{ 'is-loading': querying }">
                             Generate form
                         </button>
                     </div>
@@ -117,12 +93,8 @@
         <p-panel header="Annotations">
             <div class="field is-grouped">
                 <div class="control">
-                    <button
-                        class="button is-primary"
-                        pTooltip="Download the latest generated annotations file"
-                        [disabled]="!transcript.latest_run"
-                        (click)="downloadLatestAnnotations()"
-                    >
+                    <button class="button is-primary" pTooltip="Download the latest generated annotations file"
+                        [disabled]="!transcript.latest_run" (click)="downloadLatestAnnotations()">
                         <span class="icon is-small">
                             <fa-icon [icon]="faDownload"></fa-icon>
                         </span>
@@ -132,17 +104,13 @@
                         Latest annotations:
                         <span>{{
                             transcript.latest_run.created
-                                | date: "dd/MM/yyyy, HH:mm"
-                        }}</span>
+                            | date: "dd/MM/yyyy, HH:mm"
+                            }}</span>
                     </p>
                 </div>
                 <div class="control">
-                    <button
-                        class="button is-primary"
-                        pTooltip="Provide a manually corrected annotations file"
-                        [disabled]="!allowCorrectionUpload()"
-                        (click)="showCorrectionsUpload()"
-                    >
+                    <button class="button is-primary" pTooltip="Provide a manually corrected annotations file"
+                        [disabled]="!allowCorrectionUpload()" (click)="showCorrectionsUpload()">
                         <span class="icon is-small">
                             <fa-icon [icon]="faUpload"></fa-icon>
                         </span>
@@ -152,17 +120,13 @@
                         Latest corrections:
                         <span>{{
                             transcript.latest_corrections.created
-                                | date: "dd/MM/yyyy, HH:mm"
-                        }}</span>
+                            | date: "dd/MM/yyyy, HH:mm"
+                            }}</span>
                     </p>
                 </div>
                 <div class="control">
-                    <button
-                        class="button is-danger"
-                        pTooltip="Reset annotations by querying the original transcript"
-                        [disabled]="!allowCorrectionReset()"
-                        (click)="resetAnnotations()"
-                    >
+                    <button class="button is-danger" pTooltip="Reset annotations by querying the original transcript"
+                        [disabled]="!allowCorrectionReset()" (click)="resetAnnotations()">
                         <span class="icon is-small">
                             <fa-icon [icon]="faTrash"></fa-icon>
                         </span>
@@ -174,38 +138,28 @@
     </div>
     <div class="block">
         <p-fieldset legend="Utterances" [toggleable]="true" [collapsed]="true">
-            <sas-utterances-list
-                [transcript]="transcript"
-            ></sas-utterances-list>
+            <sas-utterances-list [transcript]="transcript"></sas-utterances-list>
         </p-fieldset>
     </div>
     <div class="'block">
         <p-fieldset legend="Files" [toggleable]="true" [collapsed]="true">
             <div class="buttons">
-                <button
-                    class="button is-primary"
-                    pTooltip="view CHAT"
-                    [disabled]="!chatFileAvailable(transcript)"
-                    (click)="showChat()"
-                >
+                <button class="button is-primary" pTooltip="view CHAT" [disabled]="!chatFileAvailable(transcript)"
+                    (click)="showChat()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFile"></fa-icon>
                     </span>
                     <span>CHAT</span>
                 </button>
-                <button
-                    class="button is-primary"
-                    pTooltip="view alpino parse"
-                    [disabled]="!lassyFileAvailable(transcript)"
-                    (click)="showLassy()"
-                >
+                <button class="button is-primary" pTooltip="view alpino parse"
+                    [disabled]="!lassyFileAvailable(transcript)" (click)="showLassy()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFileCode"></fa-icon>
                     </span>
                     <span>Alpino parse</span>
                 </button>
-                <button class="button is-primary" pTooltip="view corrected alpino parse" [disabled]="!transcript.corrected_content"
-                    (click)="showCorrectedLassy()">
+                <button class="button is-primary" pTooltip="view corrected alpino parse"
+                    [disabled]="!transcript.corrected_content" (click)="showCorrectedLassy()">
                     <span class="icon is-small">
                         <fa-icon [icon]="faFileCode"></fa-icon>
                     </span>
@@ -214,11 +168,7 @@
             </div>
         </p-fieldset>
     </div>
-    <sas-upload-saf
-        *ngIf="displayCorrUpload"
-        [display]="displayCorrUpload"
-        (displayChange)="onCorrectionsUploadClose($event)"
-        [transcript]="transcript"
-    >
+    <sas-upload-saf *ngIf="displayCorrUpload" [display]="displayCorrUpload"
+        (displayChange)="onCorrectionsUploadClose($event)" [transcript]="transcript">
     </sas-upload-saf>
 </ng-container>

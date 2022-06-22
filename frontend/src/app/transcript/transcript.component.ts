@@ -57,7 +57,8 @@ export class TranscriptComponent implements OnInit {
         private methodService: MethodService,
         private router: Router,
         private route: ActivatedRoute,
-        private messageService: MessageService
+        private messageService: MessageService,
+        public authService: AuthService
     ) {
         this.route.paramMap.subscribe(
             (params) => (this.id = +params.get('id'))
