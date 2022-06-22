@@ -43,7 +43,7 @@
                         <span>Upload</span>
                     </span>
                 </a>
-                <a *ngIf="(authService.currentUser$ | async).isAdmin" href="/admin" routerLinkActive="is-active"
+                <a *ngIf="(authService.currentUser$ | async)?.isAdmin" href="/admin" routerLinkActive="is-active"
                     class="navbar-item">
                     <span class="icon-text">
                         <span class="icon">
