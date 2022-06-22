@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Next release
 - Preprocess CHAT (anonymization, interpunction)
+- Separate parsed and corrected treebanks, allow viewing and downloading of both
 
 ## [0.4.0] - 2022-04-05
 ### Fixed

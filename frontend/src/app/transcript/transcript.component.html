@@ -204,6 +204,13 @@
                     </span>
                     <span>Alpino parse</span>
                 </button>
+                <button class="button is-primary" pTooltip="view corrected alpino parse" [disabled]="!transcript.corrected_content"
+                    (click)="showCorrectedLassy()">
+                    <span class="icon is-small">
+                        <fa-icon [icon]="faFileCode"></fa-icon>
+                    </span>
+                    <span>corrected Alpino parse</span>
+                </button>
             </div>
         </p-fieldset>
     </div>

@@ -27,6 +27,7 @@ export interface Transcript {
     name: string;
     content: string;
     parsed_content: string;
+    corrected_content: string;
     status: number;
     status_name: 'unknown' | 'created' | 'converting' | 'converted' | 'conversion-failed' | 'parsing' | 'parsed' | 'parsing-failed';
     date_added?: Date;

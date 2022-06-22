@@ -2,13 +2,16 @@
 from __future__ import unicode_literals
 
 import datetime
+import logging
 from io import BytesIO, StringIO
 
-from analysis.annotations.safreader import SAFReader
 from analysis.annotations.enrich_chat import enrich_chat
+from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from celery import group
 from convert.chat_writer import ChatWriter
+from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse
 from parse.parse_utils import parse_and_create
@@ -18,6 +21,8 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 
+from sasta.celery import get_celery_worker_status
+
 from .convert.convert import convert
 from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
@@ -26,7 +31,8 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
 from .utils import StreamFile
-from celery import group
+
+logger = logging.getLogger('sasta')
 
 
 # flake8: noqa: E501
@@ -260,6 +266,13 @@ class CorpusViewSet(viewsets.ModelViewSet):
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED)
         )
+
+        # If in DEBUG mode and celery not running, parse synchronously
+        # TODO: fix
+        # if settings.DEBUG and get_celery_worker_status():
+        #     logger.info('Bypassing Celery')
+        #     return self.parse_all()
+
         task = group(parse_transcript_task.s(t.id) for t in transcripts).delay()
 
         if not task:
