@@ -76,7 +76,8 @@ export class UploadComponent implements OnInit {
         return (
             (this.newCorpusName || this.selectedCorpus) &&
             this.selectedCategory &&
-            !this.corpusNameInUse()
+            !this.corpusNameInUse() &&
+            this.fileInput.files.length > 0
         );
     }
 
