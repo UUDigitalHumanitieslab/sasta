@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
-import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -40,6 +39,8 @@ export class LoginComponent implements OnDestroy, OnInit {
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (res) => {
+                    this.authService.setUser();
+                    // Manually set isAuthenticated$ here so the route guard kicks in
                     this.authService.isAuthenticated$.next(true);
                     this.router.navigate(['/corpora']);
                 },
@@ -50,7 +51,7 @@ export class LoginComponent implements OnDestroy, OnInit {
                         detail: err.error.non_field_errors,
                     });
                     console.log('Http Error', err);
-                    this.authService.isAuthenticated$.next(false);
+                    this.authService.setUser();
                     this.processing = false;
                 }
             );

@@ -1,14 +1,15 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-    faFileUpload, faFolder,
-    faListAlt, faUser, faUserShield
+    faFileUpload,
+    faFolder,
+    faListAlt,
+    faUser,
+    faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../environments/environment';
 import { animations, showState } from '../animations';
-import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
-
 
 @Component({
     animations,
@@ -19,9 +20,6 @@ import { AuthService } from '../services/auth.service';
 export class MenuComponent implements OnInit {
     burgerShow: showState;
     burgerActive = false;
-    public activeUser: User;
-    public isAuthenticated$ = this.authService.isAuthenticated$;
-    public isAdmin: boolean;
 
     faUser = faUser;
     faFolder = faFolder;
@@ -32,25 +30,11 @@ export class MenuComponent implements OnInit {
 
     constructor(
         private ngZone: NgZone,
-        private authService: AuthService,
+        public authService: AuthService,
         private router: Router
     ) {}
 
-    ngOnInit() {
-        this.isAuthenticated$.subscribe((authenticated) => {
-            if (authenticated) {
-                this.authService.getUser().subscribe(
-                    async (res) => {
-                        this.activeUser = res;
-                        this.isAdmin = await this.authService.isAdmin();
-                    },
-                    (err) => console.log('Http Error', err)
-                );
-            } else {
-                this.activeUser = null;
-            }
-        });
-    }
+    ngOnInit() {}
 
     isAuthenticated() {
         return this.authService.isAuthenticated$.getValue();
@@ -61,7 +45,7 @@ export class MenuComponent implements OnInit {
             (res) => {
                 this.router.navigate(['/login']);
                 this.authService.isAuthenticated$.next(false);
-                this.activeUser = null;
+                this.authService.currentUser$.next(null);
             },
             (err) => console.log('Http Error', err)
         );

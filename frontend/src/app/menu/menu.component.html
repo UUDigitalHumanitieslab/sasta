@@ -3,7 +3,6 @@
         <div class="navbar-brand">
             <div class="navbar-item">
                 <h4 class="title is-4">SASTA</h4>
-
             </div>
 
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
@@ -44,7 +43,8 @@
                         <span>Upload</span>
                     </span>
                 </a>
-                <a *ngIf="isAdmin" href="/admin" routerLinkActive="is-active" class="navbar-item">
+                <a *ngIf="(authService.currentUser$ | async).isAdmin" href="/admin" routerLinkActive="is-active"
+                    class="navbar-item">
                     <span class="icon-text">
                         <span class="icon">
                             <fa-icon [icon]="faUserShield"></fa-icon>
@@ -60,7 +60,7 @@
             <div class="navbar-item">
                 {{version}}
             </div>
-            <div class="navbar-item" *ngIf="!activeUser">
+            <div class="navbar-item" *ngIf="!(authService.currentUser$ | async)">
                 <div class="buttons">
                     <a class="button is-light" [routerLink]="['/register']">
                         <strong>Sign up</strong>
@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="navbar-item" *ngIf="activeUser">
+            <div class="navbar-item" *ngIf="(authService.currentUser$ | async)">
                 <div class="dropdown is-right is-hoverable">
 
                     <div class="dropdown-trigger">
@@ -81,7 +81,7 @@
                             </span>
                             <span>
                                 <strong>
-                                    {{activeUser.username}}
+                                    {{(authService.currentUser$ | async).username}}
                                 </strong>
                             </span>
                         </a>
