@@ -100,8 +100,7 @@ class Corpus(models.Model):
 
     def download_as_zip(self):
         stream = BytesIO()
-        transcripts = self.transcripts.all()
-        files = [(t.content.path, t.parsed_content.path, t.corrected_content.path) for t in transcripts]
+        files = [t.get_filepaths() for t in self.transcripts.all()]
         files = list(chain.from_iterable(files))
         zipf = zipfile.ZipFile(stream, "w")
         for f in files:
@@ -172,6 +171,11 @@ class Transcript(models.Model):
             return self.utterances.get(utt_id=utt_id)
         except Exception:
             raise
+
+    def get_filepaths(self) -> Tuple[str]:
+        if self.corrected_content:
+            return (self.content.path, self.parsed_content.path, self.corrected_content.path)
+        return (self.content.path, self.parsed_content.path)
 
     @property
     def best_available_treebank(self):

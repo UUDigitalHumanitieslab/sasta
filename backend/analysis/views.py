@@ -268,9 +268,10 @@ class CorpusViewSet(viewsets.ModelViewSet):
         )
 
         # If in DEBUG mode and celery not running, parse synchronously
-        if settings.DEBUG and get_celery_worker_status():
-            logger.info('Bypassing Celery')
-            return self.parse_all()
+        # TODO: fix
+        # if settings.DEBUG and get_celery_worker_status():
+        #     logger.info('Bypassing Celery')
+        #     return self.parse_all()
 
         task = group(parse_transcript_task.s(t.id) for t in transcripts).delay()
 
