@@ -74,8 +74,10 @@ class SAFReader:
         data = pd.read_excel(filepath)
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
-        data.dropna(how='all', axis=1, inplace=True)
         self.word_cols = ['unaligned'] + list(filter(is_word_column, data.columns))
+
+        # Do we need to drop empty columns? Seems we don't. If otherwise, make sure word_columns are not dropped
+        # data.dropna(how='all', axis=1, inplace=True)
 
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
