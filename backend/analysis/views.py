@@ -4,10 +4,11 @@ from __future__ import unicode_literals
 import datetime
 from io import BytesIO, StringIO
 
-from analysis.annotations.safreader import SAFReader
 from analysis.annotations.enrich_chat import enrich_chat
+from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import querycounts_to_xlsx, annotations_to_xlsx
+from analysis.query.xlsx_output import annotations_to_xlsx, querycounts_to_xlsx
+from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
@@ -26,8 +27,6 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
 from .utils import StreamFile
-from celery import group
-
 
 # flake8: noqa: E501
 SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -103,11 +102,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         format = request.data.get('format', 'xlsx')
 
         if format == 'xlsx':
-            spreadsheet = annotations_to_xlsx(
-                allresults, method)
-
             response = HttpResponse(
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                content_type=SPREADSHEET_MIMETYPE)
             response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
             spreadsheet.save(response)
 

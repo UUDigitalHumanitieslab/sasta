@@ -78,6 +78,7 @@ class SAFDocument:
                     hits=[],
                     idx=word.idx,
                     zc_embedding=0,  # TODO: CHECK ZC EMBEDS,
+                    comments=word.comment
                 )
                 for ann in word.annotations:
                     hit = self.hit_from_annotation(ann)

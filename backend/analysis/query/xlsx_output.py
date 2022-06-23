@@ -94,7 +94,7 @@ def annotations_to_xlsx(allresults, method):
             comment_rows = make_levels_rows(max_words, ['Commentaar'], utt_id)
 
             for word in words:
-                process_word(zc_embeddings, lower_levels, level_rows, zc_rows, word.index, word)
+                process_word(zc_embeddings, lower_levels, level_rows, zc_rows, comment_rows, word.index, word)
 
             append_utterance_rows(
                 worksheet,
@@ -113,7 +113,7 @@ def annotations_to_xlsx(allresults, method):
         traceback.print_exc()
 
 
-def process_word(zc_embeddings, lower_levels, level_rows, zc_rows, i_word, word) -> None:
+def process_word(zc_embeddings, lower_levels, level_rows, zc_rows, comment_rows, i_word, word) -> None:
     '''Iterate over word hits and fill the corresponding level'''
     for hit in word.hits:
         if zc_embeddings and hit['level'].lower() == 'zc':
@@ -122,6 +122,8 @@ def process_word(zc_embeddings, lower_levels, level_rows, zc_rows, i_word, word)
         else:
             i_level = lower_levels.index(hit['level'].lower())
             process_hit(level_rows, i_word, hit, i_level)
+    if word.comments:
+        comment_rows[0][get_word_column(i_word)].add(word.comments)
 
 
 def process_hit(rows, i_word: int, hit, i_level: int) -> None:
