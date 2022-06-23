@@ -144,7 +144,16 @@ def utt_from_tree(tree: str, embeddings=False) -> List[UtteranceWord]:
     embed_dict = get_zc_embeddings(ET.fromstring(tree)) if embeddings else None
 
     words = utt.findAll('node', {'word': True})
-    utt_words = [UtteranceWord(
+
+    unaligned = UtteranceWord(
+        word='',
+        begin=-1,
+        end=0,
+        hits=[],
+        zc_embedding=0 if embed_dict else None
+    )
+
+    utt_words = [unaligned] + [UtteranceWord(
         word=w.get('word'),
         begin=w.get('begin'),
         end=w.get('end'),
@@ -152,4 +161,9 @@ def utt_from_tree(tree: str, embeddings=False) -> List[UtteranceWord]:
         zc_embedding=embed_dict[str(w.get('begin'))] if embed_dict else None)
         for w in words]
 
-    return sorted(utt_words, key=attrgetter('begin'))
+    # Sort the words and assign their real index
+    sorted_words = sorted(utt_words, key=attrgetter('begin'))
+    for i, w in enumerate(sorted_words):
+        w.index = i
+
+    return sorted_words

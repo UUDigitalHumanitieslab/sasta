@@ -1,11 +1,10 @@
-from operator import itemgetter
-from pandas import DataFrame, Series
-import pytest
 import os.path as op
+from operator import itemgetter
 
+import pytest
+from analysis.annotations.safreader import SAFReader, get_word_levels
 from analysis.query.run import query_transcript
-from analysis.annotations.safreader import SAFReader
-from analysis.annotations.safreader import get_word_levels
+from pandas import DataFrame
 from pytest_lazyfixture import lazy_fixture
 
 
@@ -31,10 +30,15 @@ def test_read_saf(method, transcript, filedir, samplenum):
     assert true_results.annotations.keys() == reader.document.reformatted_annotations.keys()
     for q, annos in true_results.annotations.items():
         true_annos = reader.document.reformatted_annotations[q]
-        for word, true_word in zip(annos, true_annos):
+        for word in annos:
+            true_word = next((w for w in true_annos if w.index == word.index), None)
             hits = sorted(word.hits, key=itemgetter('level', 'item'))
-            true_hits = sorted(true_word.hits, key=itemgetter('level', 'item'))
-            assert hits == true_hits
+            if true_word:
+                true_hits = sorted(true_word.hits, key=itemgetter('level', 'item'))
+                assert hits == true_hits
+            else:
+                # if the true_word is not found (unaligned empty), make sure it didnt miss anything
+                assert hits == []
 
     # are the exactresults the same?
     true_exact = {k: sorted(v) for (k, v) in true_results.exactresults.items() if v != []}

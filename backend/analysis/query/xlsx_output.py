@@ -81,7 +81,7 @@ def annotations_to_xlsx(allresults, method):
 
         for utt_id, words in items:
             # Utt row, containing the word tokens
-            words_row = [utt_id, 'Utt', None] + [w.word for w in words]
+            words_row = [utt_id, 'Utt'] + [w.word for w in words]
 
             # a cell for each word, and one to record phases
             level_rows = make_levels_rows(max_words, levels, utt_id)
@@ -93,8 +93,8 @@ def annotations_to_xlsx(allresults, method):
 
             comment_rows = make_levels_rows(max_words, ['Commentaar'], utt_id)
 
-            for i_word, word in enumerate(words):
-                process_word(zc_embeddings, lower_levels, level_rows, zc_rows, i_word, word)
+            for word in words:
+                process_word(zc_embeddings, lower_levels, level_rows, zc_rows, word.index, word)
 
             append_utterance_rows(
                 worksheet,
@@ -135,7 +135,8 @@ def process_hit(rows, i_word: int, hit, i_level: int) -> None:
 
 
 def get_word_column(word_index: int) -> int:
-    return word_index + len(BEFORE_WORDS_HEADERS)
+    # Substract 1 because position 0 is unaligned, which is present in BEFORE_WORDS_HEADERS
+    return word_index + len(BEFORE_WORDS_HEADERS) - 1
 
 
 def append_utterance_rows(worksheet, words_row, levels_rows, zc_rows, comment_rows) -> None:

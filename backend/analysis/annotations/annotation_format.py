@@ -73,10 +73,11 @@ class SAFDocument:
             for word in utt.words:
                 uw = UtteranceWord(
                     word=word.text,
-                    begin=word.idx - 1,
+                    begin=word.idx - 1,  # TODO: does this need to be normalized?
                     end=word.idx,
-                    zc_embedding=0,  # TODO: CHECK ZC EMBEDS
-                    hits=[]
+                    hits=[],
+                    idx=word.idx,
+                    zc_embedding=0,  # TODO: CHECK ZC EMBEDS,
                 )
                 for ann in word.annotations:
                     hit = self.hit_from_annotation(ann)
