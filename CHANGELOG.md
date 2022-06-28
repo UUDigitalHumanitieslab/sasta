@@ -1,82 +1,124 @@
 # Changelog
+
 All notable changes (beginning at version 0.2.0) to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Next release
-- Preprocess CHAT (anonymization, interpunction)
+
+-   Preprocess CHAT (anonymization, interpunction)
+-   Separate parsed and corrected treebanks, allow viewing and downloading of both
+-   Disable method selection for non-admins: instead always use most recent method
+-   Comment row in SAF
+-   Allow generating and reading unaligned annotations in SAF
 
 ## [0.4.0] - 2022-04-05
+
 ### Fixed
-- Resolved an issue where default methods were prevented from being set.
-- Some forms were not correctly updated after supplying manual corrections, e.g. ASTA WW and N. This is fixed by implementing aligned results functionality.
+
+-   Resolved an issue where default methods were prevented from being set.
+-   Some forms were not correctly updated after supplying manual corrections, e.g. ASTA WW and N. This is fixed by implementing aligned results functionality.
 
 ### Added
-- New SASTADEV method definitions.
+
+-   New SASTADEV method definitions.
 
 ### Changed
-- Extra corpus information and control:
-  - Overview of number of targeted utterances and targeting flags.
-  - Overview of all utterances.
-  - Shortcut to upload additional transcripts to the corpus.
-- Upload multiple files without zipping them.
-- In SASTA Output Format, lock all cells except annotation cells. This is implemented to avoid errors in manual correction files.
-- ASTA corrects Nouns and Verbs
-- use exactresults
+
+-   Extra corpus information and control:
+    -   Overview of number of targeted utterances and targeting flags.
+    -   Overview of all utterances.
+    -   Shortcut to upload additional transcripts to the corpus.
+-   Upload multiple files without zipping them.
+-   In SASTA Output Format, lock all cells except annotation cells. This is implemented to avoid errors in manual correction files.
+-   ASTA corrects Nouns and Verbs
+-   use exactresults
 
 ## [0.3.2] - 2022-03-22
+
 ### Fixed
-- Resolved an issue where corrected transcripts were incorrectly analyzed.
+
+-   Resolved an issue where corrected transcripts were incorrectly analyzed.
 
 ## [0.3.1] - 2022-03-21
+
 ### Fixed
-- Resolved an issue where CHAT annotations were added to the wrong utterances.
+
+-   Resolved an issue where CHAT annotations were added to the wrong utterances.
 
 ## [0.3.0] - 2022-02-07
+
 ### Added
-- Implement latest method defintions.
-- Upgrade to Python 3.7.x
-- Concurrent parsing: up to 8 transcripts can be parsed in parallel.
+
+-   Implement latest method defintions.
+-   Upgrade to Python 3.7.x
+-   Concurrent parsing: up to 8 transcripts can be parsed in parallel.
+
 ### Changed
-- All marked utterances are given utterance IDs, no longer use utterance numbers. Analysis now numbers utterance 1-N, where N is number of marked utterances.
-- Phase out `python-ucto`, and by proxy `ucto` (through changes in `corpus2alpino`). Severly reduces dependency complexity.
+
+-   All marked utterances are given utterance IDs, no longer use utterance numbers. Analysis now numbers utterance 1-N, where N is number of marked utterances.
+-   Phase out `python-ucto`, and by proxy `ucto` (through changes in `corpus2alpino`). Severly reduces dependency complexity.
+
 ### Removed
-- Dropped Python 3.6.x support.
+
+-   Dropped Python 3.6.x support.
+
 ### Security
-- Fixed multipe vulnerabilities in backend and frontend.
+
+-   Fixed multipe vulnerabilities in backend and frontend.
 
 ## [0.2.6] - 2021-12-17
+
 ### Changed
-- Differentiate CHAT postcode markers by method. For STAP `[+ VU]` is marked, for all methods `[+ G]`
+
+-   Differentiate CHAT postcode markers by method. For STAP `[+ VU]` is marked, for all methods `[+ G]`
 
 ## [0.2.5] - 2021-11-12
+
 ### Added
-- Process CHAT postcodes `[+ VU]` and `[+ G]` as utterance analysis markers
+
+-   Process CHAT postcodes `[+ VU]` and `[+ G]` as utterance analysis markers
+
 ### Changed
-- Updated VKL logo
+
+-   Updated VKL logo
 
 ## [0.2.4] - 2021-09-23
+
 ### Fixed
-- Trailing whitespace in SIF headers is ignored
+
+-   Trailing whitespace in SIF headers is ignored
 
 ## [0.2.3] - 2021-09-23
+
 ### Changed
-- Run pre-queries before core-queries
+
+-   Run pre-queries before core-queries
 
 ## [0.2.0] - 2021-09-10
+
 ### Added
-- CHAT format input.
-- Asynchronous parsing; the parse process continues in the background.
-- Updates to query definitions and related SASTADEV functions.
-- Automatic corrections on input files to improve parses of irregular language (implemented in SASTADEV).
-- Logos for participating organisations.
+
+-   CHAT format input.
+-   Asynchronous parsing; the parse process continues in the background.
+-   Updates to query definitions and related SASTADEV functions.
+-   Automatic corrections on input files to improve parses of irregular language (implemented in SASTADEV).
+-   Logos for participating organisations.
+
 ### Changed
-- Give corpora a method category, can only query and annotate using methods within this category.
-- Updated look.
+
+-   Give corpora a method category, can only query and annotate using methods within this category.
+-   Updated look.
+
 ### Removed
-- Remove 'Inform only' choice, the option is forcibly set to true.
+
+-   Remove 'Inform only' choice, the option is forcibly set to true.
+
 ### Fixed
-- Asynchronous parsing ensures the application does not lock all users for the duration.
+
+-   Asynchronous parsing ensures the application does not lock all users for the duration.
+
 ### Security
-- Fix multiple vulnerabilities in both frontend and backend.
+
+-   Fix multiple vulnerabilities in both frontend and backend.

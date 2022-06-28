@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import datetime
+import logging
 from io import BytesIO, StringIO
 
 from analysis.annotations.enrich_chat import enrich_chat
@@ -256,6 +257,13 @@ class CorpusViewSet(viewsets.ModelViewSet):
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED)
         )
+
+        # If in DEBUG mode and celery not running, parse synchronously
+        # TODO: fix
+        # if settings.DEBUG and get_celery_worker_status():
+        #     logger.info('Bypassing Celery')
+        #     return self.parse_all()
+
         task = group(parse_transcript_task.s(t.id) for t in transcripts).delay()
 
         if not task:

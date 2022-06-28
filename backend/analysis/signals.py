@@ -36,6 +36,7 @@ def corpus_delete(sender, instance, **kwargs):
 def transcript_delete(sender, instance, **kwargs):
     instance.content.delete(False)
     instance.parsed_content.delete(False)
+    instance.corrected_content.delete(False)
     if instance.extracted_filename:
         try:
             os.remove(instance.extracted_filename)
