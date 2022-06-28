@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Preprocess CHAT (anonymization, interpunction)
 -   Separate parsed and corrected treebanks, allow viewing and downloading of both
 -   Disable method selection for non-admins: instead always use most recent method
+-   Comment row in SAF
+-   Allow generating and reading unaligned annotations in SAF
 
 ## [0.4.0] - 2022-04-05
 

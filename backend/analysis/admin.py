@@ -31,10 +31,12 @@ class UtteranceInline(admin.TabularInline):
 @admin.register(Transcript)
 class TranscriptAdmin(admin.ModelAdmin):
     inlines = (UtteranceInline, )
-    list_display = ('__str__', 'corpus', 'status')
-    list_filter = ('status',)
+    list_display = ('__str__', 'corpus', 'status', 'has_corrections')
+    list_filter = ('status', 'corpus')
     model = Transcript
 
+    def has_corrections(self, obj):
+        return obj.corrections is not None
 
 @admin.register(UploadFile)
 class UploadFileAdmin(admin.ModelAdmin):

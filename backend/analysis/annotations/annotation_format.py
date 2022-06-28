@@ -73,10 +73,12 @@ class SAFDocument:
             for word in utt.words:
                 uw = UtteranceWord(
                     word=word.text,
-                    begin=word.idx - 1,
+                    begin=word.idx - 1,  # TODO: does this need to be normalized?
                     end=word.idx,
-                    zc_embedding=0,  # TODO: CHECK ZC EMBEDS
-                    hits=[]
+                    hits=[],
+                    idx=word.idx,
+                    zc_embedding=0,  # TODO: CHECK ZC EMBEDS,
+                    comments=word.comment
                 )
                 for ann in word.annotations:
                     hit = self.hit_from_annotation(ann)
@@ -110,12 +112,13 @@ class SAFUtterance:
 
 
 class SAFWord:
-    def __init__(self, idx, text, begin, end):
+    def __init__(self, idx, text, begin, end, comment=None):
         self.idx: int = idx
         self.begin: int = begin
         self.end: int = end
         self.text: str = text
         self.annotations: List[SAFAnnotation] = []
+        self.comment: str = comment or ''
 
     @property
     def item_counts(self):

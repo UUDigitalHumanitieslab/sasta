@@ -17,3 +17,8 @@ HEADER_VARIANTS = {
 }
 PREFIX = ""
 ALTITEMSEP = IMPLIESSEP = ','
+SAF_COMMENT_LEVEL = 'Commentaar'
+
+# Define (lowercased) levels that should not be cleaned
+# Currently, only comment rows should be excempt
+NO_CLEAN_LEVELS = (SAF_COMMENT_LEVEL.lower(), )
