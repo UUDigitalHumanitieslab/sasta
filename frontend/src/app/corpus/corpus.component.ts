@@ -9,7 +9,7 @@ import {
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
-import { interval, Observable } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
@@ -40,6 +40,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
     faPlus = faPlus;
 
     interval$: Observable<number> = interval(5000);
+    subscription$: Subscription;
 
     constructor(
         private corpusService: CorpusService,
@@ -55,7 +56,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.methodService
+        this.subscription$ = this.methodService
             .list()
             .pipe(
                 switchMap((methods) => {
@@ -76,7 +77,9 @@ export class CorpusComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {}
+    ngOnDestroy() {
+        this.subscription$.unsubscribe();
+    }
 
     getCorpus() {
         this.corpusService.get_by_id(this.id).subscribe((res) => {
