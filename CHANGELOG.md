@@ -5,13 +5,24 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Next release
+## [0.5.0] - 2022-06-28
 
--   Preprocess CHAT (anonymization, interpunction)
--   Separate parsed and corrected treebanks, allow viewing and downloading of both
--   Disable method selection for non-admins: instead always use most recent method
--   Comment row in SAF
--   Allow generating and reading unaligned annotations in SAF
+### Fixed
+
+-   Resolved a bug where corpora keep refreshing after leaving their page
+-   Resolved several vulnerabilities in both backend and frontend
+
+### Added
+
+-   Implemented preprocessing steps for CHAT input files (anonymization, interpunction cleanup)
+-   Separated parsed and reparsed/corrected treebanks. Admins can view them separately , both files are included in corpus downloads
+-   Added comment row to annotation files, allowing free text. These are not interpreted by the analysis
+-   Allows annotation in unaligned column, signifying either utterance-level or unaligned annotations
+
+### Changed
+
+-   Disabled method selection for non-admins. The latest method is used by default. Admins can still select older versions
+-   Moved unaligned column to the first position, before word1..wordN in annotation files
 
 ## [0.4.0] - 2022-04-05
 
