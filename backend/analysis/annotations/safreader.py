@@ -71,7 +71,7 @@ class SAFReader:
         return results
 
     def loaddata(self, filepath):
-        data = pd.read_excel(filepath)
+        data = pd.read_excel(filepath, engine='openpyxl')
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
         self.word_cols = ['unaligned'] + list(filter(is_word_column, data.columns))
