@@ -55,7 +55,6 @@ def parse_transcript(transcript, output_dir, output_path):
         parses = converter.convert()
         for _parse in parses:
             logger.info(f'Succesfully parsed:\t{transcript.name}\n')
-        transcript.status = Transcript.PARSED
         transcript.save()
 
         # Saving parsed file
@@ -82,6 +81,7 @@ def parse_transcript(transcript, output_dir, output_path):
             transcript.corrections = {'error': str(err)}
             logger.warning(f'Correction failed for transcript:\t {transcript.name}')
 
+        transcript.status = Transcript.PARSED
         transcript.save()
         return transcript
 
