@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subscription, interval, Observable } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
+import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 
 // check every 10 seconds
@@ -24,7 +25,8 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
     constructor(
         private corpusService: CorpusService,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        public authService: AuthService
     ) {}
 
     ngOnDestroy() {
