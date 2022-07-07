@@ -54,7 +54,10 @@ def querycounts_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]
             first_row = [qid, item, fase, 'total', sum(data.values())]
             worksheet.append(first_row)
             for utt in sorted(data):
-                row = [None, None, None, utt, data[utt]]
+                if isinstance(utt, Tuple):
+                    row = [None, None, None, utt[-1], data[utt]]
+                else:
+                    row = [None, None, None, utt, data[utt]]
                 worksheet.append(row)
 
     worksheet.auto_filter.ref = worksheet.dimensions

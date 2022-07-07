@@ -28,6 +28,8 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
 from .utils import StreamFile
+import logging
+logger = logging.getLogger('sasta')
 
 # flake8: noqa: E501
 SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -157,6 +159,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             reader = SAFReader(new_run.annotation_file.path, latest_run.method, obj)
         except Exception as e:
             new_run.delete()
+            logger.exception(e)
             return Response(str(e), status.HTTP_400_BAD_REQUEST)
 
         if reader.errors:
