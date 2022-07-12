@@ -10,4 +10,5 @@ export interface Corpus {
     default_method?: number;
     method_category: number;
     transcripts?: Transcript[];
+    username?: string;
 }

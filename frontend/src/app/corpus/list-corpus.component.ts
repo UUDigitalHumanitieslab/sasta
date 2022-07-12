@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subscription, interval, Observable } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
+import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 
 // check every 10 seconds
@@ -17,14 +18,14 @@ const UPDATE_INTERVAL = 10000;
 export class ListCorpusComponent implements OnInit, OnDestroy {
     private subscription$: Subscription;
     interval$: Observable<number> = interval(UPDATE_INTERVAL);
-    corpora: Corpus[];
     faTrash = faTrash;
     faPlus = faPlus;
 
     constructor(
-        private corpusService: CorpusService,
+        public corpusService: CorpusService,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        public authService: AuthService
     ) {}
 
     ngOnDestroy() {
@@ -32,7 +33,6 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.corpusService.corpora$.subscribe((res) => (this.corpora = res));
         this.subscription$ = this.interval$
             .pipe(startWith(0))
             .subscribe(() => this.refreshCorpora());

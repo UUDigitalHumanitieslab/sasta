@@ -144,7 +144,8 @@ def read_TAM(method) -> None:
     filepath = method.content.path
     logger.info(f'TAM-Reader:\treading {os.path.basename(filepath)}')
     dataframe = pd.read_excel(filepath,
-                              true_values=['yes'], false_values=['no', 'ignore'])
+                              true_values=['yes'], false_values=['no', 'ignore'],
+                              engine='openpyxl')
     dataframe.columns = [c.lower() for c in dataframe.columns]
     dataframe.rename(columns={'id': 'query_id'}, inplace=True)
     dataframe = dataframe.astype(object).where(pd.notnull(dataframe), None)
@@ -172,8 +173,8 @@ def create_query_from_series(series: pd.Series, method) -> None:
 
 
 def compare_methods(old_method_path, new_method_path: str):
-    old_df = pd.read_excel(old_method_path)
-    new_df = pd.read_excel(new_method_path)
+    old_df = pd.read_excel(old_method_path, engine='openpyxl')
+    new_df = pd.read_excel(new_method_path, engine='openpyxl')
 
     diff = old_df.compare(new_df)
     diff.dropna(inplace=True)

@@ -41,7 +41,7 @@
 
     <div class="block">
         <p-panel header="Scoring">
-            <form>
+            <form *ngIf="numUtterancesAnalysed() > 0; else zeroUtterances">
                 <div class="field">
                     <div class="control" *ngIf="(authService.currentUser$ | async).isAdmin">
                         <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
@@ -88,6 +88,21 @@
                     </div>
                 </div>
             </form>
+            <ng-template #zeroUtterances>
+                <div class="message is-danger">
+                    <div class="message-header">
+                        No utterances were marked for analysis.
+                    </div>
+                    <div class="message-body">
+                        Please check your input file and reupload. <br>
+                        For CHAT files provider a <strong>Target_Child,
+                            Target_Adult</strong> or <strong>Participant</strong> participant, or
+                        <strong>%xsid</strong>-tiers. <br>
+                        For Word input, provide numbered sentences.
+                    </div>
+                </div>
+            </ng-template>
+
         </p-panel>
     </div>
 
