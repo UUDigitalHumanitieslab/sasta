@@ -8,15 +8,17 @@ logger = logging.getLogger('sasta')
 
 class UtteranceWord:
     def __init__(self, word, begin, end,
-                 hits, zc_embedding=None):
+                 hits, idx=None, zc_embedding=None, comments=None):
         self.word: str = word
         self.begin: int = int(begin)
         self.end: int = int(end)
         self.hits: List[Dict] = hits
+        self.index: Optional[int] = idx  # 0 for unaligned, then 1...n for words
         self.zc_embedding: Optional[int] = zc_embedding
+        self.comments: Optional[str] = comments
 
     def __str__(self):
-        return f'{self.word}({self.begin}:{self.end})({len(self.hits)})'
+        return f'{self.index}-{self.word}({self.begin}:{self.end})({len(self.hits)})'
 
     def __repr__(self):
         return self.__str__()

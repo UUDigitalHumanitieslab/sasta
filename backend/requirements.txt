@@ -39,7 +39,7 @@ certifi==2021.10.8
     # via requests
 cffi==1.15.0
     # via cryptography
-chamd==0.5.6
+chamd==0.5.8
     # via
     #   -r requirements.in
     #   corpus2alpino
@@ -105,7 +105,7 @@ folia==2.5.7
     # via corpus2alpino
 idna==3.3
     # via requests
-importlib-metadata==4.10.1
+importlib-metadata==4.12.0
     # via
     #   click
     #   kombu
@@ -134,8 +134,9 @@ murmurhash==1.0.6
     #   preshed
     #   spacy
     #   thinc
-numpy==1.21.5
+numpy==1.21.6
     # via
+    #   -r requirements.in
     #   blis
     #   pandas
     #   spacy
@@ -282,7 +283,7 @@ xlrd==1.2.0
     # via -r requirements.in
 xlsxwriter==3.0.2
     # via -r requirements.in
-zipp==3.7.0
+zipp==3.8.0
     # via
     #   catalogue
     #   importlib-metadata

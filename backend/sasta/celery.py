@@ -22,3 +22,7 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
+
+def get_celery_worker_status():
+    return app.control.inspect().ping()

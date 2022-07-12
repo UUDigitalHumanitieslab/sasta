@@ -21,7 +21,7 @@ class UtteranceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Utterance
-        fields = ('id', 'sentence', 'speaker', 'utt_id', 'xsid', 'for_analysis')
+        fields = ('id', 'sentence', 'speaker', 'utt_id', 'uttno', 'xsid', 'for_analysis')
 
 
 class TranscriptSerializer(serializers.ModelSerializer):
@@ -48,19 +48,20 @@ class TranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcript
         fields = ('id', 'name', 'content',
-                  'parsed_content', 'status', 'status_name', 'date_added',
-                  'corpus', 'target_speakers', 'latest_run', 'latest_corrections','utterances' )
+                  'parsed_content', 'corrected_content', 'status', 'status_name', 'date_added',
+                  'corpus', 'utterances', 'latest_run', 'latest_corrections', 'target_speakers')
 
 
 class CorpusSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     files = UploadFileSerializer(read_only=True, many=True)
     transcripts = TranscriptSerializer(read_only=True, many=True)
+    username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = Corpus
         fields = ('id', 'name', 'status', 'default_method', 'method_category',
-         'date_added', 'date_modified', 'files', 'transcripts')
+                  'date_added', 'date_modified', 'files', 'transcripts', 'username')
 
 
 class AssessmentQuerySerializer(serializers.ModelSerializer):

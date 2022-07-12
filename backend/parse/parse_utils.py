@@ -55,7 +55,6 @@ def parse_transcript(transcript, output_dir, output_path):
         parses = converter.convert()
         for _parse in parses:
             logger.info(f'Succesfully parsed:\t{transcript.name}\n')
-        transcript.status = Transcript.PARSED
         transcript.save()
 
         # Saving parsed file
@@ -69,17 +68,20 @@ def parse_transcript(transcript, output_dir, output_path):
         # Correcting and reparsing
         logger.info(f'Correcting:\t{transcript.name}...\n')
         try:
-            reparsed, error_dict, origandalts = correct_treebank(transcript)
-            reparsed_content = etree.tostring(reparsed, encoding='utf-8')
-            reparsed_file = File(io.BytesIO(reparsed_content))
-            transcript.parsed_content.save(parsed_filename, reparsed_file)
+            corrected, error_dict, _origandalts = correct_treebank(transcript)
+            corrected_content = etree.tostring(corrected, encoding='utf-8')
+            corrected_filename = parsed_filename.replace('.xml', '_corrected.xml')
+            corrected_file = File(io.BytesIO(corrected_content))
+            transcript.corrected_content.save(corrected_filename, corrected_file)
             logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
             # Save corrections
             transcript.corrections = error_dict
 
-        except Exception:
+        except Exception as err:
+            transcript.corrections = {'error': str(err)}
             logger.warning(f'Correction failed for transcript:\t {transcript.name}')
 
+        transcript.status = Transcript.PARSED
         transcript.save()
         return transcript
 
@@ -91,7 +93,9 @@ def parse_transcript(transcript, output_dir, output_path):
 
 
 def create_utterance_objects(transcript):
-    with open(transcript.parsed_content.path, 'rb') as f:
+    parse_file = transcript.best_available_treebank
+
+    with open(parse_file.path, 'rb') as f:
         try:
             marked_utt_counter = 1
             doc = BeautifulSoup(f.read(), 'xml')

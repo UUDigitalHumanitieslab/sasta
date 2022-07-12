@@ -2,12 +2,14 @@
 from __future__ import unicode_literals
 
 import datetime
+import logging
 from io import BytesIO, StringIO
 
-from analysis.annotations.safreader import SAFReader
 from analysis.annotations.enrich_chat import enrich_chat
+from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import v1_to_xlsx, v2_to_xlsx
+from analysis.query.xlsx_output import annotations_to_xlsx, querycounts_to_xlsx
+from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
@@ -26,8 +28,8 @@ from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
                           MethodCategorySerializer, TranscriptSerializer,
                           UploadFileSerializer)
 from .utils import StreamFile
-from celery import group
-
+import logging
+logger = logging.getLogger('sasta')
 
 # flake8: noqa: E501
 SPREADSHEET_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -80,7 +82,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         allresults, queries_with_funcs = query_transcript(transcript, method)
 
-        spreadsheet = v1_to_xlsx(allresults, queries_with_funcs)
+        spreadsheet = querycounts_to_xlsx(allresults, queries_with_funcs)
         spreadsheet.save(response)
 
         return response
@@ -97,17 +99,14 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             transcript, method, True, zc_embed
         )
 
-        spreadsheet = v2_to_xlsx(allresults, method, zc_embeddings=zc_embed)
+        spreadsheet = annotations_to_xlsx(allresults, method)
         self.create_analysis_run(transcript, method, spreadsheet)
 
         format = request.data.get('format', 'xlsx')
 
         if format == 'xlsx':
-            spreadsheet = v2_to_xlsx(
-                allresults, method, zc_embeddings=zc_embed)
-
             response = HttpResponse(
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                content_type=SPREADSHEET_MIMETYPE)
             response['Content-Disposition'] = "attachment; filename=saf_output.xlsx"
             spreadsheet.save(response)
 
@@ -160,6 +159,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             reader = SAFReader(new_run.annotation_file.path, latest_run.method, obj)
         except Exception as e:
             new_run.delete()
+            logger.exception(e)
             return Response(str(e), status.HTTP_400_BAD_REQUEST)
 
         if reader.errors:
@@ -260,6 +260,13 @@ class CorpusViewSet(viewsets.ModelViewSet):
         transcripts = Transcript.objects.filter(
             Q(corpus=corpus), Q(status=Transcript.CONVERTED) | Q(status=Transcript.PARSING_FAILED)
         )
+
+        # If in DEBUG mode and celery not running, parse synchronously
+        # TODO: fix
+        # if settings.DEBUG and get_celery_worker_status():
+        #     logger.info('Bypassing Celery')
+        #     return self.parse_all()
+
         task = group(parse_transcript_task.s(t.id) for t in transcripts).delay()
 
         if not task:

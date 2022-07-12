@@ -10,3 +10,11 @@ def info_from_confirm_key(request, key):
 
 def redirect_confirm(request, key):
     return HttpResponseRedirect('/confirm-email/{}/'.format(key))
+
+
+def has_admin_access(request):
+    current_user = request.user
+    if current_user.is_staff or current_user.is_superuser:
+        return JsonResponse({'has_admin_access': True})
+    else:
+        return JsonResponse({'has_admin_access': False})

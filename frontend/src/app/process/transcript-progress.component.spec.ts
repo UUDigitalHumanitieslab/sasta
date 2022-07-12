@@ -14,6 +14,7 @@ describe('TranscriptProgressComponent', () => {
     name: 'Tarsp_01',
     content: 'some/path/1.cha',
     parsed_content: 'some/path/1.xml',
+    corrected_content: 'some/corrected/1.xml',
     status: 6,
     status_name: 'parsed',
     date_added: new Date(2021, 6, 3),

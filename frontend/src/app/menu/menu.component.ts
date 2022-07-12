@@ -1,66 +1,54 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { animations, showState } from '../animations';
-import { AuthService } from '../services/auth.service';
-import { User } from '../models/user';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
-
 import {
+    faFileUpload,
     faFolder,
     faListAlt,
-    faFileUpload,
-} from "@fortawesome/free-solid-svg-icons";
+    faUser,
+    faUserShield,
+} from '@fortawesome/free-solid-svg-icons';
+import { environment } from '../../environments/environment';
+import { animations, showState } from '../animations';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     animations,
     selector: 'sas-menu',
     templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss']
+    styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
     burgerShow: showState;
     burgerActive = false;
-    public activeUser: User;
-    public isAuthenticated$ = this.authService.isAuthenticated$;
 
     faUser = faUser;
     faFolder = faFolder;
     faListAlt = faListAlt;
     faFileUpload = faFileUpload;
+    faUserShield = faUserShield;
     version = environment.appVersion;
 
-    constructor(private ngZone: NgZone, private authService: AuthService, private router: Router) {
-    }
+    constructor(
+        private ngZone: NgZone,
+        public authService: AuthService,
+        private router: Router
+    ) {}
 
-    ngOnInit() {
-        this.isAuthenticated$.subscribe(authenticated => {
-            if (authenticated) {
-                this.authService
-                    .getUser()
-                    .subscribe(
-                        res => this.activeUser = res,
-                        err => console.log('Http Error', err));
-            } else {
-                this.activeUser = null;
-            }
-        });
-    }
+    ngOnInit() {}
 
     isAuthenticated() {
         return this.authService.isAuthenticated$.getValue();
     }
 
     logout() {
-        this.authService
-            .logout()
-            .subscribe(
-                res => {
-                    this.router.navigate(['/login']);
-                    this.authService.isAuthenticated$.next(false);
-                    this.activeUser = null;
-                },
-                err => console.log('Http Error', err));
+        this.authService.logout().subscribe(
+            (res) => {
+                this.router.navigate(['/login']);
+                this.authService.isAuthenticated$.next(false);
+                this.authService.currentUser$.next(null);
+            },
+            (err) => console.log('Http Error', err)
+        );
     }
 
     toggleBurger() {

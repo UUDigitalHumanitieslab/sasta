@@ -1,10 +1,11 @@
-<ng-container *ngIf="corpora">
+<ng-container *ngIf="(corpusService.corpora$ | async) as corpora">
     <table class="table is-fullwidth is-hoverable" *ngIf="corpora.length > 0">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>uploads (#)</th>
                 <th>transcripts (#)</th>
+                <th *ngIf="(authService.currentUser$ | async).isAdmin">Owner</th>
                 <th class="has-text-right">Actions</th>
             </tr>
         </thead>
@@ -13,6 +14,7 @@
                 <td>{{ corp.name }}</td>
                 <td>{{ corp?.files?.length || "0" }}</td>
                 <td>{{ corp?.transcripts?.length || "0" }}</td>
+                <td *ngIf="(authService.currentUser$ | async).isAdmin">{{corp?.username}}</td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
                         <button class="button is-success" pTooltip="add transcripts" (click)="$event.stopPropagation()"

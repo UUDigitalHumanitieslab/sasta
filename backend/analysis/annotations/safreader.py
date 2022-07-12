@@ -7,11 +7,47 @@ from analysis.models import Transcript
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import LABELSEP, PREFIX, UTTLEVEL
-from .utils import (clean_cell, clean_item, enrich, getlabels, item2queryid,
-                    mkpatterns, standardize_header_name)
+from .constants import LABELSEP, PREFIX, SAF_COMMENT_LEVEL, UTTLEVEL
+from .utils import (clean_item, clean_row, enrich, getlabels,
+                    item2queryid, mkpatterns, standardize_header_name)
 
 logger = logging.getLogger('sasta')
+
+
+class NoWordDataException(Exception):
+    '''Raised when:
+    - There are no annotations for the word/level combination OR
+    - There is no word
+    '''
+    pass
+
+
+class UnalignedWord(Exception):
+    '''Raised when word is unaligned'''
+    pass
+
+
+def get_word_levels(data: pd.DataFrame):
+    levels = data.level
+    filtered_levels = levels[~levels.isin([SAF_COMMENT_LEVEL.lower(), UTTLEVEL.lower()])]
+    return list(filtered_levels.unique())
+
+
+def is_word_column(column_name: str) -> bool:
+    return column_name.lower().startswith('word')
+
+
+def word_level_data(word_data: pd.DataFrame, colname: str):
+    '''returns combination word/level
+    '''
+    if word_data.empty:
+        raise NoWordDataException
+    utt_data = word_data.loc[word_data.level == UTTLEVEL, colname]
+    # if utt_data.empty:
+    #     raise NoWordDataException
+    if colname.lower() == 'unaligned':
+        raise UnalignedWord
+    return utt_data
 
 
 class SAFReader:
@@ -35,15 +71,20 @@ class SAFReader:
         return results
 
     def loaddata(self, filepath):
-        data = pd.read_excel(filepath)
+        data = pd.read_excel(filepath, engine='openpyxl')
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
-        data.dropna(how='all', axis=1, inplace=True)
-        self.word_cols = [c for c in data.columns if c.startswith('word')]
+        self.word_cols = ['unaligned'] + list(filter(is_word_column, data.columns))
+
+        # Do we need to drop empty columns? Seems we don't. If otherwise, make sure word_columns are not dropped
+        # data.dropna(how='all', axis=1, inplace=True)
+
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
             data.level.dropna().unique()) if lv.lower() != UTTLEVEL]
-        data = data[relevant_cols].applymap(clean_cell)
+
+        data = data[relevant_cols].apply(clean_row, axis='columns')
+
         return data
 
     def make_mappings(self):
@@ -64,7 +105,7 @@ class SAFReader:
         self.document.allutts[utt_object.utt_id] = utt_object.word_list
         for idx, wcol in enumerate(self.word_cols):
             relevant_cols = ['level', wcol]
-            word = self.parse_word(utt_id, idx + 1,
+            word = self.parse_word(utt_id, idx,
                                    wcol, utt_data[relevant_cols], utt_object.word_position_mapping)
             if word:
                 instance.words.append(word)
@@ -73,13 +114,19 @@ class SAFReader:
 
     def parse_word(self, utt_id, word_id, colname, word_data, wordposmap):
         data = word_data.dropna()
-        if data.empty:
+        try:
+            utt_data = word_level_data(data, colname)
+            text = utt_data.iloc[0]
+
+        except NoWordDataException:
             return None
-        text = data.loc[data.level == UTTLEVEL, colname].iloc[0]
+        except UnalignedWord:
+            text = ''
+
         (begin, end) = wordposmap[word_id]['begin'], wordposmap[word_id]['end']
         instance = SAFWord(word_id, text, begin, end)
 
-        word_levels = [lv for lv in data.level.unique() if lv != UTTLEVEL]
+        word_levels = get_word_levels(data)
         for level in word_levels:
             label = clean_item(data.loc[data.level == level, colname].iloc[0])
             enriched_label = enrich(label, PREFIX.lower())
@@ -100,4 +147,10 @@ class SAFReader:
                     logger.warning(
                         'Cannot resolve query_id for (%s, %s)', level, label)
                     self.errors.append((utt_id, word_id, text, level, label))
+
+        # read comments
+        comment_data = data.loc[data.level == SAF_COMMENT_LEVEL.lower()]
+        if not comment_data.empty:
+            instance.comment = str(comment_data[colname].iloc[0])
+
         return instance
