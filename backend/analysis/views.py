@@ -5,6 +5,8 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
+from openpyxl import load_workbook
+
 from analysis.annotations.enrich_chat import enrich_chat
 from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
@@ -185,9 +187,21 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         )
 
         form = form_func(allresults, None, in_memory=True)
+
         form.seek(0)
+
+        # Weird hack to prevent Excel warning about corrupted files: copying the whole workbook to a new bytestream
+        # TODO: Find out why openpyxl corrupts only the STAP forms (probably to do with copying of exisitng xlsx file)
+        if method.category.name == 'STAP':
+            new_target = BytesIO()
+            wb = load_workbook(form)
+            wb.save(new_target)
+            new_target.seek(0)
+        else:
+            new_target = form
+
         response = HttpResponse(
-            form,
+            new_target,
             content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = f"attachment; filename={transcript.name}_{method.category.name}_form.xlsx"
 
