@@ -1,6 +1,7 @@
 import traceback
 from collections import Counter
 from typing import List, Tuple
+from analysis.annotations.constants import SAF_COMMENT_LEVEL, SAF_UNALIGNED_LEVEL
 
 from analysis.models import AssessmentMethod
 from analysis.query.functions import QueryWithFunction
@@ -14,8 +15,8 @@ from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 ROMAN_NUMS = [None, 'I', 'II', 'III',
               'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
 
-BEFORE_WORDS_HEADERS = ['ID', 'Level', 'Unaligned']
-AFTER_WORDS_HEADERS = ['Dummy', 'Fases', 'Commentaar']
+BEFORE_WORDS_HEADERS = ['ID', 'Level', SAF_UNALIGNED_LEVEL]
+AFTER_WORDS_HEADERS = ['Dummy', 'Fases', SAF_COMMENT_LEVEL]
 
 
 def querycounts_to_xlsx(allresults: AllResults, queries: List[QueryWithFunction]):
