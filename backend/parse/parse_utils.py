@@ -35,6 +35,8 @@ def parse_transcript(transcript, output_dir, output_path):
     transcript.status = Transcript.PARSING
     transcript.save()
 
+    output_path = output_path.replace('.cha', '.xml')
+
     try:
         logger.info(f'Parsing:\t{transcript.name}...\n')
 
@@ -47,7 +49,7 @@ def parse_transcript(transcript, output_dir, output_path):
         converter = Converter(
             collector=FilesystemCollector([transcript.content.path]),
             annotators=[alpino],
-            target=FilesystemTarget(output_dir),
+            target=FilesystemTarget(output_path, merge_files=True),
             writer=LassyWriter(merge_treebanks=True),
         )
 
@@ -58,12 +60,10 @@ def parse_transcript(transcript, output_dir, output_path):
         transcript.save()
 
         # Saving parsed file
-        parsed_file_content = open(output_path, 'rb')
         parsed_filename = os.path.basename(
             output_path).replace('.cha', '.xml')
-        transcript.parsed_content.save(
-            parsed_filename, File(parsed_file_content))
-        os.remove(output_path)
+        transcript.parsed_content.name = output_path
+        transcript.save()
 
         # Correcting and reparsing
         logger.info(f'Correcting:\t{transcript.name}...\n')
