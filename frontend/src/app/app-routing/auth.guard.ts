@@ -24,14 +24,20 @@ export class AuthGuard implements CanActivate {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        return this.authService.isAuthenticated$.asObservable().pipe(
-            map((response) => {
-                if (response) {
+        if (this.authService.currentUser$.getValue()) {
+            // if there is already a logged in user, no need to recheck
+            return of(true);
+        }
+
+        return this.authService.getCompleteUser().pipe(
+            map((userData) => {
+                if (!!userData) {
                     return true;
-                } else {
-                    this.router.navigate(['/login']);
-                    return false;
                 }
+            }),
+            catchError(() => {
+                this.router.navigate(['/login']);
+                return of(false);
             })
         );
     }

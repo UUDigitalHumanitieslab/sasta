@@ -9,8 +9,8 @@ import {
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
-import { interval, Observable, Subscription } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { interval, Observable, Subject } from 'rxjs';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript } from '../models/transcript';
@@ -40,7 +40,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
     faPlus = faPlus;
 
     interval$: Observable<number> = interval(5000);
-    subscription$: Subscription;
+    onDestroy$ = new Subject<boolean>();
 
     constructor(
         private corpusService: CorpusService,
@@ -56,9 +56,10 @@ export class CorpusComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription$ = this.methodService
+        this.methodService
             .list()
             .pipe(
+                takeUntil(this.onDestroy$),
                 switchMap((methods) => {
                     this.tams = methods;
                     return this.corpusService.get_by_id(this.id);
@@ -78,19 +79,23 @@ export class CorpusComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscription$.unsubscribe();
+        this.onDestroy$.next();
     }
 
     getCorpus() {
-        this.corpusService.get_by_id(this.id).subscribe((res) => {
-            this.corpus = res;
-            // retrieve default method
-            if (res.default_method) {
-                this.methodService
-                    .get_by_id(res.default_method)
-                    .subscribe((tam) => (this.defaultTam = tam));
-            }
-        });
+        this.corpusService
+            .get_by_id(this.id)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((res) => {
+                this.corpus = res;
+                // retrieve default method
+                if (res.default_method) {
+                    this.methodService
+                        .get_by_id(res.default_method)
+                        .pipe(takeUntil(this.onDestroy$))
+                        .subscribe((tam) => (this.defaultTam = tam));
+                }
+            });
     }
 
     downloadFile(data: any, filename: string, mimetype: string) {
@@ -99,25 +104,28 @@ export class CorpusComponent implements OnInit, OnDestroy {
     }
 
     deleteTranscript(transcript: Transcript) {
-        this.transcriptService.delete(transcript.id).subscribe(
-            () => {
-                this.getCorpus();
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Removed transcript',
-                    detail: '',
-                });
-            },
-            (err) => {
-                console.log(err);
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error removing transcript',
-                    detail: err.message,
-                    sticky: true,
-                });
-            }
-        );
+        this.transcriptService
+            .delete(transcript.id)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(
+                () => {
+                    this.getCorpus();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Removed transcript',
+                        detail: '',
+                    });
+                },
+                (err) => {
+                    console.log(err);
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error removing transcript',
+                        detail: err.message,
+                        sticky: true,
+                    });
+                }
+            );
     }
 
     changeDefaultMethod() {
@@ -126,6 +134,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
                 this.corpus.id,
                 this.defaultTam ? this.defaultTam.id : null
             )
+            .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 () => {},
                 (err) => {
@@ -141,28 +150,31 @@ export class CorpusComponent implements OnInit, OnDestroy {
     }
 
     downloadZip() {
-        this.corpusService.download_zip(this.corpus.id).subscribe(
-            (response) => {
-                this.downloadFile(
-                    response.body,
-                    `${this.corpus.name}.zip`,
-                    'application/zip'
-                );
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Downloaded corpus',
-                    detail: '',
-                });
-            },
-            (err) => {
-                console.error(err);
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error downloading',
-                    detail: err.message,
-                    sticky: true,
-                });
-            }
-        );
+        this.corpusService
+            .download_zip(this.corpus.id)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(
+                (response) => {
+                    this.downloadFile(
+                        response.body,
+                        `${this.corpus.name}.zip`,
+                        'application/zip'
+                    );
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Downloaded corpus',
+                        detail: '',
+                    });
+                },
+                (err) => {
+                    console.error(err);
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error downloading',
+                        detail: err.message,
+                        sticky: true,
+                    });
+                }
+            );
     }
 }
