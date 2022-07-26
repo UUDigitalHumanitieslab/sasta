@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { User } from '../models/user';
 
 @Injectable({
@@ -18,9 +18,9 @@ export class AuthService {
 
     setUser() {
         this.getCompleteUser().subscribe(
-            (res) => {
+            (userData) => {
                 this.isAuthenticated$.next(true);
-                this.currentUser$.next(res);
+                this.currentUser$.next(userData);
             },
             (err) => {
                 this.isAuthenticated$.next(false);
@@ -30,14 +30,21 @@ export class AuthService {
     }
 
     login(username: string, password: string): Observable<string> {
-        return this.httpClient.post<string>(`${this.authAPI}/login/`, {
-            username,
-            password,
-        });
+        return this.httpClient
+            .post<string>(`${this.authAPI}/login/`, {
+                username,
+                password,
+            })
+            .pipe(tap(() => this.setUser()));
     }
 
     logout(): Observable<any> {
-        return this.httpClient.post(`${this.authAPI}/logout/`, {});
+        return this.httpClient.post(`${this.authAPI}/logout/`, {}).pipe(
+            tap(() => {
+                this.currentUser$.next(null);
+                this.isAuthenticated$.next(false);
+            })
+        );
     }
 
     register(
