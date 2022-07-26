@@ -38,12 +38,7 @@ export class LoginComponent implements OnDestroy, OnInit {
             .login(this.username, this.password)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
-                (res) => {
-                    this.authService.setUser();
-                    // Manually set isAuthenticated$ here so the route guard kicks in
-                    this.authService.isAuthenticated$.next(true);
-                    this.router.navigate(['/corpora']);
-                },
+                () => {},
                 (err) => {
                     this.messages.push({
                         severity: 'error',
@@ -51,8 +46,10 @@ export class LoginComponent implements OnDestroy, OnInit {
                         detail: err.error.non_field_errors,
                     });
                     console.log('Http Error', err);
-                    this.authService.setUser();
+                },
+                () => {
                     this.processing = false;
+                    this.router.navigate(['/corpora']);
                 }
             );
     }

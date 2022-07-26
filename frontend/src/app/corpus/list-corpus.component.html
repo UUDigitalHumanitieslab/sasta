@@ -1,4 +1,4 @@
-<ng-container *ngIf="(corpusService.corpora$ | async) as corpora">
+<ng-container *ngIf="(corpusService.corpora$ | async) as corpora; else loading;">
     <table class="table is-fullwidth is-hoverable" *ngIf="corpora.length > 0">
         <thead>
             <tr>
@@ -42,3 +42,8 @@
 
     <p-confirmDialog [dismissableMask]="true"></p-confirmDialog>
 </ng-container>
+<ng-template #loading>
+    <div>
+        <progress class="progress is-small is-primary" max="100"></progress>
+    </div>
+</ng-template>
