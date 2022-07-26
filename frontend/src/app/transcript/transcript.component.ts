@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
     faArrowLeft,
@@ -11,7 +11,8 @@ import {
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
-import { switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript, TranscriptStatus } from '../models/transcript';
@@ -29,7 +30,7 @@ const TXT_MIME = 'text/plain';
     templateUrl: './transcript.component.html',
     styleUrls: ['./transcript.component.scss'],
 })
-export class TranscriptComponent implements OnInit {
+export class TranscriptComponent implements OnInit, OnDestroy {
     _: any = _; // Lodash
 
     id: number;
@@ -50,6 +51,8 @@ export class TranscriptComponent implements OnInit {
     querying = false;
 
     displayCorrUpload = false;
+
+    onDestroy$ = new Subject<boolean>();
 
     constructor(
         private transcriptService: TranscriptService,
@@ -80,10 +83,15 @@ export class TranscriptComponent implements OnInit {
         this.loadData();
     }
 
+    ngOnDestroy() {
+        this.onDestroy$.next();
+    }
+
     loadData() {
         this.transcriptService
             .get_by_id(this.id)
             .pipe(
+                takeUntil(this.onDestroy$),
                 // get transcript
                 switchMap((t: Transcript) => {
                     this.transcript = t;
@@ -113,18 +121,22 @@ export class TranscriptComponent implements OnInit {
     }
 
     downloadLatestAnnotations() {
-        this.transcriptService.latest_annotations(this.id).subscribe((res) => {
-            this.downloadFile(
-                res.body,
-                `${this.transcript.name}_latest_SAF.xlsx`,
-                XLSX_MIME
-            );
-        });
+        this.transcriptService
+            .latest_annotations(this.id)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((res) => {
+                this.downloadFile(
+                    res.body,
+                    `${this.transcript.name}_latest_SAF.xlsx`,
+                    XLSX_MIME
+                );
+            });
     }
 
     resetAnnotations() {
         this.transcriptService
             .reset_annotations(this.id)
+            .pipe(takeUntil(this.onDestroy$))
             .subscribe(() => this.loadData());
     }
 
@@ -132,6 +144,7 @@ export class TranscriptComponent implements OnInit {
         this.querying = true;
         this.corpusService
             .annotate_transcript(this.id, this.currentTam.id, outputFormat)
+            .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
                     switch (outputFormat) {
@@ -177,6 +190,7 @@ export class TranscriptComponent implements OnInit {
         this.querying = true;
         this.corpusService
             .query_transcript(this.id, this.currentTam.id)
+            .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
                     this.downloadFile(
@@ -208,6 +222,7 @@ export class TranscriptComponent implements OnInit {
         this.querying = true;
         this.corpusService
             .generate_form_transcript(this.id, this.currentTam.id)
+            .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
                     this.downloadFile(
@@ -237,25 +252,28 @@ export class TranscriptComponent implements OnInit {
 
     deleteTranscript() {
         const corpusId = this.corpus.id;
-        this.transcriptService.delete(this.id).subscribe(
-            () => {
-                this.router.navigate([`/corpora/${corpusId}`]);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Removed transcript',
-                    detail: '',
-                });
-            },
-            (err) => {
-                console.log(err);
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error removing transcript',
-                    detail: err.message,
-                    sticky: true,
-                });
-            }
-        );
+        this.transcriptService
+            .delete(this.id)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(
+                () => {
+                    this.router.navigate([`/corpora/${corpusId}`]);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Removed transcript',
+                        detail: '',
+                    });
+                },
+                (err) => {
+                    console.log(err);
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error removing transcript',
+                        detail: err.message,
+                        sticky: true,
+                    });
+                }
+            );
     }
 
     chatFileAvailable(transcript): boolean {
