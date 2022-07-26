@@ -7,9 +7,10 @@ from analysis.models import Transcript
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import LABELSEP, PREFIX, SAF_COMMENT_LEVEL, UTTLEVEL
-from .utils import (clean_item, clean_row, enrich, getlabels,
-                    item2queryid, mkpatterns, standardize_header_name)
+from .constants import (LABELSEP, PREFIX, SAF_COMMENT_LEVEL,
+                        SAF_UNALIGNED_LEVEL, UTTLEVEL)
+from .utils import (clean_item, clean_row, enrich, getlabels, item2queryid,
+                    mkpatterns, standardize_header_name)
 
 logger = logging.getLogger('sasta')
 
@@ -40,13 +41,11 @@ def is_word_column(column_name: str) -> bool:
 def word_level_data(word_data: pd.DataFrame, colname: str):
     '''returns combination word/level
     '''
-    if word_data.empty:
+    if colname.lower() == SAF_UNALIGNED_LEVEL.lower():
+        raise UnalignedWord
+    elif word_data.empty:
         raise NoWordDataException
     utt_data = word_data.loc[word_data.level == UTTLEVEL, colname]
-    # if utt_data.empty:
-    #     raise NoWordDataException
-    if colname.lower() == 'unaligned':
-        raise UnalignedWord
     return utt_data
 
 
@@ -74,7 +73,7 @@ class SAFReader:
         data = pd.read_excel(filepath, engine='openpyxl')
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
-        self.word_cols = ['unaligned'] + list(filter(is_word_column, data.columns))
+        self.word_cols = [SAF_UNALIGNED_LEVEL.lower()] + list(filter(is_word_column, data.columns))
 
         # Do we need to drop empty columns? Seems we don't. If otherwise, make sure word_columns are not dropped
         # data.dropna(how='all', axis=1, inplace=True)
@@ -113,43 +112,49 @@ class SAFReader:
         return instance
 
     def parse_word(self, utt_id, word_id, colname, word_data, wordposmap):
-        data = word_data.dropna()
+        data = word_data
+        if colname != SAF_UNALIGNED_LEVEL.lower():
+            # Don't drop data for unaligned
+            data = word_data.dropna()
+
         try:
             utt_data = word_level_data(data, colname)
             text = utt_data.iloc[0]
 
-        except NoWordDataException:
-            return None
         except UnalignedWord:
             text = ''
+        except NoWordDataException:
+            return None
 
         (begin, end) = wordposmap[word_id]['begin'], wordposmap[word_id]['end']
         instance = SAFWord(word_id, text, begin, end)
 
         word_levels = get_word_levels(data)
         for level in word_levels:
-            label = clean_item(data.loc[data.level == level, colname].iloc[0])
-            enriched_label = enrich(label, PREFIX.lower())
-            split_labels = getlabels(enriched_label, self.patterns)
+            item_data = data.loc[data.level == level, colname].iloc[0]
+            if not pd.isnull(item_data):
+                label = clean_item(item_data)
+                enriched_label = enrich(label, PREFIX.lower())
+                split_labels = getlabels(enriched_label, self.patterns)
 
-            if not split_labels:
-                self.errors.append((utt_id, word_id, text, level, label))
-
-            for label in split_labels:
-                mapped = item2queryid(label, level, self.item_mapping)
-                if mapped:
-                    query_id, fase = mapped
-                    instance.annotations.append(SAFAnnotation(
-                        level, label, fase, query_id))
-                    self.document.exactresults[query_id].append((utt_id, word_id))
-
-                else:
-                    logger.warning(
-                        'Cannot resolve query_id for (%s, %s)', level, label)
+                if not split_labels:
                     self.errors.append((utt_id, word_id, text, level, label))
 
+                for label in split_labels:
+                    mapped = item2queryid(label, level, self.item_mapping)
+                    if mapped:
+                        query_id, fase = mapped
+                        instance.annotations.append(SAFAnnotation(
+                            level, label, fase, query_id))
+                        self.document.exactresults[query_id].append((utt_id, word_id))
+
+                    else:
+                        logger.warning(
+                            'Cannot resolve query_id for (%s, %s)', level, label)
+                        self.errors.append((utt_id, word_id, text, level, label))
+
         # read comments
-        comment_data = data.loc[data.level == SAF_COMMENT_LEVEL.lower()]
+        comment_data = data.loc[data.level == SAF_COMMENT_LEVEL.lower()].dropna()
         if not comment_data.empty:
             instance.comment = str(comment_data[colname].iloc[0])
 
