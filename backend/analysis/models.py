@@ -179,7 +179,7 @@ class Transcript(models.Model):
 
     @property
     def best_available_treebank(self):
-        if (not self.corrected_content) or ('error' not in self.corrections.keys()):
+        if not self.corrected_content:
             return self.parsed_content
         return self.corrected_content
 
