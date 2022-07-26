@@ -70,6 +70,6 @@ def test_wordlevels():
 def test_read_saf_comments(tarsp_method, tarsp_transcript, cha_testfiles_dir):
     reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF_with_comments.xlsx'), tarsp_method, tarsp_transcript)
     sent = reader.document.utterances[3]
-    assert sent.words[0].comment == 'Ik vind hier iets van.'
-    assert sent.words[1].comment == '1'
-    assert sent.words[2].comment == 'En hier misschien ook wel iets van'
+    assert sent.words[1].comment == 'Ik vind hier iets van.'
+    assert sent.words[2].comment == '1'
+    assert sent.words[3].comment == 'En hier misschien ook wel iets van'
