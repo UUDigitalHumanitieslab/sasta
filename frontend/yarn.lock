@@ -2327,7 +2327,7 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-brace@*:
+brace@^0.11.1:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/brace/-/brace-0.11.1.tgz#4896fcc9d544eef45f4bb7660db320d3b379fe58"
   integrity sha512-Fc8Ne62jJlKHiG/ajlonC4Sd66Pq68fFwK4ihJGNZpGqboc324SQk+lRvMzpPRuJOmfrJefdG8/7JdWX4bzJ2Q==
@@ -8151,7 +8151,7 @@ ts-node@~7.0.0:
     source-map-support "^0.5.6"
     yn "^2.0.0"
 
-ts-xpath@*:
+ts-xpath@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/ts-xpath/-/ts-xpath-0.3.1.tgz#8d5e21ad03873c571e26301e78a31083842f2c52"
   integrity sha512-dStsAxAkmgJ0FhV8usEoiF0hhfQJia/55QtqqRqYJ2XGWtwS5GK+c3NkxJpsNg6MCssp9RiM5r/hgjtUIDd9lQ==
