@@ -39,6 +39,7 @@ import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
 import { UploadComponent } from './upload/upload.component';
 import { UtterancesListComponent } from './utterances/utterances-list.component';
+import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.component';
 
 @NgModule({
     declarations: [
@@ -60,6 +61,7 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         TranscriptProgressComponent,
         TranscriptProgressCellComponent,
         UtterancesListComponent,
+        TreeVisualizerComponent,
     ],
     imports: [
         AppRoutingModule,

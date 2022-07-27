@@ -35,6 +35,7 @@
     "@types/file-saver": "^2.0.1",
     "bulma": ">0.9.0",
     "file-saver": "^2.0.2",
+    "jquery": "^3.6.0",
     "ngx-json-viewer": "^2.4.0",
     "primeicons": "^2.0.0",
     "primeng": "~12.0.0",

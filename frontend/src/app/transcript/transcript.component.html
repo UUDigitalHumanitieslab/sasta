@@ -30,7 +30,7 @@
             </p>
             <p class="level-item" *ngIf="!(authService.currentUser$ | async).isAdmin">
                 <strong>Method: </strong>
-                {{ currentTam.name}}
+                {{ currentTam?.name}}
             </p>
             <p class="level-item">
                 <strong>Created on: </strong>
