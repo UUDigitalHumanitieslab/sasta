@@ -54,7 +54,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-corpus2alpino==0.3.9
+corpus2alpino==0.3.10
     # via -r requirements.in
 cryptography==37.0.4
     # via pyjwt
