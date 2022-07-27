@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LassyXPathModule } from 'lassy-xpath';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -35,11 +36,12 @@ import { MethodComponent } from './method/method.component';
 import { ProcessComponent } from './process/process.component';
 import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
 import { TranscriptProgressComponent } from './process/transcript-progress.component';
+import { XmlParseService } from './services/xml-parse.service';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
+import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.component';
 import { UploadComponent } from './upload/upload.component';
 import { UtterancesListComponent } from './utterances/utterances-list.component';
-import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.component';
 
 @NgModule({
     declarations: [
@@ -75,6 +77,7 @@ import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.compo
             headerName: 'X-CSRFToken',
         }),
         NgxJsonViewerModule,
+        LassyXPathModule,
         // PrimeNG
         AccordionModule,
         CheckboxModule,
@@ -91,7 +94,7 @@ import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.compo
         ProgressSpinnerModule,
         StepsModule,
     ],
-    providers: [ConfirmationService, MessageService],
+    providers: [ConfirmationService, MessageService, XmlParseService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

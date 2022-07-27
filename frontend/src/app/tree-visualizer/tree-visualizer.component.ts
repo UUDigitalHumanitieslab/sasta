@@ -23,6 +23,7 @@ import {
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import * as $ from 'jquery';
+import { XmlParseService } from '../services/xml-parse.service';
 import './tree-visualizer';
 
 type TypedChanges = { [name in keyof TreeVisualizerComponent]: SimpleChange };
@@ -95,7 +96,10 @@ export class TreeVisualizerComponent
     faSearchMinus = faSearchMinus;
     faTimes = faTimes;
 
-    constructor(private sanitizer: DomSanitizer) {}
+    constructor(
+        private sanitizer: DomSanitizer,
+        private xmlParseService: XmlParseService
+    ) {}
 
     ngOnInit(): void {
         const element = $(this.output.nativeElement);
@@ -152,9 +156,9 @@ export class TreeVisualizerComponent
                 showMatrixDetails: this.showMatrixDetails,
             });
 
-            // this.parseService.parseXml(this.xml).then((data) => {
-            //     this.showMetadata(data);
-            // });
+            this.xmlParseService.parseXml(this.xml).then((data) => {
+                this.showMetadata(data);
+            });
             this.updateVisibility();
         });
     }
@@ -175,5 +179,40 @@ export class TreeVisualizerComponent
         }
 
         this.showLoader = false;
+    }
+
+    /**
+     * Shows the metadata of a tree.
+     * @param data The parsed XML data
+     */
+    private showMetadata(data: {
+        alpino_ds: {
+            metadata: {
+                meta: {
+                    $: {
+                        name: string;
+                        value: string;
+                    };
+                }[];
+            }[];
+        }[];
+    }) {
+        const result: Metadata[] = [];
+        if (
+            data &&
+            data.alpino_ds &&
+            data.alpino_ds.length === 1 &&
+            data.alpino_ds[0].metadata &&
+            data.alpino_ds[0].metadata[0].meta
+        ) {
+            for (const item of data.alpino_ds[0].metadata[0].meta.sort(
+                (a: any, b: any) => {
+                    return a.$.name.localeCompare(b.$.name);
+                }
+            )) {
+                result.push({ name: item.$.name, value: item.$.value });
+            }
+        }
+        this.metadata = result.length ? result : undefined;
     }
 }
