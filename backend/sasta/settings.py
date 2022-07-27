@@ -187,26 +187,13 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        # 'django_debug_file': {
-        #     'level': 'DEBUG',
-        #     'class': 'logging.FileHandler',
-        #     # 'filename': os.path.join(BASE_DIR, 'logs', 'django', 'debug.log'),
-        #     'filename': os.path.join(BASE_DIR, 'logs', 'django', 'debug.log'),
-        # },
-        # 'django_info_file': {
-        #     'level': 'INFO',
-        #     'class': 'logging.FileHandler',
-        #     'filename': os.path.join(BASE_DIR, 'logs', 'django', 'info.log'),
-        # },
-        # 'django_error_file': {
-        #     'level': 'ERROR',
-        #     'class': 'logging.FileHandler',
-        #     'filename': os.path.join(BASE_DIR, 'logs', 'django', 'error.log'),
-        # },
         'django_file': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'django.log'),
+            'when': 'd',
+            'interval': 1,
+            'backupCount': 0
         },
         'sasta_file': {
             'level': 'INFO',
