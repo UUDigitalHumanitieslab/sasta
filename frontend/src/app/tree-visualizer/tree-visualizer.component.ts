@@ -80,6 +80,9 @@ export class TreeVisualizerComponent
     @Output()
     public displayChange = new EventEmitter<TreeVisualizerDisplay>();
 
+    @Output()
+    public closeTree = new EventEmitter();
+
     public metadata: Metadata[] | undefined;
     public showLoader: boolean;
 
@@ -104,10 +107,10 @@ export class TreeVisualizerComponent
     ngOnInit(): void {
         const element = $(this.output.nativeElement);
         element.on('close', () => {
-            console.log(this.display);
             if (this.display === 'both') {
                 this.displayChange.next('inline');
             }
+            this.closeTree.next();
         });
     }
 
