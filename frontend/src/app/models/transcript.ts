@@ -14,12 +14,18 @@ export interface Utterance {
     uttno: number;
     xsid?: number;
     for_analysis: boolean;
+    parse_tree: string;
 }
 
 export enum TranscriptStatus {
-    UNKNOWN, CREATED,
-    CONVERTING, CONVERTED, CONVERSION_FAILED,
-    PARSING, PARSED, PARSING_FAILED
+    UNKNOWN,
+    CREATED,
+    CONVERTING,
+    CONVERTED,
+    CONVERSION_FAILED,
+    PARSING,
+    PARSED,
+    PARSING_FAILED,
 }
 
 export interface Transcript {
@@ -29,7 +35,15 @@ export interface Transcript {
     parsed_content: string;
     corrected_content: string;
     status: number;
-    status_name: 'unknown' | 'created' | 'converting' | 'converted' | 'conversion-failed' | 'parsing' | 'parsed' | 'parsing-failed';
+    status_name:
+        | 'unknown'
+        | 'created'
+        | 'converting'
+        | 'converted'
+        | 'conversion-failed'
+        | 'parsing'
+        | 'parsed'
+        | 'parsing-failed';
     date_added?: Date;
     corpus: number;
     utterances?: Utterance[];
@@ -37,4 +51,3 @@ export interface Transcript {
     latest_corrections?: AnalysisRun;
     target_speakers?: string;
 }
-

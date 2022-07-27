@@ -21,7 +21,7 @@ class UtteranceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Utterance
-        fields = ('id', 'sentence', 'speaker', 'utt_id', 'uttno', 'xsid', 'for_analysis')
+        fields = ('id', 'sentence', 'speaker', 'utt_id', 'uttno', 'xsid', 'for_analysis', 'parse_tree')
 
 
 class TranscriptSerializer(serializers.ModelSerializer):

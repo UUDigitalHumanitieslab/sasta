@@ -1,0 +1,549 @@
+/**
+ * (S)CSS file for the Tree Visualizer. You can change the colours of the
+ * tree in _tv-variables.scss.
+ *
+ * @author Bram Vanroy
+ */
+ @import "tv-variables";
+ @import "tv-buttons";
+ @import "clearfix";
+
+ %fa {
+     display: inline-block;
+     font: normal normal normal 14px/1 FontAwesome;
+     font-size: inherit;
+     text-rendering: auto;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+ }
+
+ .metadata {
+     display: block;
+     position: relative;
+     z-index: 120;
+     opacity: 0;
+     transform: translateX(-50%);
+     transition: opacity 1s ease-in,
+         transform 1s ease-in;
+
+     .tv-toolbar-wrapper:hover+&,
+     &:hover {
+         opacity: 1;
+         transform: translateX(0);
+         transition: opacity 0.5s ease-out,
+             transform 0.5s ease-out;
+     }
+
+     .card {
+         position: absolute;
+         overflow-y: auto;
+         margin-left: 1px;
+     }
+ }
+
+
+ :host ::ng-deep {
+     .tv {
+         box-sizing: border-box;
+         color: $text_main;
+         text-align: center;
+
+         button {
+             outline: 0;
+             cursor: pointer;
+         }
+
+         .tv-error {
+             display: none;
+             padding: 8px 16px;
+             background: $error;
+             color: white;
+             text-align: center;
+             text-shadow: 0 1px rgba(0, 0, 0, 0.32);
+             line-height: 1.75;
+
+             p {
+                 margin: 0;
+             }
+         }
+
+         .tv-content-wrapper {
+             width: 100%;
+             height: 100%;
+             background: #f7f7f7;
+             display: flex;
+             flex-direction: column;
+             border-radius: 4px;
+             overflow: hidden;
+             font-size: 12px;
+         }
+
+         .tv-toolbar-wrapper {
+             background: #f0f0f0;
+             padding: 12px;
+         }
+
+         .tv-sentence-wrapper {
+             display: none;
+             text-align: left;
+             margin-right: 24px;
+             border-bottom: 3px solid #ddd;
+             font-size: 14px;
+             white-space: pre;
+
+             &.has-sentence {
+                 display: flex;
+             }
+
+             /* Hackish way to perfectly align sentence and icon */
+             i::after {
+                 content: '';
+                 display: inline-block;
+                 height: 100%;
+                 vertical-align: middle;
+             }
+
+             i {
+                 font-size: 148%;
+                 color: #ddd;
+                 margin-right: 0.48em;
+             }
+         }
+
+         .tv-tree {
+             display: flex;
+             overflow: auto;
+             align-items: center;
+             /* If we use 0% a minifer will cut off %, which leads to another effect */
+             flex: 1 0 0.00000001%;
+
+             ol {
+                 position: relative;
+                 display: table;
+                 padding-top: 1em;
+
+                 ol::before {
+                     position: absolute;
+                     top: 0;
+                     left: 50%;
+                     width: 0;
+                     height: 1em;
+                     border-left: 1px solid $tree_branch;
+                     content: '';
+                 }
+             }
+
+             >ol {
+                 margin: auto;
+                 padding: 6em 1.26em 1.26em;
+             }
+
+             li {
+                 position: relative;
+                 display: table-cell;
+                 padding: 1em 0.5em 0;
+                 list-style-type: none;
+                 vertical-align: top;
+                 text-align: center;
+
+                 &::after,
+                 &::before {
+                     position: absolute;
+                     top: 0;
+                     right: 50%;
+                     width: 50%;
+                     height: 1em;
+                     border-top: 1px solid $tree_branch;
+                     content: '';
+                 }
+
+                 &::after {
+                     right: auto;
+                     left: 50%;
+                     border-left: 1px solid $tree_branch;
+                 }
+
+                 &.first-child {
+                     &::before {
+                         border: 0 none;
+                     }
+                 }
+
+                 &.last-child {
+                     &::before {
+                         border-right: 1px solid $tree_branch;
+                     }
+
+                     &::after {
+                         border: 0 none;
+                     }
+                 }
+
+                 &.only-child {
+                     padding-top: 0;
+
+                     &::after,
+                     &::before {
+                         display: none;
+                     }
+                 }
+
+                 &.highlight {
+
+                     a,
+                     a.only-child {
+                         border-color: transparent;
+                         background: $tree_branch;
+                         color: white;
+
+                         &:hover {
+                             background: $tree_highlight;
+                             color: white;
+
+                             span:nth-child(2) {
+                                 color: darken($text_main, 10%);
+                             }
+                         }
+                     }
+                 }
+
+                 .excluded {
+                     color: $danger !important;
+                     text-decoration: line-through;
+                 }
+
+                 a {
+                     position: relative;
+                     z-index: 102;
+                     display: inline-block;
+                     padding: 0.5em 1em;
+                     border: 1px solid $tree_branch;
+                     border-radius: 4em;
+                     background: white;
+                     color: $text_main;
+                     text-decoration: none;
+
+                     span:nth-child(2) {
+                         color: $text_main;
+                         font-weight: normal;
+                     }
+
+                     &.hovered,
+                     &:hover {
+                         background: #ccc;
+
+                         +ol li a {
+                             background: #ccc;
+                         }
+
+                         +ol li.highlight a,
+                         +ol li.highlight a.only-child {
+                             background: $tree_highlight;
+                             color: white;
+                         }
+
+                         +ol li a span:nth-child(2),
+                         span:nth-child(2) {
+                             color: white;
+                         }
+                     }
+
+                     &.hovered {
+                         border-color: rgba(0, 0, 0, 0);
+                         background: $tree_hovered;
+                         color: #FFF !important;
+                     }
+
+                     &.hovered+ol li.highlight a span:nth-child(2),
+                     &:hover+ol li.highlight a span:nth-child(2) {
+                         color: darken($text_main, 10%);
+                     }
+
+                     &.hovered+ol li a.only-child,
+                     &:hover+ol li a.only-child {
+                         background: #ccc;
+                         color: white;
+                     }
+
+                     &.hovered+ol li.highlight a.only-child,
+                     &:hover+ol li.highlight a.only-child {
+                         background: $tree_highlight;
+                         color: white;
+                     }
+
+                     &.hovered+ol,
+                     &:hover+ol {
+
+                         &::before,
+                         li::after,
+                         li::before,
+                         ol::before {
+                             border-color: lighten($tree_highlight, 10%);
+                         }
+                     }
+
+                     &.only-child {
+                         color: $tree_highlight;
+                         font-weight: bold;
+
+                         &:hover:not(.hovered) {
+                             span:first-child {
+                                 color: #565656;
+                             }
+                         }
+                     }
+
+                     &.cs~.word em {
+                         cursor: help;
+                         text-decoration: underline;
+                     }
+
+                     &.ignored {
+                         opacity: 0.67;
+                         cursor: help;
+
+                         +ol::before {
+                             border-left: 1px dotted #ccc;
+                         }
+                     }
+                 }
+
+                 span {
+                     display: block;
+                     margin: 2px auto;
+                 }
+             }
+         }
+
+         .tv-tooltip {
+             position: fixed;
+             top: -100%;
+             left: 0;
+             z-index: 111;
+             padding: 10px;
+             border: 5px solid white;
+             border-radius: 5px;
+             background: darken(#F5F5F5, 2%);
+             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+             text-align: left;
+
+             .arrow {
+                 position: relative;
+                 top: 15px;
+                 margin-top: 15px;
+                 z-index: 112;
+                 display: block;
+                 box-sizing: border-box;
+                 background: white;
+                 box-shadow: 0px 3px 3px 0 rgba(0, 0, 0, 0.2);
+                 width: 0;
+
+                 &::after {
+                     content: "";
+                     position: absolute;
+                     width: 0;
+                     height: 0;
+                     left: 50%;
+                     box-sizing: border-box;
+                     border: 12px solid black;
+                     border-color: transparent transparent white white;
+                     transform-origin: 0 0;
+                     transform: rotate(-45deg);
+                     box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.2);
+                 }
+             }
+
+             >ul {
+                 padding: 0 8px;
+                 list-style: none;
+                 columns: 2;
+                 column-gap: 24px;
+                 column-rule: 1px solid #ccc;
+
+                 li {
+                     white-space: nowrap;
+                 }
+             }
+
+             button {
+                 position: absolute;
+                 top: 0;
+                 right: 0;
+                 width: 30px;
+                 height: 30px;
+                 border: 0 none;
+                 border-radius: 50%;
+                 background: $danger;
+                 color: white;
+                 text-align: center;
+                 font-size: 14px;
+                 line-height: 1;
+                 transition: transform 200ms;
+                 transform: translate(50%, -50%);
+
+                 &:hover {
+                     background: darken($danger, 4%);
+                     transform: translate(50%, -50%) scale(1.23);
+                 }
+
+                 &:active {
+                     background: darken($danger, 8%);
+                 }
+             }
+         }
+     }
+
+     .tree-visualizer {
+         position: relative;
+
+         .tv-content-wrapper {
+             min-height: 240px;
+
+             .tv-tree {
+                 padding: 24px;
+             }
+
+             .tv-tooltip {
+                 z-index: 109;
+             }
+         }
+
+         .tv-show-fs {
+             display: block;
+             width: 32px;
+             height: 32px;
+             border-radius: 4px;
+             text-align: center;
+             margin-left: auto;
+         }
+     }
+
+     .tree-visualizer-fs {
+         position: fixed;
+         top: 0;
+         left: 0;
+         z-index: 110;
+         display: none;
+         padding: 24px;
+         width: 100vw;
+         height: 100vh;
+         background: rgba(0, 0, 0, 0.6);
+
+         .tv-sentence-wrapper {
+             font-size: 16px;
+         }
+
+         .tv-content-wrapper {
+             font-size: 14px;
+         }
+
+         .tv-tree {
+             &.tv-small {
+                 a {
+                     transition: transform 150ms;
+                     will-change: transform;
+
+                     &.hovered,
+                     &:hover {
+                         z-index: 103;
+                         border-color: transparent !important;
+                         background: $tree_hovered;
+                         color: #FFF !important;
+                         transform: scale(2);
+                     }
+
+                     &.only-child {
+                         transition: transform 150ms, margin-bottom 200ms;
+
+                         ~span {
+                             transition: transform 150ms, margin-top 200ms;
+                         }
+
+                         &.hovered,
+                         &:hover {
+                             margin-bottom: 2em;
+
+                             ~span {
+                                 z-index: 103;
+                                 margin-top: 1.5em;
+                                 transform: scale(2);
+                             }
+                         }
+                     }
+                 }
+             }
+
+             &.tv-x-small {
+                 a {
+
+                     &.hovered,
+                     &:hover {
+                         transform: scale(3);
+                     }
+
+                     &.only-child {
+
+                         &.hovered,
+                         &:hover {
+                             margin-bottom: 5em;
+
+                             ~span {
+                                 margin-top: 3em;
+                                 transform: scale(3);
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+     }
+
+     body {
+         &.tv-fs-open {
+             overflow-y: hidden;
+
+             .tree-visualizer-fs {
+                 display: block;
+             }
+
+             &.tv-is-loading {
+                 .tree-visualizer-fs {
+
+                     .tv-tooltip,
+                     .tv-tree {
+                         display: none;
+                     }
+                 }
+             }
+         }
+
+         &.tv-ns-open {
+             &.tv-is-loading {
+                 .tree-visualizer {
+                     pointer-events: none;
+                     opacity: 0.34;
+                 }
+             }
+         }
+
+         &.tv-fail {
+             .tv {
+                 .tv-content-wrapper {
+                     display: none;
+                 }
+
+                 .tv-error {
+                     display: inline-block;
+                 }
+             }
+         }
+
+         &.tv-success {
+             .tv {
+                 .tv-error {
+                     display: none;
+                 }
+             }
+         }
+     }
+ }
