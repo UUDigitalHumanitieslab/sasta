@@ -78,7 +78,7 @@ class ChatDocument:
             logger.debug(err)
         return cls(doc, method_category)
 
-    def replacements(self, line: ChatLine):
+    def replacements(self, line: ChatLine) -> None:
         # perform all replacements
         for rep in REPLACEMENTS:
             code = rep['code']
@@ -118,7 +118,7 @@ class ChatDocument:
 
     def apply_replacements(self):
         for line in self.lines:
-            self.replacements
+            self.replacements(line)
 
     def find_target_speakers(self) -> Set[str]:
         results = set([])
