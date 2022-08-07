@@ -149,6 +149,8 @@ def create_utterance_objects(transcript):
             logger.exception(
                 f'ERROR creating utterances for:\t{transcript.name}'
                 f'with message:\t"{e}"\n')
+            transcript.status = transcript.PARSING_FAILED
+            transcript.save()
 
 
 def correct_treebank(transcript: Transcript):

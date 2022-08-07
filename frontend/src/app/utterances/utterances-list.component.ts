@@ -44,4 +44,10 @@ export class UtterancesListComponent implements OnInit {
         this.treeXml = utterance.parse_tree;
         this.loadingTree = false;
     }
+
+    onCloseTree() {
+        this.loadingTree = false;
+        this.treeSentence = undefined;
+        this.treeXml = undefined;
+    }
 }

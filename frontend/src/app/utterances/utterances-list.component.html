@@ -30,5 +30,5 @@
 </table>
 
 <sas-tree-visualizer *ngIf="loadingTree || treeXml" [sentence]="treeSentence" [xml]="treeXml" [loading]="loadingTree"
-    display="fullscreen">
+    display="fullscreen" (closeTree)="onCloseTree()">
 </sas-tree-visualizer>

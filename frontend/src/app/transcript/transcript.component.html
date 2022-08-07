@@ -40,68 +40,107 @@
     </div>
 
     <div class="block">
-        <p-panel header="Scoring">
-            <form *ngIf="numUtterancesAnalysed() > 0; else zeroUtterances">
-                <div class="field">
-                    <div class="control" *ngIf="(authService.currentUser$ | async).isAdmin">
-                        <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
-                            name="tam-dropdown" [group]="true" showClear="true" appendTo="body"
-                            [disabled]="!(groupedTams?.length > 0)">
-                        </p-dropdown>
+        <p-panel header="Scoring" [ngSwitch]="transcript.status">
+            <ng-container *ngSwitchCase="TranscriptStatus.PARSED">
+                <form>
+                    <div class="field">
+                        <div class="control" *ngIf="(authService.currentUser$ | async).isAdmin">
+                            <p-dropdown [options]="groupedTams" [(ngModel)]="currentTam" placeholder="Select a method"
+                                name="tam-dropdown" [group]="true" showClear="true" appendTo="body"
+                                [disabled]="!(groupedTams?.length > 0)">
+                            </p-dropdown>
+                        </div>
                     </div>
-                </div>
 
-                <div class="field is-grouped">
-                    <ng-container *ngIf="(authService.currentUser$ | async).isAdmin">
-                        <div class="control">
-                            <button class="button is-primary" [disabled]="!currentTam" (click)="queryTranscript()"
-                                [ngClass]="{ 'is-loading': querying }">
-                                Query
-                            </button>
+                    <div class="field is-grouped">
+                        <ng-container *ngIf="(authService.currentUser$ | async).isAdmin">
+                            <div class="control">
+                                <button class="button is-primary" [disabled]="!currentTam" (click)="queryTranscript()"
+                                    [ngClass]="{ 'is-loading': querying }">
+                                    Query
+                                </button>
+                            </div>
+                            <div class="divider is-vertical">or</div>
+                        </ng-container>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary" [disabled]="!currentTam"
+                                    (click)="annotateTranscript('xlsx')" [ngClass]="{ 'is-loading': querying }">
+                                    Annotate (xlsx)
+                                </button>
+                            </div>
                         </div>
                         <div class="divider is-vertical">or</div>
-                    </ng-container>
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-primary" [disabled]="!currentTam"
-                                (click)="annotateTranscript('xlsx')" [ngClass]="{ 'is-loading': querying }">
-                                Annotate (xlsx)
-                            </button>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary" [disabled]="!currentTam"
+                                    (click)="annotateTranscript('cha')" [ngClass]="{ 'is-loading': querying }">
+                                    Annotate (CHAT)
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="divider is-vertical">or</div>
-                    <div class="field">
+                        <div class="divider is-vertical">or</div>
                         <div class="control">
-                            <button class="button is-primary" [disabled]="!currentTam"
-                                (click)="annotateTranscript('cha')" [ngClass]="{ 'is-loading': querying }">
-                                Annotate (CHAT)
-                            </button>
-                        </div>
-                    </div>
-                    <div class="divider is-vertical">or</div>
-                    <div class="control">
-                        <button class="button is-primary" [disabled]="
+                            <button class="button is-primary" [disabled]="
                                 !currentTam || !currentTam?.category.has_form
                             " (click)="generateForm()" [ngClass]="{ 'is-loading': querying }">
-                            Generate form
-                        </button>
+                                Generate form
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <ng-template #zeroUtterances>
-                <div class="message is-danger">
+                </form>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="TranscriptStatus.PARSING">
+                <div class="message is-warning">
                     <div class="message-header">
-                        No utterances were marked for analysis.
+                        Parsing in progress.
                     </div>
                     <div class="message-body">
-                        Please check your input file and reupload. <br>
-                        For CHAT files provider a <strong>Target_Child,
-                            Target_Adult</strong> or <strong>Participant</strong> participant, or
-                        <strong>%xsid</strong>-tiers. <br>
-                        For Word input, provide numbered sentences.
+                        Please wait for parsing to finish and refresh the page before analysing.
                     </div>
                 </div>
-            </ng-template>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="TranscriptStatus.PARSING_FAILED">
+                <ng-container *ngIf="numUtterancesAnalysed() == 0; else unknownError">
+                    <div class="message is-danger">
+                        <div class="message-header">
+                            No utterances were marked for analysis.
+                        </div>
+                        <div class="message-body">
+                            Please check your input file and reupload. <br>
+                            For CHAT files provide a <strong>Target_Child,
+                                Target_Adult</strong> or <strong>Participant</strong> participant, or
+                            <strong>%xsid</strong>-tiers. <br>
+                            For Word input, provide numbered sentences. <br>
+                            If the problem persists, please contact the developers by using the
+                            <i><strong>Send feedback</strong></i>
+                            button on the bottom of the page.
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #unknownError>
+                    <div class="message is-danger">
+                        <div class="message-header">
+                            Something went wrong.
+                        </div>
+                        <div class="message-body">
+                            SASTA was unable to process your file. <br>
+                            Please try again by navigating to <a [routerLink]="['/process/', transcript.corpus]">corpus
+                                processing</a>. <br>
+                            If the problem persists, please contact the developers by using the
+                            <i><strong>Send feedback</strong></i>
+                            button on the bottom of the page.
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container>
+            <ng-container>
+
+            </ng-container>
+
 
         </p-panel>
     </div>
