@@ -54,6 +54,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
 
     onDestroy$ = new Subject<boolean>();
 
+    readonly TranscriptStatus = TranscriptStatus;
+
     constructor(
         private transcriptService: TranscriptService,
         private corpusService: CorpusService,
@@ -77,6 +79,10 @@ export class TranscriptComponent implements OnInit, OnDestroy {
 
     allowCorrectionReset() {
         return this.transcript.latest_run;
+    }
+
+    allowScoring() {
+        return this.transcript.status === TranscriptStatus.PARSED;
     }
 
     ngOnInit() {

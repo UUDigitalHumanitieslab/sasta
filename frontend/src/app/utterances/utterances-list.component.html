@@ -4,6 +4,7 @@
             <th>speaker</th>
             <th>sentence</th>
             <th>for analysis</th>
+            <th>parse tree</th>
         </tr>
     </thead>
     <tbody>
@@ -12,12 +13,22 @@
             <td>{{ utt.sentence }}</td>
             <td>
                 <span class="icon">
-                    <fa-icon
-                        [icon]="analysisIcon(utt)"
-                        [class.has-text-success]="utt.for_analysis"
-                    ></fa-icon>
+                    <fa-icon [icon]="analysisIcon(utt)" [class.has-text-success]="utt.for_analysis"></fa-icon>
                 </span>
+            </td>
+            <td class="has-text-right">
+                <div class="buttons is-right">
+                    <button class="button is-primary" pTooltip="show the parse tree" (click)="showTree(utt)">
+                        <span class="icon is-small">
+                            <fa-icon [icon]="faProjectDiagram"></fa-icon>
+                        </span>
+                    </button>
+                </div>
             </td>
         </tr>
     </tbody>
 </table>
+
+<sas-tree-visualizer *ngIf="loadingTree || treeXml" [sentence]="treeSentence" [xml]="treeXml" [loading]="loadingTree"
+    display="fullscreen" (closeTree)="onCloseTree()">
+</sas-tree-visualizer>

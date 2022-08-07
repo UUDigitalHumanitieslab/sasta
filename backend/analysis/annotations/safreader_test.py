@@ -53,7 +53,7 @@ def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_
     true_results, _ = query_transcript(asta_transcript, asta_method, annotate=True, zc_embed=False)
     assert true_results.annotationinput
 
-    assert true_results.annotations.get(3)[6].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': None}]
+    assert true_results.annotations.get(3)[7].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': None}]
 
     assert True
 
@@ -70,6 +70,6 @@ def test_wordlevels():
 def test_read_saf_comments(tarsp_method, tarsp_transcript, cha_testfiles_dir):
     reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF_with_comments.xlsx'), tarsp_method, tarsp_transcript)
     sent = reader.document.utterances[3]
-    assert sent.words[0].comment == 'Ik vind hier iets van.'
-    assert sent.words[1].comment == '1'
-    assert sent.words[2].comment == 'En hier misschien ook wel iets van'
+    assert sent.words[1].comment == 'Ik vind hier iets van.'
+    assert sent.words[2].comment == '1'
+    assert sent.words[3].comment == 'En hier misschien ook wel iets van'

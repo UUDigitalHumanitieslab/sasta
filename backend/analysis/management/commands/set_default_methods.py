@@ -24,4 +24,4 @@ class Command(BaseCommand):
             old_method = corpus.default_method
             corpus.default_method = new_method
             corpus.save()
-            print(f'Updated corpus {corpus.name} from {old_method.name} to {new_method.name}')
+            print(f'Updated corpus {corpus.name} from {old_method.name if old_method else "None"} to {new_method.name}')
