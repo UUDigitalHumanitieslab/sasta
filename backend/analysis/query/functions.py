@@ -66,7 +66,7 @@ class Query:
                            not in ('AutoField', 'ForeignKey')]
         values = {f.name: getattr(model, f.name) for f in relevant_fields}
 
-        for k, v in values.items():
+        for k, v in list(values.items()):
             if k in cls.sastadev_mapping:
                 values[cls.sastadev_mapping.get(k)] = values.pop(k)
 
