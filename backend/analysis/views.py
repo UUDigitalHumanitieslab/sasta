@@ -72,7 +72,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         run.save()
         return run
 
-    @ action(detail=True, methods=['POST'], name='Score transcript')
+    @action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_id = request.data.get('method')
@@ -228,6 +228,17 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             return Response(self.get_serializer(transcript).data)
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['GET'], name='parse_async')
+    def parse_async(self, request, *args, **kwargs):
+        transcript = self.get_object()
+        if not transcript.parseable():
+            return Response(f'Transcript not parseable', status.HTTP_400_BAD_REQUEST)
+
+        task = parse_transcript_task(transcript.id).delay()
+        if not task:
+            return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
+        return Response(task.id)
 
 
 class CorpusViewSet(viewsets.ModelViewSet):
