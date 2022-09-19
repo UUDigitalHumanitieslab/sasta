@@ -18,11 +18,6 @@ from sastadev.query import getprocess
 
 logger = logging.getLogger('sasta')
 
-ROMAN_NUMS = [None, 'I', 'II', 'III',
-              'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
-
-LEVELS = ['Sz', 'Zc', 'Wg', 'VVW']
-
 
 def get_items_list(str, sep, lower=True):
     rawresult = str.split(sep)
