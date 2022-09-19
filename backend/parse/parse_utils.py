@@ -62,7 +62,7 @@ def parse_transcript(transcript, output_dir, output_path):
         # Saving parsed file
         parsed_filename = os.path.basename(
             output_path).replace('.cha', '.xml')
-        transcript.parsed_content.name = output_path
+        transcript.parsed_content.name = transcript.upload_path_parsed(parsed_filename)
         transcript.save()
 
         # Correcting and reparsing

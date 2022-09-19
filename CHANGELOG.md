@@ -5,6 +5,12 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2022-09-16
+
+### Fixed
+-   Resolves a bug where transcript paths were uncorrectly saved, leaving them unable to be downloaded
+-   Resolved a bug where a dictionary was changed during iteration, preventing analysis
+
 ## [0.6.0] - 2022-07-27
 
 ### Added
