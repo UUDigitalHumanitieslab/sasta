@@ -19,10 +19,13 @@ export class TranscriptService {
             .toPromise();
     }
 
-    parse(id): Promise<Transcript> {
-        return this.httpClient
-            .get<Transcript>(`api/transcripts/${id}/parse/`)
-            .toPromise();
+    /**
+     * Parses a single trancript asychronously
+     * @param id transcript id
+     * @returns parse task id
+     */
+    parse(id: number): Observable<string> {
+        return this.httpClient.get<string>(`api/transcripts/${id}/parse/`);
     }
 
     delete(id): Observable<{}> {
