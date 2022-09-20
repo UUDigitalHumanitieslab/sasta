@@ -5,8 +5,6 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
-from openpyxl import load_workbook
-
 from analysis.annotations.enrich_chat import enrich_chat
 from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
@@ -15,6 +13,7 @@ from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
+from openpyxl import load_workbook
 from parse.parse_utils import parse_and_create
 from parse.tasks import parse_transcript_task
 from rest_framework import status, viewsets
@@ -27,10 +26,10 @@ from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          MethodCategorySerializer, TranscriptSerializer,
-                          UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptDetailSerializer,
+                          TranscriptListSerializer, UploadFileSerializer)
 from .utils import StreamFile
-import logging
+
 logger = logging.getLogger('sasta')
 
 # flake8: noqa: E501
@@ -48,8 +47,13 @@ class UploadFileViewSet(viewsets.ModelViewSet):
 
 class TranscriptViewSet(viewsets.ModelViewSet):
     queryset = Transcript.objects.all()
-    serializer_class = TranscriptSerializer
     permission_classes = (IsCorpusChildOwner,)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return TranscriptListSerializer
+        return TranscriptDetailSerializer
+
 
     def get_queryset(self):
         if self.request.user.is_superuser:
