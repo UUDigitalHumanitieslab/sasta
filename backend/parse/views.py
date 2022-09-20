@@ -28,9 +28,9 @@ class ParseTaskView(APIView):
 
         response = Response()
         response.data = {
-            "task_id": task.id,
-            "task_status": task.status,
-            "task_result": task.result
+            "id": task.id,
+            "status": task.status,
+            "result": task.result
         }
         response.status_code = self.status_code_mapping.get(task.status, HTTP_500_INTERNAL_SERVER_ERROR)
 
