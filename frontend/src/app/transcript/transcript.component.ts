@@ -112,11 +112,11 @@ export class TranscriptComponent implements OnInit, OnDestroy {
                 }),
                 switchMap((c: Corpus) => {
                     this.corpus = c;
-                    return this.methodService.get_by_id(c.default_method); // get default method
+                    return this.methodService.getMethod(c.default_method); // get default method
                 }),
                 switchMap((m: Method) => {
                     this.currentTam = m;
-                    return this.methodService.list(); // get all methods
+                    return this.methodService.getMethods(); // get all methods
                 })
             )
             .subscribe((tams: Method[]) => {

@@ -57,7 +57,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.methodService
-            .list()
+            .getMethods()
             .pipe(
                 takeUntil(this.onDestroy$),
                 switchMap((methods) => {
@@ -91,7 +91,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
                 // retrieve default method
                 if (res.default_method) {
                     this.methodService
-                        .get_by_id(res.default_method)
+                        .getMethod(res.default_method)
                         .pipe(takeUntil(this.onDestroy$))
                         .subscribe((tam) => (this.defaultTam = tam));
                 }

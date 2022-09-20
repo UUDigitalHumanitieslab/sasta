@@ -36,6 +36,8 @@ export class UploadComponent implements OnInit {
     categories: MethodCategory[];
     selectedCategory: MethodCategory;
 
+    categories$: Observable<MethodCategory[]>;
+
     _: any = _;
 
     constructor(
@@ -67,9 +69,8 @@ export class UploadComponent implements OnInit {
                     this.onSelectCorpus();
                 }
             });
-        this.methodService.listCategories().subscribe((res) => {
-            this.categories = res;
-        });
+
+        this.categories$ = this.methodService.getCategories();
     }
 
     fullyFilled() {
@@ -83,9 +84,9 @@ export class UploadComponent implements OnInit {
 
     onSelectCorpus() {
         if (this.selectedCorpus) {
-            this.selectedCategory = this.categories.find(
-                (c) => c.id === this.selectedCorpus.method_category
-            );
+            this.methodService
+                .getCategory(this.selectedCorpus.method_category)
+                .subscribe((next) => (this.selectedCategory = next));
             this.newCorpusName = undefined;
         } else {
             this.selectedCategory = undefined;

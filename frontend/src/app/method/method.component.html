@@ -1,4 +1,4 @@
-<ng-container *ngIf="method">
+<ng-container *ngIf="(method$ | async) as method">
     <h1 class="title">{{method.name}}</h1>
     <h2 class="subtitle">{{method.date_added}} | {{method.queries?.length}} queries</h2>
 
