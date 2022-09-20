@@ -1,20 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Corpus } from '../models/corpus';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CorpusService {
-    public corpora$: BehaviorSubject<Corpus[]> = new BehaviorSubject([] as any);
+    private corpora$: Subject<Corpus[]> = new Subject();
 
     constructor(private httpClient: HttpClient) {}
 
-    updateCorpora() {
+    public getCorpora(): Observable<Corpus[]> {
+        return this.corpora$;
+    }
+
+    public init() {
         this.httpClient
             .get<Corpus[]>('api/corpora/')
-            .subscribe((res) => this.corpora$.next(res));
+            .subscribe((corpora) => this.corpora$.next(corpora));
     }
 
     create(corpus: Corpus): Observable<any> {

@@ -1,4 +1,4 @@
-<ng-container *ngIf="(corpusService.corpora$ | async) as corpora; else loading;">
+<ng-container *ngIf="(corpora$ | async) as corpora; else loading;">
     <table class="table is-fullwidth is-hoverable" *ngIf="corpora.length > 0">
         <thead>
             <tr>
