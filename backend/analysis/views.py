@@ -211,8 +211,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return response
 
-    @action(detail=True, methods=['GET'], name='toCHAT')
-    def toCHAT(self, request, *args, **kwargs):
+    @action(detail=True, methods=['GET'], name='convert')
+    def convert(self, request, *args, **kwargs):
         transcript = self.get_object()
         if transcript.status == Transcript.CONVERTED:
             return Response(self.get_serializer(transcript).data)
@@ -239,7 +239,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         if not transcript.parseable():
             return Response(f'Transcript not parseable', status.HTTP_400_BAD_REQUEST)
 
-        task = parse_transcript_task(transcript.id).delay()
+        task = parse_transcript_task.s(transcript.id).delay()
         if not task:
             return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
         return Response(task.id)
