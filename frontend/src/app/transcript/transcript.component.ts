@@ -20,6 +20,7 @@ import {
     AnalysisService,
     AnnotationOutputFormat,
 } from '../services/analysis.service';
+import { AnnotationsService } from '../services/annotations.service';
 import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
@@ -65,6 +66,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
         private corpusService: CorpusService,
         private methodService: MethodService,
         private analysisService: AnalysisService,
+        private annotationsService: AnnotationsService,
         private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService,
@@ -132,8 +134,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
     }
 
     downloadLatestAnnotations() {
-        this.transcriptService
-            .latest_annotations(this.id)
+        this.annotationsService
+            .latest(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe((res) => {
                 this.downloadFile(
@@ -145,8 +147,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
     }
 
     resetAnnotations() {
-        this.transcriptService
-            .reset_annotations(this.id)
+        this.annotationsService
+            .reset(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(() => this.loadData());
     }
