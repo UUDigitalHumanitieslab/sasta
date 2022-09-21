@@ -57,8 +57,7 @@ def extract(file):
             copyfile(file.content.path, os.path.join(target_dir, filename))
             created_transcripts.append(create_transcript(file, new_path))
 
-        file.status = 'extracted'
-        file.save()
+        file.delete()
         return created_transcripts
 
     except Exception:
