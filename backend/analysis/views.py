@@ -5,8 +5,6 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
-from openpyxl import load_workbook
-
 from analysis.annotations.enrich_chat import enrich_chat
 from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
@@ -15,6 +13,7 @@ from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
 from django.http import HttpResponse
+from openpyxl import load_workbook
 from parse.parse_utils import parse_and_create
 from parse.tasks import parse_transcript_task
 from rest_framework import status, viewsets
@@ -27,10 +26,10 @@ from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
 from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          MethodCategorySerializer, TranscriptSerializer,
-                          UploadFileSerializer)
+                          MethodCategorySerializer, TranscriptDetailSerializer,
+                          TranscriptListSerializer, UploadFileSerializer)
 from .utils import StreamFile
-import logging
+
 logger = logging.getLogger('sasta')
 
 # flake8: noqa: E501
@@ -48,8 +47,13 @@ class UploadFileViewSet(viewsets.ModelViewSet):
 
 class TranscriptViewSet(viewsets.ModelViewSet):
     queryset = Transcript.objects.all()
-    serializer_class = TranscriptSerializer
     permission_classes = (IsCorpusChildOwner,)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return TranscriptListSerializer
+        return TranscriptDetailSerializer
+
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -72,7 +76,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         run.save()
         return run
 
-    @ action(detail=True, methods=['POST'], name='Score transcript')
+    @action(detail=True, methods=['POST'], name='Score transcript')
     def query(self, request, *args, **kwargs):
         transcript = self.get_object()
         method_id = request.data.get('method')
@@ -207,8 +211,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
         return response
 
-    @action(detail=True, methods=['GET'], name='toCHAT')
-    def toCHAT(self, request, *args, **kwargs):
+    @action(detail=True, methods=['GET'], name='convert')
+    def convert(self, request, *args, **kwargs):
         transcript = self.get_object()
         if transcript.status == Transcript.CONVERTED:
             return Response(self.get_serializer(transcript).data)
@@ -228,6 +232,17 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             return Response(self.get_serializer(transcript).data)
 
         return Response(None, status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['GET'], name='parse_async')
+    def parse_async(self, request, *args, **kwargs):
+        transcript = self.get_object()
+        if not transcript.parseable():
+            return Response(f'Transcript not parseable', status.HTTP_400_BAD_REQUEST)
+
+        task = parse_transcript_task.s(transcript.id).delay()
+        if not task:
+            return Response('Failed to create task', status.HTTP_400_BAD_REQUEST)
+        return Response(task.id)
 
 
 class CorpusViewSet(viewsets.ModelViewSet):

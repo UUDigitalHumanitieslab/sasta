@@ -16,6 +16,11 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
 import { Transcript, TranscriptStatus } from '../models/transcript';
+import {
+    AnalysisService,
+    AnnotationOutputFormat,
+} from '../services/analysis.service';
+import { AnnotationsService } from '../services/annotations.service';
 import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
@@ -60,6 +65,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
         private transcriptService: TranscriptService,
         private corpusService: CorpusService,
         private methodService: MethodService,
+        private analysisService: AnalysisService,
+        private annotationsService: AnnotationsService,
         private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService,
@@ -105,11 +112,11 @@ export class TranscriptComponent implements OnInit, OnDestroy {
                 }),
                 switchMap((c: Corpus) => {
                     this.corpus = c;
-                    return this.methodService.get_by_id(c.default_method); // get default method
+                    return this.methodService.getMethod(c.default_method); // get default method
                 }),
                 switchMap((m: Method) => {
                     this.currentTam = m;
-                    return this.methodService.list(); // get all methods
+                    return this.methodService.getMethods(); // get all methods
                 })
             )
             .subscribe((tams: Method[]) => {
@@ -127,8 +134,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
     }
 
     downloadLatestAnnotations() {
-        this.transcriptService
-            .latest_annotations(this.id)
+        this.annotationsService
+            .latest(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe((res) => {
                 this.downloadFile(
@@ -140,16 +147,16 @@ export class TranscriptComponent implements OnInit, OnDestroy {
     }
 
     resetAnnotations() {
-        this.transcriptService
-            .reset_annotations(this.id)
+        this.annotationsService
+            .reset(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(() => this.loadData());
     }
 
-    annotateTranscript(outputFormat: 'xlsx' | 'cha') {
+    annotateTranscript(outputFormat: AnnotationOutputFormat) {
         this.querying = true;
-        this.corpusService
-            .annotate_transcript(this.id, this.currentTam.id, outputFormat)
+        this.analysisService
+            .annotate(this.id, this.currentTam.id, outputFormat)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
@@ -194,8 +201,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
 
     queryTranscript() {
         this.querying = true;
-        this.corpusService
-            .query_transcript(this.id, this.currentTam.id)
+        this.analysisService
+            .query(this.id, this.currentTam.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
@@ -226,8 +233,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
 
     generateForm() {
         this.querying = true;
-        this.corpusService
-            .generate_form_transcript(this.id, this.currentTam.id)
+        this.analysisService
+            .generateForm(this.id, this.currentTam.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {

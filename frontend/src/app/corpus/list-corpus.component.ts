@@ -18,6 +18,7 @@ const UPDATE_INTERVAL = 10000;
 export class ListCorpusComponent implements OnInit, OnDestroy {
     private subscription$: Subscription;
     interval$: Observable<number> = interval(UPDATE_INTERVAL);
+    corpora$: Observable<Corpus[]>;
     faTrash = faTrash;
     faPlus = faPlus;
 
@@ -33,13 +34,14 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.corpora$ = this.corpusService.getCorpora();
         this.subscription$ = this.interval$
             .pipe(startWith(0))
             .subscribe(() => this.refreshCorpora());
     }
 
     refreshCorpora() {
-        this.corpusService.updateCorpora();
+        this.corpusService.init();
     }
 
     confirmDeleteCorpus(event: Event, corpus: Corpus) {

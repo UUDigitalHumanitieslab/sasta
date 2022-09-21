@@ -59,7 +59,7 @@
         <label class="label">Method category</label>
         <div class="control">
             <p-dropdown
-                [options]="categories"
+                [options]="categories$ | async"
                 optionLabel="name"
                 name="category-dropdown"
                 [placeholder]="selectedCategory?.name || 'select category'"

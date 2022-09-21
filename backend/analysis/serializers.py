@@ -24,7 +24,15 @@ class UtteranceSerializer(serializers.ModelSerializer):
         fields = ('id', 'sentence', 'speaker', 'utt_id', 'uttno', 'xsid', 'for_analysis', 'parse_tree')
 
 
-class TranscriptSerializer(serializers.ModelSerializer):
+class TranscriptListSerializer(serializers.ModelSerializer):
+    status_name = serializers.CharField(source='get_status_display')
+
+    class Meta:
+        model = Transcript
+        fields = ('id', 'name', 'status', 'status_name', 'date_added', 'utterances', 'corpus')
+
+
+class TranscriptDetailSerializer(serializers.ModelSerializer):
     def get_latest_run(self, obj):
         try:
             latest = obj.analysisruns.latest()
@@ -55,7 +63,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
 class CorpusSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     files = UploadFileSerializer(read_only=True, many=True)
-    transcripts = TranscriptSerializer(read_only=True, many=True)
+    transcripts = TranscriptListSerializer(read_only=True, many=True)
     username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
