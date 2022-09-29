@@ -4,6 +4,7 @@ import {
     faMinus,
     faProjectDiagram,
     faSearch,
+    IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { Transcript, Utterance } from '../models/transcript';
 import * as _ from 'lodash';
@@ -34,7 +35,7 @@ export class UtterancesListComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    analysisIcon(u: Utterance) {
+    analysisIcon(u: Utterance): IconDefinition {
         return u.for_analysis ? faCheck : faMinus;
     }
 

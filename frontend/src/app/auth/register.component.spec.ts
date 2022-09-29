@@ -29,4 +29,11 @@ describe('RegisterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should validate username', () => {
+      component.username = 'JanKlaassen';
+      expect(component.usernameValid()).toBeTruthy();
+      component.username = 'Jan Klaassen';
+      expect(component.usernameValid()).toBeFalsy();
+  });
 });
