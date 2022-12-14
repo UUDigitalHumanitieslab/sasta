@@ -46,15 +46,14 @@ export class ParseService {
         });
     };
 
-    taskSuccess = (response: TaskResult) => {
-        return response.status === 'SUCCESS';
-    };
+    taskSuccess = (response: TaskResult) => response.status === 'SUCCESS';
 
     /**
      * Converts a single transcript, depending on input
      * .doc -> .txt
      * .txt -> .cha
      * .cha -> .cha (preprocessing)
+     *
      * @param transcriptID transcript id
      * @returns converted transcript
      */
@@ -66,6 +65,7 @@ export class ParseService {
 
     /**
      * Creates asynchronous parse job
+     *
      * @param transcriptID transcript id
      * @returns observable of parse task id
      */

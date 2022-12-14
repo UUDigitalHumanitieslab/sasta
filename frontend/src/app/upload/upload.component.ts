@@ -122,14 +122,12 @@ export class UploadComponent implements OnInit {
     }
 
     uploadFiles$(toCorpus: Corpus) {
-        const uploadFiles: UploadFile[] = this.files.map((f: File) => {
-            return {
-                name: f.name,
-                content: f,
-                status: 'uploading',
-                corpus: toCorpus,
-            };
-        });
+        const uploadFiles: UploadFile[] = this.files.map((f: File) => ({
+            name: f.name,
+            content: f,
+            status: 'uploading',
+            corpus: toCorpus,
+        }));
         return forkJoin(
             uploadFiles.map((file) => this.uploadFileService.upload(file))
         );

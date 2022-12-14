@@ -4,12 +4,12 @@ import { TestBed } from '@angular/core/testing';
 import { CorpusService } from './corpus.service';
 
 describe('CorpusService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-  }));
+    beforeEach(() => TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+    }));
 
-  it('should be created', () => {
-    const service: CorpusService = TestBed.inject(CorpusService);
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        const service: CorpusService = TestBed.inject(CorpusService);
+        expect(service).toBeTruthy();
+    });
 });

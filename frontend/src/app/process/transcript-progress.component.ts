@@ -18,12 +18,12 @@ export class TranscriptProgressComponent implements OnInit {
             return 0;
         }
         switch (this.transcript.status) {
-            case TranscriptStatus.PARSING_FAILED:
-                return -1;
-            case TranscriptStatus.PARSING:
-                return 1;
-            case TranscriptStatus.PARSED:
-                return 2;
+        case TranscriptStatus.PARSING_FAILED:
+            return -1;
+        case TranscriptStatus.PARSING:
+            return 1;
+        case TranscriptStatus.PARSED:
+            return 2;
         }
     }
 
@@ -32,14 +32,14 @@ export class TranscriptProgressComponent implements OnInit {
             return 2;
         }
         switch (this.transcript.status) {
-            case TranscriptStatus.CONVERSION_FAILED:
-                return -1;
-            case TranscriptStatus.CREATED:
-                return 0;
-            case TranscriptStatus.CONVERTING:
-                return 1;
-            case TranscriptStatus.CONVERTED:
-                return 2;
+        case TranscriptStatus.CONVERSION_FAILED:
+            return -1;
+        case TranscriptStatus.CREATED:
+            return 0;
+        case TranscriptStatus.CONVERTING:
+            return 1;
+        case TranscriptStatus.CONVERTED:
+            return 2;
         }
     }
 }

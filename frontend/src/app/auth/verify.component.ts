@@ -4,9 +4,9 @@ import { MessageService } from 'primeng/api';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'sas-verify',
-  templateUrl: './verify.component.html',
-  styleUrls: ['./verify.component.scss']
+    selector: 'sas-verify',
+    templateUrl: './verify.component.html',
+    styleUrls: ['./verify.component.scss']
 })
 export class VerifyComponent implements OnInit {
 
@@ -19,34 +19,34 @@ export class VerifyComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private router: Router) {
-    this.route.paramMap.subscribe(params => this.key = params.get('key'));
+      this.route.paramMap.subscribe(params => this.key = params.get('key'));
   }
 
 
   ngOnInit() {
-    this.authService
-      .infoFromConfirmKey(this.key)
-      .subscribe(
-        res => {
-          this.username = res.username;
-          this.email = res.email;
-        }
-      );
+      this.authService
+          .infoFromConfirmKey(this.key)
+          .subscribe(
+              res => {
+                  this.username = res.username;
+                  this.email = res.email;
+              }
+          );
   }
 
   confirm(key: string) {
-    this.authService
-      .confirmEmail(this.key)
-      .subscribe(
-        res => {
-          this.messageService.add({ severity: 'success', summary: 'E-mail address confirmed', detail: '' });
-          this.authService.logout().subscribe();
-          this.router.navigate(['/login']);
-        },
-        err => {
-          this.messageService.add({ severity: 'error', summary: 'Cannot confirm email-address', detail: '' });
-        }
-      );
+      this.authService
+          .confirmEmail(this.key)
+          .subscribe(
+              res => {
+                  this.messageService.add({ severity: 'success', summary: 'E-mail address confirmed', detail: '' });
+                  this.authService.logout().subscribe();
+                  this.router.navigate(['/login']);
+              },
+              err => {
+                  this.messageService.add({ severity: 'error', summary: 'Cannot confirm email-address', detail: '' });
+              }
+          );
   }
 
 }

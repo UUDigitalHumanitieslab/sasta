@@ -63,21 +63,19 @@ export class AuthService {
 
     getCompleteUser() {
         return this.httpClient.get<User>(`${this.authAPI}/user/`).pipe(
-            switchMap((user) => {
-                return this.isAdmin().pipe(
-                    map((adminStatus) => {
-                        user.isAdmin = adminStatus;
-                        return user;
-                    })
-                );
-            })
+            switchMap((user) => this.isAdmin().pipe(
+                map((adminStatus) => {
+                    user.isAdmin = adminStatus;
+                    return user;
+                })
+            ))
         );
     }
 
     isAdmin(): Observable<boolean> {
         return this.httpClient
             .get(`${this.authAPI}/has_admin_access/`)
-            .pipe(map((response) => response[`has_admin_access`] as boolean));
+            .pipe(map((response) => response.has_admin_access as boolean));
     }
 
     infoFromConfirmKey(key: string): Observable<any> {

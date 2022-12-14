@@ -21,6 +21,7 @@ export class TranscriptService {
 
     /**
      * Parses a single trancript asychronously
+     *
      * @param id transcript id
      * @returns parse task id
      */

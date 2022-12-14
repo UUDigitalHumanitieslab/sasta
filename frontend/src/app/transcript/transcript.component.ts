@@ -161,22 +161,22 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             .subscribe(
                 (response) => {
                     switch (outputFormat) {
-                        case 'xlsx':
-                            this.downloadFile(
-                                response.body,
-                                `${this.transcript.name}_SAF.xlsx`,
-                                XLSX_MIME
-                            );
-                            break;
-                        case 'cha':
-                            this.downloadFile(
-                                response.body,
-                                `${this.transcript.name}_annotated.cha`,
-                                TXT_MIME
-                            );
-                            break;
-                        default:
-                            break;
+                    case 'xlsx':
+                        this.downloadFile(
+                            response.body,
+                            `${this.transcript.name}_SAF.xlsx`,
+                            XLSX_MIME
+                        );
+                        break;
+                    case 'cha':
+                        this.downloadFile(
+                            response.body,
+                            `${this.transcript.name}_annotated.cha`,
+                            TXT_MIME
+                        );
+                        break;
+                    default:
+                        break;
                     }
                     this.messageService.add({
                         severity: 'success',

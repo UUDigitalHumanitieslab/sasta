@@ -42,7 +42,7 @@ interface Metadata {
     styleUrls: ['./tree-visualizer.component.scss'],
 })
 export class TreeVisualizerComponent
-    implements OnInit, OnChanges, AfterViewChecked
+implements OnInit, OnChanges, AfterViewChecked
 {
     @ViewChild('output', { static: true, read: ElementRef })
     public output: ElementRef;
@@ -186,6 +186,7 @@ export class TreeVisualizerComponent
 
     /**
      * Shows the metadata of a tree.
+     *
      * @param data The parsed XML data
      */
     private showMetadata(data: {
@@ -209,9 +210,7 @@ export class TreeVisualizerComponent
             data.alpino_ds[0].metadata[0].meta
         ) {
             for (const item of data.alpino_ds[0].metadata[0].meta.sort(
-                (a: any, b: any) => {
-                    return a.$.name.localeCompare(b.$.name);
-                }
+                (a: any, b: any) => a.$.name.localeCompare(b.$.name)
             )) {
                 result.push({ name: item.$.name, value: item.$.value });
             }
