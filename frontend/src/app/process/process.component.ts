@@ -66,7 +66,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
         this.corpusService
             .convert_all(this.corpus.id)
             .pipe(
-                // tslint:disable-next-line: deprecation
+                // eslint-disable-next-line import/no-deprecated
                 // concat(this.corpusService.parse_all(this.corpus.id)))
                 concatMap((_) =>
                     this.corpusService.parse_all_async(this.corpus.id)
