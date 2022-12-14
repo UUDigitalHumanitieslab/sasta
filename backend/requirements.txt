@@ -54,7 +54,7 @@ click-repl==0.2.0
     # via celery
 corpus2alpino==0.3.10
     # via -r requirements.in
-cryptography==37.0.4
+cryptography==38.0.3
     # via pyjwt
 cymem==2.0.6
     # via
@@ -119,7 +119,6 @@ murmurhash==1.0.7
 numpy==1.22.0
     # via
     #   -r requirements.in
-    #   blis
     #   pandas
     #   spacy
     #   thinc
@@ -203,7 +202,6 @@ six==1.16.0
     #   click-repl
     #   django-livereload-server
     #   django-rest-auth
-    #   isodate
     #   python-dateutil
 smart-open==5.2.1
     # via pathy
