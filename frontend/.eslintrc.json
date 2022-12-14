@@ -10,6 +10,9 @@
             },
             "extends": [
                 "plugin:@angular-eslint/recommended",
+                "plugin:@angular-eslint/ng-cli-compat",
+                "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+                "plugin:@angular-eslint/template/process-inline-templates",
                 "plugin:@angular-eslint/template/process-inline-templates"
             ],
             "rules": {
@@ -28,13 +31,59 @@
                         "style": "camelCase",
                         "type": "attribute"
                     }
-                ]
+                ],
+                "@typescript-eslint/explicit-module-boundary-types": [
+                    "error",
+                    {
+                        "allowArgumentsExplicitlyTypedAsAny": true,
+                        "allowDirectConstAssertionInArrowFunctions": true,
+                        "allowHigherOrderFunctions": false,
+                        "allowTypedFunctionExpressions": true,
+                        "allowedNames": [
+                            "ngOnInit",
+                            "ngOnDestroy",
+                            "ngAfterViewInit",
+                            "ngOnChanges"
+                        ]
+                    }
+                ],
+                "@typescript-eslint/typedef": "error",
+                "dot-notation": "error",
+                "id-denylist": [
+                    "error",
+                    "any",
+                    "Number",
+                    "number",
+                    "String",
+                    "string",
+                    "Boolean",
+                    "boolean",
+                    "Undefined",
+                    "undefined"
+                ],
+                "indent": ["error", 4],
+                "no-empty-function": "off",
+                "no-shadow": "error",
+                "no-unused-expressions": "error",
+                "no-use-before-define": "off",
+                "quotes": [
+                    "error",
+                    "single",
+                    {
+                        "avoidEscape": true,
+                        "allowTemplateLiterals": true
+                    }
+                ],
+                "semi": "error",
+                "no-underscore-dangle": "off"
             }
         },
         {
             "files": ["*.html"],
             "extends": ["plugin:@angular-eslint/template/recommended"],
-            "rules": {}
+            "rules": {
+                "@angular-eslint/template/eqeqeq": "error"
+            }
         }
     ]
 }
