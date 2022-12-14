@@ -43,7 +43,7 @@ def mkpatterns(allcodes: List[str]) -> Tuple[Pattern, Pattern]:
     basepattern = r'' + '|'.join(adaptedcodes) + '|' + ITEMSEPPATTERN
     fullpattern = r'^(' + basepattern + r')*$'
 
-    return(re.compile(basepattern), re.compile(fullpattern))
+    return (re.compile(basepattern), re.compile(fullpattern))
 
 
 def codeadapt(code: str) -> str:
