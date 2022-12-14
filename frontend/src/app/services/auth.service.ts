@@ -16,7 +16,7 @@ export class AuthService {
         this.setUser();
     }
 
-    setUser() {
+    setUser(): void {
         this.getCompleteUser().subscribe(
             (userData) => {
                 this.isAuthenticated$.next(true);
@@ -61,20 +61,24 @@ export class AuthService {
         });
     }
 
-    getCompleteUser() {
+    getCompleteUser(): Observable<User> {
         return this.httpClient.get<User>(`${this.authAPI}/user/`).pipe(
-            switchMap((user) => this.isAdmin().pipe(
-                map((adminStatus) => {
-                    user.isAdmin = adminStatus;
-                    return user;
-                })
-            ))
+            switchMap((user) =>
+                this.isAdmin().pipe(
+                    map((adminStatus) => {
+                        user.isAdmin = adminStatus;
+                        return user;
+                    })
+                )
+            )
         );
     }
 
     isAdmin(): Observable<boolean> {
         return this.httpClient
-            .get(`${this.authAPI}/has_admin_access/`)
+            .get<{ has_admin_access: boolean }>(
+                `${this.authAPI}/has_admin_access/`
+            )
             .pipe(map((response) => response.has_admin_access as boolean));
     }
 

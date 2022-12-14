@@ -41,8 +41,17 @@
                         "trailingUnderscore": "allow"
                     },
                     {
+                        "selector": "enumMember",
+                        "format": ["camelCase", "UPPER_CASE"]
+                    },
+                    {
                         "selector": "property",
                         "format": ["camelCase", "snake_case"],
+                        "leadingUnderscore": "allow"
+                    },
+                    {
+                        "selector": "classProperty",
+                        "format": ["camelCase", "PascalCase"],
                         "leadingUnderscore": "allow"
                     },
                     {
@@ -86,7 +95,7 @@
                     "Undefined",
                     "undefined"
                 ],
-                "indent": ["error", 4],
+                "indent": ["error", 4, { "SwitchCase": 1 }],
                 "no-empty-function": "off",
                 "no-shadow": "error",
                 "no-unused-expressions": "error",

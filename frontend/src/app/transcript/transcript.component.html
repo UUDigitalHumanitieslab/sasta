@@ -103,7 +103,7 @@
             </ng-container>
 
             <ng-container *ngSwitchCase="TranscriptStatus.PARSING_FAILED">
-                <ng-container *ngIf="numUtterancesAnalysed() == 0; else unknownError">
+                <ng-container *ngIf="numUtterancesAnalysed() === 0; else unknownError">
                     <div class="message is-danger">
                         <div class="message-header">
                             No utterances were marked for analysis.

@@ -9,11 +9,11 @@ import { Observable } from 'rxjs';
 export class TranscriptService {
     constructor(private httpClient: HttpClient) {}
 
-    get_by_id(id): Observable<Transcript> {
+    getByID(id: number): Observable<Transcript> {
         return this.httpClient.get<Transcript>(`api/transcripts/${id}/`);
     }
 
-    toCHAT(id): Promise<Transcript> {
+    toCHAT(id: any): Promise<Transcript> {
         return this.httpClient
             .get<Transcript>(`api/transcripts/${id}/toCHAT/`)
             .toPromise();
@@ -29,8 +29,7 @@ export class TranscriptService {
         return this.httpClient.get<string>(`api/transcripts/${id}/parse/`);
     }
 
-    delete(id): Observable<{}> {
+    delete(id: number): Observable<any> {
         return this.httpClient.delete(`api/transcripts/${id}/`);
     }
-
 }

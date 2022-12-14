@@ -1,9 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Transcript } from '../models/transcript';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { TranscriptService } from '../services/transcript.service';
-import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+} from '@angular/core';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { MessageService } from 'primeng/api';
+import { Transcript } from '../models/transcript';
 import { AnnotationsService } from '../services/annotations.service';
 
 @Component({
@@ -11,7 +16,7 @@ import { AnnotationsService } from '../services/annotations.service';
     templateUrl: './upload-saf.component.html',
     styleUrls: ['./upload-saf.component.scss'],
 })
-export class UploadSafComponent implements OnInit, OnDestroy {
+export class UploadSafComponent implements OnDestroy {
     @Input() transcript: Transcript;
     @Input() display: boolean;
 
@@ -29,28 +34,26 @@ export class UploadSafComponent implements OnInit, OnDestroy {
         private annotationsService: AnnotationsService
     ) {}
 
-    ngOnInit() {}
-
     ngOnDestroy() {
         this.displayChange.unsubscribe();
     }
 
-    onClose() {
+    onClose(): void {
         this.parseErrors = null;
         this.displayChange.emit(false);
     }
 
-    header() {
+    header(): string {
         return `Upload corrections for ${this.transcript.name}`;
     }
 
-    onFileChange(fileInput: HTMLInputElement) {
+    onFileChange(fileInput: HTMLInputElement): void {
         this.parseErrors = null;
         this.content = fileInput.files[0];
         this.fileName = this.content.name;
     }
 
-    upload() {
+    upload(): void {
         this.parseErrors = null;
         this.uploading = true;
         this.annotationsService
@@ -68,7 +71,7 @@ export class UploadSafComponent implements OnInit, OnDestroy {
             );
     }
 
-    handleErrors(httpError: HttpErrorResponse) {
+    handleErrors(httpError: HttpErrorResponse): void {
         this.uploading = false;
         if (Array.isArray(httpError.error)) {
             this.parseErrors = httpError.error;

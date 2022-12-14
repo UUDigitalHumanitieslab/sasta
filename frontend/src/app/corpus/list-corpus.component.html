@@ -33,7 +33,7 @@
         </tbody>
     </table>
 
-    <h1 *ngIf="corpora.length == 0" class="title is-2">
+    <h1 *ngIf="corpora.length === 0" class="title is-2">
         No corpora yet!
         <a [routerLink]="['/upload']" routerLinkActive="is-active"> Upload </a>
     </h1>

@@ -9,18 +9,18 @@ import { Transcript } from '../models/transcript';
 export class AnnotationsService {
     constructor(private http: HttpClient) {}
 
-    annoBaseRoute(id) {
+    annoBaseRoute(id: number): string {
         return `api/transcripts/${id}/annotations/`;
     }
 
-    latest(transcriptID): Observable<any> {
+    latest(transcriptID: number): Observable<any> {
         return this.http.get(this.annoBaseRoute(transcriptID) + 'latest/', {
             observe: 'response',
             responseType: 'blob',
         });
     }
 
-    reset(transcriptID): Observable<any> {
+    reset(transcriptID: number): Observable<any> {
         return this.http.get(this.annoBaseRoute(transcriptID) + 'reset/');
     }
 

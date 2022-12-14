@@ -16,11 +16,12 @@ const UPDATE_INTERVAL = 10000;
     styleUrls: ['./list-corpus.component.scss'],
 })
 export class ListCorpusComponent implements OnInit, OnDestroy {
-    private subscription$: Subscription;
     interval$: Observable<number> = interval(UPDATE_INTERVAL);
     corpora$: Observable<Corpus[]>;
     faTrash = faTrash;
     faPlus = faPlus;
+
+    private subscription$: Subscription;
 
     constructor(
         public corpusService: CorpusService,
@@ -40,11 +41,11 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
             .subscribe(() => this.refreshCorpora());
     }
 
-    refreshCorpora() {
+    refreshCorpora(): void {
         this.corpusService.init();
     }
 
-    confirmDeleteCorpus(event: Event, corpus: Corpus) {
+    confirmDeleteCorpus(event: Event, corpus: Corpus): void {
         event.stopImmediatePropagation();
         this.confirmationService.confirm({
             target: event.target,
@@ -55,7 +56,8 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
             accept: () => this.deleteCorpus(corpus),
         });
     }
-    deleteCorpus(corpus: Corpus) {
+
+    deleteCorpus(corpus: Corpus): void {
         this.corpusService.delete(corpus).subscribe(
             () => {
                 this.messageService.add({

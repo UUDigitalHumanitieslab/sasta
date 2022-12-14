@@ -25,7 +25,7 @@ export class XmlParseService {
         });
     }
 
-    extractVariables(xpath: string) {
+    extractVariables(xpath: string): any {
         let variables: PathVariable[];
         try {
             variables = this.extractService.extract(xpath);

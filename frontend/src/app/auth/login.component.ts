@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnDestroy, OnInit {
+export class LoginComponent implements OnDestroy {
     faLock = faLock;
     faUser = faUser;
 
@@ -25,13 +25,11 @@ export class LoginComponent implements OnDestroy, OnInit {
 
     constructor(private authService: AuthService, private router: Router) {}
 
-    ngOnInit() {}
-
     ngOnDestroy() {
         this.onDestroy$.next();
     }
 
-    login() {
+    login(): void {
         this.processing = true;
         this.messages = [];
         this.authService
