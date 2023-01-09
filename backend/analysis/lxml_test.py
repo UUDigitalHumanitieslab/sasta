@@ -75,13 +75,13 @@ def strees():
 
 @pytest.fixture
 def queries():
-    bigquery = """//node[(
-    %declarative%
-    and
-    %Ond%
-    and
-    %Tarsp_B_X_count% = 3
-    )]"""
+    # bigquery = """//node[(
+    # %declarative%
+    # and
+    # %Ond%
+    # and
+    # %Tarsp_B_X_count% = 3
+    # )]"""
 
     queries = []
     queries.append('//node[%Tarsp_WVz_exception%]')

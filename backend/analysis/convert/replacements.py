@@ -34,6 +34,7 @@ def letter_index(letter: str) -> int:
     except Exception:
         return 0
 
+
 def fill_name(string):
     for specs in ANONYMIZATIONS:
         codes = '|'.join(sorted(specs['codes'], key=len, reverse=True))

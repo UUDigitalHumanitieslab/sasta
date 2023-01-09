@@ -6,25 +6,25 @@ import { MessageService } from 'primeng/api';
 import { VerifyComponent } from './verify.component';
 
 describe('VerifyComponent', () => {
-  let component: VerifyComponent;
-  let fixture: ComponentFixture<VerifyComponent>;
+    let component: VerifyComponent;
+    let fixture: ComponentFixture<VerifyComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [VerifyComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [MessageService]
-    })
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [VerifyComponent],
+            imports: [RouterTestingModule, HttpClientTestingModule],
+            providers: [MessageService]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(VerifyComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

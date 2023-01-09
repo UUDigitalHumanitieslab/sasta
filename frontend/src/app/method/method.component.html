@@ -38,7 +38,7 @@
         <p-accordion [multiple]="true">
             <ng-container *ngFor="let key of _.keys(selectedQuery)">
                 <div *ngIf="(key !== 'id' && key !== 'query_id' && key !== 'method')">
-                    <p-accordionTab header=" {{key}}" [disabled]="!selectedQuery[key] && selectedQuery[key] != 0">
+                    <p-accordionTab header=" {{key}}" [disabled]="!selectedQuery[key] && selectedQuery[key] !== 0">
                         {{selectedQuery[key]}}
                     </p-accordionTab>
                 </div>

@@ -1,17 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Transcript, TranscriptStatus } from '../models/transcript';
 
 @Component({
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'tr[sas-transcript-progress]',
     templateUrl: './transcript-progress.component.html',
     styleUrls: ['./transcript-progress.component.scss'],
 })
-export class TranscriptProgressComponent implements OnInit {
+export class TranscriptProgressComponent {
     @Input() transcript: Transcript;
 
     constructor() {}
-
-    ngOnInit() {}
 
     parseProgress(): number {
         if (this.transcript.status < 5) {

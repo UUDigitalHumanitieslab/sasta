@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { faLock, faUser, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnDestroy, OnInit {
+export class RegisterComponent implements OnDestroy {
     faLock = faLock;
     faUser = faUser;
     faEnvelope = faEnvelope;
@@ -31,13 +31,11 @@ export class RegisterComponent implements OnDestroy, OnInit {
         private messageService: MessageService
     ) {}
 
-    ngOnInit() {}
-
     ngOnDestroy() {
         this.onDestroy$.next();
     }
 
-    passwordSame() {
+    passwordSame(): boolean {
         return (
             this.password1 &&
             this.password2 &&
@@ -45,19 +43,19 @@ export class RegisterComponent implements OnDestroy, OnInit {
         );
     }
 
-    passwordMinLength() {
+    passwordMinLength(): boolean {
         return this.password1.length >= 8;
     }
 
-    containsSpace(str: string) {
+    containsSpace(str: string): boolean {
         return str.indexOf(' ') >= 0;
     }
 
-    usernameValid() {
+    usernameValid(): boolean {
         return !this.containsSpace(this.username);
     }
 
-    onError(err) {
+    onError(err: any): void {
         this.authService.isAuthenticated$.next(false);
         this.processing = false;
         let detailMsg;
@@ -79,7 +77,7 @@ export class RegisterComponent implements OnDestroy, OnInit {
         this.messageService.add(msg);
     }
 
-    register() {
+    register(): void {
         this.processing = true;
         this.authService
             .register(

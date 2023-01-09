@@ -35,7 +35,7 @@ export class MethodComponent implements OnInit {
         this.method$ = this.methodService.getMethod(this.id);
     }
 
-    showQuery(query: Query) {
+    showQuery(query: Query): void {
         this.selectedQuery = query;
         this.showDialog = true;
     }

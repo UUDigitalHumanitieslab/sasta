@@ -38,6 +38,7 @@ class TranscriptAdmin(admin.ModelAdmin):
     def has_corrections(self, obj):
         return obj.corrections is not None
 
+
 @admin.register(UploadFile)
 class UploadFileAdmin(admin.ModelAdmin):
     model = UploadFile

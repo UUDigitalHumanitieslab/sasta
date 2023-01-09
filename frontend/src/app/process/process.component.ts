@@ -5,6 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { interval, Observable, of, Subscription } from 'rxjs';
 import { catchError, concatMap, startWith } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
+import { Transcript } from '../models/transcript';
 import { CorpusService } from '../services/corpus.service';
 import { ParseService } from '../services/parse.service';
 
@@ -51,8 +52,8 @@ export class ProcessComponent implements OnInit, OnDestroy {
         this.subscription$.unsubscribe();
     }
 
-    getCorpus() {
-        this.corpusService.get_by_id(this.id).subscribe(
+    getCorpus(): void {
+        this.corpusService.getByID(this.id).subscribe(
             (res) => {
                 this.corpus = res;
             },
@@ -60,16 +61,14 @@ export class ProcessComponent implements OnInit, OnDestroy {
         );
     }
 
-    async full_process() {
+    async fullProcess(): Promise<void> {
         this.processing = true;
         this.stepsIndex = 0;
         this.corpusService
-            .convert_all(this.corpus.id)
+            .convertAll(this.corpus.id)
             .pipe(
-                // tslint:disable-next-line: deprecation
-                // concat(this.corpusService.parse_all(this.corpus.id)))
                 concatMap((_) =>
-                    this.corpusService.parse_all_async(this.corpus.id)
+                    this.corpusService.parseAllAsync(this.corpus.id)
                 ),
                 catchError((err) => of('error', err))
             )
@@ -89,7 +88,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
             );
     }
 
-    fullSingle(transcript) {
+    fullSingle(transcript: Transcript): void {
         this.parseService.fullProcess(transcript).subscribe(
             (next) => console.log(next),
             (err) => console.error(err)
