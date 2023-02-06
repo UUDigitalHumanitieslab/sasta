@@ -119,10 +119,11 @@ murmurhash==1.0.7
 numpy==1.22.0
     # via
     #   -r requirements.in
+    #   blis
     #   pandas
     #   spacy
     #   thinc
-oauthlib==3.2.1
+oauthlib==3.2.2
     # via requests-oauthlib
 openpyxl==3.0.10
     # via -r requirements.in
@@ -202,6 +203,7 @@ six==1.16.0
     #   click-repl
     #   django-livereload-server
     #   django-rest-auth
+    #   isodate
     #   python-dateutil
 smart-open==5.2.1
     # via pathy
