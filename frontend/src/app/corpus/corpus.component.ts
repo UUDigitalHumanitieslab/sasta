@@ -59,7 +59,6 @@ export class CorpusComponent implements OnInit, OnDestroy {
         this.methodService
             .getMethods()
             .pipe(
-                takeUntil(this.onDestroy$),
                 switchMap((methods) => {
                     this.tams = methods;
                     return this.corpusService.getByID(this.id);
@@ -71,7 +70,8 @@ export class CorpusComponent implements OnInit, OnDestroy {
                     );
                     return this.interval$;
                 }),
-                startWith(0)
+                startWith(0),
+                takeUntil(this.onDestroy$)
             )
             .subscribe(() => {
                 this.getCorpus();
