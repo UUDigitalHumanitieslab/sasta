@@ -1,9 +1,11 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy } from '@angular/core';
-import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import * as _ from 'lodash';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'sas-login',
@@ -23,6 +25,8 @@ export class LoginComponent implements OnDestroy {
 
     onDestroy$: Subject<boolean> = new Subject<boolean>();
 
+    errors$ = new Subject<string[]>();
+
     constructor(private authService: AuthService, private router: Router) {}
 
     ngOnDestroy() {
@@ -35,20 +39,22 @@ export class LoginComponent implements OnDestroy {
         this.authService
             .login(this.username, this.password)
             .pipe(takeUntil(this.onDestroy$))
-            .subscribe(
-                () => {},
-                (err) => {
-                    this.messages.push({
-                        severity: 'error',
-                        summary: 'Login failed.',
-                        detail: err.error.non_field_errors,
-                    });
-                    console.log('Http Error', err);
-                },
-                () => {
-                    this.processing = false;
-                    this.router.navigate(['/corpora']);
-                }
-            );
+            .subscribe(this.handleSuccess, this.handleError);
     }
+
+    handleSuccess = (): void => {
+        this.processing = false;
+        this.router.navigate(['/corpora']);
+    };
+
+    handleError = (errorResponse: HttpErrorResponse): void => {
+        this.processing = false;
+        if (errorResponse && errorResponse.status === 400) {
+            this.errors$.next(_.flatten(_.values(errorResponse.error)));
+        } else {
+            this.errors$.next([
+                'Unknown error logging in. If this problem persists, please contact the developers.',
+            ]);
+        }
+    };
 }
