@@ -5,6 +5,17 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.2] - 2022-02-15
+
+### Changed
+- Various frontend refactors
+
+### Fixed
+- Various bugfixes
+
+### Security
+-   Fixed multipe vulnerabilities in backend and frontend.
+
 ## [0.6.1] - 2022-09-16
 
 ### Fixed
