@@ -3,7 +3,7 @@
 Dit document beschrijft het SASTA Input Formaat (SIF). In dit formaat kunnen transcripten aangeleverd worden voor analyse in SASTA.
 
 ## 1 - Het bestand
-Het transcript dient te worden aangeleverd als een Microsoft Word  `.docx`-bestand. Een `.txt`-estand mt `utf-8`-encoding wordt ook geaccepteerd. De naam van het bestand wordt gebruikt als titel van het transcript binnen SASTA. Zo zal het bestand `sample 12.docx` het transcript `sample 12` opleveren.
+Het transcript dient te worden aangeleverd als een Microsoft Word  `.docx`-bestand. Een `.txt`-bestand met `utf-8`-encoding wordt ook geaccepteerd. De naam van het bestand wordt gebruikt als titel van het transcript binnen SASTA. Zo zal het bestand `sample 12.docx` het transcript `sample 12` opleveren.
 
 ## 2 - Sprekers
 Het transcript kan uitingen van meerdere sprekers bevatten. Ken elke spreker een unieke drieletterige code toe; bijvoorbeeld CHI (child), INV (interviewer) of PMA (patient met afasie).
@@ -72,10 +72,43 @@ Uitingen kunnen geannoteerd worden volgens de [CHAT handleiding][chat-manual].
 [chat-manual]: https://talkbank.org/manuals/CHAT.pdf
 Voor lijsten met veel gebruikte annotaties, zie TODO: ASTA, STAP, TARSP-specifieke annotaties.
 
-### 4.3 Voorbeelden
-```
-1 | CHI: Ja we gingen daar ook schaatsen.
-INV: ja
-9 | PMA: was niks aan de hand meer
+### 4.3 Anonimiseren
+De transcripten kunnen gevoelige informatie over participanten bevatten. SASTA staat toe dat anonimisatiecodes gebruikt worden. In de bewerkingstappen die SASTA uitvoert worden deze omgezet in grammaticaal gelijke. De anonimisaties volgen een vast patroon:
 
 ```
+<optioneel: prefix>CODE<optioneel: affix><optioneel: nummer 1-4>
+```
+
+Dezelfde combinatie van CODE + nummering zal steeds hetzelfde woord vervangen worden. Zo blijft een transcript ook voor de menselijke gebruiker duidelijk volgbaar.
+Voorbeelden:
+
+```
+Ik heet NAAM1. -> Ik heet Jan.
+Ik heet VOORNAAM1. -> Ik heet Jan.
+Ik heet NAAMKIND. -> Ik heet Maria.
+```
+Merk op dat NAAM1 en VOORNAAM1 dezelfde vervanging toegewezen krijgen. Dit komt omdat de combinatie code (`NAAM`) en nummering (`1`) gelijk is.
+SASTA houdt intern bij waar vervangingen gepleegd zijn. Deze zijn terug te vinden in de CHAT-bestanden op de `%xano` tier. Voorbeeld:
+
+```
+*PMA:	uh buiten Breda
+%xano:	10|PLAATS1|Breda
+```
+Op de tiende positie in de zin stond `PLAATS1`, en dit is vervangen door `Breda`.
+
+
+### 4.4 Beschikbare anonimisatiecodes
+- Categorie: plaatsnaam
+    - codes: `PLAATS`, `PLAATSNAAM`
+    - vervangingen: `Utrecht, Breda, Leiden, Maastricht, Arnhem`
+    - voorbeeld: `Ik woon in PLAATS2 -> Ik woon in Leiden`
+- Categorie: voornaam
+    - codes: `NAAM`, `BROER`,`ZUS`, `KIND`
+    - vervangingen: `Maria, Jan, Anna, Esther, Pieter, Sam`
+    - voorbeeld: `Dat zei BROER1 -> Dat zei Jan`
+    - voorbeeld: `Dat zei mijn TWEELINGZUS1 ->  Dat zei Jan`
+- Categorie: achternaam
+    - codes: `ACHTERNAAM`
+    - vervangingen: `Jansen, Hendriks, Dekker, Dijkstra, Veenstra`
+    - voorbeeld: `Dat zei NAAM ACHTERNAAM -> Dat zei Maria Jansen`
+
