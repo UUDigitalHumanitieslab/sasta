@@ -10,6 +10,7 @@ import { MethodComponent } from '../method/method.component';
 import { ProcessComponent } from '../process/process.component';
 import { UploadComponent } from '../upload/upload.component';
 import { AuthGuard } from './auth.guard';
+import { ManualComponent } from '../manual/manual.component';
 
 const routes: Routes = [
     {
@@ -58,6 +59,10 @@ const routes: Routes = [
     {
         path: 'confirm-email/:key',
         component: VerifyComponent,
+    },
+    {
+        path: 'manual',
+        component: ManualComponent,
     },
     {
         path: '',

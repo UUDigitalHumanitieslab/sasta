@@ -30,6 +30,7 @@ import { CorpusComponent } from './corpus/corpus.component';
 import { ListCorpusComponent } from './corpus/list-corpus.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
+import { ManualModule } from './manual/manual.module';
 import { MenuComponent } from './menu/menu.component';
 import { ListMethodComponent } from './method/list-method.component';
 import { MethodComponent } from './method/method.component';
@@ -93,6 +94,8 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         PanelModule,
         ProgressSpinnerModule,
         StepsModule,
+        // Feature modules
+        ManualModule,
     ],
     providers: [ConfirmationService, MessageService, XmlParseService],
     bootstrap: [AppComponent],

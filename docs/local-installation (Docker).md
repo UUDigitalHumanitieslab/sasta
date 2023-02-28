@@ -9,6 +9,7 @@ You need to install the following software:
 # Cloning SASTADEV
 
 SASTA requires SASTADEV to run. Clone it (from root directory).
+
 SSH:
 
 ```console

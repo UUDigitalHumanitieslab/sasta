@@ -69,7 +69,7 @@ INV: Waar ben je vandaag geweest?
 ### 4.2 Annoteren
 Uitingen kunnen geannoteerd worden volgens de [CHAT handleiding][chat-manual].
 
-[chat-manual]: https://talkbank.org/manuals/CHAT.pdf
+
 Voor lijsten met veel gebruikte annotaties, zie TODO: ASTA, STAP, TARSP-specifieke annotaties.
 
 ### 4.3 Voorbeelden
@@ -79,3 +79,5 @@ INV: ja
 9 | PMA: was niks aan de hand meer
 
 ```
+
+[chat-manual]: https://talkbank.org/manuals/CHAT.pdf

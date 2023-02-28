@@ -1,6 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+    faBook,
     faFileUpload,
     faFolder,
     faListAlt,
@@ -26,6 +27,7 @@ export class MenuComponent {
     faListAlt = faListAlt;
     faFileUpload = faFileUpload;
     faUserShield = faUserShield;
+    faBook = faBook;
     version = environment.appVersion;
 
     constructor(
