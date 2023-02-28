@@ -61,7 +61,7 @@ const routes: Routes = [
         component: VerifyComponent,
     },
     {
-        path: 'manual',
+        path: 'manual/:identifier',
         component: ManualComponent,
     },
     {
