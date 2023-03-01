@@ -12,7 +12,7 @@ import { ManualPage, ManualService } from '../services/manual.service';
 export class ManualComponent implements OnInit {
     manifest$ = this.manualService.manifest$.asObservable();
 
-    currentPage: Observable<ManualPage>;
+    currentPage$: Observable<ManualPage>;
 
     constructor(
         private manualService: ManualService,
@@ -20,7 +20,7 @@ export class ManualComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.currentPage = combineLatest([
+        this.currentPage$ = combineLatest([
             this.manifest$,
             this.activatedRoute.paramMap,
         ]).pipe(

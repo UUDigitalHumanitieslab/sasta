@@ -1,0 +1,4 @@
+- Kies in de menubalk de optie `Sign up`
+- Vul het formulier in, zorg voor een geldig e-mailadres
+- Als de registratie succesvol verlopen is, ontvangt u een email met instructies om uw e-mailadres te bevestigen
+- Na bevestigen kunt u inloggen door in de menubalk `Login` te kiezen en uw gebruikersnaam en wachtwoord op te geven

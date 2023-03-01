@@ -5,8 +5,8 @@
         <div class="columns">
             <sas-manual-nav class="column is-3"></sas-manual-nav>
             <div class="column is-9">
-                <h1 class="title">title</h1>
-                <div class="content" [ngClass]="{'is-loading':true}" innerHTML="<p>joejoe</p>">{{(currentPage | async) | json}}</div>
+                <h1 class="title">{{(currentPage$ | async)?.title}}</h1>
+                <div class="content" [ngClass]="{'is-loading':true}" [innerHTML]="(currentPage$ | async)?.content"></div>
             </div>
         </div>
     </div>

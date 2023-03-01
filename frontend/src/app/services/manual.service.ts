@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { marked } from 'marked';
 
 export interface ManualPageMetaData {
     title: string;
@@ -9,7 +11,7 @@ export interface ManualPageMetaData {
 }
 
 export interface ManualPage extends ManualPageMetaData {
-    content: string;
+    content: SafeHtml;
 }
 
 @Injectable({
@@ -19,7 +21,7 @@ export class ManualService {
     manifest$ = new Subject<ManualPageMetaData[]>();
     page$ = new Subject<ManualPage[]>();
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private domSanitizer: DomSanitizer) {
         this.getManifest().subscribe(
             (man) => this.manifest$.next(man),
             (error) => console.error(error)
@@ -31,7 +33,14 @@ export class ManualService {
         const url = this.docsPath(file);
         return this.http
             .get(url, { responseType: 'text' })
-            .pipe(map((text) => ({ ...meta, content: text })));
+            .pipe(map((text) => ({ ...meta, content: this.parseMD(text) })));
+    }
+
+    private parseMD(raw: string): SafeHtml {
+        const html = marked
+            .parse(raw)
+            .replace(/<a href=/g, '<a target="_blank" href=');
+        return this.domSanitizer.bypassSecurityTrustHtml(html);
     }
 
     private getManifest(): Observable<ManualPageMetaData[]> {
