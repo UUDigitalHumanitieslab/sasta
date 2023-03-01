@@ -1,0 +1,16 @@
+site_name: SASTA Documentatie
+
+theme:
+    name: material
+    language: nl
+
+nav:
+    - Home: 'index.md'
+    - Gebruikersaccount: 'accounts.md'
+    - Uploaden van transcripten: 'upload.md'
+    - Voorbewerking (process): 'process.md'
+    - Corpus-overzicht: 'corpora.md'
+    - Transcript-overzicht: 'transcript.md'
+    - Invoerformaten:
+        - Anonimisatie: 'input-formats/anonimisatie.md'
+        - SASTA Input Format (SIF): 'input-formats/sif.md'

@@ -1,6 +1,11 @@
+# Voorbewerking van transcripten
 Om het transcript geschikt te maken voor analyse, voer SASTA een aantal bewerkingen uit. Het transcript wordt onder andere opgeschoond, en er wordt geparseerd met behulp van Alpino.
 
-# Het statusoverzicht
+## Starten
+- Na het uploaden komt u automatisch op de `process` pagina van het corpus terecht. U kunt deze ook bereiekn door op de corpus-pagina `re(process)` te kiezen.
+- Kies `Process` om de bewerkingen te starten.
+
+## Het statusoverzicht
 Op de `Process` pagina van een corpus vindt u de realtime status van de SASTA bewerkingen. Een transcript is gereed voor analyse wanneer:
 - De kolom `status` de waarde `parsed` heeft
 - De kolommen `convert` en `parse` beide een groen vinkje hebben
