@@ -14,7 +14,6 @@ SASTA werkt optimaal wanneer het volledige transcript wordt aangeleverd. Dus ook
 Er zijn twee manieren om een zin te markeren voor analyse:
 
 1. De spreker van de uiting
-
 2. De uiting nummeren, zie [uitingen](#uitingen)
 
 Om alle uitingen van spreker PMA te analyseren, voeg je de volgende regel in:

@@ -9,6 +9,7 @@ Op deze balk vindt u de naam van het corpus, en de gekozen analysemethode.
 
 ### Acties
 Er zijn een aantal acties die u kunt uitvoeren op een corpus:
+
 - `add transcript(s)`. Als u hiervoor kiest wordt u naar de `upload` pagina omgeleid, waar vast het juiste corpus geselecteerd is.
 - `download` genereert een ZIP bestand van het gehele corpus met daarin per transcript:
 	- Het CHAT bestand
@@ -17,6 +18,7 @@ Er zijn een aantal acties die u kunt uitvoeren op een corpus:
 
 ### Transcripten
 In deze tabel vindt u informatie over de transcripten in het corpus, in de volgende kolommen:
+
 - `Transcript`: de naam van het transcript. Als u op deze kolom klikt navigeert u naar de pagina van het transcript
 - `Status`: de status van de SASTA bewerkingen. Als hier een andere waarde dan `parsed` voorkomt, zijn de bewerkingen nog bezig, of is er iets misgegaan. Kies dan voor `re(process)`
 - Utterances: het totaal aantal uitingen in het transcript

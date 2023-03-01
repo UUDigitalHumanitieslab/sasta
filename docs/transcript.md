@@ -3,6 +3,7 @@ Op de transcriptpagina vindt u informatie over het gekozen transcript, en kunt u
 
 ## Titelbalk
 In de titelbalk vindt u de titel van het transcript. Onder de titel vindt u relevante informatie over het transcript en de SASTA bewerkingen:
+
 - Status: de status van de SASTA bewerkingen
 - Analysing: hoeveel uitingen (van het totaal aantal uitingen) door SASTA genalyseerd worden [link naar selecting speakers]
 - Analysing speakers: de codes van de sprekers wiens uitingen worden geanalyseerd
@@ -12,6 +13,7 @@ In de titelbalk vindt u de titel van het transcript. Onder de titel vindt u rele
 ## Scoring
 In dit paneel bevindt zich de hoofdfunctionaliteit van SASTA: het genereren van automatische analyses.
 Er is een drietal opties. De onderliggende analyse is steeds dezelfde, maar het uitvoerformaat verschilt:
+
 - Annotate (xlsx)
 	- Genereert een bestand in het Sasta Annotatie Formaat (SAF) [link]
 	- Dit bestandsformaat wordt ook gebruikt voor handmatige verbetering van de analyse
@@ -27,6 +29,7 @@ Er is een drietal opties. De onderliggende analyse is steeds dezelfde, maar het 
 
 ## Utterances
 U kunt het paneel met uitingen openklikken door op de balk te klikken. Per uiting in het transcript wordt weergeven:
+
 - Speaker: de code van de spreker
 - Sentence: de (opgeschoonde) uiting
 - For analysis: een vinkje wanneer SASTA de uiting analyseert, een streepje wanneer dit niet het geval is
@@ -34,6 +37,7 @@ U kunt het paneel met uitingen openklikken door op de balk te klikken. Per uitin
 
 ## Files
 In dit paneel heeft u toegang tot enkele van de bestanden die SASTA gebruikt voor een transcript:
+
 - CHAT: het door SASTA bewerkte inputbestand, in CHAT formaat
 - Alpino parse: het Alpino geparseerde bestand, in LASSY XML formaat
 - corrected Alpino parse: het door SASTA verbeterde geparseerde bestand, in LASSY XML formaat

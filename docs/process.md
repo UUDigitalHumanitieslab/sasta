@@ -7,6 +7,7 @@ Om het transcript geschikt te maken voor analyse, voer SASTA een aantal bewerkin
 
 ## Het statusoverzicht
 Op de `Process` pagina van een corpus vindt u de realtime status van de SASTA bewerkingen. Een transcript is gereed voor analyse wanneer:
+
 - De kolom `status` de waarde `parsed` heeft
 - De kolommen `convert` en `parse` beide een groen vinkje hebben
 
