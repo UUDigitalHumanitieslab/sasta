@@ -8,7 +8,6 @@
                 <th>Code</th>
                 <th>Level</th>
                 <th>Item</th>
-                <th>Query</th>
                 <th class="has-text-right">Actions</th>
             </tr>
         </thead>
@@ -18,11 +17,6 @@
                 <td>{{query.query_id}}</td>
                 <td>{{query.level}}</td>
                 <td>{{query.item}}</td>
-                <td>
-                    <span *ngIf="query.query" class="icon is-small">
-                        <fa-icon [icon]="faCheck"></fa-icon>
-                    </span>
-                </td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
                         <button class="button is-primary" pTooltip="view query details" (click)="showQuery(query)">

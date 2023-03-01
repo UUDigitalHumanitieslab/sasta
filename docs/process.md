@@ -2,7 +2,7 @@
 Om het transcript geschikt te maken voor analyse, voer SASTA een aantal bewerkingen uit. Het transcript wordt onder andere opgeschoond, en er wordt geparseerd met behulp van Alpino.
 
 ## Starten
-- Na het uploaden komt u automatisch op de `process` pagina van het corpus terecht. U kunt deze ook bereiekn door op de corpus-pagina `re(process)` te kiezen.
+- Na het uploaden komt u automatisch op de `process` pagina van het corpus terecht. U kunt deze ook bereiken door op de corpus-pagina `re(process)` te kiezen.
 - Kies `Process` om de bewerkingen te starten.
 
 ## Het statusoverzicht

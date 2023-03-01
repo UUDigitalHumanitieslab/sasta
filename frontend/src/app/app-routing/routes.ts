@@ -60,10 +60,10 @@ const routes: Routes = [
         path: 'confirm-email/:key',
         component: VerifyComponent,
     },
-    {
-        path: 'manual/:identifier',
-        component: ManualComponent,
-    },
+    // {
+    //     path: 'manual/:identifier',
+    //     component: ManualComponent,
+    // },
     {
         path: '',
         redirectTo: '/corpora',

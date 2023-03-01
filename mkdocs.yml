@@ -1,8 +1,11 @@
 site_name: SASTA Documentatie
+repo_url: https://github.com/UUDigitalHumanitieslab/sasta
 
 theme:
     name: material
     language: nl
+    logo: assets/uu.svg
+    favicon: assets/favicon.svg
 
 nav:
     - Home: 'index.md'
@@ -14,3 +17,4 @@ nav:
     - Invoerformaten:
         - Anonimisatie: 'input-formats/anonimisatie.md'
         - SASTA Input Format (SIF): 'input-formats/sif.md'
+        - Voorbeeldbestanden: 'input-formats/voorbeelden.md'

@@ -1,11 +1,11 @@
 # Uploaden van transcripten
 
 ## Invoerformaat
-SASTA accepteert drie invoer,- en bestandsformaten:
+SASTA accepteert drie invoerformaten:
 
 1. CHAT
-2. Microsoft Word (`.docx`) bestanden in het SASTA Input Formaat [link]
-3. Platte tekst in het [SASTA Input Formaat](input-formats/sif.md)
+2. Microsoft Word (`.docx`) bestanden in het SASTA Input Formaat [SASTA Input Formaat](input-formats/sif.md)
+3. Platte tekst bestanden (`.txt`) in het [SASTA Input Formaat](input-formats/sif.md)
 
 ## Corpus kiezen
 SASTA groepeert transcripten in verzamelingen: **corpora**. Wat deze verzameling representeert is aan u. U kunt ervoor kiezen al uw transcripten in één verzameling op te slaan, of dat bijvoorbeeld te doen per sessie of participant.
