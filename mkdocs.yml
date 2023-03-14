@@ -19,3 +19,5 @@ nav:
         - Anonimisatie: 'input-formats/anonimisatie.md'
         - SASTA Input Format (SIF): 'input-formats/sif.md'
         - Voorbeeldbestanden: 'input-formats/voorbeelden.md'
+    - Uitvoerformaten:
+        - SASTA Output Formaat (SAF): 'annotaties/saf.md'
