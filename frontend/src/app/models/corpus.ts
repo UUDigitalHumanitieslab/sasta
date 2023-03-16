@@ -1,14 +1,17 @@
-import { Transcript } from './transcript';
+import { ListedTranscript } from './transcript';
 
-export interface Corpus {
+export interface ListedCorpus {
     id?: number;
     name: string;
+    method_category: number;
+    num_transcripts: number;
+    username?: string;
+}
+
+export interface Corpus extends Omit<ListedCorpus, 'num_transcripts'> {
     status: 'created';
     date_added?: Date;
     date_modified?: Date;
-    files?: File | { name: string }[];
     default_method?: number;
-    method_category: number;
-    transcripts?: Transcript[];
-    username?: string;
+    transcripts?: ListedTranscript[];
 }

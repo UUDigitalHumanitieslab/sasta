@@ -3,7 +3,7 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { interval, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { Corpus } from '../models/corpus';
+import { ListedCorpus } from '../models/corpus';
 import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 
@@ -17,7 +17,7 @@ const UPDATE_INTERVAL = 10000;
 })
 export class ListCorpusComponent implements OnInit, OnDestroy {
     interval$: Observable<number> = interval(UPDATE_INTERVAL);
-    corpora$: Observable<Corpus[]>;
+    corpora$: Observable<ListedCorpus[]>;
     faTrash = faTrash;
     faPlus = faPlus;
 
@@ -45,7 +45,7 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
         this.corpusService.init();
     }
 
-    confirmDeleteCorpus(event: Event, corpus: Corpus): void {
+    confirmDeleteCorpus(event: Event, corpus: ListedCorpus): void {
         event.stopImmediatePropagation();
         this.confirmationService.confirm({
             target: event.target,
@@ -57,7 +57,7 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
         });
     }
 
-    deleteCorpus(corpus: Corpus): void {
+    deleteCorpus(corpus: ListedCorpus): void {
         this.corpusService.delete(corpus).subscribe(
             () => {
                 this.messageService.add({
