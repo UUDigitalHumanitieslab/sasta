@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import {
     faFileUpload,
@@ -8,7 +8,7 @@ import {
     faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../environments/environment';
-import { animations, showState } from '../animations';
+import { animations, ShowState } from '../animations';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -17,8 +17,8 @@ import { AuthService } from '../services/auth.service';
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit {
-    burgerShow: showState;
+export class MenuComponent {
+    burgerShow: ShowState;
     burgerActive = false;
 
     faUser = faUser;
@@ -34,13 +34,11 @@ export class MenuComponent implements OnInit {
         private router: Router
     ) {}
 
-    ngOnInit() {}
-
-    isAuthenticated() {
+    isAuthenticated(): boolean {
         return this.authService.isAuthenticated$.getValue();
     }
 
-    logout() {
+    logout(): void {
         this.authService.logout().subscribe(
             (res) => {
                 this.router.navigate(['/login']);
@@ -49,7 +47,7 @@ export class MenuComponent implements OnInit {
         );
     }
 
-    toggleBurger() {
+    toggleBurger(): void {
         if (!this.burgerActive) {
             // make it active to make it visible (add a class to
             // override it being hidden for smaller screens)

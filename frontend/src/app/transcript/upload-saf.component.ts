@@ -1,78 +1,82 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Transcript } from '../models/transcript';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { TranscriptService } from '../services/transcript.service';
-import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+} from '@angular/core';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { MessageService } from 'primeng/api';
+import { Transcript } from '../models/transcript';
+import { AnnotationsService } from '../services/annotations.service';
 
 @Component({
-  selector: 'sas-upload-saf',
-  templateUrl: './upload-saf.component.html',
-  styleUrls: ['./upload-saf.component.scss']
+    selector: 'sas-upload-saf',
+    templateUrl: './upload-saf.component.html',
+    styleUrls: ['./upload-saf.component.scss'],
 })
-export class UploadSafComponent implements OnInit, OnDestroy {
+export class UploadSafComponent implements OnDestroy {
+    @Input() transcript: Transcript;
+    @Input() display: boolean;
 
-  @Input() transcript: Transcript;
-  @Input() display: boolean;
+    @Output() displayChange = new EventEmitter();
 
-  @Output() displayChange = new EventEmitter();
+    content: File;
+    fileName: string;
+    uploading: boolean;
+    faUpload = faUpload;
 
-  content: File;
-  fileName: string;
-  uploading: boolean;
-  faUpload = faUpload;
+    parseErrors: string[];
 
-  parseErrors: string[];
+    constructor(
+        private messageService: MessageService,
+        private annotationsService: AnnotationsService
+    ) {}
 
-  constructor(private transcriptService: TranscriptService, private messageService: MessageService) { }
-
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-    this.displayChange.unsubscribe();
-  }
-
-  onClose() {
-    this.parseErrors = null;
-    this.displayChange.emit(false);
-  }
-
-  header() {
-    return `Upload corrections for ${this.transcript.name}`;
-  }
-
-  onFileChange(fileInput: HTMLInputElement) {
-    this.parseErrors = null;
-    this.content = fileInput.files[0];
-    this.fileName = this.content.name;
-  }
-
-  upload() {
-    this.parseErrors = null;
-    this.uploading = true;
-    this.transcriptService
-      .upload_annotations(this.fileName, this.content, this.transcript)
-      .subscribe(
-        () => {
-          this.uploading = false;
-          this.onClose();
-          this.messageService.add({
-            severity: 'success',
-            summary: `Annotations uploaded for ${this.transcript.name}`,
-          });
-        },
-        error => this.handleErrors(error)
-      );
-  }
-
-  handleErrors(httpError: HttpErrorResponse) {
-    this.uploading = false;
-    if (Array.isArray(httpError.error)) {
-      this.parseErrors = httpError.error;
-    } else {
-      this.parseErrors = [httpError.error];
+    ngOnDestroy() {
+        this.displayChange.unsubscribe();
     }
-  }
 
+    onClose(): void {
+        this.parseErrors = null;
+        this.displayChange.emit(false);
+    }
+
+    header(): string {
+        return `Upload corrections for ${this.transcript.name}`;
+    }
+
+    onFileChange(fileInput: HTMLInputElement): void {
+        this.parseErrors = null;
+        this.content = fileInput.files[0];
+        this.fileName = this.content.name;
+    }
+
+    upload(): void {
+        this.parseErrors = null;
+        this.uploading = true;
+        this.annotationsService
+            .upload(this.fileName, this.content, this.transcript)
+            .subscribe(
+                () => {
+                    this.uploading = false;
+                    this.onClose();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: `Annotations uploaded for ${this.transcript.name}`,
+                    });
+                },
+                (error) => this.handleErrors(error)
+            );
+    }
+
+    handleErrors(httpError: HttpErrorResponse): void {
+        this.uploading = false;
+        if (Array.isArray(httpError.error)) {
+            this.parseErrors = httpError.error;
+        } else {
+            this.parseErrors = [httpError.error];
+        }
+    }
 }

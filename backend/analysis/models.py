@@ -183,6 +183,12 @@ class Transcript(models.Model):
             return self.parsed_content
         return self.corrected_content
 
+    def convertable(self):
+        return self.status in (self.CREATED, self.CONVERSION_FAILED)
+
+    def parseable(self):
+        return self.status in (self.CONVERTED, self.PARSING_FAILED)
+
 
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)

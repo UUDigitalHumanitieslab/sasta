@@ -15,7 +15,16 @@ import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Corpus } from '../models/corpus';
 import { Method } from '../models/method';
-import { Transcript, TranscriptStatus } from '../models/transcript';
+import {
+    AnalysisRun,
+    Transcript,
+    TranscriptStatus,
+} from '../models/transcript';
+import {
+    AnalysisService,
+    AnnotationOutputFormat,
+} from '../services/analysis.service';
+import { AnnotationsService } from '../services/annotations.service';
 import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 import { MethodService } from '../services/method.service';
@@ -60,6 +69,8 @@ export class TranscriptComponent implements OnInit, OnDestroy {
         private transcriptService: TranscriptService,
         private corpusService: CorpusService,
         private methodService: MethodService,
+        private analysisService: AnalysisService,
+        private annotationsService: AnnotationsService,
         private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService,
@@ -70,18 +81,18 @@ export class TranscriptComponent implements OnInit, OnDestroy {
         );
     }
 
-    allowCorrectionUpload() {
+    allowCorrectionUpload(): boolean {
         return (
             this.transcript.status === TranscriptStatus.PARSED &&
-            this.transcript.latest_run
+            this.transcript.latest_run !== undefined
         );
     }
 
-    allowCorrectionReset() {
-        return this.transcript.latest_run;
+    allowCorrectionReset(): boolean {
+        return this.transcript.latest_run !== undefined;
     }
 
-    allowScoring() {
+    allowScoring(): boolean {
         return this.transcript.status === TranscriptStatus.PARSED;
     }
 
@@ -93,23 +104,23 @@ export class TranscriptComponent implements OnInit, OnDestroy {
         this.onDestroy$.next();
     }
 
-    loadData() {
+    loadData(): void {
         this.transcriptService
-            .get_by_id(this.id)
+            .getByID(this.id)
             .pipe(
                 takeUntil(this.onDestroy$),
                 // get transcript
                 switchMap((t: Transcript) => {
                     this.transcript = t;
-                    return this.corpusService.get_by_id(t.corpus); // get corpus
+                    return this.corpusService.getByID(t.corpus); // get corpus
                 }),
                 switchMap((c: Corpus) => {
                     this.corpus = c;
-                    return this.methodService.get_by_id(c.default_method); // get default method
+                    return this.methodService.getMethod(c.default_method); // get default method
                 }),
                 switchMap((m: Method) => {
                     this.currentTam = m;
-                    return this.methodService.list(); // get all methods
+                    return this.methodService.getMethods(); // get all methods
                 })
             )
             .subscribe((tams: Method[]) => {
@@ -121,14 +132,14 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             });
     }
 
-    downloadFile(data: any, filename: string, mimetype: string) {
+    downloadFile(data: any, filename: string, mimetype: string): void {
         const blob = new Blob([data], { type: mimetype });
         saveAs(blob, filename);
     }
 
-    downloadLatestAnnotations() {
-        this.transcriptService
-            .latest_annotations(this.id)
+    downloadLatestAnnotations(): void {
+        this.annotationsService
+            .latest(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe((res) => {
                 this.downloadFile(
@@ -139,17 +150,17 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             });
     }
 
-    resetAnnotations() {
-        this.transcriptService
-            .reset_annotations(this.id)
+    resetAnnotations(): void {
+        this.annotationsService
+            .reset(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(() => this.loadData());
     }
 
-    annotateTranscript(outputFormat: 'xlsx' | 'cha') {
+    annotateTranscript(outputFormat: AnnotationOutputFormat): void {
         this.querying = true;
-        this.corpusService
-            .annotate_transcript(this.id, this.currentTam.id, outputFormat)
+        this.analysisService
+            .annotate(this.id, this.currentTam.id.toString(), outputFormat)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
@@ -192,10 +203,10 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             );
     }
 
-    queryTranscript() {
+    queryTranscript(): void {
         this.querying = true;
-        this.corpusService
-            .query_transcript(this.id, this.currentTam.id)
+        this.analysisService
+            .query(this.id, this.currentTam.id.toString())
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
@@ -224,10 +235,10 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             );
     }
 
-    generateForm() {
+    generateForm(): void {
         this.querying = true;
-        this.corpusService
-            .generate_form_transcript(this.id, this.currentTam.id)
+        this.analysisService
+            .generateForm(this.id, this.currentTam.id.toString())
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {
@@ -256,7 +267,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             );
     }
 
-    deleteTranscript() {
+    deleteTranscript(): void {
         const corpusId = this.corpus.id;
         this.transcriptService
             .delete(this.id)
@@ -282,38 +293,38 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             );
     }
 
-    chatFileAvailable(transcript): boolean {
+    chatFileAvailable(transcript: Transcript): boolean {
         return [TranscriptStatus.CONVERTED, TranscriptStatus.PARSED].includes(
             transcript.status
         );
     }
 
-    lassyFileAvailable(transcript): boolean {
+    lassyFileAvailable(transcript: Transcript): boolean {
         return transcript.status === TranscriptStatus.PARSED;
     }
 
-    showChat() {
+    showChat(): void {
         window.open(this.transcript.content, '_blank');
     }
 
-    showLassy() {
+    showLassy(): void {
         window.open(this.transcript.parsed_content, '_blank');
     }
 
-    showCorrectedLassy() {
+    showCorrectedLassy(): void {
         window.open(this.transcript.corrected_content, '_blank');
     }
 
-    showCorrectionsUpload() {
+    showCorrectionsUpload(): void {
         this.displayCorrUpload = true;
     }
 
-    onCorrectionsUploadClose(event) {
+    onCorrectionsUploadClose(event: boolean): void {
         this.displayCorrUpload = event;
         this.loadData();
     }
 
-    numUtterancesAnalysed() {
+    numUtterancesAnalysed(): number {
         // Count the number of utterances that will be analysed
         // Uses reduce to efficiently find the number
         return this.transcript.utterances.reduce(

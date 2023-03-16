@@ -3,7 +3,7 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { interval, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { Corpus } from '../models/corpus';
+import { ListedCorpus } from '../models/corpus';
 import { AuthService } from '../services/auth.service';
 import { CorpusService } from '../services/corpus.service';
 
@@ -16,10 +16,12 @@ const UPDATE_INTERVAL = 10000;
     styleUrls: ['./list-corpus.component.scss'],
 })
 export class ListCorpusComponent implements OnInit, OnDestroy {
-    private subscription$: Subscription;
     interval$: Observable<number> = interval(UPDATE_INTERVAL);
+    corpora$: Observable<ListedCorpus[]>;
     faTrash = faTrash;
     faPlus = faPlus;
+
+    private subscription$: Subscription;
 
     constructor(
         public corpusService: CorpusService,
@@ -33,16 +35,17 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.corpora$ = this.corpusService.getCorpora();
         this.subscription$ = this.interval$
             .pipe(startWith(0))
             .subscribe(() => this.refreshCorpora());
     }
 
-    refreshCorpora() {
-        this.corpusService.updateCorpora();
+    refreshCorpora(): void {
+        this.corpusService.init();
     }
 
-    confirmDeleteCorpus(event: Event, corpus: Corpus) {
+    confirmDeleteCorpus(event: Event, corpus: ListedCorpus): void {
         event.stopImmediatePropagation();
         this.confirmationService.confirm({
             target: event.target,
@@ -53,7 +56,8 @@ export class ListCorpusComponent implements OnInit, OnDestroy {
             accept: () => this.deleteCorpus(corpus),
         });
     }
-    deleteCorpus(corpus: Corpus) {
+
+    deleteCorpus(corpus: ListedCorpus): void {
         this.corpusService.delete(corpus).subscribe(
             () => {
                 this.messageService.add({

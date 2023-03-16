@@ -8,26 +8,26 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
 
 describe('CorpusComponent', () => {
-  let component: CorpusComponent;
-  let fixture: ComponentFixture<CorpusComponent>;
+    let component: CorpusComponent;
+    let fixture: ComponentFixture<CorpusComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [CorpusComponent],
-      imports: [FontAwesomeModule, HttpClientTestingModule, RouterTestingModule],
-      providers: [MessageService]
-    })
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            schemas: [NO_ERRORS_SCHEMA],
+            declarations: [CorpusComponent],
+            imports: [FontAwesomeModule, HttpClientTestingModule, RouterTestingModule],
+            providers: [MessageService]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CorpusComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CorpusComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

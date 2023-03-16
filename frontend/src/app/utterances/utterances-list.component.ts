@@ -1,19 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
     faCheck,
     faMinus,
     faProjectDiagram,
     faSearch,
+    IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import { Transcript, Utterance } from '../models/transcript';
 import * as _ from 'lodash';
+import { Transcript, Utterance } from '../models/transcript';
 
 @Component({
     selector: 'sas-utterances-list',
     templateUrl: './utterances-list.component.html',
     styleUrls: ['./utterances-list.component.scss'],
 })
-export class UtterancesListComponent implements OnInit {
+export class UtterancesListComponent {
     @Input()
     set transcript(transcript: Transcript) {
         this.sortedUtterances = _.sortBy(transcript.utterances, (t) => t.uttno);
@@ -32,20 +33,18 @@ export class UtterancesListComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit(): void {}
-
-    analysisIcon(u: Utterance) {
+    analysisIcon(u: Utterance): IconDefinition {
         return u.for_analysis ? faCheck : faMinus;
     }
 
-    showTree(utterance: Utterance) {
+    showTree(utterance: Utterance): void {
         this.loadingTree = true;
         this.treeSentence = utterance.sentence;
         this.treeXml = utterance.parse_tree;
         this.loadingTree = false;
     }
 
-    onCloseTree() {
+    onCloseTree(): void {
         this.loadingTree = false;
         this.treeSentence = undefined;
         this.treeXml = undefined;

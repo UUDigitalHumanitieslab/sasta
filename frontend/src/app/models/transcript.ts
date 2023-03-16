@@ -1,4 +1,4 @@
-interface AnalysisRun {
+export interface AnalysisRun {
     id: number;
     created: Date;
     annotation_file: string;
@@ -17,6 +17,7 @@ export interface Utterance {
     parse_tree: string;
 }
 
+// eslint-disable-next-line no-shadow
 export enum TranscriptStatus {
     UNKNOWN,
     CREATED,
@@ -28,12 +29,9 @@ export enum TranscriptStatus {
     PARSING_FAILED,
 }
 
-export interface Transcript {
+export interface ListedTranscript {
     id?: number;
     name: string;
-    content: string;
-    parsed_content: string;
-    corrected_content: string;
     status: number;
     status_name:
         | 'unknown'
@@ -46,7 +44,14 @@ export interface Transcript {
         | 'parsing-failed';
     date_added?: Date;
     corpus: number;
-    utterances?: Utterance[];
+    utterances: number[];
+}
+
+export interface Transcript extends Omit<ListedTranscript, 'utterances'> {
+    content: string;
+    parsed_content: string;
+    corrected_content: string;
+    utterances: Utterance[];
     latest_run?: AnalysisRun;
     latest_corrections?: AnalysisRun;
     target_speakers?: string;

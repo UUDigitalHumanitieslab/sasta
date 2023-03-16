@@ -21,8 +21,17 @@ export class UploadComponent implements OnInit {
     @ViewChild('fileInput') fileInput: FileUpload;
 
     files: File[];
-    fileAccept =
-        '.cha,.txt,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.zip,application/zip,application/x-zip-compressed,multipart/x-zip';
+    fileAccept = [
+        '.cha',
+        '.txt',
+        '.docx',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        '.zip',
+        'application/zip',
+        'application/x-zip-compressed',
+        'multipart/x-zip',
+    ].join(',');
 
     newCorpusName: string;
 
@@ -35,6 +44,8 @@ export class UploadComponent implements OnInit {
 
     categories: MethodCategory[];
     selectedCategory: MethodCategory;
+
+    categories$: Observable<MethodCategory[]>;
 
     _: any = _;
 
@@ -67,12 +78,11 @@ export class UploadComponent implements OnInit {
                     this.onSelectCorpus();
                 }
             });
-        this.methodService.listCategories().subscribe((res) => {
-            this.categories = res;
-        });
+
+        this.categories$ = this.methodService.getCategories();
     }
 
-    fullyFilled() {
+    fullyFilled(): boolean {
         return (
             (this.newCorpusName || this.selectedCorpus) &&
             this.selectedCategory &&
@@ -81,22 +91,22 @@ export class UploadComponent implements OnInit {
         );
     }
 
-    onSelectCorpus() {
+    onSelectCorpus(): void {
         if (this.selectedCorpus) {
-            this.selectedCategory = this.categories.find(
-                (c) => c.id === this.selectedCorpus.method_category
-            );
+            this.methodService
+                .getCategory(this.selectedCorpus.method_category)
+                .subscribe((next) => (this.selectedCategory = next));
             this.newCorpusName = undefined;
         } else {
             this.selectedCategory = undefined;
         }
     }
 
-    corpusNameInUse() {
+    corpusNameInUse(): boolean {
         return _.some(this.corpora, ['name', this.newCorpusName]);
     }
 
-    createCorpus$() {
+    createCorpus$(): Observable<any> {
         const newCorpus: Corpus = {
             name: this.newCorpusName,
             status: 'created',
@@ -105,12 +115,12 @@ export class UploadComponent implements OnInit {
         return this.corpusService.create(newCorpus);
     }
 
-    onUpload(event) {
+    onUpload(event: any): void {
         // Triggered by PrimeNG file upload component
         this.files = event.files;
     }
 
-    upload$(toCorpus: Corpus, file: File) {
+    upload$(toCorpus: Corpus, file: File): Observable<UploadFile> {
         const newUploadFile: UploadFile = {
             name: file.name,
             content: file,
@@ -120,21 +130,19 @@ export class UploadComponent implements OnInit {
         return this.uploadFileService.upload(newUploadFile);
     }
 
-    uploadFiles$(toCorpus: Corpus) {
-        const uploadFiles: UploadFile[] = this.files.map((f: File) => {
-            return {
-                name: f.name,
-                content: f,
-                status: 'uploading',
-                corpus: toCorpus,
-            };
-        });
+    uploadFiles$(toCorpus: Corpus): Observable<UploadFile[]> {
+        const uploadFiles: UploadFile[] = this.files.map((f: File) => ({
+            name: f.name,
+            content: f,
+            status: 'uploading',
+            corpus: toCorpus,
+        }));
         return forkJoin(
             uploadFiles.map((file) => this.uploadFileService.upload(file))
         );
     }
 
-    startUpload() {
+    startUpload(): void {
         this.uploading = true;
         let uploadSteps$: Observable<any>;
 
