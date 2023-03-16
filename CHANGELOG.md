@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Various frontend refactors
+- Corpus and transcript deivided in list and detail views to reduce data transfer
 
 ### Fixed
-- Various bugfixes
+- Resolved a bug were corpora were being constantly retrieved, leading to very high data transfer
 
 ### Security
 -   Fixed multipe vulnerabilities in backend and frontend.
