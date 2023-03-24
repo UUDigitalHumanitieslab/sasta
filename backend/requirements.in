@@ -7,8 +7,8 @@ djangorestframework
 django-livereload-server
 django-rest-auth[with_social]
 django-revproxy>=0.9.16
-lxml==4.7.1
-numpy<1.22
+lxml==4.9.1
+numpy<1.23
 pandas
 psycopg2
 pytest
