@@ -82,9 +82,19 @@ def example_utterances():
             'exp_tiers': {},
         },
         {
-            'text': 'Ik heet NAAM.',
-            'exp_text': 'Ik heet Maria.',
-            'exp_tiers': {'xano': '8|NAAM|Maria'},
+            'text': 'Ik ben NAAM uit PLAATSNAAM2.',
+            'exp_text': 'Ik ben Maria uit Leiden.',
+            'exp_tiers': {'xano': '16|PLAATSNAAM2|Leiden, 7|NAAM|Maria'},
+        },
+        {
+            'text': 'Ik ben BEROEP1 in het INSTELLING in LAND2.',
+            'exp_text': 'Ik ben chirurgh in het Diakonessenhuis in Japan.',
+            'exp_tiers': {'xano': '7|BEROEP1|chirurgh, 37|LAND2|Japan, 23|INSTELLING|Diakonessenhuis'},
+        },
+        {
+            'text': 'Ik heb STUDIE en STUDIE1 gestudeerd.',
+            'exp_text': 'Ik heb bedrijfskunde en informatica gestudeerd.',
+            'exp_tiers': {'xano': '7|STUDIE|bedrijfskunde, 24|STUDIE1|informatica'},
         },
         {
             'text': 'Ik heet NAAM1 en hij heet NAAM2.',
@@ -115,5 +125,10 @@ def example_utterances():
             'text': 'Bla bla # bla...',
             'exp_text': 'Bla bla (.) bla+...',
             'exp_tiers': {'xpct': '13|...|+..., 8|#|(.)'}
-        }
+        },
+        {
+            'text': 'Ik heet NAAM1 en hij heet NAAM2.',
+            'exp_text': 'Ik heet Jan en hij heet Anna.',
+            'exp_tiers': {'xano': '8|NAAM1|Jan, 24|NAAM2|Anna'},
+        },
     ]
