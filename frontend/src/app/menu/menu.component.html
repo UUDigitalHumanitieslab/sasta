@@ -60,7 +60,7 @@
             <div class="navbar-item">
                 {{version}}
             </div>
-            <div class="navbar-item" *ngIf="!(authService.currentUser$ | async)">
+            <div class="navbar-item" *ngIf="(authService.currentUser$ | async) === null">
                 <div class="buttons">
                     <a class="button is-light" [routerLink]="['/register']">
                         <strong>Sign up</strong>

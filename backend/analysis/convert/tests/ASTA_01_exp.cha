@@ -120,8 +120,9 @@
 *PMA:	en dan gaat ook in 
 %xsid:	41
 *INV:	gaat hij naar 
-*PMA:	OPLEIDING1 ja 
+*PMA:	informatica ja 
 %xsid:	42
+%xano:	0|OPLEIDING1|informatica
 *INV:	en welke studie doet hij 
 *PMA:	Ja dat is nou dat kan ik niet komen nee dat is gewoon ik weet niet euh ik weet niet hoe het heet 
 %xsid:	43

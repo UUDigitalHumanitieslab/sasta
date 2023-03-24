@@ -9,26 +9,26 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TranscriptComponent } from './transcript.component';
 
 describe('TranscriptComponent', () => {
-  let component: TranscriptComponent;
-  let fixture: ComponentFixture<TranscriptComponent>;
+    let component: TranscriptComponent;
+    let fixture: ComponentFixture<TranscriptComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [TranscriptComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule, DropdownModule],
-      providers: [MessageService],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [TranscriptComponent],
+            imports: [RouterTestingModule, HttpClientTestingModule, DropdownModule],
+            providers: [MessageService],
+            schemas: [NO_ERRORS_SCHEMA]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TranscriptComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TranscriptComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

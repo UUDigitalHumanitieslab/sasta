@@ -1,4 +1,4 @@
-interface AnalysisRun {
+export interface AnalysisRun {
     id: number;
     created: Date;
     annotation_file: string;
@@ -17,6 +17,7 @@ export interface Utterance {
     parse_tree: string;
 }
 
+// eslint-disable-next-line no-shadow
 export enum TranscriptStatus {
     UNKNOWN,
     CREATED,
@@ -55,5 +56,3 @@ export interface Transcript extends Omit<ListedTranscript, 'utterances'> {
     latest_corrections?: AnalysisRun;
     target_speakers?: string;
 }
-
-

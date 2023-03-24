@@ -59,10 +59,9 @@ export class CorpusComponent implements OnInit, OnDestroy {
         this.methodService
             .getMethods()
             .pipe(
-                takeUntil(this.onDestroy$),
                 switchMap((methods) => {
                     this.tams = methods;
-                    return this.corpusService.get_by_id(this.id);
+                    return this.corpusService.getByID(this.id);
                 }),
                 switchMap((c: Corpus) => {
                     this.groupedTams = this.methodService.groupMethods(
@@ -71,7 +70,8 @@ export class CorpusComponent implements OnInit, OnDestroy {
                     );
                     return this.interval$;
                 }),
-                startWith(0)
+                startWith(0),
+                takeUntil(this.onDestroy$)
             )
             .subscribe(() => {
                 this.getCorpus();
@@ -82,9 +82,9 @@ export class CorpusComponent implements OnInit, OnDestroy {
         this.onDestroy$.next();
     }
 
-    getCorpus() {
+    getCorpus(): void {
         this.corpusService
-            .get_by_id(this.id)
+            .getByID(this.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe((res) => {
                 this.corpus = res;
@@ -98,12 +98,12 @@ export class CorpusComponent implements OnInit, OnDestroy {
             });
     }
 
-    downloadFile(data: any, filename: string, mimetype: string) {
+    downloadFile(data: any, filename: string, mimetype: string): void {
         const blob = new Blob([data], { type: mimetype });
         saveAs(blob, filename);
     }
 
-    deleteTranscript(transcript: Transcript) {
+    deleteTranscript(transcript: Transcript): void {
         this.transcriptService
             .delete(transcript.id)
             .pipe(takeUntil(this.onDestroy$))
@@ -128,11 +128,11 @@ export class CorpusComponent implements OnInit, OnDestroy {
             );
     }
 
-    changeDefaultMethod() {
+    changeDefaultMethod(): void {
         this.corpusService
-            .set_default_method(
+            .setDefaultMethod(
                 this.corpus.id,
-                this.defaultTam ? this.defaultTam.id : null
+                this.defaultTam ? this.defaultTam.id.toString() : null
             )
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
@@ -149,9 +149,9 @@ export class CorpusComponent implements OnInit, OnDestroy {
             );
     }
 
-    downloadZip() {
+    downloadZip(): void {
         this.corpusService
-            .download_zip(this.corpus.id)
+            .downloadZip(this.corpus.id)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(
                 (response) => {

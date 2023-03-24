@@ -1,23 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Corpus } from '../models/corpus';
+import { Corpus, ListedCorpus } from '../models/corpus';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CorpusService {
-    private corpora$: Subject<Corpus[]> = new Subject();
+    private corpora$: Subject<ListedCorpus[]> = new Subject();
 
     constructor(private httpClient: HttpClient) {}
 
-    public getCorpora(): Observable<Corpus[]> {
+    public getCorpora(): Observable<ListedCorpus[]> {
         return this.corpora$;
     }
 
-    public init() {
+    public init(): void {
         this.httpClient
-            .get<Corpus[]>('api/corpora/')
+            .get<ListedCorpus[]>('api/corpora/')
             .subscribe((corpora) => this.corpora$.next(corpora));
     }
 
@@ -25,7 +25,7 @@ export class CorpusService {
         return this.httpClient.post('/api/corpora/', corpus);
     }
 
-    delete(corpus: Corpus): Observable<any> {
+    delete(corpus: Corpus | ListedCorpus): Observable<any> {
         return this.httpClient.delete(`/api/corpora/${corpus.id}/`);
     }
 
@@ -33,26 +33,26 @@ export class CorpusService {
         return this.httpClient.get<Corpus[]>('api/corpora/');
     }
 
-    get_by_id(id): Observable<Corpus> {
+    getByID(id: number): Observable<Corpus> {
         return this.httpClient.get<Corpus>(`api/corpora/${id}/`);
     }
 
-    convert_all(id): Observable<Corpus> {
+    convertAll(id: number): Observable<Corpus> {
         return this.httpClient.get<Corpus>(`api/corpora/${id}/convert_all/`);
     }
 
-    parse_all(id): Observable<Corpus> {
+    parseAll(id: number): Observable<Corpus> {
         return this.httpClient.get<Corpus>(`api/corpora/${id}/parse_all/`);
     }
 
-    parse_all_async(id): Observable<string> {
+    parseAllAsync(id: number): Observable<string> {
         // returns task id
         return this.httpClient.get<string>(
             `api/corpora/${id}/parse_all_async/`
         );
     }
 
-    download_zip(id): Observable<any> {
+    downloadZip(id: number): Observable<any> {
         const formData: FormData = new FormData();
         return this.httpClient.post(`api/corpora/${id}/download/`, formData, {
             observe: 'response',
@@ -60,7 +60,7 @@ export class CorpusService {
         });
     }
 
-    set_default_method(id, methodID): Observable<any> {
+    setDefaultMethod(id: number, methodID: string | Blob): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.httpClient.post(

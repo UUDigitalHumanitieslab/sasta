@@ -25,8 +25,8 @@ from .convert.convert import convert
 from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
-from .serializers import (AssessmentMethodSerializer, CorpusSerializer,
-                          MethodCategorySerializer, TranscriptDetailSerializer,
+from .serializers import (AssessmentMethodSerializer, CorpusDetailsSerializer, CorpusListSerializer,
+                          MethodCategorySerializer, TranscriptDetailsSerializer,
                           TranscriptListSerializer, UploadFileSerializer)
 from .utils import StreamFile
 
@@ -52,8 +52,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return TranscriptListSerializer
-        return TranscriptDetailSerializer
-
+        return TranscriptDetailsSerializer
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -246,9 +245,13 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
 
 class CorpusViewSet(viewsets.ModelViewSet):
-    serializer_class = CorpusSerializer
     queryset = Corpus.objects.all()
     permission_classes = (IsCorpusOwner, )
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CorpusListSerializer
+        return CorpusDetailsSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

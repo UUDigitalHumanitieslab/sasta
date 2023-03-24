@@ -32,7 +32,7 @@ class TranscriptListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'status', 'status_name', 'date_added', 'utterances', 'corpus')
 
 
-class TranscriptDetailSerializer(serializers.ModelSerializer):
+class TranscriptDetailsSerializer(serializers.ModelSerializer):
     def get_latest_run(self, obj):
         try:
             latest = obj.analysisruns.latest()
@@ -60,16 +60,29 @@ class TranscriptDetailSerializer(serializers.ModelSerializer):
                   'corpus', 'utterances', 'latest_run', 'latest_corrections', 'target_speakers')
 
 
-class CorpusSerializer(serializers.ModelSerializer):
+class CorpusListSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
-    files = UploadFileSerializer(read_only=True, many=True)
+    num_transcripts = serializers.SerializerMethodField()
+    username = serializers.CharField(source="user.username", read_only=True)
+
+    def get_num_transcripts(self, obj):
+        return obj.transcripts.count()
+
+    class Meta:
+        model = Corpus
+        fields = ('id', 'name', 'method_category', 'num_transcripts', 'username')
+
+
+class CorpusDetailsSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    # files = UploadFileSerializer(read_only=True, many=True)
     transcripts = TranscriptListSerializer(read_only=True, many=True)
     username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = Corpus
         fields = ('id', 'name', 'status', 'default_method', 'method_category',
-                  'date_added', 'date_modified', 'files', 'transcripts', 'username')
+                  'date_added', 'date_modified', 'transcripts', 'username')
 
 
 class AssessmentQuerySerializer(serializers.ModelSerializer):

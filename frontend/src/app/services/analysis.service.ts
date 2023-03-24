@@ -10,7 +10,7 @@ export type AnnotationOutputFormat = 'xlsx' | 'cha';
 export class AnalysisService {
     constructor(private http: HttpClient) {}
 
-    query(transcriptID, methodID): Observable<any> {
+    query(transcriptID: number, methodID: string | Blob): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(
@@ -21,8 +21,8 @@ export class AnalysisService {
     }
 
     annotate(
-        transcriptID,
-        methodID,
+        transcriptID: number,
+        methodID: string | Blob,
         outputFormat: AnnotationOutputFormat
     ): Observable<any> {
         const formData: FormData = new FormData();
@@ -35,7 +35,10 @@ export class AnalysisService {
         );
     }
 
-    generateForm(transcriptID, methodID): Observable<any> {
+    generateForm(
+        transcriptID: number,
+        methodID: string | Blob
+    ): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(

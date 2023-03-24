@@ -18,13 +18,13 @@ export class MethodService {
         this.initMethods();
     }
 
-    public initCategories() {
+    public initCategories(): void {
         this.http
             .get<MethodCategory[]>('api/method_categories/')
             .subscribe((categories) => this.categories$.next(categories));
     }
 
-    public initMethods() {
+    public initMethods(): void {
         this.http
             .get<Method[]>('api/assessment_methods/')
             .subscribe((methods) => this.methods$.next(methods));
@@ -46,21 +46,21 @@ export class MethodService {
         return this.categories$;
     }
 
-    public getCategory(id): Observable<MethodCategory> {
+    public getCategory(id: number): Observable<MethodCategory> {
         return this.categories$.pipe(
             map((cats) => cats.filter((cat) => cat.id === id)),
             map((cats) => cats[0])
         );
     }
 
-    public getMethod(id): Observable<Method> {
+    public getMethod(id: number): Observable<Method> {
         return this.methods$.pipe(
             map((methods) => methods.filter((method) => method.id === id)),
             map((methods) => methods[0])
         );
     }
 
-    async upload(method: Method) {
+    async upload(method: Method): Promise<Method> {
         const formData: FormData = new FormData();
         formData.append('content', method.content as File, method.content.name);
         formData.append('name', method.name);
@@ -70,11 +70,14 @@ export class MethodService {
         return response;
     }
 
-    groupMethods(methods: Method[], categoryID: number) {
+    groupMethods(methods: Method[], categoryID: number): any {
         return _(methods)
-            .filter((m) => m.category.id === categoryID)
+            .filter(
+                (m: { category: { id: number } }) =>
+                    m.category.id === categoryID
+            )
             .groupBy('category.name')
-            .map((groupedMethods, methodCat) => ({
+            .map((groupedMethods: any, methodCat: any) => ({
                 label: methodCat,
                 items: _.map(groupedMethods, (m: Method) => ({
                     label: m.name,

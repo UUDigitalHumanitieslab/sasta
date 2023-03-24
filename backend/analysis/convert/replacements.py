@@ -1,26 +1,17 @@
 import re
 from string import ascii_lowercase
+import os.path as op
+import json
+from django.conf import settings
 
-# anonymisation codes
-# these are provided in the order they should be checked.
-# Note that PLAATSNAAM will match as a place, not a person
-ANONYMIZATIONS = [
-    {
-        'category': 'place',
-        'codes': ['PLAATS', 'PLAATSNAAM'],
-        'common': ['Utrecht', 'Breda', 'Leiden', 'Maastricht', 'Arnhem']
-    },
-    {
-        'category': 'lastname',
-        'codes': ['ACHTERNAAM'],
-        'common': ['Jansen', 'Hendriks', 'Dekker', 'Dijkstra', 'Veenstra']
-    },
-    {
-        'category': 'person',
-        'codes': ['NAAM', 'BROER', 'ZUS', 'KIND'],
-        'common': ['Maria', 'Jan', 'Anna', 'Esther', 'Pieter', 'Sam']
-    }
-]
+
+def instantiate_anonymizations():
+    json_path = op.join(settings.BASE_DIR, 'anonymization.json')
+    with open(json_path, 'r') as f:
+        return json.load(f)
+
+
+ANONYMIZATIONS = instantiate_anonymizations()
 
 
 class NoAlphabetLetter(ValueError):
@@ -33,6 +24,7 @@ def letter_index(letter: str) -> int:
         return list(ascii_lowercase).index(letter.lower()) + 1
     except Exception:
         return 0
+
 
 def fill_name(string):
     for specs in ANONYMIZATIONS:

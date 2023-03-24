@@ -11,8 +11,8 @@
         <tbody>
             <tr *ngFor="let corp of corpora" [routerLink]="['/corpora/', corp.id]">
                 <td>{{ corp.name }}</td>
-                <td>{{ corp?.transcripts?.length || "0" }}</td>
-                <td *ngIf="(authService.currentUser$ | async).isAdmin">{{corp?.username}}</td>
+                <td>{{ corp.num_transcripts|| "0" }}</td>
+                <td *ngIf="(authService.currentUser$ | async).isAdmin">{{corp.username}}</td>
                 <td class="has-text-right">
                     <div class="buttons is-right">
                         <button class="button is-success" pTooltip="add transcripts" (click)="$event.stopPropagation()"
@@ -33,7 +33,7 @@
         </tbody>
     </table>
 
-    <h1 *ngIf="corpora.length == 0" class="title is-2">
+    <h1 *ngIf="corpora.length === 0" class="title is-2">
         No corpora yet!
         <a [routerLink]="['/upload']" routerLinkActive="is-active"> Upload </a>
     </h1>
