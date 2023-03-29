@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MethodService } from '../services/method.service';
-import { Method } from '../models/method';
+import { MethodService } from '@services';
+import { Method } from '@models';
 import { Observable } from 'rxjs';
 
 @Component({

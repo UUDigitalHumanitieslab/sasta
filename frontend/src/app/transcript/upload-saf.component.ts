@@ -7,9 +7,9 @@ import {
     Output,
 } from '@angular/core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { Transcript } from '@models';
+import { AnnotationsService } from '@services';
 import { MessageService } from 'primeng/api';
-import { Transcript } from '../models/transcript';
-import { AnnotationsService } from '../services/annotations.service';
 
 @Component({
     selector: 'sas-upload-saf',

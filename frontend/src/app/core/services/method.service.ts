@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Method } from '../models/method';
-import { MethodCategory } from '../models/methodcategory';
+import { Method } from '@models';
+import { MethodCategory } from '@models';
 
 @Injectable({
     providedIn: 'root',

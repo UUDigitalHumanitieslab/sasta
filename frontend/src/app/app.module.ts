@@ -3,61 +3,29 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { XmlParseService } from '@services';
 import { LassyXPathModule } from 'lassy-xpath';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
-import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { FieldsetModule } from 'primeng/fieldset';
-import { FileUploadModule } from 'primeng/fileupload';
-import { MessageModule } from 'primeng/message';
-import { MessagesModule } from 'primeng/messages';
-import { PanelModule } from 'primeng/panel';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
-import { TooltipModule } from 'primeng/tooltip';
-import { AppRoutingModule } from './app-routing/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login.component';
-import { RegisterComponent } from './auth/register.component';
-import { VerifyComponent } from './auth/verify.component';
-import { CorpusComponent } from './corpus/corpus.component';
-import { ListCorpusComponent } from './corpus/list-corpus.component';
-import { FooterComponent } from './footer/footer.component';
-import { HomeComponent } from './home/home.component';
-import { MenuComponent } from './menu/menu.component';
-import { ListMethodComponent } from './method/list-method.component';
-import { MethodComponent } from './method/method.component';
+import { AuthModule } from './auth/auth.module';
+import { CoreModule } from './core/core.module';
+import { CorpusModule } from './corpus/corpus.module';
 import { ProcessComponent } from './process/process.component';
 import { TranscriptProgressCellComponent } from './process/transcript-progress-cell.component';
 import { TranscriptProgressComponent } from './process/transcript-progress.component';
-import { XmlParseService } from './services/xml-parse.service';
+import { SharedModule } from './shared/shared.module';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { UploadSafComponent } from './transcript/upload-saf.component';
 import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.component';
-import { UploadComponent } from './upload/upload.component';
+import { UploadModule } from './upload/upload.module';
 import { UtterancesListComponent } from './utterances/utterances-list.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        FooterComponent,
-        MenuComponent,
-        HomeComponent,
-        UploadComponent,
-        ListCorpusComponent,
-        CorpusComponent,
-        ListMethodComponent,
-        MethodComponent,
-        LoginComponent,
         ProcessComponent,
-        RegisterComponent,
-        VerifyComponent,
         TranscriptComponent,
         UploadSafComponent,
         TranscriptProgressComponent,
@@ -69,7 +37,6 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
-        FontAwesomeModule,
         FormsModule,
         HttpClientModule,
         HttpClientXsrfModule.withOptions({
@@ -78,21 +45,13 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         }),
         NgxJsonViewerModule,
         LassyXPathModule,
-        // PrimeNG
-        AccordionModule,
-        CheckboxModule,
-        ConfirmDialogModule,
-        DialogModule,
-        DropdownModule,
-        FieldsetModule,
-        FileUploadModule,
-        MessageModule,
-        MessagesModule,
-        ToastModule,
-        TooltipModule,
-        PanelModule,
-        ProgressSpinnerModule,
-        StepsModule,
+        // Shared and core modules
+        CoreModule,
+        SharedModule,
+        // Feature modules
+        AuthModule,
+        CorpusModule,
+        UploadModule,
     ],
     providers: [ConfirmationService, MessageService, XmlParseService],
     bootstrap: [AppComponent],

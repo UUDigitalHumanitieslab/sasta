@@ -7,7 +7,7 @@ import {
     IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import * as _ from 'lodash';
-import { Transcript, Utterance } from '../models/transcript';
+import { Transcript, Utterance } from '@models';
 
 @Component({
     selector: 'sas-utterances-list',

@@ -8,27 +8,21 @@ import {
     faTrash,
     faUpload,
 } from '@fortawesome/free-solid-svg-icons';
+import { Corpus, Method, Transcript, TranscriptStatus } from '@models';
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { Corpus } from '../models/corpus';
-import { Method } from '../models/method';
-import {
-    AnalysisRun,
-    Transcript,
-    TranscriptStatus,
-} from '../models/transcript';
 import {
     AnalysisService,
     AnnotationOutputFormat,
-} from '../services/analysis.service';
-import { AnnotationsService } from '../services/annotations.service';
-import { AuthService } from '../services/auth.service';
-import { CorpusService } from '../services/corpus.service';
-import { MethodService } from '../services/method.service';
-import { TranscriptService } from '../services/transcript.service';
+    AnnotationsService,
+    AuthService,
+    CorpusService,
+    MethodService,
+    TranscriptService,
+} from '@services';
 
 const XLSX_MIME =
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';

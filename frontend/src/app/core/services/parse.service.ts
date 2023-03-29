@@ -10,8 +10,8 @@ import {
     take,
     tap,
 } from 'rxjs/operators';
-import { TaskResult } from '../models/task';
-import { Transcript } from '../models/transcript';
+import { TaskResult } from '@models';
+import { Transcript } from '@models';
 import { TranscriptService } from './transcript.service';
 
 @Injectable({

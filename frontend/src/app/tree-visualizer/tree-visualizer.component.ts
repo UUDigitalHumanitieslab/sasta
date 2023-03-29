@@ -23,7 +23,7 @@ import {
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import * as $ from 'jquery';
-import { XmlParseService } from '../services/xml-parse.service';
+import { XmlParseService } from '@services';
 import './tree-visualizer';
 
 type TypedChanges = { [name in keyof TreeVisualizerComponent]: SimpleChange };

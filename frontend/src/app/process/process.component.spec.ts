@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
 import { StepsModule } from 'primeng/steps';
-import { ParseService } from '../services/parse.service';
+import { ParseService } from 'src/app/core/services';
 
 import { ProcessComponent } from './process.component';
 import { TranscriptProgressCellComponent } from './transcript-progress-cell.component';

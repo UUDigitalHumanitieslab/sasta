@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { AuthService, CorpusService } from '@services';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { interval, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { ListedCorpus } from '../models/corpus';
-import { AuthService } from '../services/auth.service';
-import { CorpusService } from '../services/corpus.service';
+import { ListedCorpus } from '../shared/models/corpus';
 
 // check every 10 seconds
 const UPDATE_INTERVAL = 10000;
