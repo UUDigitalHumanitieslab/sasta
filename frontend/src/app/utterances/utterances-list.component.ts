@@ -15,10 +15,6 @@ import { Transcript, Utterance } from '@models';
     styleUrls: ['./utterances-list.component.scss'],
 })
 export class UtterancesListComponent {
-    @Input()
-    set transcript(transcript: Transcript) {
-        this.sortedUtterances = _.sortBy(transcript.utterances, (t) => t.uttno);
-    }
     faCheck = faCheck;
     faMinus = faMinus;
     faSearch = faSearch;
@@ -32,6 +28,11 @@ export class UtterancesListComponent {
     treeXml?: string;
 
     constructor() {}
+
+    @Input()
+    set transcript(transcript: Transcript) {
+        this.sortedUtterances = _.sortBy(transcript.utterances, (t) => t.uttno);
+    }
 
     analysisIcon(u: Utterance): IconDefinition {
         return u.for_analysis ? faCheck : faMinus;

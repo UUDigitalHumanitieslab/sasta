@@ -6,8 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
-import { FooterComponent } from './footer/footer.component';
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from './core/menu/menu.component';
+import { FooterComponent } from './core/footer/footer.component';
 
 describe('AppComponent', () => {
     beforeEach(waitForAsync(() => {

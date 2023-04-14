@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { XmlParseService } from '@services';
 import { LassyXPathModule } from 'lassy-xpath';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,7 +43,6 @@ import { APP_BASE_HREF } from '@angular/common';
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken',
         }),
-        NgxJsonViewerModule,
         LassyXPathModule,
         // Shared and core modules
         CoreModule,

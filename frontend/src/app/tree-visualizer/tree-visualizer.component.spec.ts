@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TreeVisualizerComponent } from './tree-visualizer.component';
 import { ExtractinatorService } from 'lassy-xpath';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('TreeVisualizerComponent', () => {
     let component: TreeVisualizerComponent;
@@ -11,6 +12,7 @@ describe('TreeVisualizerComponent', () => {
         await TestBed.configureTestingModule({
             declarations: [TreeVisualizerComponent],
             providers: [ExtractinatorService],
+            imports: [FontAwesomeModule],
         }).compileComponents();
     });
 

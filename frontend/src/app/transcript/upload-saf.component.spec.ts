@@ -4,6 +4,8 @@ import { MessageService } from 'primeng/api';
 import { Transcript } from '@models';
 
 import { UploadSafComponent } from './upload-saf.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DialogModule } from 'primeng/dialog';
 
 describe('UploadSafComponent', () => {
     let component: UploadSafComponent;
@@ -42,7 +44,7 @@ describe('UploadSafComponent', () => {
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [UploadSafComponent],
-            imports: [HttpClientTestingModule],
+            imports: [HttpClientTestingModule, FontAwesomeModule, DialogModule],
             providers: [MessageService],
         }).compileComponents();
     }));
