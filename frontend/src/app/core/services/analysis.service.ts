@@ -14,7 +14,7 @@ export class AnalysisService {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(
-            `api/transcripts/${transcriptID}/query/`,
+            `/api/transcripts/${transcriptID}/query/`,
             formData,
             { observe: 'response', responseType: 'blob' }
         );
@@ -29,7 +29,7 @@ export class AnalysisService {
         formData.append('method', methodID);
         formData.append('format', outputFormat);
         return this.http.post(
-            `api/transcripts/${transcriptID}/annotate/`,
+            `/api/transcripts/${transcriptID}/annotate/`,
             formData,
             { observe: 'response', responseType: 'blob' }
         );
@@ -42,7 +42,7 @@ export class AnalysisService {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(
-            `api/transcripts/${transcriptID}/generateform/`,
+            `/api/transcripts/${transcriptID}/generateform/`,
             formData,
             { observe: 'response', responseType: 'blob' }
         );

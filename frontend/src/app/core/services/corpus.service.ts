@@ -34,27 +34,27 @@ export class CorpusService {
     }
 
     getByID(id: number): Observable<Corpus> {
-        return this.httpClient.get<Corpus>(`api/corpora/${id}/`);
+        return this.httpClient.get<Corpus>(`/api/corpora/${id}/`);
     }
 
     convertAll(id: number): Observable<Corpus> {
-        return this.httpClient.get<Corpus>(`api/corpora/${id}/convert_all/`);
+        return this.httpClient.get<Corpus>(`/api/corpora/${id}/convert_all/`);
     }
 
     parseAll(id: number): Observable<Corpus> {
-        return this.httpClient.get<Corpus>(`api/corpora/${id}/parse_all/`);
+        return this.httpClient.get<Corpus>(`/api/corpora/${id}/parse_all/`);
     }
 
     parseAllAsync(id: number): Observable<string> {
         // returns task id
         return this.httpClient.get<string>(
-            `api/corpora/${id}/parse_all_async/`
+            `/api/corpora/${id}/parse_all_async/`
         );
     }
 
     downloadZip(id: number): Observable<any> {
         const formData: FormData = new FormData();
-        return this.httpClient.post(`api/corpora/${id}/download/`, formData, {
+        return this.httpClient.post(`/api/corpora/${id}/download/`, formData, {
             observe: 'response',
             responseType: 'blob',
         });
@@ -64,7 +64,7 @@ export class CorpusService {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.httpClient.post(
-            `api/corpora/${id}/defaultmethod/`,
+            `/api/corpora/${id}/defaultmethod/`,
             formData
         );
     }

@@ -8,7 +8,7 @@ import { User } from '@models';
     providedIn: 'root',
 })
 export class AuthService {
-    authAPI = 'rest-auth';
+    authAPI = '/rest-auth';
     isAuthenticated$ = new BehaviorSubject<boolean>(false);
     currentUser$ = new BehaviorSubject<User>(null);
 

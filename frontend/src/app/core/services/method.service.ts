@@ -65,7 +65,7 @@ export class MethodService {
         formData.append('content', method.content as File, method.content.name);
         formData.append('name', method.name);
         const response = await this.http
-            .post<Method>('api/assessment_methods/', formData)
+            .post<Method>('/api/assessment_methods/', formData)
             .toPromise();
         return response;
     }
