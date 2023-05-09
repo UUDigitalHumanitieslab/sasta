@@ -16,7 +16,7 @@ coverage.xml
 .pytest_cache/
 
 # Django
-*.log
+*.log*
 local_settings.py
 db.sqlite3
 files/
