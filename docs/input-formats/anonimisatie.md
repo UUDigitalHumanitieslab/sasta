@@ -10,7 +10,7 @@ Ik heet NAAM1. -> Ik heet Jan.
 Ik heet VOORNAAM1. -> Ik heet Jan.
 Ik heet NAAMKIND. -> Ik heet Maria.
 ```
-Merk op dat NAAM1 en VOORNAAM1 dezelfde vervanging toegewezen krijgen. Dit komt omdat de combinatie code (NAAM) en nummering (1) gelijk is. SASTA houdt intern bij waar vervangingen gepleegd zijn. Deze zijn terug te vinden in de CHAT-bestanden op de %xano tier. Voorbeeld:
+Merk op dat NAAM1 en VOORNAAM1 dezelfde vervanging toegewezen krijgen. Dit komt omdat de combinatie code (NAAM) en nummering (1) gelijk is. SASTA houdt intern bij waar vervangingen uitgevoerd zijn. Deze zijn terug te vinden in de CHAT-bestanden op de %xano tier. Voorbeeld:
 ```
 *PMA:	uh buiten Breda
 %xano:	10|PLAATS1|Breda

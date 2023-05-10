@@ -4,9 +4,10 @@ repo_url: https://github.com/UUDigitalHumanitieslab/sasta
 theme:
     name: material
     language: nl
-    logo: assets/uu.svg
+    logo: assets/uu.jpg
     favicon: assets/favicon.svg
-
+    palette:
+        scheme: custom
 nav:
     - Home: 'index.md'
     - Gebruikersaccount: 'accounts.md'
@@ -21,3 +22,8 @@ nav:
         - Voorbeeldbestanden: 'input-formats/voorbeelden.md'
     - Uitvoerformaten:
         - SASTA Output Formaat (SAF): 'annotaties/saf.md'
+
+dev_addr: 'localhost:8888'
+
+extra_css:
+  - stylesheets/extra.css

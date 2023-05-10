@@ -63,10 +63,10 @@ INV: Waar ben je vandaag geweest?
 ### Annoteren
 Uitingen kunnen geannoteerd worden volgens de [CHAT handleiding][chat-manual].
 
+[Voor lijsten met veel gebruikte annotaties, zie TODO: ASTA, STAP, TARSP-specifieke annotaties.]: #
 
-Voor lijsten met veel gebruikte annotaties, zie TODO: ASTA, STAP, TARSP-specifieke annotaties.
 
 ## Voorbeeldbestanden
-Zie [link](/input-formats/voorbeelden) voor downloadbare voorbeeldbestanden.
+Zie [link](../input-formats/voorbeelden) voor downloadbare voorbeeldbestanden.
 
 [chat-manual]: https://talkbank.org/manuals/CHAT.pdf
