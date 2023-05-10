@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Utterance } from '../models/transcript';
+import { Utterance } from '@models';
 
 import { UtterancesListComponent } from './utterances-list.component';
 

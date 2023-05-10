@@ -8,9 +8,9 @@ import {
     faUser,
     faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
-import { environment } from '../../environments/environment';
-import { animations, ShowState } from '../animations';
-import { AuthService } from '../services/auth.service';
+import { environment } from '@envs/environment';
+import { animations, ShowState } from '@shared/animations';
+import { AuthService } from '@services';
 
 @Component({
     animations,
