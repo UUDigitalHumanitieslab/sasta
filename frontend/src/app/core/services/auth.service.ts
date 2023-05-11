@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { User } from '@models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -91,5 +92,9 @@ export class AuthService {
             `${this.authAPI}/registration/verify-email/`,
             { key }
         );
+    }
+
+    getDocumentation(): Observable<any> {
+        return this.httpClient.get(environment.docs, { observe: 'response' });
     }
 }
