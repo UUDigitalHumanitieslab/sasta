@@ -1,31 +1,42 @@
 [
     {
         "category": "place",
+        "label-nl": "plaats",
         "codes": ["PLAATS", "PLAATSNAAM", "WOONPLAATS"],
-        "common": ["Utrecht", "Breda", "Leiden", "Maastricht", "Arnhem"]
+        "common": ["Utrecht", "Breda", "Leiden", "Maastricht", "Arnhem"],
+        "example": ["Ik woon in PLAATS2", "Ik woon in Leiden"]
     },
     {
         "category": "lastname",
+        "label-nl": "achternaam",
         "codes": ["ACHTERNAAM"],
-        "common": ["Jansen", "Hendriks", "Dekker", "Dijkstra", "Veenstra"]
+        "common": ["Jansen", "Hendriks", "Dekker", "Dijkstra", "Veenstra"],
+        "example": ["Dat zei NAAM ACHTERNAAM", "Dat zei Maria Jansen"]
     },
     {
         "category": "person",
+        "label-nl": "naam",
         "codes": ["NAAM", "BROER", "ZUS", "KIND", "VADER", "MOEDER"],
-        "common": ["Maria", "Jan", "Anna", "Esther", "Pieter", "Sam"]
+        "common": ["Maria", "Jan", "Anna", "Esther", "Pieter", "Sam"],
+        "example": ["Dat zei BROER1", "Dat zei Jan"]
     },
     {
         "category": "profession",
+        "label-nl": "beroep",
         "codes": ["BEROEP"],
-        "common": ["timmerman", "chirurgh", "leraar", "ober", "verslaggever"]
+        "common": ["timmerman", "chirurgh", "leraar", "ober", "verslaggever"],
+        "example": ["Ik ben BEROEP van beroep", "Ik ben timmerman van beroep"]
     },
     {
         "category": "country",
+        "label-nl": "land",
         "codes": ["LAND"],
-        "common": ["Duitsland", "Nederland", "Japan", "Kameroen", "India"]
+        "common": ["Duitsland", "Nederland", "Japan", "Kameroen", "India"],
+        "example": ["Ik woon in LAND2", "Ik woon in Japan"]
     },
     {
         "category": "education",
+        "label-nl": "opleiding",
         "codes": ["STUDIE", "OPLEIDING"],
         "common": [
             "bedrijfskunde",
@@ -33,10 +44,15 @@
             "filosofie",
             "rechtsgeleerdheid",
             "werktuigbouwkunde"
+        ],
+        "example": [
+            "Ik volg de studie STUDIE",
+            "ik volg de studie bedrijfskunde"
         ]
     },
     {
         "category": "institution",
+        "label-nl": "instelling",
         "codes": ["ZORGINSTELLING", "INSTELLING", "ZIEKENHUIS"],
         "common": [
             "Diakonessenhuis",
@@ -44,6 +60,7 @@
             "Vogellanden",
             "HagaZiekenhuis",
             "Slingeland"
-        ]
+        ],
+        "example": ["Ik lag in het ZIEKENHUIS1", "Ik lag in het Rijstate"]
     }
 ]

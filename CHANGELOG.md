@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Extended anonymization codes and moved to a centrally located JSON file
 
+### Added
+- First version of user documentation
+
 ## [0.6.2] - 2022-02-15
 
 ### Changed

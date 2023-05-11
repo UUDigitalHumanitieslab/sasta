@@ -18,16 +18,31 @@ Merk op dat NAAM1 en VOORNAAM1 dezelfde vervanging toegewezen krijgen. Dit komt 
 Op de tiende positie in de zin stond PLAATS1, en dit is vervangen door Breda.
 
 ## Beschikbare anonimisatiecodes
-- categorie: plaatsnaam
-    - codes: `PLAATS`, `PLAATSNAAM`
+- categorie: plaats
+    - codes: `PLAATS`, `PLAATSNAAM`, `WOONPLAATS`
     - vervangingen: `Utrecht`, `Breda`, `Leiden`, `Maastricht`, `Arnhem`
     - voorbeeld: `Ik woon in PLAATS2` -> `Ik woon in Leiden`
-- categorie: voornaam
-    - codes: `NAAM`, `BROER`, `ZUS`, `KIND`
-    - vervangingen: `Maria`, `Jan`, `Anna`, `Esther`, `Pieter`, `Sam`
-    - voorbeeld: `Dat zei BROER1` -> `Dat zei Jan`
-    - voorbeeld: `Dat zei mijn TWEELINGZUS1` ->  `Dat zei Jan`
 - categorie: achternaam
     - codes: `ACHTERNAAM`
     - vervangingen: `Jansen`, `Hendriks`, `Dekker`, `Dijkstra`, `Veenstra`
     - voorbeeld: `Dat zei NAAM ACHTERNAAM` -> `Dat zei Maria Jansen`
+- categorie: naam
+    - codes: `NAAM`, `BROER`, `ZUS`, `KIND`, `VADER`, `MOEDER`
+    - vervangingen: `Maria`, `Jan`, `Anna`, `Esther`, `Pieter`, `Sam`
+    - voorbeeld: `Dat zei BROER1` -> `Dat zei Jan`
+- categorie: beroep
+    - codes: `BEROEP`
+    - vervangingen: `timmerman`, `chirurgh`, `leraar`, `ober`, `verslaggever`
+    - voorbeeld: `Ik ben BEROEP van beroep` -> `Ik ben timmerman van beroep`
+- categorie: land
+    - codes: `LAND`
+    - vervangingen: `Duitsland`, `Nederland`, `Japan`, `Kameroen`, `India`
+    - voorbeeld: `Ik woon in LAND2` -> `Ik woon in Japan`
+- categorie: opleiding
+    - codes: `STUDIE`, `OPLEIDING`
+    - vervangingen: `bedrijfskunde`, `informatica`, `filosofie`, `rechtsgeleerdheid`, `werktuigbouwkunde`
+    - voorbeeld: `Ik volg de studie STUDIE` -> `ik volg de studie bedrijfskunde`
+- categorie: instelling
+    - codes: `ZORGINSTELLING`, `INSTELLING`, `ZIEKENHUIS`
+    - vervangingen: `Diakonessenhuis`, `Rijnstate`, `Vogellanden`, `HagaZiekenhuis`, `Slingeland`
+    - voorbeeld: `Ik lag in het ZIEKENHUIS1` -> `Ik lag in het Rijstate`
