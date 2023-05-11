@@ -85,7 +85,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="SASTA Documentatie" class="md-header__button md-logo" aria-label="SASTA Documentatie" data-md-component="logo">
       
-  <img src="../../assets/uu.svg" alt="logo">
+  <img src="../../assets/uu.jpg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -182,7 +182,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="SASTA Documentatie" class="md-nav__button md-logo" aria-label="SASTA Documentatie" data-md-component="logo">
       
-  <img src="../../assets/uu.svg" alt="logo">
+  <img src="../../assets/uu.jpg" alt="logo">
 
     </a>
     SASTA Documentatie
@@ -543,23 +543,46 @@ Ik heet NAAMKIND. -&gt; Ik heet Maria.
 <p>Op de tiende positie in de zin stond PLAATS1, en dit is vervangen door Breda.</p>
 <h2 id="beschikbare-anonimisatiecodes">Beschikbare anonimisatiecodes</h2>
 <ul>
-<li>categorie: plaatsnaam<ul>
-<li>codes: <code>PLAATS</code>, <code>PLAATSNAAM</code></li>
+<li>categorie: plaats<ul>
+<li>codes: <code>PLAATS</code>, <code>PLAATSNAAM</code>, <code>WOONPLAATS</code></li>
 <li>vervangingen: <code>Utrecht</code>, <code>Breda</code>, <code>Leiden</code>, <code>Maastricht</code>, <code>Arnhem</code></li>
 <li>voorbeeld: <code>Ik woon in PLAATS2</code> -&gt; <code>Ik woon in Leiden</code></li>
-</ul>
-</li>
-<li>categorie: voornaam<ul>
-<li>codes: <code>NAAM</code>, <code>BROER</code>, <code>ZUS</code>, <code>KIND</code></li>
-<li>vervangingen: <code>Maria</code>, <code>Jan</code>, <code>Anna</code>, <code>Esther</code>, <code>Pieter</code>, <code>Sam</code></li>
-<li>voorbeeld: <code>Dat zei BROER1</code> -&gt; <code>Dat zei Jan</code></li>
-<li>voorbeeld: <code>Dat zei mijn TWEELINGZUS1</code> -&gt;  <code>Dat zei Jan</code></li>
 </ul>
 </li>
 <li>categorie: achternaam<ul>
 <li>codes: <code>ACHTERNAAM</code></li>
 <li>vervangingen: <code>Jansen</code>, <code>Hendriks</code>, <code>Dekker</code>, <code>Dijkstra</code>, <code>Veenstra</code></li>
 <li>voorbeeld: <code>Dat zei NAAM ACHTERNAAM</code> -&gt; <code>Dat zei Maria Jansen</code></li>
+</ul>
+</li>
+<li>categorie: naam<ul>
+<li>codes: <code>NAAM</code>, <code>BROER</code>, <code>ZUS</code>, <code>KIND</code>, <code>VADER</code>, <code>MOEDER</code></li>
+<li>vervangingen: <code>Maria</code>, <code>Jan</code>, <code>Anna</code>, <code>Esther</code>, <code>Pieter</code>, <code>Sam</code></li>
+<li>voorbeeld: <code>Dat zei BROER1</code> -&gt; <code>Dat zei Jan</code></li>
+</ul>
+</li>
+<li>categorie: beroep<ul>
+<li>codes: <code>BEROEP</code></li>
+<li>vervangingen: <code>timmerman</code>, <code>chirurgh</code>, <code>leraar</code>, <code>ober</code>, <code>verslaggever</code></li>
+<li>voorbeeld: <code>Ik ben BEROEP van beroep</code> -&gt; <code>Ik ben timmerman van beroep</code></li>
+</ul>
+</li>
+<li>categorie: land<ul>
+<li>codes: <code>LAND</code></li>
+<li>vervangingen: <code>Duitsland</code>, <code>Nederland</code>, <code>Japan</code>, <code>Kameroen</code>, <code>India</code></li>
+<li>voorbeeld: <code>Ik woon in LAND2</code> -&gt; <code>Ik woon in Japan</code></li>
+</ul>
+</li>
+<li>categorie: opleiding<ul>
+<li>codes: <code>STUDIE</code>, <code>OPLEIDING</code></li>
+<li>vervangingen: <code>bedrijfskunde</code>, <code>informatica</code>, <code>filosofie</code>, <code>rechtsgeleerdheid</code>, <code>werktuigbouwkunde</code></li>
+<li>voorbeeld: <code>Ik volg de studie STUDIE</code> -&gt; <code>ik volg de studie bedrijfskunde</code></li>
+</ul>
+</li>
+<li>categorie: instelling<ul>
+<li>codes: <code>ZORGINSTELLING</code>, <code>INSTELLING</code>, <code>ZIEKENHUIS</code></li>
+<li>vervangingen: <code>Diakonessenhuis</code>, <code>Rijnstate</code>, <code>Vogellanden</code>, <code>HagaZiekenhuis</code>, <code>Slingeland</code></li>
+<li>voorbeeld: <code>Ik lag in het ZIEKENHUIS1</code> -&gt; <code>Ik lag in het Rijstate</code></li>
 </ul>
 </li>
 </ul>
