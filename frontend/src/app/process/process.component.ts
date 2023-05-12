@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faArrowRight, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { Corpus, Transcript } from '@models';
+import { CorpusService, ParseService } from '@services';
 import { MenuItem } from 'primeng/api';
 import { interval, Observable, of, Subscription } from 'rxjs';
 import { catchError, concatMap, startWith } from 'rxjs/operators';
-import { Corpus } from '../models/corpus';
-import { Transcript } from '../models/transcript';
-import { CorpusService } from '../services/corpus.service';
-import { ParseService } from '../services/parse.service';
 
 @Component({
     selector: 'sas-process',

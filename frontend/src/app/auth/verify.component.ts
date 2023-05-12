@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@services';
 
 @Component({
     selector: 'sas-verify',

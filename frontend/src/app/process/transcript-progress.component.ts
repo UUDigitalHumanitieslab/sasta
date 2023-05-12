@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Transcript, TranscriptStatus } from '../models/transcript';
+import { Transcript, TranscriptStatus } from '@models';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector

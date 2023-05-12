@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
-import { Transcript } from '../models/transcript';
+import { Transcript } from '@models';
 
 import { UploadSafComponent } from './upload-saf.component';
 

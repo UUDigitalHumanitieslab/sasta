@@ -6,23 +6,23 @@ import {
     faPlus,
     faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { Corpus, Method, Transcript } from '@models';
+import {
+    AuthService,
+    CorpusService,
+    MethodService,
+    TranscriptService,
+} from '@services';
 import { saveAs } from 'file-saver';
 import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
 import { interval, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { Corpus } from '../models/corpus';
-import { Method } from '../models/method';
-import { Transcript } from '../models/transcript';
-import { AuthService } from '../services/auth.service';
-import { CorpusService } from '../services/corpus.service';
-import { MethodService } from '../services/method.service';
-import { TranscriptService } from '../services/transcript.service';
 
 @Component({
     selector: 'sas-corpus',
-    templateUrl: './corpus.component.html',
-    styleUrls: ['./corpus.component.scss'],
+    templateUrl: './corpus-detail.component.html',
+    styleUrls: ['./corpus-detail.component.scss'],
 })
 export class CorpusComponent implements OnInit, OnDestroy {
     _: any = _; // Lodash

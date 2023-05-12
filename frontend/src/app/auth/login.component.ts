@@ -5,7 +5,7 @@ import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@services';
 
 @Component({
     selector: 'sas-login',

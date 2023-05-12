@@ -16,6 +16,14 @@
         <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': burgerActive}"
             [@slideInOut]="burgerShow">
             <div class="navbar-start">
+                <a *ngIf="docsAvailable" class="navbar-item" (click)="navigateToDocs()">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <fa-icon [icon]="faExternalLink"></fa-icon>
+                        </span>
+                        <span>Documentation</span>
+                    </span>
+                </a>
                 <a *ngIf="isAuthenticated()" [routerLink]="['/corpora']" routerLinkActive="is-active"
                     class="navbar-item">
                     <span class="icon-text">
@@ -43,16 +51,6 @@
                         <span>Upload</span>
                     </span>
                 </a>
-                <a *ngIf="(authService.currentUser$ | async)?.isAdmin" href="/admin" routerLinkActive="is-active"
-                    class="navbar-item">
-                    <span class="icon-text">
-                        <span class="icon">
-                            <fa-icon [icon]="faUserShield"></fa-icon>
-                        </span>
-                        <span>Admin</span>
-                    </span>
-                </a>
-
             </div>
         </div>
 
@@ -89,6 +87,10 @@
 
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                         <div class="dropdown-content">
+                            <a *ngIf="(authService.currentUser$ | async)?.isAdmin" href="/admin" routerLinkActive="is-active" class="dropdown-item"
+                                (click)="logout()">
+                                Admin
+                            </a>
                             <a class="dropdown-item" (click)="logout()">
                                 Logout
                             </a>

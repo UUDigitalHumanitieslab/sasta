@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Corpus, ListedCorpus } from '../models/corpus';
+import { Corpus, ListedCorpus } from '@models';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({

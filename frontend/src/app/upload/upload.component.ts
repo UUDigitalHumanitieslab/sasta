@@ -1,16 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { Corpus, MethodCategory, UploadFile } from '@models';
+import { CorpusService, MethodService, UploadFileService } from '@services';
 import * as _ from 'lodash';
 import { FileUpload } from 'primeng/fileupload';
 import { forkJoin, Observable } from 'rxjs';
 import { concatMap, switchMap } from 'rxjs/operators';
-import { Corpus } from '../models/corpus';
-import { MethodCategory } from '../models/methodcategory';
-import { UploadFile } from '../models/upload-file';
-import { CorpusService } from '../services/corpus.service';
-import { MethodService } from '../services/method.service';
-import { UploadFileService } from '../services/upload-file.service';
 
 @Component({
     selector: 'sas-upload',

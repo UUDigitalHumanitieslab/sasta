@@ -1,15 +1,17 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+    faExternalLinkAlt,
     faFileUpload,
     faFolder,
     faListAlt,
     faUser,
     faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
-import { environment } from '../../environments/environment';
-import { animations, ShowState } from '../animations';
-import { AuthService } from '../services/auth.service';
+import { environment } from '@envs/environment';
+import { animations, ShowState } from '@shared/animations';
+import { AuthService } from '@services';
+import { map } from 'rxjs/operators';
 
 @Component({
     animations,
@@ -17,7 +19,7 @@ import { AuthService } from '../services/auth.service';
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
     burgerShow: ShowState;
     burgerActive = false;
 
@@ -26,13 +28,23 @@ export class MenuComponent {
     faListAlt = faListAlt;
     faFileUpload = faFileUpload;
     faUserShield = faUserShield;
+    faExternalLink = faExternalLinkAlt;
+
     version = environment.appVersion;
+    docsAvailable: boolean;
 
     constructor(
         private ngZone: NgZone,
         public authService: AuthService,
         private router: Router
     ) {}
+
+    ngOnInit(): void {
+        this.authService.getDocumentation().subscribe(
+            (res) => (this.docsAvailable = res.status === 200),
+            (err) => (this.docsAvailable = err.status === 200)
+        );
+    }
 
     isAuthenticated(): boolean {
         return this.authService.isAuthenticated$.getValue();
@@ -64,5 +76,9 @@ export class MenuComponent {
         }
 
         this.burgerShow = this.burgerShow === 'show' ? 'hide' : 'show';
+    }
+
+    navigateToDocs(): void {
+        window.open(environment.docs, '_blank');
     }
 }

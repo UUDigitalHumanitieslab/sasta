@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { faLock, faUser, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@services';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
@@ -61,6 +61,7 @@ export class RegisterComponent implements OnDestroy {
         let detailMsg;
 
         if (err.error.username) {
+            detailMsg = err.error.username[0];
         } else if (err.error.email) {
             detailMsg = err.error.email[0];
         } else if (err.error.password1) {

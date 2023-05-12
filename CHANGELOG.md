@@ -5,11 +5,20 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.2] - 2022-02-15
+## [0.6.3] - 2023-05-12
+
+### Added
+- User documentation
+
+### Changed
+- Split Angular frontend into core-, shared-, and feature- modules
+- Extended anonymization codes and moved to a centrally located JSON file
+
+## [0.6.2] - 2022-03-15
 
 ### Changed
 - Various frontend refactors
-- Corpus and transcript deivided in list and detail views to reduce data transfer
+- Corpus and transcript divided in list and detail views to reduce data transfer
 
 ### Fixed
 - Resolved a bug were corpora were being constantly retrieved, leading to very high data transfer
