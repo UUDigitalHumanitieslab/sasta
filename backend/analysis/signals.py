@@ -64,7 +64,7 @@ def file_delete(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=AssessmentMethod)
-def read_tam_file(sender, instance, created, **kwargs):
+def read_method_file(sender, instance, created, **kwargs):
     if not created:
         # on update: delete all queries related to this method
         AssessmentQuery.objects.filter(method=instance).delete()

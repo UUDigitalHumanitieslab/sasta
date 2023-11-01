@@ -8,13 +8,13 @@ from typing import List, Optional, Tuple
 from uuid import uuid4
 
 from analysis.annotations.utils import clean_item
+from analysis.managers import SastaQueryManager
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from lxml import etree as ET
 from sastadev.external_functions import form_map
-
-from .utils import get_items_list
+from sastadev.query import Query
 
 logger = logging.getLogger('sasta')
 
@@ -40,7 +40,8 @@ class MethodCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
     zc_embeddings = models.BooleanField()
     levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
-    marking_postcodes = ArrayField(base_field=models.CharField(max_length=20, blank=True), default=list)
+    marking_postcodes = ArrayField(base_field=models.CharField(
+        max_length=20, blank=True), default=list)
 
     def __str__(self):
         return self.name
@@ -64,7 +65,8 @@ class AssessmentMethod(models.Model):
 
     name = models.CharField(max_length=50)
     date_added = models.DateField(auto_now_add=True)
-    content = models.FileField(upload_to=upload_path, blank=True, null=True, max_length=500)
+    content = models.FileField(
+        upload_to=upload_path, blank=True, null=True, max_length=500)
     category = models.ForeignKey(
         MethodCategory, related_name='definitions', blank=True, null=True, on_delete=models.CASCADE)
 
@@ -93,7 +95,8 @@ class Corpus(models.Model):
     date_modified = models.DateField(auto_now=True)
     default_method = models.ForeignKey(AssessmentMethod,
                                        on_delete=models.SET_NULL, related_name='corpora', blank=True, null=True)
-    method_category = models.ForeignKey(MethodCategory, on_delete=models.SET_DEFAULT, default=1, related_name='corpora')
+    method_category = models.ForeignKey(
+        MethodCategory, on_delete=models.SET_DEFAULT, default=1, related_name='corpora')
 
     def __str__(self):
         return self.name
@@ -144,7 +147,8 @@ class Transcript(models.Model):
     # status = models.CharField(max_length=50)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.CASCADE)
-    content = models.FileField(upload_to=upload_path, blank=True, null=True, max_length=500)
+    content = models.FileField(
+        upload_to=upload_path, blank=True, null=True, max_length=500)
     parsed_content = models.FileField(
         upload_to=upload_path_parsed, blank=True, null=True, max_length=500)
     corrected_content = models.FileField(
@@ -266,36 +270,57 @@ class UploadFile(models.Model):
 class AssessmentQuery(models.Model):
     method = models.ForeignKey(AssessmentMethod, related_name='queries',
                                on_delete=models.CASCADE)
+
     query_id = models.CharField(max_length=4)
-    category = models.CharField(max_length=50, blank=True, null=True)
-    subcat = models.CharField(max_length=50, blank=True, null=True)
-    level = models.CharField(max_length=50, blank=True, null=True)
-    item = models.CharField(max_length=50, blank=True, null=True)
-    altitems = models.CharField(max_length=50, blank=True, null=True)
-    implies = models.CharField(max_length=50, blank=True, null=True)
+    cat = models.CharField(max_length=50, blank=True, default='')
+    subcat = models.CharField(max_length=50, blank=True, default='')
+    level = models.CharField(max_length=50, blank=True, default='')
+    item = models.CharField(max_length=50, blank=True, default='')
+    altitems = ArrayField(
+        base_field=models.CharField(max_length=50, blank=True),
+        default=list)
+    implies = ArrayField(
+        base_field=models.CharField(max_length=50, blank=True),
+        default=list)
     original = models.BooleanField()
-    pages = models.CharField(max_length=50, blank=True, null=True)
+    pages = models.CharField(max_length=50, blank=True, default='')
     fase = models.IntegerField(blank=True, null=True)
-    inform = models.BooleanField()
-    query = models.CharField(max_length=5000, blank=True, null=True)
-    screening = models.BooleanField(blank=True, null=True)
-    process = models.IntegerField()
-    special1 = models.CharField(max_length=50, blank=True, null=True)
-    special2 = models.CharField(max_length=50, blank=True, null=True)
-    comments = models.TextField(blank=True, null=True)
+    query = models.CharField(max_length=5000, blank=True, default='')
+    inform = models.CharField(max_length=20, blank=True, default='')
+    screening = models.CharField(max_length=20, blank=True, default=True)
+    process = models.IntegerField(blank=True, null=True)
+    stars = models.CharField(max_length=50, blank=True, default='')
+    filter = models.CharField(max_length=200, blank=True, default='')
+    variants = models.CharField(max_length=200, blank=True, default='')
+    unused1 = models.CharField(max_length=50, blank=True, default='')
+    unused2 = models.CharField(max_length=50, blank=True, default='')
+    comments = models.TextField(blank=True, default='')
+
+    # Manager
+    objects = SastaQueryManager()
 
     def __str__(self):
         return self.query_id
 
+    def get_items_list(self, str, sep, lower=True):
+        rawresult = str.split(sep)
+        if lower:
+            cleanresult = [w.strip().lower() for w in rawresult]
+        else:
+            cleanresult = [w.strip() for w in rawresult]
+        if cleanresult == ['']:
+            return []
+        return cleanresult
+
     def get_altitems_list(self, sep=',', lower=True):
         if not self.altitems:
             return []
-        return get_items_list(self.altitems, sep, lower)
+        return self.get_items_list(self.altitems, sep, lower)
 
     def get_implies_list(self, sep):
         if not self.implies:
             return []
-        return get_items_list(self.implies, sep)
+        return self.get_items_list(self.implies, sep)
 
     def get_item_mapping(self, sep):
         ''' mapping of all possible items (including altitems) to this query'''
@@ -311,6 +336,22 @@ class AssessmentQuery(models.Model):
                         self.query_id, self.fase)
         return result
 
+    def to_sastadev(self) -> Query:
+        sastadev_mapping = {'query_id': 'id'}
+        processes = ['pre', 'core', 'post', 'form']
+        relevant_fields = [f for f in self._meta.fields
+                           if f.get_internal_type()
+                           not in ('AutoField', 'ForeignKey', 'id')]
+        values = {f.name: getattr(self, f.name) for f in relevant_fields}
+        # Convert process back to string
+        values['process'] = processes[values.pop('process')]
+
+        for k, v in list(values.items()):
+            if k in sastadev_mapping:
+                values[sastadev_mapping.get(k)] = values.pop(k)
+
+        return Query(**values)
+
     class Meta:
         unique_together = ('method', 'query_id')
 
@@ -320,12 +361,15 @@ class AnalysisRun(models.Model):
         return os.path.join('files', f'{self.transcript.corpus.uuid}',
                             'analysis_files', filename)
 
-    transcript = models.ForeignKey(Transcript, related_name='analysisruns', on_delete=models.CASCADE)
-    method = models.ForeignKey(AssessmentMethod, related_name='analysisruns', on_delete=models.CASCADE)
+    transcript = models.ForeignKey(
+        Transcript, related_name='analysisruns', on_delete=models.CASCADE)
+    method = models.ForeignKey(
+        AssessmentMethod, related_name='analysisruns', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     query_file = models.FileField(upload_to=upload_path, max_length=500)
     annotation_file = models.FileField(upload_to=upload_path, max_length=500)
-    is_manual_correction = models.BooleanField(default=False, help_text='this run was generated by parsing a user-uploaded SAF-file')
+    is_manual_correction = models.BooleanField(
+        default=False, help_text='this run was generated by parsing a user-uploaded SAF-file')
 
     class Meta:
         get_latest_by = "created"
