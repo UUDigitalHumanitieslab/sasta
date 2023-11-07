@@ -25,7 +25,7 @@ def query_transcript(transcript: Transcript,
     utterances: List[Utterance] = Utterance.objects.filter(
         transcript=transcript)
     to_analyze_utterances = [x for x in utterances if x.for_analysis]
-    utterance_syntrees = [x.syntree for x in to_analyze_utterances]
+    utterance_syntrees = [(x.utt_id, x.syntree) for x in to_analyze_utterances]
     allutts = {utt.utt_id: utt.word_list for utt in to_analyze_utterances}
     logger.info(
         f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')

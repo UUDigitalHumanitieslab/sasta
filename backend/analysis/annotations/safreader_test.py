@@ -53,7 +53,7 @@ def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_
     true_results, _ = query_transcript(asta_transcript, asta_method, annotate=True, zc_embed=False)
     assert true_results.annotationinput
 
-    assert true_results.annotations.get(3)[7].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': None}]
+    assert true_results.annotations.get(3)[7].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': 0}]
 
     assert True
 

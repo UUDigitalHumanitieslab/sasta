@@ -157,14 +157,21 @@ def append_utterance_rows(worksheet, words_row, levels_rows, zc_rows, comment_ro
     append_level_rows(comment_rows, worksheet)
 
 
+def concat_cell(cell):
+    if (isinstance(cell, set) or isinstance(cell, list)):
+        try:
+            return ','.join(sorted(cell)) or None
+        except Exception:
+            return None
+    return cell
+
+
 def append_level_rows(rows, worksheet) -> None:
     '''Condense cells to comma separated strings and append them to worksheet'''
     if not rows:
         return
     for row in rows:
-        row = [','.join(sorted(cell)) or None
-               if (isinstance(cell, set) or isinstance(cell, list))
-               else cell
+        row = [concat_cell(cell)
                for cell in row]
         worksheet.append(row)
 

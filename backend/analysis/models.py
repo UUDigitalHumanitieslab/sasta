@@ -312,25 +312,14 @@ class AssessmentQuery(models.Model):
             return []
         return cleanresult
 
-    def get_altitems_list(self, sep=',', lower=True):
-        if not self.altitems:
-            return []
-        return self.get_items_list(self.altitems, sep, lower)
-
-    def get_implies_list(self, sep):
-        if not self.implies:
-            return []
-        return self.get_items_list(self.implies, sep)
-
     def get_item_mapping(self, sep):
         ''' mapping of all possible items (including altitems) to this query'''
         if (not self.item) or (not self.level):
             return {}
         result = {(clean_item(self.item), self.level.lower()):
                   (self.query_id, self.fase)}
-        alt_items = self.get_altitems_list(sep)
-        if alt_items:
-            for item in alt_items:
+        if self.altitems:
+            for item in self.altitems:
                 if (clean_item(item), self.level.lower()) not in result:
                     result[(clean_item(item), self.level.lower())] = (
                         self.query_id, self.fase)
