@@ -15,7 +15,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Add sastadev to sys path
-sys.path.append(os.path.join(BASE_DIR, 'sastadev'))
+# sys.path.append(os.path.join(BASE_DIR, 'sastadev'))
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

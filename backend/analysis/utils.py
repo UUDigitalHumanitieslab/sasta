@@ -10,24 +10,14 @@ import docx.oxml.text.paragraph
 import docx.table
 import docx.text.paragraph
 import pandas as pd
+from analysis import models as sasta_models
 from django.core.files import File
 from django.core.files.base import ContentFile
-from django.db.utils import IntegrityError
 from docx import Document
-from sastadev.query import getprocess
+from sastadev.methods import Method
+from sastadev.readmethod import read_method
 
 logger = logging.getLogger('sasta')
-
-
-def get_items_list(str, sep, lower=True):
-    rawresult = str.split(sep)
-    if lower:
-        cleanresult = [w.strip().lower() for w in rawresult]
-    else:
-        cleanresult = [w.strip() for w in rawresult]
-    if cleanresult == ['']:
-        return []
-    return cleanresult
 
 
 def extract(file):
@@ -134,36 +124,22 @@ def docx_to_txt(filepath, delete_docx=True):
         logger.exception(error)
 
 
-def read_TAM(method) -> None:
-    filepath = method.content.path
+def read_TAM(method_model) -> None:
+    ''' Read the method and create queries for a Method model'''
+    filepath = method_model.content.path
+    category = method_model.category.name.lower()
     logger.info(f'TAM-Reader:\treading {os.path.basename(filepath)}')
-    dataframe = pd.read_excel(filepath,
-                              true_values=['yes'], false_values=['no', 'ignore'],
-                              engine='openpyxl')
-    dataframe.columns = [c.lower() for c in dataframe.columns]
-    dataframe.rename(columns={'id': 'query_id'}, inplace=True)
-    dataframe = dataframe.astype(object).where(pd.notnull(dataframe), None)
-    dataframe = dataframe.loc[:, ~dataframe.columns.str.contains('^unnamed')]
-
-    for _i, series in dataframe.iterrows():
-        # workaround for getting value to None instead of NaN
-        try:
-            series.fase = int(series.fase)
-        except Exception:
-            series.fase = None
-        series.process = getprocess(series.process)
-        create_query_from_series(series, method)
+    method = read_method(category, filepath)
+    create_queries(method, method_model)
     logger.info('TAM-Reader:\treading done')
 
 
-def create_query_from_series(series: pd.Series, method) -> None:
-    from .models import AssessmentQuery
-
-    instance = AssessmentQuery(method=method, **series)
-    try:
-        instance.save()
-    except IntegrityError as error:
-        logger.exception(error)
+def create_queries(method: Method, model: sasta_models.AssessmentMethod):
+    cnt = 0
+    for q in method.queries.values():
+        sasta_models.AssessmentQuery.objects.create_from_sastadev(q, model)
+        cnt += 1
+    logger.info(f'Created {cnt} queries for method {model.name}')
 
 
 def compare_methods(old_method_path, new_method_path: str):

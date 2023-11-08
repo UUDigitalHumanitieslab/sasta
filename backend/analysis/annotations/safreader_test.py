@@ -9,8 +9,10 @@ from pytest_lazyfixture import lazy_fixture
 
 
 @pytest.mark.parametrize("method, transcript, filedir, samplenum", [
-    (lazy_fixture("tarsp_method"), lazy_fixture("tarsp_transcript"), lazy_fixture("cha_testfiles_dir"), 5),
-    (lazy_fixture("asta_method"), lazy_fixture("asta_transcript"), lazy_fixture("cha_testfiles_dir"), 16)
+    (lazy_fixture("tarsp_method"), lazy_fixture("tarsp_transcript"),
+     lazy_fixture("cha_testfiles_dir"), 5),
+    (lazy_fixture("asta_method"), lazy_fixture("asta_transcript"),
+     lazy_fixture("cha_testfiles_dir"), 16)
 ]
 )
 def test_read_saf(method, transcript, filedir, samplenum):
@@ -53,7 +55,7 @@ def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_
     true_results, _ = query_transcript(asta_transcript, asta_method, annotate=True, zc_embed=False)
     assert true_results.annotationinput
 
-    assert true_results.annotations.get(3)[7].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': None}]
+    assert true_results.annotations.get(3)[7].hits == [{'level': 'Taalmaat', 'item': 'N', 'fase': 0}]
 
     assert True
 

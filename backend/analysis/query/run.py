@@ -6,10 +6,10 @@ from analysis.annotations.safreader import SAFReader
 from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery,
                              Transcript, Utterance)
 from analysis.results.results import AllResults, SastaMatches, SastaResults
-from sastadev.query import core_process, post_process, pre_process
+from sastadev.query import Query, core_process, post_process, pre_process
 
-from .functions import (Query, QueryWithFunction, compile_queries,
-                        filter_queries, single_query_single_utt, utt_from_tree)
+from .functions import (QueryWithFunction, compile_queries, filter_queries,
+                        single_query_single_utt, utt_from_tree)
 
 logger = logging.getLogger('sasta')
 
@@ -25,7 +25,7 @@ def query_transcript(transcript: Transcript,
     utterances: List[Utterance] = Utterance.objects.filter(
         transcript=transcript)
     to_analyze_utterances = [x for x in utterances if x.for_analysis]
-    utterance_syntrees = [x.syntree for x in to_analyze_utterances]
+    utterance_syntrees = [(x.utt_id, x.syntree) for x in to_analyze_utterances]
     allutts = {utt.utt_id: utt.word_list for utt in to_analyze_utterances}
     logger.info(
         f'Analyzing {len(to_analyze_utterances)} of {len(utterances)} utterances..')
@@ -40,7 +40,8 @@ def query_transcript(transcript: Transcript,
     runs = AnalysisRun.objects.filter(transcript=transcript)
     if runs:  # An annotations file exists, base further results on this
         latest_run = runs.latest()
-        reader = SAFReader(filepath=latest_run.annotation_file.path, method=method, transcript=transcript)
+        reader = SAFReader(filepath=latest_run.annotation_file.path,
+                           method=method, transcript=transcript)
         coreresults = reader.document.to_allresults().coreresults
         annotations = reader.document.reformatted_annotations
         exact_results = reader.document.exactresults
@@ -94,7 +95,8 @@ def run_core_queries(utterances: List[Utterance],
                     allmatches[(q.id, utt.utt_id)].append((m, utt.syntree))
                     # Record the exact word where the query was matched
 
-                    word_index = next((i for i, item in enumerate(utt.word_position_mapping) if item["begin"] == int(m.get('begin'))), None)
+                    word_index = next((i for i, item in enumerate(
+                        utt.word_position_mapping) if item["begin"] == int(m.get('begin'))), None)
                     # exact_results[q.id].append((utt.utt_id, int(m.get('begin')) + 1))
                     exact_results[q.id].append((utt.utt_id, word_index))
 
@@ -105,11 +107,13 @@ def run_core_queries(utterances: List[Utterance],
                             'item': q.query.item,
                             'fase': q.query.fase
                         }
-                        matched_word = next((w for w in utt_res if w.begin == begin), None)
+                        matched_word = next(
+                            (w for w in utt_res if w.begin == begin), None)
                         if matched_word:
                             matched_word.hits.append(hit)
                         else:
-                            logger.warning(f'Found hit ({q.query.level}, {q.query.item}, {q.query.fase}) for non-exising begin attr "{begin}"')
+                            logger.warning(
+                                f'Found hit ({q.query.level}, {q.query.item}, {q.query.fase}) for non-exising begin attr "{begin}"')
                 if annotate:
                     annotations[utt.utt_id] = utt_res
 
