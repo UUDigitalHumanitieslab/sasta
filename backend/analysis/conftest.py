@@ -17,7 +17,7 @@ CORRECTIONS_ASTA_16 = '{"Pause": [["15", "Pause", "[\'(..)\']", "CHAT", "None", 
 
 @pytest.fixture
 def cha_testfiles_dir():
-    return op.join(settings.BASE_DIR, 'analysis', 'annotations', 'test_files')
+    return op.join(settings.BASE_DIR, 'test_files')
 
 
 @pytest.fixture

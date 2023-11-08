@@ -9,8 +9,10 @@ from pytest_lazyfixture import lazy_fixture
 
 
 @pytest.mark.parametrize("method, transcript, filedir, samplenum", [
-    (lazy_fixture("tarsp_method"), lazy_fixture("tarsp_transcript"), lazy_fixture("cha_testfiles_dir"), 5),
-    (lazy_fixture("asta_method"), lazy_fixture("asta_transcript"), lazy_fixture("cha_testfiles_dir"), 16)
+    (lazy_fixture("tarsp_method"), lazy_fixture("tarsp_transcript"),
+     lazy_fixture("cha_testfiles_dir"), 5),
+    (lazy_fixture("asta_method"), lazy_fixture("asta_transcript"),
+     lazy_fixture("cha_testfiles_dir"), 16)
 ]
 )
 def test_read_saf(method, transcript, filedir, samplenum):
