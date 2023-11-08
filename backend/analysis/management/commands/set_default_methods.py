@@ -12,7 +12,7 @@ class Command(BaseCommand):
                 print(f'Setting new defaults for category {category.name}')
                 self.handle_category(category)
         except Exception as e:
-            raise CommandError(e)
+            pass
         finally:
             print('Setting new default methods complete')
 
@@ -29,6 +29,6 @@ class Command(BaseCommand):
                 print(
                     f'Updated corpus {corpus.name} from {old_method.name if old_method else "None"} to {new_method.name}')
         except Exception as e:
-            raise CommandError(e)
+            pass
         finally:
             print('Setting new default methods complete')
