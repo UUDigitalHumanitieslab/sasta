@@ -10,6 +10,7 @@ from django.db.models import Q
 from lxml import etree as ET
 from sastadev.external_functions import form_map, str2functionmap
 from sastadev.macros import expandmacros, macrodict
+from sastadev.query import Query
 
 logger = logging.getLogger('sasta')
 
@@ -24,61 +25,12 @@ class QueryWithFunction:
         return f'{self.id}: {type(self.function)}'
 
 
-class Query:
-    ''' SASTAdev query format.
-        Mostly aligns with SASTA django model.
-    '''
-    sastadev_mapping = {'query_id': 'id', 'category': 'cat'}
-
-    def __init__(self, id, cat, subcat, level, item, altitems, implies,
-                 original, pages, fase, query, inform,
-                 screening, process, special1, special2, comments):
-        self.id = id
-        self.cat = cat or ''
-        self.subcat = subcat or ''
-        self.level = level or ''
-        self.item = item or ''
-        self.altitems = altitems or ''
-        self.implies = implies or ''
-        self.original = original
-        self.pages = pages or ''
-        self.fase = fase
-        self.query = query or ''
-        self.inform = inform
-        self.screening = screening
-        self.process = process
-        self.special1 = self.clean(special1)
-        self.special2 = self.clean(special2)
-        self.comments = comments or ''
-
-    def __repr__(self):
-        return ('\n'.join([f'{k}: {v}' for k, v in vars(self).items()]))
-
-    def clean(self, valstr):
-        if valstr:
-            return valstr.strip().lower()
-        return ''
-
-    @classmethod
-    def from_model(cls, model):
-        relevant_fields = [f for f in model._meta.fields
-                           if f.get_internal_type()
-                           not in ('AutoField', 'ForeignKey')]
-        values = {f.name: getattr(model, f.name) for f in relevant_fields}
-
-        for k, v in list(values.items()):
-            if k in cls.sastadev_mapping:
-                values[cls.sastadev_mapping.get(k)] = values.pop(k)
-
-        return cls(**values)
-
-
-def compile_queries(queries: List[AssessmentQuery]) -> List[QueryWithFunction]:
+def compile_queries(queries: List[Query]) -> List[QueryWithFunction]:
     results = []
     # macrodict = get_macros_dict()
 
     for query_model in queries:
-        query = Query.from_model(query_model)
+        query = query_model.to_sastadev()
         func = compile_xpath_or_func(query.query, macrodict)
         if func:
             results.append(QueryWithFunction(query, func))
@@ -110,8 +62,9 @@ def filter_queries(method: AssessmentMethod,
         all_queries = AssessmentQuery.objects.all().filter(
             Q(method=method)
             & Q(query__isnull=False)
+            & ~Q(query__exact='')
             & ~Q(query__in=form_queries)
-            & Q(inform=True)
+            & Q(inform='yes')
         )
         if phase:
             phase_filter = Q(fase=phase) if phase_exact else Q(

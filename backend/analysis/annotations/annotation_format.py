@@ -89,7 +89,7 @@ class SAFDocument:
     def hit_from_annotation(self, ann) -> Dict:
         q = self.method.queries.get(query_id=ann.query_id)
         # Try to match the actual alt item
-        item_matches = [ai for ai in q.get_altitems_list(lower=False) if ai.lower() == ann.label.lower()]
+        item_matches = [ai for ai in q.altitems if ai.lower() == ann.label.lower()]
         return {
             'level': q.level,
             'item': item_matches[0] if item_matches else q.item,
