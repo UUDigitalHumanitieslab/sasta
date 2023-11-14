@@ -14,7 +14,13 @@
         "fields": {
             "name": "ASTA",
             "zc_embeddings": false,
-            "levels": ["SampleGrootte", "MLU", "Taalmaat", "Lemma", "Grammaticale fout", "QA"],
+            "levels": [
+                "Samplegrootte",
+                "MLU",
+                "Taalmaat",
+                "Foutenanalyse",
+                "Lemma"
+            ],
             "marking_postcodes": ["[+ G]"]
         }
     },
