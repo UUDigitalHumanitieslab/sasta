@@ -140,18 +140,8 @@ class SAFReader:
                 if not split_labels:
                     self.errors.append((utt_id, word_id, text, level, label))
 
-                for label in split_labels:
-                    mapped = item2queryid(label, level, self.item_mapping)
-                    if mapped:
-                        query_id, fase = mapped
-                        instance.annotations.append(SAFAnnotation(
-                            level, label, fase, query_id))
-                        self.document.exactresults[query_id].append((utt_id, word_id))
-
-                    else:
-                        logger.warning(
-                            'Cannot resolve query_id for (%s, %s)', level, label)
-                        self.errors.append((utt_id, word_id, text, level, label))
+                self.map_labels(split_labels, instance,
+                                level, utt_id, word_id, text)
 
         # read comments
         comment_data = data.loc[data.level == SAF_COMMENT_LEVEL.lower()].dropna()
@@ -159,3 +149,19 @@ class SAFReader:
             instance.comment = str(comment_data[colname].iloc[0])
 
         return instance
+
+    def map_labels(self, split_labels: List[str], saf_word: SAFWord, level: str, utt_id, word_id, text):
+        for label in split_labels:
+            mapped = item2queryid(label, level, self.item_mapping)
+            if mapped:
+                query_id, fase = mapped
+                saf_word.annotations.append(SAFAnnotation(
+                    level, label, fase, query_id))
+                self.document.exactresults[query_id].append(
+                    (utt_id, word_id))
+
+            else:
+                logger.warning(
+                    'Cannot resolve query_id for (%s, %s)', level, label)
+                self.errors.append(
+                    (utt_id, word_id, text, level, label))
