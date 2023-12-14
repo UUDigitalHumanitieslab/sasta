@@ -289,6 +289,7 @@ class AssessmentQuery(models.Model):
     inform = models.CharField(max_length=20, blank=True, default='')
     screening = models.CharField(max_length=20, blank=True, default=True)
     process = models.IntegerField(blank=True, null=True)
+    literal = models.CharField(max_length=200, blank=True, default='')
     stars = models.CharField(max_length=50, blank=True, default='')
     filter = models.CharField(max_length=200, blank=True, default='')
     variants = models.CharField(max_length=200, blank=True, default='')
