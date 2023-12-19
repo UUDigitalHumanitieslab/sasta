@@ -21,6 +21,7 @@ import { UploadSafComponent } from './transcript/upload-saf.component';
 import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.component';
 import { UploadModule } from './upload/upload.module';
 import { UtterancesListComponent } from './utterances/utterances-list.component';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,12 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         CorpusModule,
         UploadModule,
     ],
-    providers: [ConfirmationService, MessageService, XmlParseService],
+    providers: [
+        ConfirmationService,
+        MessageService,
+        XmlParseService,
+        { provide: APP_BASE_HREF, useValue: '/' },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

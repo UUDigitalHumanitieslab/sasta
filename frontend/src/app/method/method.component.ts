@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MethodService } from '@services';
 import { ActivatedRoute } from '@angular/router';
-import { Method } from '@models';
+import { Method, Query } from '@models';
 import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Query } from '@angular/compiler/src/core';
 
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
