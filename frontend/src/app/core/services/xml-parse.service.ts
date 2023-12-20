@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ExtractinatorService, PathVariable } from 'lassy-xpath';
-import * as parser from 'fast-xml-parser';
+import {
+    XMLParser,
+    validationOptions,
+    validationOptionsOptional,
+} from 'fast-xml-parser';
 
 @Injectable({
     providedIn: 'root',
@@ -11,13 +15,16 @@ export class XmlParseService {
     parseXml(xml: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             try {
-                const data = parser.parse(xml, {
+                const parseOptions = {
                     arrayMode: true,
                     attrNodeName: '$',
                     attributeNamePrefix: '',
                     ignoreAttributes: false,
                     parseAttributeValue: true,
-                });
+                };
+                const parser = new XMLParser(parseOptions);
+
+                const data = parser.parse(xml);
                 return resolve(data);
             } catch (exception) {
                 return reject(exception);
