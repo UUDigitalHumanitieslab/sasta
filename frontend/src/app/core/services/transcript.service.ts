@@ -10,12 +10,12 @@ export class TranscriptService {
     constructor(private httpClient: HttpClient) {}
 
     getByID(id: number): Observable<Transcript> {
-        return this.httpClient.get<Transcript>(`api/transcripts/${id}/`);
+        return this.httpClient.get<Transcript>(`/api/transcripts/${id}/`);
     }
 
     toCHAT(id: any): Promise<Transcript> {
         return this.httpClient
-            .get<Transcript>(`api/transcripts/${id}/toCHAT/`)
+            .get<Transcript>(`/api/transcripts/${id}/toCHAT/`)
             .toPromise();
     }
 
@@ -26,10 +26,10 @@ export class TranscriptService {
      * @returns parse task id
      */
     parse(id: number): Observable<string> {
-        return this.httpClient.get<string>(`api/transcripts/${id}/parse/`);
+        return this.httpClient.get<string>(`/api/transcripts/${id}/parse/`);
     }
 
     delete(id: number): Observable<any> {
-        return this.httpClient.delete(`api/transcripts/${id}/`);
+        return this.httpClient.delete(`/api/transcripts/${id}/`);
     }
 }

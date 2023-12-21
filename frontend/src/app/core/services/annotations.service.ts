@@ -10,7 +10,7 @@ export class AnnotationsService {
     constructor(private http: HttpClient) {}
 
     annoBaseRoute(id: number): string {
-        return `api/transcripts/${id}/annotations/`;
+        return `/api/transcripts/${id}/annotations/`;
     }
 
     latest(transcriptID: number): Observable<any> {
