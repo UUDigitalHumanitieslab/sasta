@@ -115,7 +115,7 @@ lxml==4.9.1
     #   python-docx
     #   sastadev
     #   tei-reader
-markupsafe==2.1.1
+markupsafe==2.0.1
     # via jinja2
 murmurhash==1.0.7
     # via

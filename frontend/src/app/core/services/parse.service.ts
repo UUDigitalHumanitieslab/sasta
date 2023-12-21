@@ -18,7 +18,7 @@ import { TranscriptService } from './transcript.service';
     providedIn: 'root',
 })
 export class ParseService {
-    apiRoot = 'api';
+    apiRoot = '/api';
     parseRoot = this.apiRoot + '/parse';
     transcriptRoot = this.apiRoot + '/transcripts';
 

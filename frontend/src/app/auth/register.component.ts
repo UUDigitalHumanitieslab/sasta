@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'sas-register',
@@ -55,7 +56,7 @@ export class RegisterComponent implements OnDestroy {
         return !this.containsSpace(this.username);
     }
 
-    onError(err: any): void {
+    onError(err: HttpErrorResponse): void {
         this.authService.isAuthenticated$.next(false);
         this.processing = false;
         let detailMsg;

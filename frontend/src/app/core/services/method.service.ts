@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Method } from '@models';
 import { MethodCategory } from '@models';
+import { SelectItemGroup } from 'primeng/api';
 
 @Injectable({
     providedIn: 'root',
@@ -70,14 +71,14 @@ export class MethodService {
         return response;
     }
 
-    groupMethods(methods: Method[], categoryID: number): any {
+    groupMethods(methods: Method[], categoryID: number): SelectItemGroup[] {
         return _(methods)
             .filter(
                 (m: { category: { id: number } }) =>
                     m.category.id === categoryID
             )
             .groupBy('category.name')
-            .map((groupedMethods: any, methodCat: any) => ({
+            .map((groupedMethods, methodCat: string) => ({
                 label: methodCat,
                 items: _.map(groupedMethods, (m: Method) => ({
                     label: m.name,

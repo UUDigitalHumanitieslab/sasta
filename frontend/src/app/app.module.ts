@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { XmlParseService } from '@services';
 import { LassyXPathModule } from 'lassy-xpath';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +20,7 @@ import { UploadSafComponent } from './transcript/upload-saf.component';
 import { TreeVisualizerComponent } from './tree-visualizer/tree-visualizer.component';
 import { UploadModule } from './upload/upload.module';
 import { UtterancesListComponent } from './utterances/utterances-list.component';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -43,7 +43,6 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken',
         }),
-        NgxJsonViewerModule,
         LassyXPathModule,
         // Shared and core modules
         CoreModule,
@@ -53,7 +52,12 @@ import { UtterancesListComponent } from './utterances/utterances-list.component'
         CorpusModule,
         UploadModule,
     ],
-    providers: [ConfirmationService, MessageService, XmlParseService],
+    providers: [
+        ConfirmationService,
+        MessageService,
+        XmlParseService,
+        { provide: APP_BASE_HREF, useValue: '/' },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
