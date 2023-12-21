@@ -259,7 +259,7 @@ typing-extensions==4.1.1
     # via
     #   pydantic
     #   sastadev
-urllib3==1.26.10
+urllib3==1.26.18
     # via
     #   django-revproxy
     #   requests
