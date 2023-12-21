@@ -43,7 +43,15 @@
               "buildOptimizer": false,
               "sourceMap": true,
               "optimization": false,
-              "namedChunks": true
+              "namedChunks": true,
+              "allowedCommonJsDependencies": [
+                  "lodash",
+                  "jquery",
+                  "file-saver",
+                  "fast-xml-parser",
+                  "brace",
+                  "brace/mode/javascript"
+              ]
           },
           "configurations": {
             "production": {
