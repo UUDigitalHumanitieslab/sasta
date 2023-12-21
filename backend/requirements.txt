@@ -80,7 +80,7 @@ django-celery-results==2.4.0
     # via -r requirements.in
 django-livereload-server==0.4
     # via -r requirements.in
-django-rest-auth[with_social]==0.9.5
+django-rest-auth[with-social,with_social]==0.9.5
     # via -r requirements.in
 django-revproxy==0.10.0
     # via -r requirements.in
@@ -164,7 +164,9 @@ pydantic==1.9.1
     #   spacy
     #   thinc
 pyjwt[crypto]==2.4.0
-    # via django-allauth
+    # via
+    #   django-allauth
+    #   pyjwt
 pyparsing==3.0.9
     # via
     #   packaging
@@ -243,7 +245,7 @@ thinc==8.1.0
     # via spacy
 tomli==2.0.1
     # via pytest
-tornado==6.2
+tornado==6.3.3
     # via django-livereload-server
 tqdm==4.64.0
     # via
