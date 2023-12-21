@@ -167,11 +167,12 @@ PROXY_FRONTEND = None
 # Auth
 SITE_ID = 1
 SITE_NAME = 'SASTA'
-HOST = 'localhost:5000'
+HOST = 'localhost:8000'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
 
 # Celery stuff
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'amqp://guest:guest@localhost:5672')
