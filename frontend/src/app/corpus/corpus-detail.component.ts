@@ -14,7 +14,6 @@ import {
     TranscriptService,
 } from '@services';
 import { saveAs } from 'file-saver';
-import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
 import { interval, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -25,8 +24,6 @@ import { startWith, switchMap, takeUntil } from 'rxjs/operators';
     styleUrls: ['./corpus-detail.component.scss'],
 })
 export class CorpusComponent implements OnInit, OnDestroy {
-    _: any = _; // Lodash
-
     id: number;
     corpus: Corpus;
 
@@ -98,6 +95,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
             });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     downloadFile(data: any, filename: string, mimetype: string): void {
         const blob = new Blob([data], { type: mimetype });
         saveAs(blob, filename);
@@ -117,7 +115,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
                     });
                 },
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error removing transcript',
@@ -138,7 +136,7 @@ export class CorpusComponent implements OnInit, OnDestroy {
             .subscribe(
                 () => {},
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error changing default method',

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -10,7 +10,10 @@ export type AnnotationOutputFormat = 'xlsx' | 'cha';
 export class AnalysisService {
     constructor(private http: HttpClient) {}
 
-    query(transcriptID: number, methodID: string | Blob): Observable<any> {
+    query(
+        transcriptID: number,
+        methodID: string | Blob
+    ): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(
@@ -24,7 +27,7 @@ export class AnalysisService {
         transcriptID: number,
         methodID: string | Blob,
         outputFormat: AnnotationOutputFormat
-    ): Observable<any> {
+    ): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         formData.append('format', outputFormat);
@@ -38,7 +41,7 @@ export class AnalysisService {
     generateForm(
         transcriptID: number,
         methodID: string | Blob
-    ): Observable<any> {
+    ): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(

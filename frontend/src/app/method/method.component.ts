@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Method, Query } from '@models';
 import { faCheck, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -15,9 +15,9 @@ import { Observable } from 'rxjs';
 export class MethodComponent implements OnInit {
     id: number;
     method$: Observable<Method>;
-    selectedQuery: any;
+    selectedQuery: Query;
     showDialog = false;
-    _: any = _; // Lodash
+    public _ = _; // Lodash
 
     faCheck = faCheck;
     faSearch = faSearch;

@@ -31,9 +31,9 @@ export class VerifyComponent implements OnInit {
         });
     }
 
-    confirm(key: string): void {
+    confirm(): void {
         this.authService.confirmEmail(this.key).subscribe(
-            (res) => {
+            () => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'E-mail address confirmed',
@@ -42,7 +42,7 @@ export class VerifyComponent implements OnInit {
                 this.authService.logout().subscribe();
                 this.router.navigate(['/login']);
             },
-            (err) => {
+            () => {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Cannot confirm email-address',

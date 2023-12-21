@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Transcript } from '@models';
@@ -13,26 +13,28 @@ export class AnnotationsService {
         return `/api/transcripts/${id}/annotations/`;
     }
 
-    latest(transcriptID: number): Observable<any> {
+    latest(transcriptID: number): Observable<HttpResponse<Blob>> {
         return this.http.get(this.annoBaseRoute(transcriptID) + 'latest/', {
             observe: 'response',
             responseType: 'blob',
         });
     }
 
-    reset(transcriptID: number): Observable<any> {
-        return this.http.get(this.annoBaseRoute(transcriptID) + 'reset/');
+    reset(transcriptID: number): Observable<string> {
+        return this.http.get<string>(
+            this.annoBaseRoute(transcriptID) + 'reset/'
+        );
     }
 
     upload(
         filename: string,
         filecontent: File,
         transcript: Transcript
-    ): Observable<any> {
+    ): Observable<'Success'> {
         const formData = new FormData();
         formData.append('filename', filename);
         formData.append('content', filecontent);
-        return this.http.post(
+        return this.http.post<'Success'>(
             this.annoBaseRoute(transcript.id) + 'upload/',
             formData
         );

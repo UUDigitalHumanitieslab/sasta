@@ -10,7 +10,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Corpus, Method, Transcript, TranscriptStatus } from '@models';
 import { saveAs } from 'file-saver';
-import * as _ from 'lodash';
 import { MessageService, SelectItemGroup } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
@@ -34,8 +33,6 @@ const TXT_MIME = 'text/plain';
     styleUrls: ['./transcript.component.scss'],
 })
 export class TranscriptComponent implements OnInit, OnDestroy {
-    _: any = _; // Lodash
-
     id: number;
     transcript: Transcript;
     corpus: Corpus;
@@ -126,6 +123,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
             });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     downloadFile(data: any, filename: string, mimetype: string): void {
         const blob = new Blob([data], { type: mimetype });
         saveAs(blob, filename);
@@ -185,7 +183,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
                     this.loadData();
                 },
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error querying',
@@ -217,7 +215,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
                     this.querying = false;
                 },
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error querying',
@@ -249,7 +247,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
                     this.querying = false;
                 },
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error generating form',
@@ -276,7 +274,7 @@ export class TranscriptComponent implements OnInit, OnDestroy {
                     });
                 },
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error removing transcript',

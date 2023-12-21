@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     AfterViewChecked,
     Component,
@@ -41,7 +42,8 @@ interface Metadata {
     templateUrl: './tree-visualizer.component.html',
     styleUrls: ['./tree-visualizer.component.scss'],
 })
-export class TreeVisualizerComponent implements OnInit, OnChanges, AfterViewChecked
+export class TreeVisualizerComponent
+implements OnInit, OnChanges, AfterViewChecked
 {
     @ViewChild('output', { static: true, read: ElementRef })
     public output: ElementRef;

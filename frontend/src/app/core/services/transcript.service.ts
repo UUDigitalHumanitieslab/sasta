@@ -13,7 +13,7 @@ export class TranscriptService {
         return this.httpClient.get<Transcript>(`/api/transcripts/${id}/`);
     }
 
-    toCHAT(id: any): Promise<Transcript> {
+    toCHAT(id: number): Promise<Transcript> {
         return this.httpClient
             .get<Transcript>(`/api/transcripts/${id}/toCHAT/`)
             .toPromise();
@@ -29,7 +29,7 @@ export class TranscriptService {
         return this.httpClient.get<string>(`/api/transcripts/${id}/parse/`);
     }
 
-    delete(id: number): Observable<any> {
-        return this.httpClient.delete(`/api/transcripts/${id}/`);
+    delete(id: number): Observable<null> {
+        return this.httpClient.delete<null>(`/api/transcripts/${id}/`);
     }
 }

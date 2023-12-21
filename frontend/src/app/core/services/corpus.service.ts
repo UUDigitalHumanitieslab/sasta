@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Corpus, ListedCorpus } from '@models';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -21,12 +21,12 @@ export class CorpusService {
             .subscribe((corpora) => this.corpora$.next(corpora));
     }
 
-    create(corpus: Corpus): Observable<any> {
-        return this.httpClient.post('/api/corpora/', corpus);
+    create(corpus: Corpus): Observable<Corpus> {
+        return this.httpClient.post<Corpus>('/api/corpora/', corpus);
     }
 
-    delete(corpus: Corpus | ListedCorpus): Observable<any> {
-        return this.httpClient.delete(`/api/corpora/${corpus.id}/`);
+    delete(corpus: Corpus | ListedCorpus): Observable<null> {
+        return this.httpClient.delete<null>(`/api/corpora/${corpus.id}/`);
     }
 
     list(): Observable<Corpus[]> {
@@ -52,7 +52,7 @@ export class CorpusService {
         );
     }
 
-    downloadZip(id: number): Observable<any> {
+    downloadZip(id: number): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         return this.httpClient.post(`/api/corpora/${id}/download/`, formData, {
             observe: 'response',
@@ -60,10 +60,13 @@ export class CorpusService {
         });
     }
 
-    setDefaultMethod(id: number, methodID: string | Blob): Observable<any> {
+    setDefaultMethod(
+        id: number,
+        methodID: string | Blob
+    ): Observable<'Success'> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
-        return this.httpClient.post(
+        return this.httpClient.post<'Success'>(
             `/api/corpora/${id}/defaultmethod/`,
             formData
         );

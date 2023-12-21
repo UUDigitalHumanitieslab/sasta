@@ -7,12 +7,12 @@ import { AuthService } from '@services';
 @Injectable({
     providedIn: 'root',
 })
-export class AuthGuard  {
+export class AuthGuard {
     constructor(private authService: AuthService, private router: Router) {}
 
     canActivate(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
+        _next: ActivatedRouteSnapshot,
+        _state: RouterStateSnapshot
     ):
         | Observable<boolean | UrlTree>
         | Promise<boolean | UrlTree>
@@ -25,6 +25,7 @@ export class AuthGuard  {
 
         return this.authService.getCompleteUser().pipe(
             map((userData) => {
+                // eslint-disable-next-line no-extra-boolean-cast
                 if (!!userData) {
                     return true;
                 }

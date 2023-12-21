@@ -1,10 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { ExtractinatorService, PathVariable } from 'lassy-xpath';
-import {
-    XMLParser,
-    validationOptions,
-    validationOptionsOptional,
-} from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 
 @Injectable({
     providedIn: 'root',
