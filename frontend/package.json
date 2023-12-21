@@ -3,7 +3,7 @@
     "scripts": {
         "ng": "ng",
         "start": "yarn serve",
-        "build": "ng build --configuration=production --base-href=/static/",
+        "build": "ng build --base-href=/static/",
         "test": "ng test --watch=true",
         "lint": "ng lint",
         "build:en": "ng build --configuration=production-en",
