@@ -3,8 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { Corpus, MethodCategory, UploadFile } from '@models';
 import { CorpusService, MethodService, UploadFileService } from '@services';
-import * as _ from 'lodash';
-import { FileUpload } from 'primeng/fileupload';
+import _ from 'lodash';
+import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { forkJoin, Observable } from 'rxjs';
 import { concatMap, switchMap } from 'rxjs/operators';
 
@@ -42,8 +42,6 @@ export class UploadComponent implements OnInit {
     selectedCategory: MethodCategory;
 
     categories$: Observable<MethodCategory[]>;
-
-    _: any = _;
 
     constructor(
         private router: Router,
@@ -102,7 +100,7 @@ export class UploadComponent implements OnInit {
         return _.some(this.corpora, ['name', this.newCorpusName]);
     }
 
-    createCorpus$(): Observable<any> {
+    createCorpus$(): Observable<Corpus> {
         const newCorpus: Corpus = {
             name: this.newCorpusName,
             status: 'created',
@@ -111,7 +109,7 @@ export class UploadComponent implements OnInit {
         return this.corpusService.create(newCorpus);
     }
 
-    onUpload(event: any): void {
+    onUpload(event: FileUploadHandlerEvent): void {
         // Triggered by PrimeNG file upload component
         this.files = event.files;
     }
@@ -140,7 +138,7 @@ export class UploadComponent implements OnInit {
 
     startUpload(): void {
         this.uploading = true;
-        let uploadSteps$: Observable<any>;
+        let uploadSteps$: Observable<UploadFile[]>;
 
         this.fileInput.upload();
 

@@ -6,7 +6,7 @@ import {
     faSearch,
     IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Transcript, Utterance } from '@models';
 
 @Component({
@@ -24,7 +24,6 @@ export class UtterancesListComponent {
     faSearch = faSearch;
     faProjectDiagram = faProjectDiagram;
 
-    _: any = _; // Lodash
     sortedUtterances: Utterance[];
     loadingTree = false;
 
