@@ -23,7 +23,9 @@ def test_read_saf(method, transcript, filedir, samplenum):
     read_results = reader.document.to_allresults()
 
     # are the coreresults the same?
-    assert sorted(read_results.coreresults.keys()) == sorted(true_results.coreresults.keys())
+    sorted_read = sorted(read_results.coreresults.keys())
+    sorted_true = sorted(true_results.coreresults.keys())
+    assert sorted_read == sorted_true
     for q, hits in read_results.coreresults.items():
         true_hits = true_results.coreresults[q]
         assert hits == true_hits
