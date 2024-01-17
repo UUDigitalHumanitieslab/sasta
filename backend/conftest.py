@@ -1,10 +1,13 @@
-import pytest
-from django.conf import settings
-from analysis.models import MethodCategory, AssessmentMethod
-from os import path as op
-from sastadev.conf import settings as sd_settings
 import glob
+from collections import Counter
+from os import path as op
+
+import pytest
+from analysis.models import AssessmentMethod, MethodCategory
+from django.conf import settings
 from django.core.files import File
+from sastadev.allresults import AllResults
+from sastadev.conf import settings as sd_settings
 
 
 @pytest.fixture
@@ -15,8 +18,9 @@ def cha_testfiles_dir():
 @pytest.fixture
 def tarsp_category(db):
     obj = MethodCategory.objects.create(
-        name='TARSP', zc_embeddings=True, levels=[
-            'Sz', 'Zc', 'Wg', 'VVW'], marking_postcodes=['[+ G]'])
+        name='TARSP', zc_embeddings=True,
+        levels=['Sz', 'Zc', 'Wg', 'VVW'],
+        marking_postcodes=['[+ G]'])
     yield obj
     obj.delete()
 
@@ -24,8 +28,9 @@ def tarsp_category(db):
 @pytest.fixture
 def stap_category(db):
     obj = MethodCategory.objects.create(
-        name='STAP', zc_embeddings=False, levels=[
-            'Complexiteit', 'Grammaticale fout'], marking_postcodes=['[+ G]', '[+ VU]'])
+        name='STAP', zc_embeddings=False,
+        levels=['Complexiteit', 'Grammaticale fout'],
+        marking_postcodes=['[+ G]', '[+ VU]'])
     yield obj
     obj.delete()
 
@@ -71,3 +76,27 @@ def asta_method(db, asta_category, method_dir):
         instance.content.save(op.basename(file), wrapped_file)
     yield instance
     instance.delete()
+
+
+@pytest.fixture
+def single_utt_allresults():
+    return AllResults(
+        uttcount=1,
+        coreresults={'A029': Counter({1: 1}), 'A045': Counter({1: 1}),
+                     'A001': Counter({1: 1}), 'A003': Counter({1: 2}),
+                     'A013': Counter({1: 1}), 'A018': Counter({1: 2}),
+                     'A021': Counter({1: 2}), 'A024': Counter({1: 2})},
+        exactresults={'A029': [(1, 1)], 'A045': [(1, 2)], 'A001': [(1, 7)],
+                      'A003': [(1, 8), (1, 13)], 'A013': [(1, 4)],
+                      'A018': [(1, 12), (1, 18)], 'A021': [(1, 6), (1, 17)],
+                      'A024': [(1, 4), (1, 15)]},
+        postresults={'A046': Counter(), 'A049': Counter()},
+        allmatches=None,  # Not provided in this fixture
+        filename='single_utt',
+        analysedtrees=[(1, None)],
+        annotationinput=False,
+        allutts={1: ['ja', 'uh', 'ik', 'vind', 'het', 'beetje', 'moeilijk',
+                     'om', 'het', 'goed', 'te', 'vertellen', 'want', 'ik',
+                     'heb', 'een', 'ongeluk', 'gehad']}
+
+    )
