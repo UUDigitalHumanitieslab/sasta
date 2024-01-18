@@ -4,11 +4,11 @@ from typing import List, Optional, Tuple
 
 import pandas as pd
 from analysis.models import Transcript
+from annotations.constants import SAF_COMMENT_LEVEL, SAF_UNALIGNED_LEVEL, SAF_UTT_LEVEL
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import (LABELSEP, PREFIX, SAF_COMMENT_LEVEL,
-                        SAF_UNALIGNED_LEVEL, UTTLEVEL)
+from .constants import (LABELSEP, PREFIX)
 from .utils import (clean_item, clean_row, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
 
@@ -30,7 +30,8 @@ class UnalignedWord(Exception):
 
 def get_word_levels(data: pd.DataFrame):
     levels = data.level
-    filtered_levels = levels[~levels.isin([SAF_COMMENT_LEVEL.lower(), UTTLEVEL.lower()])]
+    filtered_levels = levels[~levels.isin(
+        [SAF_COMMENT_LEVEL.lower(), SAF_UTT_LEVEL.lower()])]
     return list(filtered_levels.unique())
 
 
@@ -45,7 +46,7 @@ def word_level_data(word_data: pd.DataFrame, colname: str):
         raise UnalignedWord
     elif word_data.empty:
         raise NoWordDataException
-    utt_data = word_data.loc[word_data.level == UTTLEVEL, colname]
+    utt_data = word_data.loc[word_data.level == SAF_UTT_LEVEL, colname]
     return utt_data
 
 
@@ -73,14 +74,15 @@ class SAFReader:
         data = pd.read_excel(filepath, engine='openpyxl')
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
-        self.word_cols = [SAF_UNALIGNED_LEVEL.lower()] + list(filter(is_word_column, data.columns))
+        self.word_cols = [SAF_UNALIGNED_LEVEL.lower()] + \
+            list(filter(is_word_column, data.columns))
 
         # Do we need to drop empty columns? Seems we don't. If otherwise, make sure word_columns are not dropped
         # data.dropna(how='all', axis=1, inplace=True)
 
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
-            data.level.dropna().unique()) if lv.lower() != UTTLEVEL]
+            data.level.dropna().unique()) if lv.lower() != SAF_UTT_LEVEL]
 
         data = data[relevant_cols].apply(clean_row, axis='columns')
 
