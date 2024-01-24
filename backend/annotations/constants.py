@@ -6,7 +6,10 @@ SAF_COMMENT_LEVEL = preflabel(commentsheaders, str.capitalize)
 SAF_COMMENT_COLUMN = preflabel(commentsheaders, str.capitalize)
 
 SAF_UTT_LEVEL = preflabel(uttidheaders, str.capitalize)
+SAF_UTT_LEVELS = list(map(str.lower, uttidheaders))
+
 SAF_UNALIGNED_LEVEL = preflabel(unalignedheaders, str.capitalize)
+SAF_UNALIGNED_LEVELS = list(map(str.lower, unalignedheaders))
 
 SAF_LEVEL_HEADER = preflabel(levelheaders, str.capitalize)
 

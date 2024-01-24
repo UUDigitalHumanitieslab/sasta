@@ -4,11 +4,12 @@ from typing import List, Optional, Tuple
 
 import pandas as pd
 from analysis.models import Transcript
-from annotations.constants import SAF_COMMENT_LEVEL, SAF_UNALIGNED_LEVEL, SAF_UTT_LEVEL
+from annotations.constants import (SAF_COMMENT_LEVEL, SAF_UNALIGNED_LEVEL,
+                                   SAF_UNALIGNED_LEVELS, SAF_UTT_LEVEL, SAF_UTT_LEVELS)
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import (LABELSEP, PREFIX)
+from .constants import LABELSEP, PREFIX
 from .utils import (clean_item, clean_row, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
 
@@ -42,11 +43,11 @@ def is_word_column(column_name: str) -> bool:
 def word_level_data(word_data: pd.DataFrame, colname: str):
     '''returns combination word/level
     '''
-    if colname.lower() == SAF_UNALIGNED_LEVEL.lower():
+    if colname.lower() in SAF_UNALIGNED_LEVELS:
         raise UnalignedWord
     elif word_data.empty:
         raise NoWordDataException
-    utt_data = word_data.loc[word_data.level == SAF_UTT_LEVEL, colname]
+    utt_data = word_data.loc[word_data.level.isin(SAF_UTT_LEVELS), colname]
     return utt_data
 
 
@@ -82,7 +83,7 @@ class SAFReader:
 
         relevant_cols = ['utt_id', 'level'] + self.word_cols
         self.levels = [lv for lv in list(
-            data.level.dropna().unique()) if lv.lower() != SAF_UTT_LEVEL]
+            data.level.dropna().unique()) if lv.lower() not in SAF_UTT_LEVELS]
 
         data = data[relevant_cols].apply(clean_row, axis='columns')
 
