@@ -25,7 +25,7 @@ def test_uttlevel_row(safwriter: SAFWriter):
     id = 1
     words = safwriter.results.allutts[id]
     found = safwriter._uttlevel_row(id, words)
-    expected = [1, 'Utt', None, 'ja', 'uh', 'ik', 'vind', 'het', 'beetje',
+    expected = [1, 'Uiting', None, 'ja', 'uh', 'ik', 'vind', 'het', 'beetje',
                 'moeilijk', 'om', 'het', 'goed', 'te', 'vertellen', 'want',
                 'ik', 'heb', 'een', 'ongeluk', 'gehad', None, None]
     assert found == expected

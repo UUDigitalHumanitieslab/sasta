@@ -1,11 +1,19 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
-from annotations.constants import PRIMARY_COLOR, SAF_UTT_LEVEL
+from annotations import constants
 from openpyxl.styles import Font, PatternFill
 from openpyxl.styles.protection import Protection
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from sastadev.allresults import AllResults
+
+
+def preflabel(labels: List[str], casing: Optional[callable] = None) -> str:
+    try:
+        label = labels[0]
+        return casing(label) if casing else label
+    except IndexError:
+        return ''
 
 
 def get_max_words(allresults: AllResults) -> int:
@@ -34,12 +42,12 @@ def format_worksheet(worksheet) -> None:
 
     # yelow background for each utterance row
     for row in list(worksheet.rows)[1:]:
-        if row[1].value == SAF_UTT_LEVEL:
+        if row[1].value == constants.SAF_UTT_LEVEL:
             for cell in row:
                 cell.font = Font(color='FFFFFF')
                 cell.fill = PatternFill(
-                    start_color=PRIMARY_COLOR,
-                    end_color=PRIMARY_COLOR,
+                    start_color=constants.PRIMARY_COLOR,
+                    end_color=constants.PRIMARY_COLOR,
                     fill_type="solid")
         else:
             # unlock non-utterance rows
