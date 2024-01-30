@@ -63,7 +63,8 @@ def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_
 
 
 def test_wordlevels():
-    data = {'level': map(str.lower, ['Utt', 'QA', 'SZ', 'Grammaticale Fout', 'Commentaar']),
+    data = {'level': map(str.lower, ['Uiting', 'QA', 'SZ',
+                                     'Grammaticale Fout', 'Opmerkingen']),
             'word1': [1, None, 'X', 'V, BvBB', 'Hier staat wat commentaar']}
     df_in = DataFrame.from_dict(data)
 
@@ -72,7 +73,11 @@ def test_wordlevels():
 
 
 def test_read_saf_comments(tarsp_method, tarsp_transcript, cha_testfiles_dir):
-    reader = SAFReader(op.join(cha_testfiles_dir, 'sample_5_SAF_with_comments.xlsx'), tarsp_method, tarsp_transcript)
+    reader = SAFReader(
+        op.join(
+            cha_testfiles_dir,
+            'sample_5_SAF_with_comments.xlsx'),
+        tarsp_method, tarsp_transcript)
     sent = reader.document.utterances[3]
     assert sent.words[1].comment == 'Ik vind hier iets van.'
     assert sent.words[2].comment == '1'

@@ -1,19 +1,25 @@
 from annotations.utils import preflabel
-from sastadev.SAFreader import (commentsheaders, stagesheaders,
-                                unalignedheaders, uttidheaders, levelheaders)
+from sastadev.SAFreader import (commentsheaders, levelheaders, speakerheaders,
+                                stagesheaders, unalignedheaders, uttidheaders)
 
 SAF_COMMENT_LEVEL = preflabel(commentsheaders, str.capitalize)
 SAF_COMMENT_COLUMN = preflabel(commentsheaders, str.capitalize)
+SAF_COMMENT_HEADERS = list(map(str.lower, commentsheaders))
 
-SAF_UTT_LEVEL = preflabel(uttidheaders, str.capitalize)
+SAF_UTT_HEADER = SAF_UTT_LEVEL = preflabel(uttidheaders, str.capitalize)
 SAF_UTT_LEVELS = list(map(str.lower, uttidheaders))
 
 SAF_UNALIGNED_LEVEL = preflabel(unalignedheaders, str.capitalize)
 SAF_UNALIGNED_LEVELS = list(map(str.lower, unalignedheaders))
 
 SAF_LEVEL_HEADER = preflabel(levelheaders, str.capitalize)
+SAF_LEVEL_HEADERS = list(map(str.lower, levelheaders))
 
 SAF_FASES_COLUMN = preflabel(stagesheaders, str.capitalize)
+SAF_FASES_HEADERS = list(map(str.lower, stagesheaders))
+
+SAF_SPEAKER_HEADER = preflabel(speakerheaders, str.capitalize)
+SAF_SPEAKER_COLUMNS = list(map(str.lower, speakerheaders))
 
 # Composed headers
 PRE_WORDS_HEADERS = ['ID', SAF_LEVEL_HEADER, SAF_UNALIGNED_LEVEL]
