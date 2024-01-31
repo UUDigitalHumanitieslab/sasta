@@ -1,0 +1,45 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: SASTA
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jelte
+    family-names: van Boheemen
+    email: j.vanboheemen@uu.nl
+    affiliation: 'Centre for Digital Humanities, Utrecht University'
+    orcid: 'https://orcid.org/0000-0002-2802-3242'
+  - name: >-
+      Research Software Lab, Centre for Digital Humanities,
+      Utrecht University
+    city: Utrecht
+    country: NL
+    email: cdh@uu.nl
+    website: >-
+      https://cdh.uu.nl/centre-for-digital-humanities/research-software-lab/
+  - given-names: Odijk
+    family-names: Jan
+    email: j.odijk@uu.nl
+    affiliation: Utrecht University
+    orcid: 'https://orcid.org/0000-0003-3331-1182'
+  - given-names: Kroon
+    family-names: Martin S.
+    email: m.s.kroon@uu.nl
+    affiliation: Utrecht University
+    orcid: 'https://orcid.org/0000-0003-3059-6872'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.10600256
+repository-code: 'https://github.com/UUDigitalHumanitieslab/sasta'
+url: 'https://sasta.hum.uu.nl'
+abstract: >-
+  SASTA is a tool for the analysis of spontaneous language
+  transcripts, to aid clinical linguists and research into
+  language development and language disorders.
+license: BSD-3-Clause
+version: 0.8.1
+date-released: '2024-01-31'
