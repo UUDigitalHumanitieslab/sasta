@@ -1,24 +1,21 @@
 from annotations.constants import (SAF_COMMENT_COLUMN, SAF_FASES_COLUMN,
-                                   SAF_UNALIGNED_LEVEL)
+                                   SAF_LEVEL_HEADER, SAF_UNALIGNED_LEVEL,
+                                   SAF_UTT_HEADER)
 from annotations.writer import SAFWriter
 
 from .utils import ljust
 
 
 def test_safwriter(safwriter: SAFWriter):
-    safwriter.make_workbook()
-    safwriter.write('/Users/a3248526/Documents/saf_writer_test.xlsx')
+    with open('/Users/a3248526/Documents/saf_writer_test.xlsx', 'wb') as f:
+        safwriter.write(f)
     assert safwriter
 
 
 def test_headers(safwriter: SAFWriter):
     found = safwriter._annotations_header_row()
-    expected = ['ID', 'Level', SAF_UNALIGNED_LEVEL,
-                'Word1', 'Word2', 'Word3', 'Word4',
-                'Word5', 'Word6', 'Word7', 'Word8',
-                'Word9', 'Word10', 'Word11', 'Word12',
-                'Word13', 'Word14', 'Word15', 'Word16',
-                'Word17', 'Word18',
+    expected = [SAF_UTT_HEADER, SAF_LEVEL_HEADER, SAF_UNALIGNED_LEVEL,
+                *[f'Word{n}' for n in range(1, 19)],
                 SAF_FASES_COLUMN, SAF_COMMENT_COLUMN]
     assert found == expected
 
@@ -27,9 +24,9 @@ def test_uttlevel_row(safwriter: SAFWriter):
     id = 1
     words = safwriter.results.allutts[id]
     found = safwriter._uttlevel_row(id, words)
-    expected = [1, 'Uiting', None, 'ja', 'uh', 'ik', 'vind', 'het', 'beetje',
-                'moeilijk', 'om', 'het', 'goed', 'te', 'vertellen', 'want',
-                'ik', 'heb', 'een', 'ongeluk', 'gehad', None, None]
+    expected = [1, SAF_UTT_HEADER, None, 'ja', 'uh', 'ik', 'vind', 'het',
+                'beetje', 'moeilijk', 'om', 'het', 'goed', 'te', 'vertellen',
+                'want', 'ik', 'heb', 'een', 'ongeluk', 'gehad', None, None]
     assert found == expected
 
 

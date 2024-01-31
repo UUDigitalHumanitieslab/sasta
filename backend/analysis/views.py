@@ -106,11 +106,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             transcript, method, True, zc_embed
         )
 
-        # spreadsheet = annotations_to_xlsx(allresults, method)
         writer = SAFWriter(method.to_sastadev(), allresults)
-        writer.make_workbook()
         spreadsheet = writer.workbook
-
 
         self.create_analysis_run(transcript, method, spreadsheet)
 

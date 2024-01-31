@@ -1,6 +1,7 @@
+from io import BytesIO
 import itertools
 from dataclasses import dataclass, field
-from typing import Dict, List, TextIO, Tuple
+from typing import Dict, List, Tuple
 
 from analysis.models import MethodCategory
 from openpyxl import Workbook
@@ -48,10 +49,11 @@ class SAFWriter():
         }
         self.utt_n_rows = (len(all_levels))
         self.anno_headers = self._annotations_header_row()
+        self.make_workbook()
 
-    def write(self, target: TextIO) -> None:
+    def write(self, target: BytesIO) -> None:
         '''Write the completed output file'''
-        self.workbook.save('/Users/a3248526/Documents/sasta_saf_test.xlsx')
+        self.workbook.save(target)
 
     def make_workbook(self) -> None:
         '''Create the complete workbook.
