@@ -6,27 +6,6 @@ You need to install the following software:
 
 -   [Docker](https://docs.docker.com/get-docker/). Make sure Docker has at least 4GB memory allocated.
 
-# Cloning SASTADEV
-
-SASTA requires SASTADEV to run. Clone it (from root directory).
-SSH:
-
-```console
-git clone git@github.com:UUDigitalHumanitieslab/sastadev.git backend/sastadev
-```
-
-HTTPS:
-
-```console
-git clone https://github.com/UUDigitalHumanitieslab/sastadev.git backend/sastadev
-```
-
-Create a `config.py` file in `backend/sastadev`:
-
-```console
-cp backend/sastadev/default_config.py backend/sastadev/config.py
-```
-
 # Running locally
 
 To download, build, install, and run all containers:
