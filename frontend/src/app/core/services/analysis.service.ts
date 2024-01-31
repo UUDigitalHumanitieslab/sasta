@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -10,11 +10,14 @@ export type AnnotationOutputFormat = 'xlsx' | 'cha';
 export class AnalysisService {
     constructor(private http: HttpClient) {}
 
-    query(transcriptID: number, methodID: string | Blob): Observable<any> {
+    query(
+        transcriptID: number,
+        methodID: string | Blob
+    ): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(
-            `api/transcripts/${transcriptID}/query/`,
+            `/api/transcripts/${transcriptID}/query/`,
             formData,
             { observe: 'response', responseType: 'blob' }
         );
@@ -24,12 +27,12 @@ export class AnalysisService {
         transcriptID: number,
         methodID: string | Blob,
         outputFormat: AnnotationOutputFormat
-    ): Observable<any> {
+    ): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         formData.append('format', outputFormat);
         return this.http.post(
-            `api/transcripts/${transcriptID}/annotate/`,
+            `/api/transcripts/${transcriptID}/annotate/`,
             formData,
             { observe: 'response', responseType: 'blob' }
         );
@@ -38,11 +41,11 @@ export class AnalysisService {
     generateForm(
         transcriptID: number,
         methodID: string | Blob
-    ): Observable<any> {
+    ): Observable<HttpResponse<Blob>> {
         const formData: FormData = new FormData();
         formData.append('method', methodID);
         return this.http.post(
-            `api/transcripts/${transcriptID}/generateform/`,
+            `/api/transcripts/${transcriptID}/generateform/`,
             formData,
             { observe: 'response', responseType: 'blob' }
         );

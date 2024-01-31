@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/sasta.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/sasta)
 
 > SASTA: **S**emi-automatische **A**nalyse van **S**pontane **Ta**al
- 
+
 Annotate and analyze transcripts
 
 
@@ -60,7 +60,7 @@ Running the application in [development mode][8] (hit ctrl-C to stop):
 $ yarn start
 ```
 
-This will run the backend and frontend applications, as well as their unittests, and watch all source files for changes. You can visit the frontend on http://localhost:5000/, the browsable backend API on http://localhost:5000/api/ and the backend admin on http://localhost:5000/admin/. On every change, unittests rerun, frontend code rebuilds and open browser tabs refresh automatically (livereload).
+This will run the backend and frontend applications, as well as their unittests, and watch all source files for changes. You can visit the frontend on http://localhost:8000/, the browsable backend API on http://localhost:8000/api/ and the backend admin on http://localhost:8000/admin/. On every change, unittests rerun, frontend code rebuilds and open browser tabs refresh automatically (livereload).
 
 [8]: #development-mode-vs-production-mode
 
@@ -188,7 +188,7 @@ The purpose of development mode is to facilitate live development, as the name i
 dimension  |  Development mode  |  Production mode
 -----------|--------------------|-----------------
 command  |  `yarn start`  |  `yarn start-p`
-base address  |  http://localhost:5000  |  http://localhost:4200
+base address  |  http://localhost:8000  |  http://localhost:4200
 backend server (Django)  |  in charge of everything  |  serves backend only
 
 frontend server (angular-cli)  |  serves  |  watch and build

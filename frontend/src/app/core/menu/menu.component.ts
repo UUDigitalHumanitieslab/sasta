@@ -1,5 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@envs/environment';
 import {
     faExternalLinkAlt,
     faFileUpload,
@@ -8,10 +9,8 @@ import {
     faUser,
     faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
-import { environment } from '@envs/environment';
-import { animations, ShowState } from '@shared/animations';
 import { AuthService } from '@services';
-import { map } from 'rxjs/operators';
+import { ShowState, animations } from '@shared/animations';
 
 @Component({
     animations,
@@ -52,10 +51,10 @@ export class MenuComponent implements OnInit {
 
     logout(): void {
         this.authService.logout().subscribe(
-            (res) => {
+            () => {
                 this.router.navigate(['/login']);
             },
-            (err) => console.log('Http Error', err)
+            (err) => console.error('Http Error', err)
         );
     }
 

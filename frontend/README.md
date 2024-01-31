@@ -2,7 +2,7 @@
 
 ## Development server
 
-Run `yarn start` for a dev server. Navigate to `http://localhost:4200/`. This will not start the backend, to developing with a functioning backend use `yarn start` from the project root instead. Navigate to `http://localhost:5000/`, which will forward to the frontend.
+Run `yarn start` for a dev server. Navigate to `http://localhost:4200/`. This will not start the backend, to developing with a functioning backend use `yarn start` from the project root instead. Navigate to `http://localhost:8000/`, which will forward to the frontend.
 
 ## Code scaffolding
 

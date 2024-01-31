@@ -55,7 +55,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
             (res) => {
                 this.corpus = res;
             },
-            (err) => console.log(err)
+            (err) => console.error(err)
         );
     }
 
@@ -72,11 +72,11 @@ export class ProcessComponent implements OnInit, OnDestroy {
             )
             .subscribe(
                 (res) => {
-                    console.log(res);
+                    console.error(res);
                     this.stepsIndex += 1;
                 },
                 (err) => {
-                    console.log(err);
+                    console.error(err);
                     this.stepsIndex += 1;
                 },
                 () => {
