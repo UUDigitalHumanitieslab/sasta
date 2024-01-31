@@ -34,7 +34,7 @@ If you are interested in using SASTA, the most straightforward way to get starte
 
 Consult the [user documentation][user-docs] for all information on using the application, input formats, and output formats.
 
-Self-hosting is an option, though support by the Research Software Lab is not provided. See TODO: hosting instructions for running your own copy of the application.
+Self-hosting is an option, though support by the Research Software Lab is not provided.
 
 ## Development
 The [documentation directory](./docs/) contains documentation for developers. This includes [running the application through Docker](./docs/local-installation%20(Docker).md).
