@@ -57,7 +57,7 @@ click-repl==0.2.0
     # via celery
 corpus2alpino==0.3.10
     # via -r requirements.in
-cryptography==41.0.6
+cryptography==42.0.0
     # via pyjwt
 cymem==2.0.6
     # via
@@ -80,7 +80,7 @@ django-celery-results==2.4.0
     # via -r requirements.in
 django-livereload-server==0.4
     # via -r requirements.in
-django-rest-auth[with_social]==0.9.5
+django-rest-auth[with-social,with_social]==0.9.5
     # via -r requirements.in
 django-revproxy==0.10.0
     # via -r requirements.in
@@ -164,7 +164,9 @@ pydantic==1.9.1
     #   spacy
     #   thinc
 pyjwt[crypto]==2.4.0
-    # via django-allauth
+    # via
+    #   django-allauth
+    #   pyjwt
 pyparsing==3.0.9
     # via
     #   packaging
