@@ -9,6 +9,8 @@ from django.core.files import File
 from sastadev.allresults import AllResults
 from sastadev.conf import settings as sd_settings
 
+from lxml import etree
+
 
 @pytest.fixture
 def cha_testfiles_dir():
@@ -79,7 +81,10 @@ def asta_method(db, asta_category, method_dir):
 
 
 @pytest.fixture
-def single_utt_allresults():
+def single_utt_allresults(cha_testfiles_dir):
+    parsed = etree.parse(
+        op.join(cha_testfiles_dir, 'single_utt_corrected.xml'))
+    utts = parsed.xpath('alpino_ds')
     return AllResults(
         uttcount=1,
         coreresults={'A029': Counter({1: 1}), 'A045': Counter({1: 1}),
@@ -93,8 +98,8 @@ def single_utt_allresults():
         postresults={'A046': Counter(), 'A049': Counter()},
         allmatches=None,  # Not provided in this fixture
         filename='single_utt',
-        analysedtrees=[(1, None)],
-        annotationinput=False,
+        analysedtrees=[(n + 1, tree) for n, tree in enumerate(utts)],
+        annotationinput=True,
         allutts={1: ['ja', 'uh', 'ik', 'vind', 'het', 'beetje', 'moeilijk',
                      'om', 'het', 'goed', 'te', 'vertellen', 'want', 'ik',
                      'heb', 'een', 'ongeluk', 'gehad']}

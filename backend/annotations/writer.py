@@ -1,6 +1,6 @@
-from io import BytesIO
 import itertools
 from dataclasses import dataclass, field
+from io import BytesIO
 from typing import Dict, List, Tuple
 
 from analysis.models import MethodCategory
@@ -10,7 +10,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 from sastadev.allresults import AllResults, ResultsKey
 from sastadev.methods import Method
 from sastadev.sastatypes import ExactResults
-
+from sastadev.ASTApostfunctions import getposlemmas
 from .constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
                         SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
 from .utils import autosize_columns, format_worksheet, get_max_words, ljust
@@ -49,6 +49,7 @@ class SAFWriter():
         }
         self.utt_n_rows = (len(all_levels))
         self.anno_headers = self._annotations_header_row()
+        self._getlemmas()
         self.make_workbook()
 
     def write(self, target: BytesIO) -> None:
@@ -160,3 +161,8 @@ class SAFWriter():
             current.add(fase)
             new = sep.join(sorted(list(current)))
             fase_cell.value = new
+
+    def _getlemmas(self):
+        res = getposlemmas(self.results, ('A051', 'A051'))
+        assert True
+        # assert False
