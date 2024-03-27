@@ -9,6 +9,7 @@ from analysis.annotations.enrich_chat import enrich_chat
 from analysis.annotations.safreader import SAFReader
 from analysis.query.run import query_transcript
 from analysis.query.xlsx_output import annotations_to_xlsx, querycounts_to_xlsx
+from annotations.writer import SAFWriter
 from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
@@ -25,8 +26,9 @@ from .convert.convert import convert
 from .models import (AnalysisRun, AssessmentMethod, Corpus, MethodCategory,
                      Transcript, UploadFile)
 from .permissions import IsCorpusChildOwner, IsCorpusOwner
-from .serializers import (AssessmentMethodSerializer, CorpusDetailsSerializer, CorpusListSerializer,
-                          MethodCategorySerializer, TranscriptDetailsSerializer,
+from .serializers import (AssessmentMethodSerializer, CorpusDetailsSerializer,
+                          CorpusListSerializer, MethodCategorySerializer,
+                          TranscriptDetailsSerializer,
                           TranscriptListSerializer, UploadFileSerializer)
 from .utils import StreamFile
 
@@ -104,7 +106,9 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             transcript, method, True, zc_embed
         )
 
-        spreadsheet = annotations_to_xlsx(allresults, method)
+        writer = SAFWriter(method.to_sastadev(), allresults)
+        spreadsheet = writer.workbook
+
         self.create_analysis_run(transcript, method, spreadsheet)
 
         format = request.data.get('format', 'xlsx')

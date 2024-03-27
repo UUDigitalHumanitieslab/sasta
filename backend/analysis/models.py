@@ -4,7 +4,7 @@ import os
 import zipfile
 from io import BytesIO
 from itertools import chain
-from typing import List, Optional, Tuple
+from typing import Dict, List, Tuple
 from uuid import uuid4
 
 from analysis.annotations.utils import clean_item
@@ -14,7 +14,9 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from lxml import etree as ET
 from sastadev.external_functions import form_map
+from sastadev.methods import Method
 from sastadev.query import Query
+from sastadev.readmethod import read_method
 
 logger = logging.getLogger('sasta')
 
@@ -68,7 +70,8 @@ class AssessmentMethod(models.Model):
     content = models.FileField(
         upload_to=upload_path, blank=True, null=True, max_length=500)
     category = models.ForeignKey(
-        MethodCategory, related_name='definitions', blank=True, null=True, on_delete=models.CASCADE)
+        MethodCategory, related_name='definitions',
+        blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -84,6 +87,11 @@ class AssessmentMethod(models.Model):
             mapping.update(q.get_item_mapping(sep))
         return mapping
 
+    def to_sastadev(self) -> Method:
+        cat_name = self.category.name.lower()
+        location = self.content.path
+        return read_method(cat_name, location)
+
 
 class Corpus(models.Model):
     user = models.ForeignKey(
@@ -94,9 +102,12 @@ class Corpus(models.Model):
     date_added = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
     default_method = models.ForeignKey(AssessmentMethod,
-                                       on_delete=models.SET_NULL, related_name='corpora', blank=True, null=True)
+                                       on_delete=models.SET_NULL,
+                                       related_name='corpora',
+                                       blank=True, null=True)
     method_category = models.ForeignKey(
-        MethodCategory, on_delete=models.SET_DEFAULT, default=1, related_name='corpora')
+        MethodCategory, on_delete=models.SET_DEFAULT,
+        default=1, related_name='corpora')
 
     def __str__(self):
         return self.name
@@ -176,9 +187,11 @@ class Transcript(models.Model):
         except Exception:
             raise
 
-    def get_filepaths(self) -> Tuple[str]:
+    def get_filepaths(self) -> Tuple:
         if self.corrected_content:
-            return (self.content.path, self.parsed_content.path, self.corrected_content.path)
+            return (self.content.path,
+                    self.parsed_content.path,
+                    self.corrected_content.path)
         return (self.content.path, self.parsed_content.path)
 
     @property
@@ -229,15 +242,17 @@ class Utterance(models.Model):
     def word_elements(self) -> List[ET._Element]:
         '''List of word elements, sorted by word (begin, end)'''
         word_elements = self.syntree.findall('.//node[@word]')
-        return sorted(word_elements, key=lambda x: (int(x.attrib.get('begin')), int(x.attrib.get('end'))))
+        return sorted(word_elements, key=lambda x: (int(x.attrib.get('begin')),
+                                                    int(x.attrib.get('end'))))
 
     @property
     @functools.lru_cache(maxsize=128)
-    def word_position_mapping(self) -> List[Tuple[Optional[int], Optional[int]]]:
+    def word_position_mapping(self) -> List[Dict]:
         ''' List of dictionaries (begin, end) for each word in the utterance
             starts with { begin:None, end:None } to represent unaligned
         '''
-        mapping = [{'begin': int(el.attrib.get('begin')), 'end': int(el.attrib.get('end'))}
+        mapping = [{'begin': int(el.attrib.get('begin')),
+                    'end': int(el.attrib.get('end'))}
                    for el in self.word_elements]
         return [{'begin': None, 'end': None}] + mapping
 
@@ -289,6 +304,7 @@ class AssessmentQuery(models.Model):
     inform = models.CharField(max_length=20, blank=True, default='')
     screening = models.CharField(max_length=20, blank=True, default=True)
     process = models.IntegerField(blank=True, null=True)
+    literal = models.CharField(max_length=200, blank=True, default='')
     stars = models.CharField(max_length=50, blank=True, default='')
     filter = models.CharField(max_length=200, blank=True, default='')
     variants = models.CharField(max_length=200, blank=True, default='')
@@ -353,12 +369,14 @@ class AnalysisRun(models.Model):
     transcript = models.ForeignKey(
         Transcript, related_name='analysisruns', on_delete=models.CASCADE)
     method = models.ForeignKey(
-        AssessmentMethod, related_name='analysisruns', on_delete=models.CASCADE)
+        AssessmentMethod, related_name='analysisruns',
+        on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     query_file = models.FileField(upload_to=upload_path, max_length=500)
     annotation_file = models.FileField(upload_to=upload_path, max_length=500)
     is_manual_correction = models.BooleanField(
-        default=False, help_text='this run was generated by parsing a user-uploaded SAF-file')
+        default=False,
+        help_text='this run was generated by parsing a user-uploaded SAF-file')
 
     class Meta:
         get_latest_by = "created"

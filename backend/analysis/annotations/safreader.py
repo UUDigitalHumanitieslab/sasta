@@ -4,11 +4,13 @@ from typing import List, Optional, Tuple
 
 import pandas as pd
 from analysis.models import Transcript
+from annotations.constants import (SAF_COMMENT_HEADERS, SAF_UNALIGNED_LEVEL,
+                                   SAF_UNALIGNED_LEVELS, SAF_UTT_HEADER,
+                                   SAF_UTT_LEVELS)
 
 from .annotation_format import (SAFAnnotation, SAFDocument, SAFUtterance,
                                 SAFWord)
-from .constants import (LABELSEP, PREFIX, SAF_COMMENT_LEVEL,
-                        SAF_UNALIGNED_LEVEL, UTTLEVEL)
+from .constants import LABELSEP, PREFIX
 from .utils import (clean_item, clean_row, enrich, getlabels, item2queryid,
                     mkpatterns, standardize_header_name)
 
@@ -30,7 +32,8 @@ class UnalignedWord(Exception):
 
 def get_word_levels(data: pd.DataFrame):
     levels = data.level
-    filtered_levels = levels[~levels.isin([SAF_COMMENT_LEVEL.lower(), UTTLEVEL.lower()])]
+    filtered_levels = levels[~levels.isin(
+        [*SAF_COMMENT_HEADERS, *SAF_UTT_LEVELS])]
     return list(filtered_levels.unique())
 
 
@@ -41,11 +44,11 @@ def is_word_column(column_name: str) -> bool:
 def word_level_data(word_data: pd.DataFrame, colname: str):
     '''returns combination word/level
     '''
-    if colname.lower() == SAF_UNALIGNED_LEVEL.lower():
+    if colname.lower() in SAF_UNALIGNED_LEVELS:
         raise UnalignedWord
     elif word_data.empty:
         raise NoWordDataException
-    utt_data = word_data.loc[word_data.level == UTTLEVEL, colname]
+    utt_data = word_data.loc[word_data.level.isin(SAF_UTT_LEVELS), colname]
     return utt_data
 
 
@@ -73,16 +76,24 @@ class SAFReader:
         data = pd.read_excel(filepath, engine='openpyxl')
         data.rename(columns=standardize_header_name, inplace=True)
         data = data.where(data.notnull(), None)
-        self.word_cols = [SAF_UNALIGNED_LEVEL.lower()] + list(filter(is_word_column, data.columns))
+        self.word_cols = [SAF_UNALIGNED_LEVEL.lower()] + \
+            list(filter(is_word_column, data.columns))
 
         # Do we need to drop empty columns? Seems we don't. If otherwise, make sure word_columns are not dropped
         # data.dropna(how='all', axis=1, inplace=True)
 
-        relevant_cols = ['utt_id', 'level'] + self.word_cols
+        relevant_cols = [
+            *SAF_UTT_LEVELS,
+            'level',
+            *SAF_UNALIGNED_LEVELS,
+            *self.word_cols
+        ]
+        to_clean_cols = [col for col in set(
+            relevant_cols) if col in data.columns]
         self.levels = [lv for lv in list(
-            data.level.dropna().unique()) if lv.lower() != UTTLEVEL]
+            data.level.dropna().unique()) if lv.lower() not in SAF_UTT_LEVELS]
 
-        data = data[relevant_cols].apply(clean_row, axis='columns')
+        data = data[to_clean_cols].apply(clean_row, axis='columns')
 
         return data
 
@@ -93,8 +104,8 @@ class SAFReader:
         return item_mapping, patterns
 
     def get_annotations(self, data):
-        for utt_id in data.utt_id.unique():
-            utt_rows = data[data.utt_id == utt_id]
+        for utt_id in data[SAF_UTT_HEADER.lower()].unique():
+            utt_rows = data[data[SAF_UTT_HEADER.lower()] == utt_id]
             parsed_utterance = self.parse_utterance(utt_id, utt_rows)
             self.document.utterances.append(parsed_utterance)
 
@@ -144,7 +155,7 @@ class SAFReader:
                                 level, utt_id, word_id, text)
 
         # read comments
-        comment_data = data.loc[data.level == SAF_COMMENT_LEVEL.lower()].dropna()
+        comment_data = data.loc[data.level.isin(SAF_COMMENT_HEADERS)].dropna()
         if not comment_data.empty:
             instance.comment = str(comment_data[colname].iloc[0])
 
