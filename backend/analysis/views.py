@@ -5,10 +5,10 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
+from annotations.writer_querycounts import querycounts_to_xlsx
 from annotations.writer_cha import enrich_chat
 from analysis.annotations.safreader import SAFReader
-from analysis.query.run import annotate_transcript, query_transcript
-from analysis.query.xlsx_output import querycounts_to_xlsx
+from analysis.query.run import annotate_transcript
 from annotations.writer_xlsx import SAFWriter
 from celery import group
 from convert.chat_writer import ChatWriter
@@ -87,9 +87,9 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
-        allresults, queries_with_funcs = query_transcript(transcript, method)
+        allresults = annotate_transcript(transcript, method)
 
-        spreadsheet = querycounts_to_xlsx(allresults, queries_with_funcs)
+        spreadsheet = querycounts_to_xlsx(allresults, method)
         spreadsheet.save(response)
 
         return response
