@@ -1,4 +1,3 @@
-from collections import namedtuple
 from typing import Tuple
 from analysis.models import AssessmentMethod, Transcript
 from sastadev.sastacore import SastaCoreParameters, sastacore
@@ -7,11 +6,16 @@ from lxml import etree
 from sastadev.methods import Method
 
 
-def prepare_parameters(infilename: str, method: Method, targets: int, annotate: bool) -> SastaCoreParameters:
+def prepare_parameters(infilename: str, method: Method, targets: int, annotationinput: bool) -> SastaCoreParameters:
     # TODO: check corr/corrn
 
+    if annotationinput:
+        # If existing annotations exist
+        # dont supply origtreebank
+        pass
+
     return SastaCoreParameters(
-        annotationinput=annotate,
+        annotationinput=annotationinput,
         themethod=method.to_sastadev(),
         infilename=infilename,
         targets=targets
@@ -29,12 +33,12 @@ def prepare_treebanks(transcript: Transcript) -> Tuple[Tuple[str, etree.ElementT
     )
 
 
-def run_sastacore(transcript: Transcript, method: AssessmentMethod, annotate: bool = False):
+def run_sastacore(transcript: Transcript, method: AssessmentMethod, annotation_input: bool = False):
     orig_tb, corr_tb = prepare_treebanks(transcript)
 
     # Retrieve targets from corrected treebank
     targets = get_targets(corr_tb[1])
-    params = prepare_parameters(corr_tb[0], method, targets, annotate)
+    params = prepare_parameters(corr_tb[0], method, targets, annotation_input)
 
     res = sastacore(
         origtreebank=orig_tb[1],

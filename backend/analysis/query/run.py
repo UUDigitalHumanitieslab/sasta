@@ -1,17 +1,24 @@
 import logging
 from collections import Counter, defaultdict
 from typing import Dict, List, Set
-
 from analysis.annotations.safreader import SAFReader
 from analysis.models import (AnalysisRun, AssessmentMethod, AssessmentQuery,
                              Transcript, Utterance)
-from analysis.results.results import AllResults, SastaMatches, SastaResults
+from analysis.query.query_transcript import run_sastacore
+from analysis.results.results import SastaMatches, SastaResults
+
 from sastadev.query import Query, core_process, post_process, pre_process
+from sastadev.allresults import AllResults
 
 from .functions import (QueryWithFunction, compile_queries, filter_queries,
                         single_query_single_utt, utt_from_tree)
 
 logger = logging.getLogger('sasta')
+
+
+def annotate_transcript(transcript: Transcript, method: AssessmentMethod) -> AllResults:
+    allresults, _samplesize = run_sastacore(transcript, method)
+    return allresults
 
 
 def query_transcript(transcript: Transcript,

@@ -5,11 +5,11 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
-from analysis.annotations.enrich_chat import enrich_chat
+from annotations.writer_cha import enrich_chat
 from analysis.annotations.safreader import SAFReader
-from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import annotations_to_xlsx, querycounts_to_xlsx
-from annotations.writer import SAFWriter
+from analysis.query.run import annotate_transcript, query_transcript
+from analysis.query.xlsx_output import querycounts_to_xlsx
+from annotations.writer_xlsx import SAFWriter
 from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
@@ -96,21 +96,20 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['POST'], name='Annotate')
     def annotate(self, request, *args, **kwargs):
+        # Retrieve objects
         transcript = self.get_object()
         method_id = request.data.get('method')
-
         method = AssessmentMethod.objects.get(pk=method_id)
-        zc_embed = method.category.zc_embeddings
 
-        allresults, queries_with_funcs = query_transcript(
-            transcript, method, True, zc_embed
-        )
+        # Perform the actual querying
+        allresults = annotate_transcript(transcript, method)
 
+        # Always create an XLSX file for AnalysisRun purposes
         writer = SAFWriter(method.to_sastadev(), allresults)
         spreadsheet = writer.workbook
-
         self.create_analysis_run(transcript, method, spreadsheet)
 
+        # Adapt output to requested format
         format = request.data.get('format', 'xlsx')
 
         if format == 'xlsx':
