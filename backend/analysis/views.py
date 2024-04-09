@@ -178,19 +178,17 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):
+        # Retrieve objects
         transcript = self.get_object()
         method_id = request.data.get('method')
         method = AssessmentMethod.objects.get(pk=method_id)
-        zc_embed = method.category.zc_embeddings
 
         # Find the form function for this method
         form_func = method.category.get_form_function()
         if not form_func:
             raise ParseError(detail='No form definition for this method.')
 
-        allresults, _ = query_transcript(
-            transcript, method, annotate=False, zc_embed=zc_embed,
-        )
+        allresults = annotate_transcript(transcript, method)
 
         form = form_func(allresults, None, in_memory=True)
 
