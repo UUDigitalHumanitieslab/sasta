@@ -115,8 +115,14 @@ class SAFWriter():
 
     def _fill_query(self, query_id: ResultsKey, exact_results: ExactResults):
         '''Find and fill all cells for a single query'''
-        query = self.method.queries.get(query_id)
-        item = query.item
+        lemma_item = None
+        if isinstance(query_id, Tuple) and not query_id[0] == query_id[1]:
+            # Lemma queries hold the lemma in second position
+            lemma_item = query_id[1]
+
+        simple_query_id = query_id[0]
+        query = self.method.queries.get(simple_query_id)
+        item = lemma_item or query.item
         fase = query.fase
 
         for utt_id, word_nr in exact_results:
