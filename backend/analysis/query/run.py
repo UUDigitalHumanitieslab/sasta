@@ -15,8 +15,14 @@ from .functions import (QueryWithFunction, compile_queries, filter_queries,
 
 logger = logging.getLogger('sasta')
 
-def annotate_transcript(transcript: Transcript, method: AssessmentMethod) -> AllResults:
-    allresults, _samplesize = run_sastacore(transcript, method)
+
+def annotate_transcript(transcript: Transcript, method: AssessmentMethod, ignore_existing: bool = False) -> AllResults:
+    if transcript.latest_run and not ignore_existing:
+        # run sastacore with pre-exising SAF file
+        allresults, _samplesize = run_sastacore(transcript, method, True)
+    else:
+        # run sastacore normally
+        allresults, _samplesize = run_sastacore(transcript, method, False)
     return allresults
 
 

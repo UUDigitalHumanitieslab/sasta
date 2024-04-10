@@ -4,6 +4,8 @@ from sastadev.sastacore import SastaCoreParameters, sastacore
 from sastadev.targets import get_targets
 from lxml import etree
 from sastadev.methods import Method
+from sastadev.SAFreader import get_golddata, richscores2scores
+from sastadev.allresults import AllResults
 
 
 def prepare_parameters(infilename: str, method: Method, targets: int, annotationinput: bool) -> SastaCoreParameters:
@@ -12,11 +14,12 @@ def prepare_parameters(infilename: str, method: Method, targets: int, annotation
     if annotationinput:
         # If existing annotations exist
         # dont supply origtreebank
+        # infilename becomes the path to existing SAF file
         pass
 
     return SastaCoreParameters(
         annotationinput=annotationinput,
-        themethod=method.to_sastadev(),
+        themethod=method,
         infilename=infilename,
         targets=targets
     )
@@ -33,18 +36,50 @@ def prepare_treebanks(transcript: Transcript) -> Tuple[Tuple[str, etree.ElementT
     )
 
 
-def run_sastacore(transcript: Transcript, method: AssessmentMethod, annotation_input: bool = False):
-    orig_tb, corr_tb = prepare_treebanks(transcript)
+def get_annotated_fileresults(transcript: Transcript, method: Method, includeimplies: bool = False) -> AllResults:
+    infilename = transcript.latest_run.annotation_file.path
+    allutts, richexactscores = get_golddata(infilename, method.item2idmap, method.altcodes,
+                                            method.queries, includeimplies)
+    exactresults = richscores2scores(richexactscores)
+    annotatedfileresults = AllResults(uttcount=len(allutts),
+                                      coreresults={},
+                                      exactresults=exactresults,
+                                      postresults={},
+                                      allmatches={},
+                                      filename=infilename,
+                                      analysedtrees=[],
+                                      allutts=allutts,
+                                      annotationinput=True)
+    return annotatedfileresults
 
+
+def run_sastacore(transcript: Transcript, method: AssessmentMethod, annotation_input: bool = False):
+    # get treebanks
+    orig_tb, corr_tb = prepare_treebanks(transcript)
     # Retrieve targets from corrected treebank
     targets = get_targets(corr_tb[1])
-    params = prepare_parameters(corr_tb[0], method, targets, annotation_input)
+    # Convert method to sastdaev version
+    sdmethod = method.to_sastadev()
 
-    res = sastacore(
-        origtreebank=orig_tb[1],
-        correctedtreebank=corr_tb[1],
-        annotatedfileresults=None,
-        scp=params
-    )
+    if annotation_input:
+        existing_results = get_annotated_fileresults(transcript, sdmethod)
+        params = prepare_parameters(
+            transcript.latest_run.annotation_file.path,
+            sdmethod, targets, annotation_input)
+        res = sastacore(
+            origtreebank=None,
+            correctedtreebank=corr_tb[1],
+            annotatedfileresults=existing_results,
+            scp=params
+        )
+    else:
+        params = prepare_parameters(
+            corr_tb[0], sdmethod, targets, annotation_input)
+        res = sastacore(
+            origtreebank=orig_tb[1],
+            correctedtreebank=corr_tb[1],
+            annotatedfileresults=None,
+            scp=params
+        )
 
     return res

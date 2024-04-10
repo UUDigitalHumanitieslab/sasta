@@ -206,6 +206,13 @@ class Transcript(models.Model):
     def parseable(self):
         return self.status in (self.CONVERTED, self.PARSING_FAILED)
 
+    @property
+    def latest_run(self):
+        try:
+            return self.analysisruns.latest()
+        except AnalysisRun.DoesNotExist:
+            return None
+
 
 class Utterance(models.Model):
     sentence = models.CharField(max_length=500)
