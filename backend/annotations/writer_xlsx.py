@@ -10,7 +10,6 @@ from openpyxl.worksheet.worksheet import Worksheet
 from sastadev.allresults import AllResults, ResultsKey
 from sastadev.methods import Method
 from sastadev.sastatypes import ExactResults
-from sastadev.ASTApostfunctions import getposlemmas
 from .constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
                         SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
 from .utils import autosize_columns, format_worksheet, get_max_words, ljust
@@ -49,7 +48,6 @@ class SAFWriter():
         }
         self.utt_n_rows = (len(all_levels))
         self.anno_headers = self._annotations_header_row()
-        self._getlemmas()
         self.make_workbook()
 
     def write(self, target: BytesIO) -> None:
@@ -127,6 +125,8 @@ class SAFWriter():
 
         for utt_id, word_nr in exact_results:
             # We cannot assume that utterances are numbered 1-N sequentially
+            if isinstance(utt_id, str):
+                utt_id = int(utt_id)
             utt_nr = list(self.results.allutts.keys()).index(utt_id)
             row, col = self._cell_location(utt_nr, query.level, word_nr)
             cell = self.anno_ws.cell(row, col)
@@ -167,8 +167,3 @@ class SAFWriter():
             current.add(fase)
             new = sep.join(sorted(list(current)))
             fase_cell.value = new
-
-    def _getlemmas(self):
-        res = getposlemmas(self.results, ('A051', 'A051'))
-        assert True
-        # assert False
