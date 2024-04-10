@@ -1,7 +1,7 @@
 
 import pytest
 
-from annotations.writer_xlsx import SAFWriter
+from annotations.saf_xlsx import SAFWriter
 
 
 @pytest.fixture

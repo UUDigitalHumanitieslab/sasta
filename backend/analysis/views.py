@@ -5,11 +5,11 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
-from annotations.writer_querycounts import querycounts_to_xlsx
-from annotations.writer_cha import enrich_chat
 from analysis.annotations.safreader import SAFReader
 from analysis.query.run import annotate_transcript
-from annotations.writer_xlsx import SAFWriter
+from annotations.writers.querycounts import querycounts_to_xlsx
+from annotations.writers.saf_chat import enrich_chat
+from annotations.writers.saf_xlsx import SAFWriter
 from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q

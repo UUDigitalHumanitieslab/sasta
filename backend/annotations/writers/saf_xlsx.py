@@ -10,9 +10,9 @@ from openpyxl.worksheet.worksheet import Worksheet
 from sastadev.allresults import AllResults, ResultsKey
 from sastadev.methods import Method
 from sastadev.sastatypes import ExactResults
-from .constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
-                        SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
-from .utils import autosize_columns, format_worksheet, get_max_words, ljust
+from annotations.constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
+                                   SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
+from annotations.utils import autosize_columns, format_worksheet, get_max_words, ljust
 
 
 @dataclass
