@@ -4,8 +4,6 @@ from sastadev.sastacore import SastaCoreParameters, sastacore
 from sastadev.targets import get_targets
 from lxml import etree
 from sastadev.methods import Method
-from sastadev.SAFreader import get_golddata, richscores2scores
-from sastadev.allresults import AllResults
 
 from annotations.reader import read_saf
 
