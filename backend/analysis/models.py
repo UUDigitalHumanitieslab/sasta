@@ -7,7 +7,6 @@ from itertools import chain
 from typing import Dict, List, Tuple
 from uuid import uuid4
 
-from analysis.annotations.utils import clean_item
 from analysis.managers import SastaQueryManager
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
@@ -79,13 +78,6 @@ class AssessmentMethod(models.Model):
     class Meta:
         unique_together = (('category', 'name'))
         get_latest_by = ('date_added', )
-
-    def get_item_mapping(self, sep):
-        queries = self.queries.all()
-        mapping = {}
-        for q in queries:
-            mapping.update(q.get_item_mapping(sep))
-        return mapping
 
     def to_sastadev(self) -> Method:
         cat_name = self.category.name.lower()
@@ -334,19 +326,6 @@ class AssessmentQuery(models.Model):
         if cleanresult == ['']:
             return []
         return cleanresult
-
-    def get_item_mapping(self, sep):
-        ''' mapping of all possible items (including altitems) to this query'''
-        if (not self.item) or (not self.level):
-            return {}
-        result = {(clean_item(self.item), self.level.lower()):
-                  (self.query_id, self.fase)}
-        if self.altitems:
-            for item in self.altitems:
-                if (clean_item(item), self.level.lower()) not in result:
-                    result[(clean_item(item), self.level.lower())] = (
-                        self.query_id, self.fase)
-        return result
 
     def to_sastadev(self) -> Query:
         sastadev_mapping = {'query_id': 'id'}

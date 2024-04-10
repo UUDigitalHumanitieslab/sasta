@@ -5,7 +5,6 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
-from analysis.annotations.safreader import SAFReader
 from analysis.query.run import annotate_transcript
 from annotations.reader import read_saf
 from annotations.writers.querycounts import querycounts_to_xlsx
