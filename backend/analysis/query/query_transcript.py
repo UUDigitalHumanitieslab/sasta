@@ -7,6 +7,8 @@ from sastadev.methods import Method
 from sastadev.SAFreader import get_golddata, richscores2scores
 from sastadev.allresults import AllResults
 
+from annotations.reader import read_saf
+
 
 def prepare_parameters(infilename: str, method: Method, targets: int, annotationinput: bool) -> SastaCoreParameters:
     # TODO: check corr/corrn
@@ -36,23 +38,6 @@ def prepare_treebanks(transcript: Transcript) -> Tuple[Tuple[str, etree.ElementT
     )
 
 
-def get_annotated_fileresults(transcript: Transcript, method: Method, includeimplies: bool = False) -> AllResults:
-    infilename = transcript.latest_run.annotation_file.path
-    allutts, richexactscores = get_golddata(infilename, method.item2idmap, method.altcodes,
-                                            method.queries, includeimplies)
-    exactresults = richscores2scores(richexactscores)
-    annotatedfileresults = AllResults(uttcount=len(allutts),
-                                      coreresults={},
-                                      exactresults=exactresults,
-                                      postresults={},
-                                      allmatches={},
-                                      filename=infilename,
-                                      analysedtrees=[],
-                                      allutts=allutts,
-                                      annotationinput=True)
-    return annotatedfileresults
-
-
 def run_sastacore(transcript: Transcript, method: AssessmentMethod, annotation_input: bool = False):
     # get treebanks
     orig_tb, corr_tb = prepare_treebanks(transcript)
@@ -62,7 +47,8 @@ def run_sastacore(transcript: Transcript, method: AssessmentMethod, annotation_i
     sdmethod = method.to_sastadev()
 
     if annotation_input:
-        existing_results = get_annotated_fileresults(transcript, sdmethod)
+        existing_results = read_saf(
+            transcript.latest_run.annotation_file.path, sdmethod)
         params = prepare_parameters(
             transcript.latest_run.annotation_file.path,
             sdmethod, targets, annotation_input)

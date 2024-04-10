@@ -7,6 +7,7 @@ from io import BytesIO, StringIO
 
 from analysis.annotations.safreader import SAFReader
 from analysis.query.run import annotate_transcript
+from annotations.reader import read_saf
 from annotations.writers.querycounts import querycounts_to_xlsx
 from annotations.writers.saf_chat import enrich_chat
 from annotations.writers.saf_xlsx import SAFWriter
@@ -164,15 +165,17 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         new_run = self.create_analysis_run(obj, latest_run.method, file, is_manual=True)
 
         try:
-            reader = SAFReader(new_run.annotation_file.path, latest_run.method, obj)
+            read_saf(new_run.annotation_file.path,
+                     latest_run.method.to_sastadev())
         except Exception as e:
             new_run.delete()
             logger.exception(e)
             return Response(str(e), status.HTTP_400_BAD_REQUEST)
 
-        if reader.errors:
-            new_run.delete()
-            return Response(reader.formatted_errors(), status.HTTP_400_BAD_REQUEST)
+        # TODO: re-enable proper error logging for reading SAF files
+        # if reader.errors:
+        #     new_run.delete()
+        #     return Response(reader.formatted_errors(), status.HTTP_400_BAD_REQUEST)
 
         return Response('Success', status.HTTP_200_OK)
 
