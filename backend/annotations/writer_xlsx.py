@@ -125,9 +125,10 @@ class SAFWriter():
 
         for utt_id, word_nr in exact_results:
             # We cannot assume that utterances are numbered 1-N sequentially
-            if isinstance(utt_id, str):
-                utt_id = int(utt_id)
-            utt_nr = list(self.results.allutts.keys()).index(utt_id)
+            try:
+                utt_nr = list(self.results.allutts.keys()).index(utt_id)
+            except ValueError:
+                utt_nr = list(self.results.allutts.keys()).index(int(utt_id))
             row, col = self._cell_location(utt_nr, query.level, word_nr)
             cell = self.anno_ws.cell(row, col)
             self._append_item(cell, item)

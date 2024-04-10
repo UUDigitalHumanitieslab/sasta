@@ -15,7 +15,6 @@ from .functions import (QueryWithFunction, compile_queries, filter_queries,
 
 logger = logging.getLogger('sasta')
 
-
 def annotate_transcript(transcript: Transcript, method: AssessmentMethod) -> AllResults:
     allresults, _samplesize = run_sastacore(transcript, method)
     return allresults
