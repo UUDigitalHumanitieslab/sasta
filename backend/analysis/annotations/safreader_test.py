@@ -3,11 +3,11 @@ from operator import itemgetter
 
 import pytest
 from analysis.annotations.safreader import SAFReader, get_word_levels
-from analysis.query.run import query_transcript
 from pandas import DataFrame
 from pytest_lazyfixture import lazy_fixture
 
 
+@pytest.mark.skip(reason="SAFReader replaced by SASTADEV equivalent")
 @pytest.mark.parametrize("method, transcript, filedir, samplenum", [
     (lazy_fixture("tarsp_method"), lazy_fixture("tarsp_transcript"),
      lazy_fixture("cha_testfiles_dir"), 5),
@@ -53,6 +53,7 @@ def test_read_saf(method, transcript, filedir, samplenum):
     assert true_results.allutts == read_results.allutts
 
 
+@pytest.mark.skip(reason="SAFReader replaced by SASTADEV equivalent")
 def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_testfiles_dir):
     true_results, _ = query_transcript(asta_transcript, asta_method, annotate=True, zc_embed=False)
     assert true_results.annotationinput
@@ -62,6 +63,7 @@ def test_astalex(asta_method, asta_transcript, asta_transcript_corrections, cha_
     assert True
 
 
+@pytest.mark.skip(reason="SAFReader replaced by SASTADEV equivalent")
 def test_wordlevels():
     data = {'level': map(str.lower, ['Uiting', 'QA', 'SZ',
                                      'Grammaticale Fout', 'Opmerkingen']),
@@ -72,6 +74,7 @@ def test_wordlevels():
     assert word_levels == ['qa', 'sz', 'grammaticale fout']
 
 
+@pytest.mark.skip(reason="SAFReader replaced by SASTADEV equivalent")
 def test_read_saf_comments(tarsp_method, tarsp_transcript, cha_testfiles_dir):
     reader = SAFReader(
         op.join(

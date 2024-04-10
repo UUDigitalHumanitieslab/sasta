@@ -1,7 +1,7 @@
 from annotations.constants import (SAF_COMMENT_COLUMN, SAF_FASES_COLUMN,
                                    SAF_LEVEL_HEADER, SAF_UNALIGNED_LEVEL,
                                    SAF_UTT_HEADER)
-from annotations.saf_xlsx import SAFWriter
+from annotations.writers.saf_xlsx import SAFWriter
 
 from .utils import ljust
 
