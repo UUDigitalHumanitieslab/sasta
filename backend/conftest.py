@@ -70,7 +70,7 @@ def tarsp_method(db, tarsp_category, method_dir):
 
 @pytest.fixture
 def asta_method(db, asta_category, method_dir):
-    file = glob.glob(f'{method_dir}/ASTA Index Current.xlsx')[0]
+    file = glob.glob(f'{method_dir}/ASTA_Index_Current.xlsx')[0]
     with open(file, 'rb') as f:
         wrapped_file = File(f)
         instance = AssessmentMethod(
