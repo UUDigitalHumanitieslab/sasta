@@ -6,8 +6,7 @@ from sastadev.SAFreader import get_golddata, richscores2scores
 def read_saf(saf_filename: str, method: Method, includeimplies: bool = False) -> AllResults:
     '''Wrapper around SASTADEV SAF reader'''
     infilename = saf_filename
-    allutts, richexactscores = get_golddata(infilename, method.item2idmap, method.altcodes,
-                                            method.queries, includeimplies)
+    allutts, richexactscores = get_golddata(infilename, method, includeimplies)
     exactresults = richscores2scores(richexactscores)
     annotatedfileresults = AllResults(uttcount=len(allutts),
                                       coreresults={},
