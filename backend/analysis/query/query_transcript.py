@@ -9,14 +9,6 @@ from annotations.reader import read_saf
 
 
 def prepare_parameters(infilename: str, method: Method, targets: int, annotationinput: bool) -> SastaCoreParameters:
-    # TODO: check corr/corrn
-
-    if annotationinput:
-        # If existing annotations exist
-        # dont supply origtreebank
-        # infilename becomes the path to existing SAF file
-        pass
-
     return SastaCoreParameters(
         annotationinput=annotationinput,
         themethod=method,
