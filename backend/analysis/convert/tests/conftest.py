@@ -131,4 +131,9 @@ def example_utterances():
             'exp_text': 'Ik heet Jan en hij heet Anna.',
             'exp_tiers': {'xano': '8|NAAM1|Jan, 24|NAAM2|Anna'},
         },
+        {
+            'text': 'Ik zit op de SCHOOL1 en hij op de SCHOOL2.',
+            'exp_text': 'Ik zit op de Mariaschool en hij op de Calvijnschool.',
+            'exp_tiers': {'xano': '13|SCHOOL1|Mariaschool, 38|SCHOOL2|Calvijnschool'},
+        },
     ]

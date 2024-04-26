@@ -5,11 +5,11 @@ import datetime
 import logging
 from io import BytesIO, StringIO
 
-from analysis.annotations.enrich_chat import enrich_chat
-from analysis.annotations.safreader import SAFReader
-from analysis.query.run import query_transcript
-from analysis.query.xlsx_output import annotations_to_xlsx, querycounts_to_xlsx
-from annotations.writer import SAFWriter
+from analysis.query.run import annotate_transcript
+from annotations.reader import read_saf
+from annotations.writers.querycounts import querycounts_to_xlsx
+from annotations.writers.saf_chat import enrich_chat
+from annotations.writers.saf_xlsx import SAFWriter
 from celery import group
 from convert.chat_writer import ChatWriter
 from django.db.models import Q
@@ -87,30 +87,29 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             content_type=SPREADSHEET_MIMETYPE)
         response['Content-Disposition'] = "attachment; filename=matches_output.xlsx"
 
-        allresults, queries_with_funcs = query_transcript(transcript, method)
+        allresults = annotate_transcript(transcript, method)
 
-        spreadsheet = querycounts_to_xlsx(allresults, queries_with_funcs)
+        spreadsheet = querycounts_to_xlsx(allresults, method)
         spreadsheet.save(response)
 
         return response
 
     @action(detail=True, methods=['POST'], name='Annotate')
     def annotate(self, request, *args, **kwargs):
+        # Retrieve objects
         transcript = self.get_object()
         method_id = request.data.get('method')
-
         method = AssessmentMethod.objects.get(pk=method_id)
-        zc_embed = method.category.zc_embeddings
 
-        allresults, queries_with_funcs = query_transcript(
-            transcript, method, True, zc_embed
-        )
+        # Perform the actual querying
+        allresults = annotate_transcript(transcript, method)
 
+        # Always create an XLSX file for AnalysisRun purposes
         writer = SAFWriter(method.to_sastadev(), allresults)
         spreadsheet = writer.workbook
-
         self.create_analysis_run(transcript, method, spreadsheet)
 
+        # Adapt output to requested format
         format = request.data.get('format', 'xlsx')
 
         if format == 'xlsx':
@@ -165,33 +164,33 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         new_run = self.create_analysis_run(obj, latest_run.method, file, is_manual=True)
 
         try:
-            reader = SAFReader(new_run.annotation_file.path, latest_run.method, obj)
+            read_saf(new_run.annotation_file.path,
+                     latest_run.method.to_sastadev())
         except Exception as e:
             new_run.delete()
             logger.exception(e)
             return Response(str(e), status.HTTP_400_BAD_REQUEST)
 
-        if reader.errors:
-            new_run.delete()
-            return Response(reader.formatted_errors(), status.HTTP_400_BAD_REQUEST)
+        # TODO: re-enable proper error logging for reading SAF files
+        # if reader.errors:
+        #     new_run.delete()
+        #     return Response(reader.formatted_errors(), status.HTTP_400_BAD_REQUEST)
 
         return Response('Success', status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'], name='Generate form')
     def generateform(self, request, *args, **kwargs):
+        # Retrieve objects
         transcript = self.get_object()
         method_id = request.data.get('method')
         method = AssessmentMethod.objects.get(pk=method_id)
-        zc_embed = method.category.zc_embeddings
 
         # Find the form function for this method
         form_func = method.category.get_form_function()
         if not form_func:
             raise ParseError(detail='No form definition for this method.')
 
-        allresults, _ = query_transcript(
-            transcript, method, annotate=False, zc_embed=zc_embed,
-        )
+        allresults = annotate_transcript(transcript, method)
 
         form = form_func(allresults, None, in_memory=True)
 
