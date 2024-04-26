@@ -13,6 +13,7 @@ from sastadev.sastatypes import ExactResults
 from annotations.constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
                                    SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
 from annotations.utils import autosize_columns, format_worksheet, get_max_words, ljust
+from natsort import natsorted
 
 
 @dataclass
@@ -104,7 +105,7 @@ class SAFWriter():
         row_size = len(self.anno_headers)
         all_levels = self.method_category.levels + [SAF_COMMENT_LEVEL]
 
-        for utt_id, words in sorted(self.results.allutts.items(),
+        for utt_id, words in natsorted(self.results.allutts.items(),
                                     key=lambda x: x[0]):
             ws.append(self._uttlevel_row(utt_id, words))
             for level in all_levels:
