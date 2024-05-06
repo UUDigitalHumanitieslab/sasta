@@ -23,6 +23,8 @@ import {
     TranscriptService,
 } from '@services';
 
+import _ from 'lodash';
+
 const XLSX_MIME =
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const TXT_MIME = 'text/plain';
@@ -72,15 +74,19 @@ export class TranscriptComponent implements OnInit, OnDestroy {
         );
     }
 
+    hasLatestRun(): boolean {
+        return !_.isNil(this.transcript.latest_run);
+    }
+
     allowCorrectionUpload(): boolean {
         return (
             this.transcript.status === TranscriptStatus.PARSED &&
-            this.transcript.latest_run !== undefined
+            this.hasLatestRun()
         );
     }
 
     allowCorrectionReset(): boolean {
-        return this.transcript.latest_run !== undefined;
+        return this.hasLatestRun();
     }
 
     allowScoring(): boolean {
