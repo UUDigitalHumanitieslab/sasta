@@ -21,3 +21,4 @@ openpyxl
 xlrd>=1.2,<2
 xlsxwriter
 sastadev
+sentry-sdk[django]

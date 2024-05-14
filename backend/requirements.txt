@@ -32,7 +32,9 @@ celery==5.2.7
     #   -r requirements.in
     #   django-celery-results
 certifi==2023.7.22
-    # via requests
+    # via
+    #   requests
+    #   sentry-sdk
 cffi==1.15.1
     # via cryptography
 chamd==0.5.8
@@ -74,6 +76,7 @@ django==3.1.14
     #   django-rest-auth
     #   django-revproxy
     #   djangorestframework
+    #   sentry-sdk
 django-allauth==0.51.0
     # via django-rest-auth
 django-celery-results==2.4.0
@@ -216,6 +219,8 @@ sastadev==0.2.0
     # via
     #   -r requirements.in
     #   auchann
+sentry-sdk[django]==2.1.1
+    # via -r requirements.in
 six==1.16.0
     # via
     #   click-repl
@@ -263,6 +268,7 @@ urllib3==1.26.18
     # via
     #   django-revproxy
     #   requests
+    #   sentry-sdk
 vine==5.0.0
     # via
     #   amqp
