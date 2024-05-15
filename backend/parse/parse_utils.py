@@ -176,3 +176,8 @@ def correct_treebank(transcript: Transcript):
     except Exception as e:
         logger.exception(e)
         raise
+
+
+def correct_uncorrected_transcripts():
+    uncorrected = Transcript.objects.filter(corrected_content='')
+    print(uncorrected.count())
