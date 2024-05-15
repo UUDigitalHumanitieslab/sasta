@@ -1,6 +1,7 @@
 import io
 import logging
 import os
+from typing import Any, Generator
 
 from analysis.models import Transcript, Utterance
 from bs4 import BeautifulSoup
@@ -9,6 +10,7 @@ from corpus2alpino.collectors.filesystem import FilesystemCollector
 from corpus2alpino.converter import Converter
 from corpus2alpino.targets.filesystem import FilesystemTarget
 from corpus2alpino.writers.lassy import LassyWriter
+from corpus2alpino.targets.memory import MemoryTarget
 from django.conf import settings
 from django.core.files import File
 from lxml import etree
@@ -16,6 +18,12 @@ from sastadev.correcttreebank import correcttreebank, corrn
 from sastadev.targets import get_targets
 
 logger = logging.getLogger('sasta')
+
+# Parser setup
+ALPINO = AlpinoAnnotator(
+    settings.ALPINO_HOST,
+    settings.ALPINO_PORT
+)
 
 
 def parse_and_create(transcript):
@@ -39,22 +47,7 @@ def parse_transcript(transcript, output_dir, output_path):
 
     try:
         logger.info(f'Parsing:\t{transcript.name}...\n')
-
-        # Parser setup
-        alpino = AlpinoAnnotator(
-            settings.ALPINO_HOST,
-            settings.ALPINO_PORT
-        )
-
-        converter = Converter(
-            collector=FilesystemCollector([transcript.content.path]),
-            annotators=[alpino],
-            target=FilesystemTarget(output_path, merge_files=True),
-            writer=LassyWriter(merge_treebanks=True),
-        )
-
-        # Alpino parsing
-        parses = converter.convert()
+        parses = corpus2alpino_parse(transcript.content.path, output_path)
         for _parse in parses:
             logger.info(f'Succesfully parsed:\t{transcript.name}\n')
         transcript.save()
@@ -90,6 +83,23 @@ def parse_transcript(transcript, output_dir, output_path):
             f'ERROR parsing {transcript.name}')
         transcript.status = Transcript.PARSING_FAILED
         transcript.save()
+
+
+def corpus2alpino_parse(
+    inpath: str,
+        outpath: str,
+        annotator: AlpinoAnnotator = ALPINO,
+        in_memory: bool = False
+) -> Generator[Any, Any, None]:
+    target = MemoryTarget() if in_memory else FilesystemTarget(outpath, merge_files=True)
+    converter = Converter(
+        collector=FilesystemCollector([inpath]),
+        annotators=[annotator],
+        target=target,
+        writer=LassyWriter(merge_treebanks=True),
+    )
+    # actual parsing
+    return converter.convert()
 
 
 def create_utterance_objects(transcript):
