@@ -16,6 +16,12 @@ from annotations.utils import autosize_columns, format_worksheet, get_max_words,
 from natsort import natsorted
 
 
+def cast_to_bool(value) -> bool:
+    if isinstance(value, bool):
+        return value
+    elif isinstance(value, str):
+        return value == 'yes'
+
 @dataclass
 class SAFWriter():
     method: Method
@@ -76,7 +82,10 @@ class SAFWriter():
 
         # Fill with values
         for qid, qresults in self.results.exactresults.items():
-            self._fill_query(qid, qresults)
+            query = self.method.queries.get(qid[0])
+            inform = cast_to_bool(query.inform)
+            if inform:
+                self._fill_query(qid, qresults)
         return self.anno_ws
 
     def _annotations_header_row(self) -> List[str]:
