@@ -6,6 +6,7 @@ from lxml import etree
 from sastadev.methods import Method
 
 from annotations.reader import read_saf
+from parse.parse_utils import correct_transcript
 
 
 def prepare_parameters(infilename: str, method: Method, targets: int, annotationinput: bool) -> SastaCoreParameters:
@@ -19,7 +20,12 @@ def prepare_parameters(infilename: str, method: Method, targets: int, annotation
 
 def prepare_treebanks(transcript: Transcript) -> Tuple[Tuple[str, etree.ElementTree]]:
     orig_fp = transcript.parsed_content.path
+
+    # TODO: FIX THIS PROPERLY
+    if not transcript.corrected_content:
+        correct_transcript(transcript)
     corr_fp = transcript.corrected_content.path
+
     orig_treebank = etree.parse(orig_fp).getroot()
     corr_treebank = etree.parse(corr_fp).getroot()
     return (
