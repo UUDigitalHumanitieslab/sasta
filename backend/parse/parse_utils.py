@@ -60,19 +60,7 @@ def parse_transcript(transcript, output_dir, output_path):
 
         # Correcting and reparsing
         logger.info(f'Correcting:\t{transcript.name}...\n')
-        try:
-            corrected, error_dict, _origandalts = correct_treebank(transcript)
-            corrected_content = etree.tostring(corrected, encoding='utf-8')
-            corrected_filename = parsed_filename.replace('.xml', '_corrected.xml')
-            corrected_file = File(io.BytesIO(corrected_content))
-            transcript.corrected_content.save(corrected_filename, corrected_file)
-            logger.info(f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
-            # Save corrections
-            transcript.corrections = error_dict
-
-        except Exception as err:
-            transcript.corrections = {'error': str(err)}
-            logger.warning(f'Correction failed for transcript:\t {transcript.name}')
+        correct_transcript(transcript)
 
         transcript.status = Transcript.PARSED
         transcript.save()
@@ -83,6 +71,27 @@ def parse_transcript(transcript, output_dir, output_path):
             f'ERROR parsing {transcript.name}')
         transcript.status = Transcript.PARSING_FAILED
         transcript.save()
+
+
+def correct_transcript(transcript: Transcript) -> None:
+    try:
+        corrected, error_dict, _origandalts = correct_treebank(transcript)
+        corrected_content = etree.tostring(corrected, encoding='utf-8')
+        corrected_filename = os.path.basename(
+            transcript.parsed_content.name.replace('.xml', '_corrected.xml'))
+        corrected_file = File(io.BytesIO(corrected_content))
+        transcript.corrected_content.save(corrected_filename, corrected_file)
+        # Save corrections
+        transcript.corrections = error_dict
+        transcript.save()
+        logger.info(
+            f'Successfully corrected:\t{transcript.name}, {len(error_dict)} corrections.\n')
+
+    except Exception as err:
+        transcript.corrections = {'error': str(err)}
+        logger.exception(
+            f'Correction failed for transcript:\t {transcript.name}')
+        raise
 
 
 def corpus2alpino_parse(
