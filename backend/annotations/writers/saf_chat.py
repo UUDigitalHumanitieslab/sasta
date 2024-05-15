@@ -28,10 +28,6 @@ def _find_doc_line(lines: List[ChatLine], uttno: int) -> ChatLine:
     return next((x for x in lines if x.uttid == uttno), None)
 
 
-def _find_doc_line_byuttid(lines: List[ChatLine], uttid: int) -> ChatLine:
-    return next((x for x in lines if x.uttid == uttid), None)
-
-
 def enrich_chat(transcript: Transcript,
                 allresults: AllResults,
                 method: AssessmentMethod) -> ChatDocument:
@@ -41,9 +37,9 @@ def enrich_chat(transcript: Transcript,
     # construct a mapping of uttno to uttid
     # because uttid is unknown to CHAT
     marked_utts = (x for x in transcript.utterances.all() if x.for_analysis)
-    # id_no_mapping = {
-    #     u.utt_id: u.uttno for u in marked_utts
-    # }
+    id_no_mapping = {
+        u.utt_id: u.uttno for u in marked_utts
+    }
 
     # create mapping of query_ids to items
     items_mapping = {q.query_id: q.item for q in method.queries.all()}
@@ -52,16 +48,14 @@ def enrich_chat(transcript: Transcript,
         allresults.exactresults, items_mapping)
 
     for utt_id, words in results_by_word.items():
-        # uttno = id_no_mapping.get(int(utt_id))
-        doc_line = _find_doc_line_byuttid(doc.lines, int(utt_id))
+        uttno = id_no_mapping.get(int(utt_id))
+        doc_line = _find_doc_line(doc.lines, uttno)
 
         utt_hits = []
         for w in natsorted(words.keys()):
             utt_hits.extend(words[w])
 
         annotation_str = ', '.join(utt_hits)
-        if doc_line is None:
-            print(utt_id)
         doc_line.tiers['xsyn'] = ChatTier(id='xsyn', text=annotation_str)
         # id_headers = [h for h in doc.headers if h.line.startswith('@ID')]
         # last_id_header = max(id_headers, key=attrgetter('linestartno'))
