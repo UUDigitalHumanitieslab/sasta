@@ -59,7 +59,6 @@ def parse_transcript(transcript, output_dir, output_path):
         transcript.save()
 
         # Correcting and reparsing
-        logger.info(f'Correcting:\t{transcript.name}...\n')
         correct_transcript(transcript)
 
         transcript.status = Transcript.PARSED
@@ -74,6 +73,7 @@ def parse_transcript(transcript, output_dir, output_path):
 
 
 def correct_transcript(transcript: Transcript) -> None:
+    logger.info(f'Correcting:\t{transcript.name}...\n')
     try:
         corrected, error_dict, _origandalts = correct_treebank(transcript)
         corrected_content = etree.tostring(corrected, encoding='utf-8')
@@ -188,5 +188,10 @@ def correct_treebank(transcript: Transcript):
 
 
 def correct_uncorrected_transcripts():
-    uncorrected = Transcript.objects.filter(corrected_content='')
-    print(uncorrected.count())
+    uncorrected = list(Transcript.objects.filter(corrected_content=''))
+    print(f'{len(uncorrected)} uncorrected transcripts')
+
+    while len(uncorrected):
+        t = uncorrected.pop()
+        print(f'{len(uncorrected)} left')
+        correct_transcript(t)
