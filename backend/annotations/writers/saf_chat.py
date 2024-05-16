@@ -4,6 +4,7 @@ from typing import Dict, List
 from analysis.models import AssessmentMethod, Transcript
 from analysis.results.results import AllResults
 from chamd.chat_reader import ChatLine, ChatTier
+from annotations.utils import cast_to_bool
 from convert.chat_reader import ChatDocument
 from natsort import natsorted
 from sastadev.sastatypes import ExactResultsDict
@@ -51,7 +52,8 @@ def enrich_chat(transcript: Transcript,
     marked_utts = (x for x in transcript.utterances.all() if x.for_analysis)
 
     # create mapping of query_ids to items
-    items_mapping = {q.query_id: q.item for q in method.queries.all()}
+    items_mapping = {
+        q.query_id: q.item for q in method.queries.all() if cast_to_bool(q.inform)}
 
     results_by_word = _items_by_utt_word(
         allresults.exactresults, items_mapping)

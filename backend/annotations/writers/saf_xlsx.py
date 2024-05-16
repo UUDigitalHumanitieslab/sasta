@@ -12,15 +12,8 @@ from sastadev.methods import Method
 from sastadev.sastatypes import ExactResults
 from annotations.constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
                                    SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
-from annotations.utils import autosize_columns, format_worksheet, get_max_words, ljust
+from annotations.utils import autosize_columns, cast_to_bool, format_worksheet, get_max_words, ljust
 from natsort import natsorted
-
-
-def cast_to_bool(value) -> bool:
-    if isinstance(value, bool):
-        return value
-    elif isinstance(value, str):
-        return value == 'yes'
 
 @dataclass
 class SAFWriter():
