@@ -3,7 +3,7 @@ from collections import Counter
 from os import path as op
 
 import pytest
-from analysis.models import AssessmentMethod, MethodCategory
+from analysis.models import AssessmentMethod, Corpus, MethodCategory
 from django.conf import settings
 from django.core.files import File
 from sastadev.allresults import AllResults
@@ -28,6 +28,19 @@ def tarsp_category(db):
 
 
 @pytest.fixture
+def tarsp_corpus(db, admin_user, tarsp_method, tarsp_category):
+    obj = Corpus.objects.create(
+        user=admin_user,
+        name='tarsp_test_corpus',
+        status='created',
+        default_method=tarsp_method,
+        method_category=tarsp_category
+    )
+    yield obj
+    obj.delete()
+
+
+@pytest.fixture
 def stap_category(db):
     obj = MethodCategory.objects.create(
         name='STAP', zc_embeddings=False,
@@ -47,6 +60,19 @@ def asta_category(db):
             "Foutenanalyse",
             "Lemma"
         ], marking_postcodes=["[+ G]"])
+    yield obj
+    obj.delete()
+
+
+@pytest.fixture
+def asta_corpus(db, admin_user, asta_method, asta_category):
+    obj = Corpus.objects.create(
+        user=admin_user,
+        name='asta_test_corpus',
+        status='created',
+        default_method=asta_method,
+        method_category=asta_category
+    )
     yield obj
     obj.delete()
 
@@ -83,7 +109,7 @@ def asta_method(db, asta_category, method_dir):
 @pytest.fixture
 def single_utt_allresults(cha_testfiles_dir):
     parsed = etree.parse(
-        op.join(cha_testfiles_dir, 'single_utt_corrected.xml'))
+        op.join(cha_testfiles_dir, 'single_utt', 'single_utt_corrected.xml'))
     utts = parsed.xpath('alpino_ds')
 
     return AllResults(

@@ -5,7 +5,7 @@ from lxml import etree
 
 
 def test_c2a_parse(cha_testfiles_dir, tmp_path):
-    infile = op.join(cha_testfiles_dir, 'single_utt.cha')
+    infile = op.join(cha_testfiles_dir, 'single_utt', 'single_utt.cha')
     outfile = op.join(tmp_path, 'single_utt.xml')
     parses = corpus2alpino_parse(infile, outfile, in_memory=True)
     parsed = next(parses)
