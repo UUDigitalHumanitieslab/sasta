@@ -19,7 +19,9 @@ def _items_by_utt_word(exactresults: ExactResultsDict, items_mapping: Dict) -> D
 
     for (qid, _), hits in results.items():
         for (utt_id, wordno) in hits:
-            out[utt_id][wordno].append(items_mapping.get(qid))
+            mapped = items_mapping.get(qid)
+            if mapped:
+                out[utt_id][wordno].append(mapped)
 
     return out
 
@@ -36,7 +38,6 @@ def find_doc_line_xsid(lines: List[ChatLine], xsid: int) -> ChatLine:
         if line_xsid and line_xsid.text == str(xsid):
             return x
     return None
-
 
 
 def enrich_chat(transcript: Transcript,
