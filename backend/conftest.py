@@ -1,9 +1,11 @@
 import glob
 from collections import Counter
 from os import path as op
+import os
 
 import pytest
-from analysis.models import AssessmentMethod, Corpus, MethodCategory
+from analysis.convert.convert import convert
+from analysis.models import AssessmentMethod, Corpus, MethodCategory, Transcript
 from django.conf import settings
 from django.core.files import File
 from sastadev.allresults import AllResults
@@ -11,20 +13,66 @@ from sastadev.conf import settings as sd_settings
 
 from lxml import etree
 
+from parse.parse_utils import create_utterance_objects
+
+
+def _get_transcript_filenames(name: str, dir: str):
+    return {
+        'chat': f'{name}.cha',
+        'parsed': f'{name}.xml',
+        'corrected': f'{name}_corrected.xml'
+    }
+
+
+def _make_transcript(corpus: Corpus, name: str, dir: str):
+    filenames = _get_transcript_filenames(name, str)
+
+    obj = Transcript.objects.create(
+        name=name,
+        status=Transcript.PARSED,
+        corpus=corpus
+    )
+
+    with open(op.join(dir, filenames['chat']), 'rb') as f:
+        obj.content.save(filenames['chat'], File(f))
+
+    convert(obj)
+
+    with open(op.join(dir, filenames['parsed']), 'rb') as f:
+        obj.parsed_content.save(filenames['parsed'], File(f))
+    with open(op.join(dir, filenames['corrected']), 'rb') as f:
+        obj.corrected_content.save(filenames['corrected'], File(f))
+
+    create_utterance_objects(obj)
+
+    obj.save()
+    return obj
+
+
+def _make_method_transcripts(corpus: Corpus, testfiles_dir):
+    method_name = corpus.method_category.name
+    method_dir = op.join(testfiles_dir, method_name)
+    transcript_dirs = os.listdir(method_dir)
+
+    for name in transcript_dirs:
+        _make_transcript(corpus, name, op.join(method_dir, name))
+
+    transcripts = corpus.transcripts.all()
+    assert transcripts.count() == len(transcript_dirs)
+    return transcripts
+
 
 @pytest.fixture
-def cha_testfiles_dir():
+def testfiles_dir():
     return op.join(settings.BASE_DIR, 'test_files')
 
 
 @pytest.fixture
 def tarsp_category(db):
-    obj = MethodCategory.objects.create(
+    return MethodCategory.objects.create(
         name='TARSP', zc_embeddings=True,
         levels=['Sz', 'Zc', 'Wg', 'VVW'],
         marking_postcodes=['[+ G]'])
-    yield obj
-    obj.delete()
 
 
 @pytest.fixture
@@ -36,8 +84,7 @@ def tarsp_corpus(db, admin_user, tarsp_method, tarsp_category):
         default_method=tarsp_method,
         method_category=tarsp_category
     )
-    yield obj
-    obj.delete()
+    return obj
 
 
 @pytest.fixture
@@ -46,13 +93,12 @@ def stap_category(db):
         name='STAP', zc_embeddings=False,
         levels=['Complexiteit', 'Grammaticale fout'],
         marking_postcodes=['[+ G]', '[+ VU]'])
-    yield obj
-    obj.delete()
+    return obj
 
 
 @pytest.fixture
 def asta_category(db):
-    obj = MethodCategory.objects.create(
+    return MethodCategory.objects.create(
         name='ASTA', zc_embeddings=False, levels=[
             "Samplegrootte",
             "MLU",
@@ -60,21 +106,17 @@ def asta_category(db):
             "Foutenanalyse",
             "Lemma"
         ], marking_postcodes=["[+ G]"])
-    yield obj
-    obj.delete()
 
 
 @pytest.fixture
 def asta_corpus(db, admin_user, asta_method, asta_category):
-    obj = Corpus.objects.create(
+    return Corpus.objects.create(
         user=admin_user,
         name='asta_test_corpus',
         status='created',
         default_method=asta_method,
         method_category=asta_category
     )
-    yield obj
-    obj.delete()
 
 
 @pytest.fixture
@@ -84,14 +126,13 @@ def method_dir():
 
 @pytest.fixture
 def tarsp_method(db, tarsp_category, method_dir):
-    file = glob.glob(f'{method_dir}/TARSP Index Current.xlsx')[0]
+    file = glob.glob(f'{method_dir}/TARSP_Index_Current.xlsx')[0]
     with open(file, 'rb') as f:
         wrapped_file = File(f)
         instance = AssessmentMethod(
             name='tarsp_test_method', category=tarsp_category)
         instance.content.save(op.basename(file), wrapped_file)
-    yield instance
-    instance.delete()
+    return instance
 
 
 @pytest.fixture
@@ -102,14 +143,23 @@ def asta_method(db, asta_category, method_dir):
         instance = AssessmentMethod(
             name='asta_test_method', category=asta_category)
         instance.content.save(op.basename(file), wrapped_file)
-    yield instance
-    instance.delete()
+    return instance
+
+
+@pytest.fixture(autouse=True)
+def asta_transcripts(db, asta_corpus, testfiles_dir):
+    return _make_method_transcripts(asta_corpus, testfiles_dir)
+
+
+@pytest.fixture(autouse=True)
+def tarsp_transcripts(db, tarsp_corpus, testfiles_dir):
+    return _make_method_transcripts(tarsp_corpus, testfiles_dir)
 
 
 @pytest.fixture
-def single_utt_allresults(cha_testfiles_dir):
+def single_utt_allresults(testfiles_dir):
     parsed = etree.parse(
-        op.join(cha_testfiles_dir, 'single_utt', 'single_utt_corrected.xml'))
+        op.join(testfiles_dir, 'ASTA', 'single_utt', 'single_utt_corrected.xml'))
     utts = parsed.xpath('alpino_ds')
 
     return AllResults(
@@ -137,5 +187,9 @@ def single_utt_allresults(cha_testfiles_dir):
         allutts={1: ['ja', 'uh', 'ik', 'vind', 'het', 'beetje', 'moeilijk',
                      'om', 'het', 'goed', 'te', 'vertellen', 'want', 'ik',
                      'heb', 'een', 'ongeluk', 'gehad']}
-
     )
+
+
+@pytest.fixture
+def all_transcripts(asta_transcripts, tarsp_transcripts):
+    return Transcript.objects.all()

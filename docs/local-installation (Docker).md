@@ -40,5 +40,5 @@ python manage.py createsuperuser
 3. `analysis` -> `Assessment methods` -> `Add new`
 4. Choose the following settings:
     - Category: `TARSP`
-    - File: `<project directory>/backend/sastadev/methods/Tarsp index current.xlsx` (xlsx spreadsheet)
+    - File: `<project directory>/backend/sastadev/methods/Tarsp_index_current.xlsx` (xlsx spreadsheet)
 5. Repeat step 3 & 4 for STAP and ASTA
