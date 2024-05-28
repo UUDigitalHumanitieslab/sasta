@@ -62,3 +62,10 @@ def autosize_columns(worksheet) -> None:
         dim_holder[get_column_letter(col)] = ColumnDimension(
             worksheet, min=col, max=col, auto_size=True)
     worksheet.column_dimensions = dim_holder
+
+
+def cast_to_bool(value) -> bool:
+    if isinstance(value, bool):
+        return value
+    elif isinstance(value, str):
+        return value == 'yes'

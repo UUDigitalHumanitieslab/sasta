@@ -34,3 +34,7 @@
 .p-button:disabled {
     @extend .button
 }
+
+.p-toast-detail {
+    word-break: break-all;
+}
