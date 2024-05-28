@@ -55,6 +55,9 @@ def format_worksheet(worksheet) -> None:
             for cell in row[2:]:
                 cell.protection = unlocked
 
+    # freeze row one and columns A:B
+    worksheet.freeze_panes = worksheet['C2']
+
 
 def autosize_columns(worksheet) -> None:
     dim_holder = DimensionHolder(worksheet=worksheet)
