@@ -12,9 +12,8 @@ from sastadev.methods import Method
 from sastadev.sastatypes import ExactResults
 from annotations.constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
                                    SAF_COMMENT_LEVEL, SAF_UTT_LEVEL)
-from annotations.utils import autosize_columns, format_worksheet, get_max_words, ljust
+from annotations.utils import autosize_columns, cast_to_bool, format_worksheet, get_max_words, ljust
 from natsort import natsorted
-
 
 @dataclass
 class SAFWriter():
@@ -76,7 +75,10 @@ class SAFWriter():
 
         # Fill with values
         for qid, qresults in self.results.exactresults.items():
-            self._fill_query(qid, qresults)
+            query = self.method.queries.get(qid[0])
+            inform = cast_to_bool(query.inform)
+            if inform:
+                self._fill_query(qid, qresults)
         return self.anno_ws
 
     def _annotations_header_row(self) -> List[str]:

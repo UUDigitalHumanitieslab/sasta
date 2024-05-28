@@ -4,6 +4,7 @@ from typing import Dict, List
 from analysis.models import AssessmentMethod, Transcript
 from analysis.results.results import AllResults
 from chamd.chat_reader import ChatLine, ChatTier
+from annotations.utils import cast_to_bool
 from convert.chat_reader import ChatDocument
 from natsort import natsorted
 from sastadev.sastatypes import ExactResultsDict
@@ -18,14 +19,25 @@ def _items_by_utt_word(exactresults: ExactResultsDict, items_mapping: Dict) -> D
 
     for (qid, _), hits in results.items():
         for (utt_id, wordno) in hits:
-            out[utt_id][wordno].append(items_mapping.get(qid))
+            mapped = items_mapping.get(qid)
+            if mapped:
+                out[utt_id][wordno].append(mapped)
 
     return out
 
 
 def _find_doc_line(lines: List[ChatLine], uttno: int) -> ChatLine:
     # TODO: more efficient way to do this?
-    return next((x for x in lines if x.uttid == uttno), None)
+    # return next((x for x in lines if x.uttno == uttno), None)
+    return lines[uttno - 1]
+
+
+def find_doc_line_xsid(lines: List[ChatLine], xsid: int) -> ChatLine:
+    for x in lines:
+        line_xsid = x.tiers.get('xsid')
+        if line_xsid and line_xsid.text == str(xsid):
+            return x
+    return None
 
 
 def enrich_chat(transcript: Transcript,
@@ -34,22 +46,24 @@ def enrich_chat(transcript: Transcript,
     doc = ChatDocument.from_chatfile(
         transcript.content.path, transcript.corpus.method_category)
 
+    target_ids = transcript.target_ids
+
     # construct a mapping of uttno to uttid
     # because uttid is unknown to CHAT
     marked_utts = (x for x in transcript.utterances.all() if x.for_analysis)
-    id_no_mapping = {
-        u.utt_id: u.uttno for u in marked_utts
-    }
 
     # create mapping of query_ids to items
-    items_mapping = {q.query_id: q.item for q in method.queries.all()}
+    items_mapping = {
+        q.query_id: q.item for q in method.queries.all() if cast_to_bool(q.inform)}
 
     results_by_word = _items_by_utt_word(
         allresults.exactresults, items_mapping)
 
     for utt_id, words in results_by_word.items():
-        uttno = id_no_mapping.get(int(utt_id))
-        doc_line = _find_doc_line(doc.lines, uttno)
+        if target_ids:
+            doc_line = find_doc_line_xsid(doc.lines, int(utt_id))
+        else:
+            doc_line = _find_doc_line(doc.lines, int(utt_id))
 
         utt_hits = []
         for w in natsorted(words.keys()):
