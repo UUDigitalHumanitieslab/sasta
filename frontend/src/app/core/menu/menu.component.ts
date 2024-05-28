@@ -5,6 +5,7 @@ import {
     faExternalLinkAlt,
     faFileUpload,
     faFolder,
+    faHome,
     faListAlt,
     faUser,
     faUserShield,
@@ -28,6 +29,7 @@ export class MenuComponent implements OnInit {
     faFileUpload = faFileUpload;
     faUserShield = faUserShield;
     faExternalLink = faExternalLinkAlt;
+    faHome = faHome;
 
     version = environment.appVersion;
     docsAvailable: boolean;

@@ -44,7 +44,7 @@ export class LoginComponent implements OnDestroy {
 
     handleSuccess = (): void => {
         this.processing = false;
-        this.router.navigate(['/corpora']);
+        this.router.navigate(['']);
     };
 
     handleError = (errorResponse: HttpErrorResponse): void => {
