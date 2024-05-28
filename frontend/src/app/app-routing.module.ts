@@ -8,6 +8,7 @@ import { VerifyComponent } from './auth/verify.component';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { ProcessComponent } from './process/process.component';
 import { UploadComponent } from './upload/upload.component';
+import { HomeComponent } from './core/home/home.component';
 
 const routes: Routes = [
     {
@@ -49,8 +50,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/corpora',
-        pathMatch: 'full',
+        component: HomeComponent,
     },
 ];
 
