@@ -1,5 +1,6 @@
 site_name: SASTA Documentatie
 repo_url: https://github.com/UUDigitalHumanitieslab/sasta
+site_url: https://uudigitalhumanitieslab.github.io/sasta/
 
 theme:
     name: material
@@ -8,6 +9,7 @@ theme:
     favicon: assets/favicon.svg
     palette:
         scheme: custom
+        primary: custom
 nav:
     - Home: 'index.md'
     - Gebruikersaccount: 'accounts.md'

@@ -67,6 +67,6 @@ Uitingen kunnen geannoteerd worden volgens de [CHAT handleiding][chat-manual].
 
 
 ## Voorbeeldbestanden
-Zie [link](../input-formats/voorbeelden) voor downloadbare voorbeeldbestanden.
+Zie [link](./voorbeelden.md) voor downloadbare voorbeeldbestanden.
 
 [chat-manual]: https://talkbank.org/manuals/CHAT.pdf
