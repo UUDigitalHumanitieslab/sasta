@@ -8,7 +8,4 @@ STATICFILES_DIRS = [op.join(here, 'static')]
 STATIC_ROOT = None
 
 
-PROXY_FRONTEND = None # use statically compiled files
-
-if 'TRAVIS' in os.environ:
-    DEBUG = True
+PROXY_FRONTEND = None  # use statically compiled files

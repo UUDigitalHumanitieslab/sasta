@@ -1,6 +1,6 @@
 @import 'variables';
-@import '~bulma/bulma';
-@import "~@creativebulma/bulma-divider";
+@import 'bulma/bulma';
+@import "@creativebulma/bulma-divider";
 @import 'primeicons/primeicons.css';
 @import 'primeng/resources/themes/nova/theme.css';
 @import 'primeng/resources/primeng.css';
@@ -33,4 +33,8 @@
 
 .p-button:disabled {
     @extend .button
+}
+
+.p-toast-detail {
+    word-break: break-all;
 }

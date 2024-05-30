@@ -4,17 +4,18 @@ import os
 import zipfile
 from io import BytesIO
 from itertools import chain
-from typing import List, Optional, Tuple
+from typing import Dict, List, Tuple
 from uuid import uuid4
 
-from analysis.annotations.utils import clean_item
+from analysis.managers import SastaQueryManager
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from lxml import etree as ET
 from sastadev.external_functions import form_map
-
-from .utils import get_items_list
+from sastadev.methods import Method
+from sastadev.query import Query
+from sastadev.readmethod import read_method
 
 logger = logging.getLogger('sasta')
 
@@ -40,7 +41,8 @@ class MethodCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
     zc_embeddings = models.BooleanField()
     levels = ArrayField(base_field=models.CharField(max_length=20, blank=True))
-    marking_postcodes = ArrayField(base_field=models.CharField(max_length=20, blank=True), default=list)
+    marking_postcodes = ArrayField(base_field=models.CharField(
+        max_length=20, blank=True), default=list)
 
     def __str__(self):
         return self.name
@@ -64,9 +66,11 @@ class AssessmentMethod(models.Model):
 
     name = models.CharField(max_length=50)
     date_added = models.DateField(auto_now_add=True)
-    content = models.FileField(upload_to=upload_path, blank=True, null=True, max_length=500)
+    content = models.FileField(
+        upload_to=upload_path, blank=True, null=True, max_length=500)
     category = models.ForeignKey(
-        MethodCategory, related_name='definitions', blank=True, null=True, on_delete=models.CASCADE)
+        MethodCategory, related_name='definitions',
+        blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -75,12 +79,10 @@ class AssessmentMethod(models.Model):
         unique_together = (('category', 'name'))
         get_latest_by = ('date_added', )
 
-    def get_item_mapping(self, sep):
-        queries = self.queries.all()
-        mapping = {}
-        for q in queries:
-            mapping.update(q.get_item_mapping(sep))
-        return mapping
+    def to_sastadev(self) -> Method:
+        cat_name = self.category.name.lower()
+        location = self.content.path
+        return read_method(cat_name, location)
 
 
 class Corpus(models.Model):
@@ -92,8 +94,12 @@ class Corpus(models.Model):
     date_added = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
     default_method = models.ForeignKey(AssessmentMethod,
-                                       on_delete=models.SET_NULL, related_name='corpora', blank=True, null=True)
-    method_category = models.ForeignKey(MethodCategory, on_delete=models.SET_DEFAULT, default=1, related_name='corpora')
+                                       on_delete=models.SET_NULL,
+                                       related_name='corpora',
+                                       blank=True, null=True)
+    method_category = models.ForeignKey(
+        MethodCategory, on_delete=models.SET_DEFAULT,
+        default=1, related_name='corpora')
 
     def __str__(self):
         return self.name
@@ -144,7 +150,8 @@ class Transcript(models.Model):
     # status = models.CharField(max_length=50)
     corpus = models.ForeignKey(
         Corpus, related_name='transcripts', on_delete=models.CASCADE)
-    content = models.FileField(upload_to=upload_path, blank=True, null=True, max_length=500)
+    content = models.FileField(
+        upload_to=upload_path, blank=True, null=True, max_length=500)
     parsed_content = models.FileField(
         upload_to=upload_path_parsed, blank=True, null=True, max_length=500)
     corrected_content = models.FileField(
@@ -172,9 +179,11 @@ class Transcript(models.Model):
         except Exception:
             raise
 
-    def get_filepaths(self) -> Tuple[str]:
+    def get_filepaths(self) -> Tuple:
         if self.corrected_content:
-            return (self.content.path, self.parsed_content.path, self.corrected_content.path)
+            return (self.content.path,
+                    self.parsed_content.path,
+                    self.corrected_content.path)
         return (self.content.path, self.parsed_content.path)
 
     @property
@@ -188,6 +197,13 @@ class Transcript(models.Model):
 
     def parseable(self):
         return self.status in (self.CONVERTED, self.PARSING_FAILED)
+
+    @property
+    def latest_run(self):
+        try:
+            return self.analysisruns.latest()
+        except AnalysisRun.DoesNotExist:
+            return None
 
 
 class Utterance(models.Model):
@@ -225,15 +241,17 @@ class Utterance(models.Model):
     def word_elements(self) -> List[ET._Element]:
         '''List of word elements, sorted by word (begin, end)'''
         word_elements = self.syntree.findall('.//node[@word]')
-        return sorted(word_elements, key=lambda x: (int(x.attrib.get('begin')), int(x.attrib.get('end'))))
+        return sorted(word_elements, key=lambda x: (int(x.attrib.get('begin')),
+                                                    int(x.attrib.get('end'))))
 
     @property
     @functools.lru_cache(maxsize=128)
-    def word_position_mapping(self) -> List[Tuple[Optional[int], Optional[int]]]:
+    def word_position_mapping(self) -> List[Dict]:
         ''' List of dictionaries (begin, end) for each word in the utterance
             starts with { begin:None, end:None } to represent unaligned
         '''
-        mapping = [{'begin': int(el.attrib.get('begin')), 'end': int(el.attrib.get('end'))}
+        mapping = [{'begin': int(el.attrib.get('begin')),
+                    'end': int(el.attrib.get('end'))}
                    for el in self.word_elements]
         return [{'begin': None, 'end': None}] + mapping
 
@@ -266,50 +284,64 @@ class UploadFile(models.Model):
 class AssessmentQuery(models.Model):
     method = models.ForeignKey(AssessmentMethod, related_name='queries',
                                on_delete=models.CASCADE)
+
     query_id = models.CharField(max_length=4)
-    category = models.CharField(max_length=50, blank=True, null=True)
-    subcat = models.CharField(max_length=50, blank=True, null=True)
-    level = models.CharField(max_length=50, blank=True, null=True)
-    item = models.CharField(max_length=50, blank=True, null=True)
-    altitems = models.CharField(max_length=50, blank=True, null=True)
-    implies = models.CharField(max_length=50, blank=True, null=True)
+    cat = models.CharField(max_length=50, blank=True, default='')
+    subcat = models.CharField(max_length=50, blank=True, default='')
+    level = models.CharField(max_length=50, blank=True, default='')
+    item = models.CharField(max_length=50, blank=True, default='')
+    altitems = ArrayField(
+        base_field=models.CharField(max_length=50, blank=True),
+        default=list)
+    implies = ArrayField(
+        base_field=models.CharField(max_length=50, blank=True),
+        default=list)
     original = models.BooleanField()
-    pages = models.CharField(max_length=50, blank=True, null=True)
+    pages = models.CharField(max_length=50, blank=True, default='')
     fase = models.IntegerField(blank=True, null=True)
-    inform = models.BooleanField()
-    query = models.CharField(max_length=5000, blank=True, null=True)
-    screening = models.BooleanField(blank=True, null=True)
-    process = models.IntegerField()
-    special1 = models.CharField(max_length=50, blank=True, null=True)
-    special2 = models.CharField(max_length=50, blank=True, null=True)
-    comments = models.TextField(blank=True, null=True)
+    query = models.CharField(max_length=5000, blank=True, default='')
+    inform = models.CharField(max_length=20, blank=True, default='')
+    screening = models.CharField(max_length=20, blank=True, default=True)
+    process = models.IntegerField(blank=True, null=True)
+    literal = models.CharField(max_length=200, blank=True, default='')
+    stars = models.CharField(max_length=50, blank=True, default='')
+    filter = models.CharField(max_length=200, blank=True, default='')
+    variants = models.CharField(max_length=200, blank=True, default='')
+    unused1 = models.CharField(max_length=50, blank=True, default='')
+    unused2 = models.CharField(max_length=50, blank=True, default='')
+    comments = models.TextField(blank=True, default='')
+
+    # Manager
+    objects = SastaQueryManager()
 
     def __str__(self):
         return self.query_id
 
-    def get_altitems_list(self, sep=',', lower=True):
-        if not self.altitems:
+    def get_items_list(self, str, sep, lower=True):
+        rawresult = str.split(sep)
+        if lower:
+            cleanresult = [w.strip().lower() for w in rawresult]
+        else:
+            cleanresult = [w.strip() for w in rawresult]
+        if cleanresult == ['']:
             return []
-        return get_items_list(self.altitems, sep, lower)
+        return cleanresult
 
-    def get_implies_list(self, sep):
-        if not self.implies:
-            return []
-        return get_items_list(self.implies, sep)
+    def to_sastadev(self) -> Query:
+        sastadev_mapping = {'query_id': 'id'}
+        processes = ['pre', 'core', 'post', 'form']
+        relevant_fields = [f for f in self._meta.fields
+                           if f.get_internal_type()
+                           not in ('AutoField', 'ForeignKey', 'id')]
+        values = {f.name: getattr(self, f.name) for f in relevant_fields}
+        # Convert process back to string
+        values['process'] = processes[values.pop('process')]
 
-    def get_item_mapping(self, sep):
-        ''' mapping of all possible items (including altitems) to this query'''
-        if (not self.item) or (not self.level):
-            return {}
-        result = {(clean_item(self.item), self.level.lower()):
-                  (self.query_id, self.fase)}
-        alt_items = self.get_altitems_list(sep)
-        if alt_items:
-            for item in alt_items:
-                if (clean_item(item), self.level.lower()) not in result:
-                    result[(clean_item(item), self.level.lower())] = (
-                        self.query_id, self.fase)
-        return result
+        for k, v in list(values.items()):
+            if k in sastadev_mapping:
+                values[sastadev_mapping.get(k)] = values.pop(k)
+
+        return Query(**values)
 
     class Meta:
         unique_together = ('method', 'query_id')
@@ -320,12 +352,17 @@ class AnalysisRun(models.Model):
         return os.path.join('files', f'{self.transcript.corpus.uuid}',
                             'analysis_files', filename)
 
-    transcript = models.ForeignKey(Transcript, related_name='analysisruns', on_delete=models.CASCADE)
-    method = models.ForeignKey(AssessmentMethod, related_name='analysisruns', on_delete=models.CASCADE)
+    transcript = models.ForeignKey(
+        Transcript, related_name='analysisruns', on_delete=models.CASCADE)
+    method = models.ForeignKey(
+        AssessmentMethod, related_name='analysisruns',
+        on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     query_file = models.FileField(upload_to=upload_path, max_length=500)
     annotation_file = models.FileField(upload_to=upload_path, max_length=500)
-    is_manual_correction = models.BooleanField(default=False, help_text='this run was generated by parsing a user-uploaded SAF-file')
+    is_manual_correction = models.BooleanField(
+        default=False,
+        help_text='this run was generated by parsing a user-uploaded SAF-file')
 
     class Meta:
         get_latest_by = "created"

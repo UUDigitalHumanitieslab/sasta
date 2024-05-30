@@ -79,9 +79,9 @@ def test_quotemarks(quotemarks):
         assert replace_quotation_marks(line) == expected
 
 
-def test_chat_replacements(cha_testfiles_dir, tarsp_category):
+def test_chat_replacements(testfiles_dir, tarsp_category):
     '''Test if CHAT input handles replacements correctly'''
-    fn = op.join(cha_testfiles_dir, 'sample_1.cha')
+    fn = op.join(testfiles_dir, 'sample_1.cha')
     doc = ChatDocument.from_chatfile(fn, tarsp_category)
     line = doc.lines[1]
 

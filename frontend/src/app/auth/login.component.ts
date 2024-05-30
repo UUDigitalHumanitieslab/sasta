@@ -1,11 +1,11 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '@services';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AuthService } from '@services';
 
 @Component({
     selector: 'sas-login',
@@ -44,7 +44,7 @@ export class LoginComponent implements OnDestroy {
 
     handleSuccess = (): void => {
         this.processing = false;
-        this.router.navigate(['/corpora']);
+        this.router.navigate(['']);
     };
 
     handleError = (errorResponse: HttpErrorResponse): void => {

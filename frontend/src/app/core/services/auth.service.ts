@@ -1,14 +1,21 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { User } from '@models';
+import { environment } from '../../../environments/environment';
+
+interface DetailResponse {
+    detail: string;
+}
+
+type UserInfoResponse = Pick<User, 'username' | 'email'>;
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    authAPI = 'rest-auth';
+    authAPI = '/rest-auth';
     isAuthenticated$ = new BehaviorSubject<boolean>(false);
     currentUser$ = new BehaviorSubject<User>(null);
 
@@ -22,7 +29,7 @@ export class AuthService {
                 this.isAuthenticated$.next(true);
                 this.currentUser$.next(userData);
             },
-            (err) => {
+            () => {
                 this.isAuthenticated$.next(false);
                 this.currentUser$.next(null);
             }
@@ -38,13 +45,15 @@ export class AuthService {
             .pipe(tap(() => this.setUser()));
     }
 
-    logout(): Observable<any> {
-        return this.httpClient.post(`${this.authAPI}/logout/`, {}).pipe(
-            tap(() => {
-                this.currentUser$.next(null);
-                this.isAuthenticated$.next(false);
-            })
-        );
+    logout(): Observable<DetailResponse> {
+        return this.httpClient
+            .post<DetailResponse>(`${this.authAPI}/logout/`, {})
+            .pipe(
+                tap(() => {
+                    this.currentUser$.next(null);
+                    this.isAuthenticated$.next(false);
+                })
+            );
     }
 
     register(
@@ -52,13 +61,16 @@ export class AuthService {
         password1: string,
         password2: string,
         email: string
-    ): Observable<any> {
-        return this.httpClient.post(`${this.authAPI}/registration/`, {
-            username,
-            password1,
-            password2,
-            email,
-        });
+    ): Observable<DetailResponse> {
+        return this.httpClient.post<DetailResponse>(
+            `${this.authAPI}/registration/`,
+            {
+                username,
+                password1,
+                password2,
+                email,
+            }
+        );
     }
 
     getCompleteUser(): Observable<User> {
@@ -82,14 +94,20 @@ export class AuthService {
             .pipe(map((response) => response.has_admin_access as boolean));
     }
 
-    infoFromConfirmKey(key: string): Observable<any> {
-        return this.httpClient.get(`${this.authAPI}/infofromkey/${key}/`);
+    infoFromConfirmKey(key: string): Observable<UserInfoResponse> {
+        return this.httpClient.get<UserInfoResponse>(
+            `${this.authAPI}/infofromkey/${key}/`
+        );
     }
 
-    confirmEmail(key: string): Observable<any> {
-        return this.httpClient.post(
+    confirmEmail(key: string): Observable<DetailResponse> {
+        return this.httpClient.post<DetailResponse>(
             `${this.authAPI}/registration/verify-email/`,
             { key }
         );
+    }
+
+    getDocumentation(): Observable<HttpResponse<unknown>> {
+        return this.httpClient.get(environment.docs, { observe: 'response' });
     }
 }
