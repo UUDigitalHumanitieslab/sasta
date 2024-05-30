@@ -1,0 +1,13 @@
+<nav class="panel">
+    <p class="panel-heading">
+        Manual Topics
+    </p>
+    <ng-container *ngFor="let page of manifest$| async">
+        <a class="panel-block" routerLinkActive="is-active" [routerLink]="['/manual', page.id]">
+            <span class="panel-icon">
+                <i class="fa fa-book"></i>
+            </span>
+            <span [innerHtml]="page.title"></span>
+        </a>
+    </ng-container>
+</nav>

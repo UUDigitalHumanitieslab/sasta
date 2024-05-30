@@ -40,7 +40,10 @@ Upgraded SASTADEV dependency
 - Split Angular frontend into core-, shared-, and feature- modules
 - Extended anonymization codes and moved to a centrally located JSON file
 
-## [0.6.2] - 2022-03-15
+### Added
+- First version of user documentation
+
+## [0.6.2] - 2022-02-15
 
 ### Changed
 - Various frontend refactors

@@ -1,0 +1,13 @@
+
+
+<section class="section">
+    <div class="container is-readable">
+        <div class="columns">
+            <sas-manual-nav class="column is-3"></sas-manual-nav>
+            <div class="column is-9">
+                <h1 class="title">{{(currentPage$ | async)?.title}}</h1>
+                <div class="content" [ngClass]="{'is-loading':true}" [innerHTML]="(currentPage$ | async)?.content"></div>
+            </div>
+        </div>
+    </div>
+</section>
