@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/accounts/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/corpora/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/local-installation%20%28Docker%29/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/methodes/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/process/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/transcript/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/upload/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/annotaties/saf/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/input-formats/anonimisatie/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/input-formats/sif/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-05-11</lastmod>
+         <loc>https://uudigitalhumanitieslab.github.io/sasta/input-formats/voorbeelden/</loc>
+         <lastmod>2024-05-30</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
