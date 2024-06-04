@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('HomeComponent', () => {
     let component: HomeComponent;
@@ -8,9 +9,9 @@ describe('HomeComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [ HomeComponent ]
-        })
-            .compileComponents();
+            declarations: [HomeComponent],
+            imports: [HttpClientTestingModule],
+        }).compileComponents();
     }));
 
     beforeEach(() => {
