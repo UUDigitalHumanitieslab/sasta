@@ -15,6 +15,7 @@ from annotations.constants import (POST_WORDS_HEADERS, PRE_WORDS_HEADERS,
 from annotations.utils import autosize_columns, cast_to_bool, format_worksheet, get_max_words, ljust
 from natsort import natsorted
 
+
 @dataclass
 class SAFWriter():
     method: Method
@@ -108,7 +109,7 @@ class SAFWriter():
         all_levels = self.method_category.levels + [SAF_COMMENT_LEVEL]
 
         for utt_id, words in natsorted(self.results.allutts.items(),
-                                    key=lambda x: x[0]):
+                                       key=lambda x: x[0]):
             ws.append(self._uttlevel_row(utt_id, words))
             for level in all_levels:
                 level_row = ljust([utt_id, level], row_size)
