@@ -5,6 +5,10 @@ All notable changes (beginning at version 0.2.0) to this project will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.4] - 2024-06-11
+### Added
+-   Added outgoing links to homepage
+
 ## [0.9.3] - 2024-06-04
 ### Changed
 -   Upgraded SASTADEV to 0.2.2
