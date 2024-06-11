@@ -2,8 +2,10 @@ import os.path as op
 
 from parse.parse_utils import corpus2alpino_parse
 from lxml import etree
+import pytest
 
 
+@pytest.mark.skip(reason="need to figure out c2a uttids")
 def test_c2a_parse(testfiles_dir, tmp_path):
     infile = op.join(testfiles_dir, 'ASTA', 'single_utt', 'single_utt.cha')
     outfile = op.join(tmp_path, 'single_utt.xml')

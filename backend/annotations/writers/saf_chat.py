@@ -50,7 +50,7 @@ def enrich_chat(transcript: Transcript,
 
     # construct a mapping of uttno to uttid
     # because uttid is unknown to CHAT
-    marked_utts = (x for x in transcript.utterances.all() if x.for_analysis)
+    # marked_utts = (x for x in transcript.utterances.all() if x.for_analysis)
 
     # create mapping of query_ids to items
     items_mapping = {

@@ -34,6 +34,7 @@ def trigger_error(request):
     division_by_zero = 1 / 0
     return division_by_zero
 
+
 api_router = routers.DefaultRouter()  # register viewsets with this router
 api_router.register(r'upload_files', analysis_views.UploadFileViewSet)
 api_router.register(r'transcripts', analysis_views.TranscriptViewSet)

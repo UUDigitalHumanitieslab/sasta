@@ -1,4 +1,5 @@
 import os
+# flake8: noqa: F403
 from sasta.common_settings import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
