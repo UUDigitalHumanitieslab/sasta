@@ -1,6 +1,6 @@
 {
     "name": "sasta",
-    "version": "0.9.5",
+    "version": "0.9.6",
     "description": "Annotate and analyze transcripts",
     "author": "UU Digital Humanities Lab",
     "license": "BSD-3-Clause",
@@ -36,6 +36,10 @@
         "static-p": "yarn build-p && yarn clean-static && yarn collectstatic-p",
         "watch-front-p": "yarn front yarn watch",
         "start-back-p": "cd backend && python manage.py runserver --settings production --insecure --pythonpath ..",
-        "start-p": "yarn static-p && yarn watch-front-p & yarn start-back-p"
+        "start-p": "yarn static-p && yarn watch-front-p & yarn start-back-p",
+        "patch": "yarn version --patch && yarn update-citation && fyarn prebuild",
+        "minor": "yarn version --minor && yarn update-citation && fyarn prebuild",
+        "major": "yarn version --major && yarn update-citation && fyarn prebuild",
+        "update-citation": "$PWD/update-citation.sh"
     }
 }
