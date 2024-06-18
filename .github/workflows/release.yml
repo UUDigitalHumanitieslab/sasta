@@ -17,9 +17,10 @@ jobs:
       - name: Autoformat CITATION.cff
         run: |
           version=`grep -o '\d\+\.\d\+\.\d\+' package.json`
+          echo $version
           today=`date +"%Y-%m-%d"`
+          echo $today
           sed -i "s/^version: [[:digit:]]\{1,\}\.[[:digit:]]\{1,\}\.[[:digit:]]\{1,\}/version: $version/" CITATION.cff
           sed -i "s/[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}/$today/" CITATION.cff
-          bash ./update-citation.sh
           git commit -a -m "update version and date in CITATION.cff"
 
