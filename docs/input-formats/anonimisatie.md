@@ -32,7 +32,7 @@ Op de tiende positie in de zin stond PLAATS1, en dit is vervangen door Breda.
     - voorbeeld: `Dat zei BROER1` -> `Dat zei Jan`
 - categorie: beroep
     - codes: `BEROEP`
-    - vervangingen: `timmerman`, `chirurgh`, `leraar`, `ober`, `verslaggever`
+    - vervangingen: `timmerman`, `chirurg`, `leraar`, `ober`, `verslaggever`
     - voorbeeld: `Ik ben BEROEP van beroep` -> `Ik ben timmerman van beroep`
 - categorie: land
     - codes: `LAND`

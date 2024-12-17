@@ -88,8 +88,8 @@ def example_utterances():
         },
         {
             'text': 'Ik ben BEROEP1 in het INSTELLING in LAND2.',
-            'exp_text': 'Ik ben chirurgh in het Diakonessenhuis in Japan.',
-            'exp_tiers': {'xano': '7|BEROEP1|chirurgh, 37|LAND2|Japan, 23|INSTELLING|Diakonessenhuis'},
+            'exp_text': 'Ik ben chirurg in het Diakonessenhuis in Japan.',
+            'exp_tiers': {'xano': '7|BEROEP1|chirurg, 36|LAND2|Japan, 22|INSTELLING|Diakonessenhuis'},
         },
         {
             'text': 'Ik heb STUDIE en STUDIE1 gestudeerd.',
