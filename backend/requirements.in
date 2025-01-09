@@ -18,7 +18,5 @@ pytest-lazy-fixture
 pytest-xdist
 python-docx
 openpyxl
-xlrd>=1.2,<2
-xlsxwriter
 sastadev
 sentry-sdk[django]
