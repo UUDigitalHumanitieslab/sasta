@@ -120,6 +120,7 @@ class Utterance:
                 else:
                     # no comment means we are done
                     # add all comments as a tier
+                    self.text = new_text if new_text else self.text
                     if len(all_comments) > 0:
                         tier_code = 'x' + code
                         value = ', '.join(all_comments)
