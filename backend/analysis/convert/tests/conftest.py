@@ -136,4 +136,9 @@ def example_utterances():
             'exp_text': 'Ik zit op de Mariaschool en hij op de Calvijnschool.',
             'exp_tiers': {'xano': '13|SCHOOL1|Mariaschool, 38|SCHOOL2|Calvijnschool'},
         },
+        {
+            'text': '’s morgens sta ik op.',
+            'exp_text': "'s morgens sta ik op.",
+            'exp_tiers': {},
+        },
     ]
