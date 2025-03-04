@@ -27,6 +27,7 @@ jobs:
     - name: Test Angular
       run: |
         cd frontend
+        yarn prebuild
         yarn install --frozen-lockfile
         yarn build-git
         yarn test:ci
